@@ -144,35 +144,34 @@ The results will be filled in after the experiments in Weeks 3–5. **Nothing be
 - Week 5: Speaker-independent experiments, noise robustness, error analysis and demo app.
 - Week 6: Demo video, report, slides, poster and final polish.
 
-Each member's weekly tasks are listed in [docs/PROJECT_PLAN.md](docs/PROJECT_PLAN.md).
+Tasks, owners, dependencies and progress: [docs/STATUS.md](docs/STATUS.md).
 
 ---
 
 ## 📁 Repository Structure (planned)
 ```text
 TenVoices-Speech-Recognition/
+|-- CLAUDE.md                   instructions for Claude Code (read every session)
 |-- main.py                     transcribe / evaluate / reproduce
 |-- app.py                      Gradio live demo
 |-- requirements.txt
 |-- configs/                    config.yaml, lexicon_bd.txt
 |-- support/
-|   |-- config.py, audio.py, features.py, dataset.py     Shakil
-|   |-- asr.py, decoding.py, finetune.py                  Fahim
-|   |-- augment.py, visualization.py                      Shefa
-|   |-- metrics.py, commands.py, stats.py, experiments.py Tanvir
-|   `-- classical/
-|       |-- random_forest.py, dtw.py                      Shakil
-|       |-- xgboost_model.py                              Fahim
-|       |-- knn.py                                        Shefa
-|       `-- svm.py                                        Tanvir
-|-- tools/                      recorder.py, qc_report.py, make_splits.py
+|   |-- config.py, audio.py, dataset.py                       M1
+|   |-- asr.py, decoding.py, finetune.py                      M1
+|   |-- features.py, augment.py                               M2
+|   |-- classical/  knn, svm, random_forest, xgboost_model, dtw  M2
+|   |-- metrics.py, commands.py, stats.py, experiments.py     M3
+|   `-- visualization.py                                      M4
+|-- tools/                      recorder.py, qc_report.py (M2), make_splits.py (M1)
 |-- notebooks/                  Colab notebook for LoRA fine-tuning
 |-- tests/
 |-- data/                       prompts, metadata, splits (audio is gitignored)
-|-- docs/                       project plan, protocol, consent form, templates, logs
+|-- results/                    small result tables, committed for handoffs
+|-- docs/                       STATUS.md, PROJECT_PLAN.md, protocol, consent form, templates
 |-- poster/poster.html          poster source
 |-- images/                     poster and figures
-|-- outputs/                    generated results (gitignored)
+|-- outputs/                    large generated files (gitignored)
 `-- others/                     report, slides, demo video
 ```
 
@@ -230,12 +229,23 @@ The code is not written yet. These are the planned entry points; each will be do
 
 ---
 
+## 🔄 Team Workflow (Claude Code)
+Every member works through Claude Code, one after another:
+1. **Pull** the latest `main` and open Claude Code in the repository.
+2. **Ask:** *"I'm M2. What is completed?"* Claude reads [CLAUDE.md](CLAUDE.md) and the task board in [docs/STATUS.md](docs/STATUS.md).
+3. **Continue:** *"Complete my next tasks."* Claude only starts tasks whose dependencies are done.
+4. **Wrap up:** *"Wrap up and push."* Claude runs the tests, updates the task board and handoff log, commits and pushes.
+5. The next member pulls and repeats.
+
+---
+
 ## 👥 Contributors
-* **Shakil Ahmed** - *data pipeline (pre-processing, MFCC features, dataset splits), Random Forest and DTW baselines, integration*
-* **Fahim Foysal** - *ASR models (Whisper, wav2vec 2.0, Vosk), LoRA fine-tuning, XGBoost baseline*
-* **Shefa Tabassum** - *data collection (recorder, protocol, consent), noise augmentation, k-NN baseline, demo app and poster*
-* **Tanvir Ahmed** - *evaluation (metrics, statistics, experiments, error analysis), SVM baseline*
-* **Group of 4 Members** - *North South University*
+* **Tanvir Ahmed** - *team lead (Member 1): data pipeline, ASR models and our approach, integration*
+* **Md. Shahriar Rakib Rabbi** - *Member 2: dataset collection and curation, traditional ML baselines, noise augmentation*
+* **Tanvir Ahmed** - *Member 3: evaluation (metrics, experiments, statistics, error analysis)*
+* **Tanvir Ahmed** - *Member 4: demo app, figures, poster and video*
+
+Member 3 and Member 4 are open slots for members who join later; Tanvir Ahmed covers them for now.
 
 ---
 

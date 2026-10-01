@@ -14,7 +14,7 @@
 | **Comparison** | Traditional ML (MFCC + k-NN / SVM / Random Forest / XGBoost, and DTW) vs pre-trained deep models (Vosk, wav2vec 2.0, Whisper) vs our adapted Whisper |
 | **Dataset** | **TenVoices v1**, recorded by us with consent: 10 speakers × 120 recordings ≈ **1,200 utterances (~70 min)** |
 | **Effectiveness** | Leave-2-speakers-out 5-fold cross-validation. The headline WER is on **unseen speakers + unseen sentences**, with 95% CIs and significance tests. |
-| **Team** | 4 members. Each owns one part of the pipeline and one traditional ML model. |
+| **Team** | Tanvir Ahmed (lead) and Md. Shahriar Rakib Rabbi, plus 2 open member slots. Work is handed over through Claude Code (`CLAUDE.md`, `docs/STATUS.md`). |
 | **Timeline** | 6 weeks, planned week by week |
 | **Deliverables** | Open GitHub repo, dataset release + datasheet, CLI + demo app, individual update reports, IEEE-format report, slides, 1-minute demo video, poster |
 
@@ -83,7 +83,7 @@
 Full rules: [DATA_COLLECTION_PROTOCOL.md](DATA_COLLECTION_PROTOCOL.md) · Draft prompts: [`data/prompts/prompts_v0.csv`](../data/prompts/prompts_v0.csv)
 
 **Speakers:**
-- S01–S04 are team members; S05–S10 are volunteers.
+- S01 and S02 are team members (M1, M2); S03–S10 are volunteers. Members who join later can take volunteer places.
 - Target: 5 female / 5 male (self-reported), adults (18+), from a mix of home divisions.
 - Everyone reads English with their natural Bangladeshi accent *(language: confirm at kick-off)*.
 
@@ -128,15 +128,7 @@ flowchart LR
 ### 1. Traditional Machine Learning (Baseline)
 - **Task:** closed-set recognition of the 15 voice commands (30 recordings per speaker).
 - **Features:** MFCC (13) + Δ + ΔΔ with mean/variance normalisation, summarised by mean and standard deviation over three equal time segments (a fixed-length vector that keeps rough word order).
-- **Models** (one owner each):
-
-| Model | Owner |
-|---|---|
-| k-NN | Shefa |
-| SVM (RBF kernel) | Tanvir |
-| Random Forest | Shakil |
-| XGBoost | Fahim |
-| DTW 1-nearest-neighbour on full MFCC sequences | Shakil |
+- **Models** (owner: M2): k-NN, SVM (RBF kernel), Random Forest, XGBoost, and DTW 1-nearest-neighbour on the full MFCC sequences.
 
 - **Tuning and scoring:** hyper-parameters are tuned on the dev speaker. Reported as accuracy, macro F1 and a confusion matrix, speaker-independent. A speaker-dependent check (repetition 1 vs repetition 2 of the same speaker) shows how much accuracy depends on knowing the voice.
 
@@ -170,14 +162,14 @@ flowchart LR
 
 | ID | Question | Setup | Metrics | Owner | Week | Priority |
 |---|---|---|---|---|---|---|
-| E0 | What did we collect? | Statistics per speaker / category / condition | Minutes, counts, durations, SNR | Shakil + Shefa | 2 | Must |
-| E1 | How good is traditional ML? | k-NN, SVM, RF, XGBoost, DTW on the 15 commands; speaker-independent folds + speaker-dependent check | Accuracy, macro F1, confusion matrix | All four (one model each) | 3 | Must |
-| E2 | How good are pre-trained recognisers? | Vosk, wav2vec 2.0, Whisper tiny/base/small, zero-shot | WER, CER, SER, command accuracy, RTF | Fahim → Tanvir | 3 | Must |
-| E3 | Does our approach help? | Whisper-small + VAD + domain decoding + LoRA, 5 folds | Same metrics + ΔWER vs best baseline | Fahim | 4 | Must |
-| E4 | Which parts matter? | Ablations: −VAD, −prompt, −LoRA, −augmentation; tiny vs base vs small | WER | Fahim + Tanvir | 4–5 | Should |
-| E5 | Noise robustness | Test sets + held-out noise at 20/10/5/0 dB, plus the real-noise subset | WER vs SNR | Shefa + Tanvir | 5 | Should |
-| E6 | Where are the errors? | Per speaker, per category, named-entity accuracy, substitution/deletion/insertion breakdown, top confusions | Tables + examples | Tanvir (+ all) | 5 | Must |
-| E7 | Is it practical? | Real-time factor and latency on laptop CPU vs GPU; model and adapter size | RTF, ms, MB | Fahim | 5 | Should |
+| E0 | What did we collect? | Statistics per speaker / category / condition | Minutes, counts, durations, SNR | M2 | 2 | Must |
+| E1 | How good is traditional ML? | k-NN, SVM, RF, XGBoost, DTW on the 15 commands; speaker-independent folds + speaker-dependent check | Accuracy, macro F1, confusion matrix | M2 | 3 | Must |
+| E2 | How good are pre-trained recognisers? | Vosk, wav2vec 2.0, Whisper tiny/base/small, zero-shot | WER, CER, SER, command accuracy, RTF | M1 → M3 | 3 | Must |
+| E3 | Does our approach help? | Whisper-small + VAD + domain decoding + LoRA, 5 folds | Same metrics + ΔWER vs best baseline | M1 | 4 | Must |
+| E4 | Which parts matter? | Ablations: −VAD, −prompt, −LoRA, −augmentation; tiny vs base vs small | WER | M1 + M3 | 4–5 | Should |
+| E5 | Noise robustness | Test sets + held-out noise at 20/10/5/0 dB, plus the real-noise subset | WER vs SNR | M3 (noise bank: M2) | 5 | Should |
+| E6 | Where are the errors? | Per speaker, per category, named-entity accuracy, substitution/deletion/insertion breakdown, top confusions | Tables + examples | M3 | 5 | Must |
+| E7 | Is it practical? | Real-time factor and latency on laptop CPU vs GPU; model and adapter size | RTF, ms, MB | M1 | 5 | Should |
 
 ---
 
@@ -228,113 +220,83 @@ flowchart LR
 
 ## 👥 Team, Roles and File Ownership
 
-*(Roles: confirm at kick-off.)*
+Member names are listed in `CLAUDE.md`, `README.md` and `docs/STATUS.md`. The rest of the docs refer to **slots** (M1–M4), so a member who joins later can take a slot without other edits. Right now **Tanvir Ahmed** holds M1, M3 and M4, and **Md. Shahriar Rakib Rabbi** holds M2.
 
-| Member | Role | Owns (planned files) | Traditional ML model | Also responsible for |
-|---|---|---|---|---|
-| **Shakil Ahmed** | Data pipeline & integration | `main.py`, `support/config.py`, `support/audio.py`, `support/features.py`, `support/dataset.py`, `tools/make_splits.py`, `tools/qc_report.py`, `configs/config.yaml` | `support/classical/random_forest.py`, `support/classical/dtw.py` | Repo admin, merges, CI, dataset release package |
-| **Fahim Foysal** | ASR models | `support/asr.py`, `support/decoding.py`, `support/finetune.py`, `notebooks/`, `configs/lexicon_bd.txt` | `support/classical/xgboost_model.py` | Colab training runs, speed benchmark, slides |
-| **Shefa Tabassum** | Data collection, augmentation & demo | `tools/recorder.py`, `support/augment.py`, `support/visualization.py`, `app.py`, `poster/`, `images/` | `support/classical/knn.py` | Volunteer scheduling, noise bank, demo video, poster |
-| **Tanvir Ahmed** | Evaluation & experiments | `support/metrics.py`, `support/commands.py`, `support/stats.py`, `support/experiments.py` | `support/classical/svm.py` | Analysis plan, results tables, report results section |
-
-**Everyone** records themselves, recruits volunteers, checks another member's recordings, writes tests for their own code, keeps a weekly log, and writes their own update report and report section.
-
-| Recruiting member | Speakers | Cross-checks the recordings of |
+| Slot | Workstream | Owns (planned files) |
 |---|---|---|
-| Shakil | S01 (self), S05, S06 | S02, S07 (Fahim's speakers) |
-| Fahim | S02 (self), S07 | S01, S05, S06 (Shakil's speakers) |
-| Shefa | S03 (self), S08, S09 | S04, S10 (Tanvir's speakers) |
-| Tanvir | S04 (self), S10 | S03, S08, S09 (Shefa's speakers) |
+| **M1** (lead) | Setup, data pipeline, ASR models and our approach, integration | `main.py`, `support/config.py`, `support/audio.py`, `support/dataset.py`, `support/asr.py`, `support/decoding.py`, `support/finetune.py`, `tools/make_splits.py`, `configs/`, `notebooks/` |
+| **M2** | Dataset collection and curation, traditional ML baselines, augmentation, dataset release | `tools/recorder.py`, `tools/qc_report.py`, `support/features.py`, `support/classical/`, `support/augment.py`, `data/` metadata and datasheet |
+| **M3** *(open slot)* | Evaluation: metrics, experiments, statistics, error analysis | `support/metrics.py`, `support/commands.py`, `support/stats.py`, `support/experiments.py`, `docs/ANALYSIS_PLAN.md`, `results/tables/` |
+| **M4** *(open slot)* | Demo app, figures, poster, slides, video | `app.py`, `support/visualization.py`, `poster/`, `images/`, slides and video in `others/` |
 
-Each member also names one backup volunteer. Recruit so the full set reaches the 5F/5M target; gender is always self-reported on the consent form.
+**Speakers and cross-checks**
+
+| Slot | Records | Cross-checks the recordings of |
+|---|---|---|
+| M1 | S01 (self) + volunteers S03–S06 | S02, S07–S10 |
+| M2 | S02 (self) + volunteers S07–S10 | S01, S03–S06 |
+
+- Each recruiting member also names one backup volunteer.
+- A member who joins later can record themselves in place of a volunteer.
+- Recruit so the full set of 10 reaches the 5F/5M target; gender is always self-reported on the consent form.
 
 ---
 
-## 🔀 Team Workflow
+## 🔀 Team Workflow (relay with Claude Code)
 
-- **Branches:** `member1-data`, `member2-asr`, `member3-collection`, `member4-evaluation`. Rebase on `main` → pull request → 1 reviewer → merge. `main` is protected.
-- **Ownership:** nobody edits a file they don't own. Integration happens through the shared interfaces (`transcribe(...)`, the classical-model `fit/predict` interface, the results-CSV schema).
-- **Commit prefixes:** `feat:`, `fix:`, `data:`, `exp:`, `docs:`, `test:`.
-- **Check-ins:** short progress updates in the group chat. Anyone who is blocked calls a quick meeting.
-- **Weekly meeting** (30 min): demo progress, merge the week's PRs, check the week's output, adjust the plan.
-- **Weekly log:** each member adds a short entry to `docs/logs/<member>.md`. These entries become the weekly log in the individual update report.
-- **Tracking:** GitHub Project board with one issue per member per week, using that week's tasks from the roadmap below.
+Members work one after another, each through Claude Code. The repository tells Claude everything it needs:
+
+- **`CLAUDE.md`** is loaded automatically by Claude Code. It holds the project summary, the team slots and the session rules.
+- **`docs/STATUS.md`** is the task board (owner, dependencies, status) plus a handoff log.
+
+A typical relay:
+1. **Member A** pulls, asks Claude *"What is completed?"*, then *"Complete my next tasks."*
+2. **Claude** only starts tasks whose dependencies are ✅. At the end of the session it runs the tests, updates `docs/STATUS.md`, commits and pushes.
+3. **Member B** pulls and asks the same question. If the work B depends on is done, Claude completes B's tasks. If not, Claude says which task is still blocking.
+
+Rules:
+- **Branching:** work directly on `main`; pull before starting and before pushing.
+- **Commits:** one task per commit, message `T07: <summary>`, with the member's own git identity.
+- **Data:** audio is shared through the private team Drive, never through git. Small result tables go in `results/` and are committed so the next member can continue.
 - **Definition of done:**
-  - Runs from the repo root and is config-driven.
-  - Has docstrings and unit tests where testable.
-  - No audio, models or secrets committed.
-  - README updated if the change is user-facing.
-  - Reviewed by one teammate.
+  - The task's *done when* condition is met and the tests pass.
+  - Code is config-driven, uses relative paths and has docstrings.
+  - No audio, models or personal data committed.
+  - `docs/STATUS.md` is updated.
 
 ---
 
 ## 🗓️ Development Roadmap
 
-The work is planned week by week. Each member finishes their part of the week's focus before the weekly merge.
+- Week 1: Planning, repository setup, recording tool and pilot recordings.
+- Week 2: Dataset collection from 10 speakers, quality control and transcripts.
+- Week 3: Pre-processing, MFCC features, traditional ML baselines and zero-shot ASR.
+- Week 4: Our approach: domain-aware decoding, noise augmentation and LoRA fine-tuning.
+- Week 5: Speaker-independent experiments, noise robustness, error analysis and demo app.
+- Week 6: Demo video, report, slides, poster and final polish.
 
-- **Week 1: Planning, repository setup and recording tool**
-  - Shakil: publish the repo, create branches and the project board; configuration system; audio loading and resampling utilities.
-  - Fahim: Python environment (local + Colab); common recogniser interface; first Whisper transcription test.
-  - Shefa: recorder tool; final prompts, protocol and consent form; recruit volunteers.
-  - Tanvir: WER / CER / SER metrics; transcription and normalisation conventions.
-  - All: pilot recordings of the four team members (S01–S04).
-  - *Output: repo live, recorder working, protocol v1, pilot recordings.*
-- **Week 2: Dataset collection and quality control**
-  - Shakil: QC report, metadata manifest with checksums, fold generation with leakage tests.
-  - Fahim: zero-shot sanity runs on the new recordings.
-  - Shefa: run volunteer sessions; record the noise bank; dataset statistics and datasheet.
-  - Tanvir: analysis plan with the hypotheses, frozen before the main experiments.
-  - All: record your volunteers (S05–S10) and cross-check another member's recordings.
-  - *Output: TenVoices v1 frozen (1,200 clips, verified transcripts, 5 folds).*
-- **Week 3: Pre-processing, traditional ML baselines and zero-shot ASR**
-  - Shakil: VAD + loudness pre-processing; MFCC features; dataset loader; Random Forest and DTW baselines.
-  - Fahim: Vosk, wav2vec 2.0 and Whisper tiny/base/small zero-shot runs on all folds; XGBoost baseline.
-  - Shefa: visualisation module; noise augmentation module; k-NN baseline.
-  - Tanvir: classical-model interface; experiment runner; bootstrap and Wilcoxon statistics; SVM baseline.
-  - *Output: baseline results tables (E1, E2).*
-- **Week 4: Our approach**
-  - Shakil: per-fold training manifests; VAD in the inference path; adapter storage.
-  - Fahim: domain-aware decoding; LoRA fine-tuning on all 5 folds; ablations.
-  - Shefa: noise-augmented training data; first version of the demo app.
-  - Tanvir: command matching; main results table; tests of H1–H3.
-  - *Output: results of our approach on all 5 folds (E3, E4).*
-- **Week 5: Experiments, error analysis and demo**
-  - Shakil: one-command reproduction (`main.py reproduce`); unit tests and CI.
-  - Fahim: speed and size benchmark; real-noise results.
-  - Shefa: synthetic noisy test sets; final figures; demo app polish.
-  - Tanvir: noise sweep (H4); error analysis; final tables.
-  - *Output: all results frozen (feature freeze at the end of the week).*
-- **Week 6: Demo, report, slides and final polish**
-  - Shakil: integrate the report; final README; dataset release.
-  - Fahim: slides and voice-over script.
-  - Shefa: results poster and demo video.
-  - Tanvir: results section; check every number against `outputs/`; proofreading.
-  - *Output: final submission and Git tag `v1.0`.*
-
-If the instructor's deadlines differ, stretch or compress the weeks; the order of the work stays the same.
+The tasks for each week (T01–T28), with owners and dependencies, are in [STATUS.md](STATUS.md). If the instructor's deadlines differ, stretch or compress the weeks; the order of the work stays the same.
 
 ---
 
 ## 📝 Deliverables and Reporting
 
-- **Individual update report:** 2 pages in weekly-log format (template: [templates/individual_update_report.md](templates/individual_update_report.md)). Submitted at the instructor's Update 1 deadline, covering the weeks completed so far.
+- **Individual update report** (if the course requires it): 2 pages, weekly-log format (template: [templates/individual_update_report.md](templates/individual_update_report.md)), written from the member's entries in the STATUS.md handoff log.
 - **Final report:** 8-page IEEE double-column LaTeX (`others/final_report.tex`, compiled with `tectonic`):
 
 | Section | Owner |
 |---|---|
-| Abstract, I. Introduction | Shakil |
-| II. Background & related work (MFCC + classical ML, DTW, CTC and encoder–decoder ASR, LoRA) | Fahim |
-| III. The TenVoices dataset (collection, statistics, ethics) | Shefa |
-| IV. Methodology (traditional ML, zero-shot models, our approach) | Fahim (features and pre-processing: Shakil) |
-| V. Implementation & division of work | Shakil |
-| VI. Experimental evaluation (setup, results, discussion, threats to validity) | Tanvir |
-| VII. Limitations, ethics & future work | Shefa |
-| VIII. Conclusion | Tanvir |
+| Abstract, I. Introduction | M1 |
+| II. Background & related work (MFCC + classical ML, DTW, CTC and encoder–decoder ASR, LoRA) | M1 |
+| III. The TenVoices dataset (collection, statistics, ethics) | M2 |
+| IV. Methodology (traditional ML: M2; zero-shot models and our approach: M1) | M1 + M2 |
+| V. Implementation | M1 |
+| VI. Experimental evaluation (setup, results, discussion, threats to validity) | M3 |
+| VII. Limitations, ethics & future work | M2 |
+| VIII. Conclusion | M3 |
 
-- **Slides** (12–15) and rehearsals: Fahim leads; everyone presents their own part.
-- **Voice-over script + 1-minute demo video:** Fahim + Shefa.
-- **Results poster:** replaces the planning poster in Week 6 (Shefa).
-- **README** with final results, figures and a working how-to-run: Shakil.
+- **Slides, results poster and 1-minute demo video:** M4.
+- **README** with final results, figures and a working how-to-run: M1.
 
 ---
 
@@ -352,15 +314,16 @@ If the instructor's deadlines differ, stretch or compress the weeks; the order o
 
 | Risk | Likelihood | Impact | Mitigation | Owner |
 |---|---|---|---|---|
-| Volunteers cancel or run late | Medium | High | Book sessions in Week 1, keep 2 backups, allow remote sessions with the recorder on the volunteer's laptop | Shefa |
-| Inconsistent audio quality | Medium | Medium | Pilot sessions in Week 1, written protocol, QC script, re-records in Week 2 | Shakil |
-| Some speakers decline public release | Medium | Medium | Opt-in consent; release audio only for consenting speakers; publish metrics for everyone | Shefa |
-| No GPU / slow training | Medium | Medium | LoRA, Whisper-base fallback, Colab across 4 accounts | Fahim |
-| Fine-tuning doesn't help or overfits | Medium | Medium | Early stopping on the dev speaker; VAD + prompt still form a method; H1 is falsifiable, so a negative result is reported honestly | Fahim |
-| Traditional models score near chance | Medium | Low | Expected on unseen speakers; report the speaker-dependent check too, since that contrast is itself a finding | Tanvir |
-| Normalisation artefacts inflate WER | Medium | Medium | Written conventions + tests (Week 1); manual review of 50 errors | Tanvir |
-| Data leakage between train and test | Low | High | Split rules + unit tests | Shakil, Tanvir |
-| Merge conflicts / uneven workload | Medium | Medium | File ownership, weekly merges, slack at the end of each week | Shakil |
+| Volunteers cancel or run late | Medium | High | Book sessions in Week 1, keep 2 backups, allow remote sessions with the recorder on the volunteer's laptop | M2 |
+| Inconsistent audio quality | Medium | Medium | Pilot sessions in Week 1, written protocol, QC script, re-records in Week 2 | M2 |
+| Some speakers decline public release | Medium | Medium | Opt-in consent; release audio only for consenting speakers; publish metrics for everyone | M2 |
+| No GPU / slow training | Medium | Medium | LoRA, Whisper-base fallback, free Colab GPU | M1 |
+| Fine-tuning doesn't help or overfits | Medium | Medium | Early stopping on the dev speaker; VAD + prompt still form a method; H1 is falsifiable, so a negative result is reported honestly | M1 |
+| Traditional models score near chance | Medium | Low | Expected on unseen speakers; report the speaker-dependent check too, since that contrast is itself a finding | M2 |
+| Normalisation artefacts inflate WER | Medium | Medium | Written conventions + tests (Week 1); manual review of 50 errors | M3 |
+| Data leakage between train and test | Low | High | Split rules + unit tests | M1, M3 |
+| A member is unavailable and a handoff stalls | Medium | Medium | Every task is written up in STATUS.md, so the lead (or a new member) can take it over; small tasks, frequent pushes | M1 |
+| Merge conflicts | Low | Medium | Sequential relay; pull before working; one task per commit | All |
 | Scope creep | Medium | Medium | MoSCoW list; feature freeze at the end of Week 5 | All |
 | Real deadlines differ from this plan | Medium | Medium | Stretch or compress the weeks; the order of work stays valid | All |
 
@@ -380,7 +343,7 @@ If the instructor's deadlines differ, stretch or compress the weeks; the order o
 
 ## ❓ Decisions to Confirm at Kick-off
 
-1. Team composition, roles and which traditional model each member owns.
+1. Names for the open member slots (M3, M4) if new members join. Update the team tables in `CLAUDE.md`, `README.md` and `docs/STATUS.md`.
 2. Course code, section, group number, instructor and deadlines. Update the README table and the roadmap if needed.
 3. Language: English read with a Bangladeshi accent (**recommended**), Bangla, or English plus a small Bangla extension.
 4. Public dataset release for consenting speakers (**recommended: yes**).

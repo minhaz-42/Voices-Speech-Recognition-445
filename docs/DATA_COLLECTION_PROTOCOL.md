@@ -1,13 +1,13 @@
 # TenVoices: Data Collection Protocol
 
-> **Version 0 (draft).** Pilot-tested with the team's own recordings and frozen as v1 in **Week 1**. Owner: **M3 Shefa Tabassum**; QC tooling: **M1 Shakil Ahmed**.
+> **Version 0 (draft).** Pilot-tested with the team's own recordings and frozen as v1 in **Week 1**. Owner: **M2** (dataset); reviewed by **M1**.
 > Prompts: [`data/prompts/prompts_v0.csv`](../data/prompts/prompts_v0.csv) · Consent: [consent_form.md](consent_form.md)
 
 ## 1. Targets
 
 | | |
 |---|---|
-| Speakers | 10 (S01–S04 team, S05–S10 volunteers), plus 2 backups; target 5 female / 5 male, self-reported |
+| Speakers | 10 (S01–S02 team members, S03–S10 volunteers or members who join later), plus 2 backups; target 5 female / 5 male, self-reported |
 | Recordings per speaker | 120 (75 shared-prompt takes, 30 unique sentences, 5 spontaneous answers, 10 real-noise takes) |
 | Total | ≈ 1,200 utterances, ≈ 70 minutes of speech |
 | Session length | 30–35 minutes including a short break |
@@ -118,7 +118,7 @@ Templates are in [`data/metadata/`](../data/metadata/).
 
 ## 11. Quality control
 
-**Automatic** (`tools/qc_report.py`, M1):
+**Automatic** (`tools/qc_report.py`, M2):
 
 | Check | Rule |
 |---|---|
@@ -136,7 +136,7 @@ Templates are in [`data/metadata/`](../data/metadata/).
 
 ## 12. Noise bank (for augmentation and noise tests)
 
-- M3 records 20 ambient clips of 60 s each across 5 types: fan/AC, traffic, cafeteria babble, rain, household. No clear speech.
+- M2 records 20 ambient clips of 60 s each across 5 types: fan/AC, traffic, cafeteria babble, rain, household. No clear speech.
 - Clips are split by file into **train-noise (12)** and **test-noise (8)**. The two sets never mix: training augmentation uses only train-noise, and the noise sweep uses only test-noise (plus generated white noise).
 
 ## 13. Privacy and storage

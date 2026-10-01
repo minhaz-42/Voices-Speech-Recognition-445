@@ -1,7 +1,7 @@
 # TenVoices: Speaker Consent Form
 
 **Project:** TenVoices, speech recognition from ten voices (university course project, North South University, 2026)
-**Team:** Shakil Ahmed, Fahim Foysal, Shefa Tabassum, Tanvir Ahmed
+**Team:** Tanvir Ahmed, Md. Shahriar Rakib Rabbi
 
 ## What we are doing
 We are building and testing a computer system that turns speech into text. To check how well it works, we are recording 10 people reading short English sentences and answering a few simple questions.

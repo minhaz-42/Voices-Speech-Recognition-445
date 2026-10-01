@@ -71,6 +71,8 @@
   .team{display:grid;grid-template-columns:1fr 1fr;gap:9px 16px}
   .team b{display:block;font-size:16.5px;font-weight:650}
   .team span{font-size:13.5px;color:var(--mut)}
+  .team.inline{grid-template-columns:1fr;gap:8px}
+  .team.inline b{display:inline;margin-right:10px}
   .timeline{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-top:15px}
   .timeline div{border-top:3px solid var(--blue);padding-top:5px;font:600 12px/1.35 var(--mono)}
   .timeline div:nth-child(3n+1){border-color:var(--teal)}
@@ -156,11 +158,9 @@
 
 <div class="panel" style="left:1064px;top:830px;width:500px;height:196px">
   <h3>TEAM &middot; 6-WEEK PLAN</h3>
-  <div class="team">
-    <div><b>Shakil Ahmed</b><span>data &amp; pipeline</span></div>
-    <div><b>Fahim Foysal</b><span>ASR models</span></div>
-    <div><b>Shefa Tabassum</b><span>collection &amp; demo</span></div>
-    <div><b>Tanvir Ahmed</b><span>evaluation</span></div>
+  <div class="team inline">
+    <div><b>Tanvir Ahmed</b><span>lead &middot; pipeline, ASR, evaluation, demo</span></div>
+    <div><b>Md. Shahriar Rakib Rabbi</b><span>dataset &middot; traditional ML</span></div>
   </div>
   <div class="timeline">
     <div>W1<i>setup</i></div><div>W2<i>dataset</i></div><div>W3<i>baselines</i></div>

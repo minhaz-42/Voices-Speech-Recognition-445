@@ -1,5 +1,5 @@
 # TenVoices - planned dependencies (Python 3.10-3.12, 3.11 recommended).
-# Install and pin exact versions on Day 1 (DAILY_PLAN task D1, Fahim).
+# Exact versions are pinned in task T01 (see docs/STATUS.md).
 
 # Core
 numpy>=1.26

@@ -2,7 +2,7 @@
 
 **Name:** <full name> **ID:** <student ID> **Role:** Member <n>, <role> **Group:** <group>
 
-> 2 pages, two-column format. Write it from your weekly entries in `docs/logs/<you>.md`.
+> 2 pages, two-column format. Write it from your entries in the Handoff Log of `docs/STATUS.md`.
 
 ## Week 1 (<dates>)
 What you did, what you learned, what you decided and why. Name the files and functions you wrote.
