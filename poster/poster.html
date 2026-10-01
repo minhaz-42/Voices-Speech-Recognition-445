@@ -98,7 +98,7 @@
     <li><b>02</b><span>Gather speech from <em>10 speakers</em> uttering diverse phrases &amp; sentences</span></li>
     <li><b>03</b><span>Showcase its effectiveness on <em>this dataset</em></span></li>
   </ol>
-  <p class="note">Our reading: open-vocabulary speech-to-text, judged on voices and sentences it has never seen.</p>
+  <p class="note">Our reading: recognise which of 50 diverse phrases was spoken, judged on voices the system has never heard.</p>
 </div>
 
 <div class="panel" style="left:460px;top:36px;width:680px;height:280px">
@@ -106,72 +106,72 @@
   <div class="flow">
     <div class="node"><svg viewBox="0 0 24 24"><rect x="9" y="2.5" width="6" height="11.5" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg><b>Input</b><small>microphone or WAV file</small></div>
     <div class="arrow">&#8594;</div>
-    <div class="node"><svg viewBox="0 0 24 24"><path d="M2 12h3l2-6 3 12 3-9 2 6 2-3h5"/></svg><b>Pre-process</b><small>16 kHz &middot; loudness &middot; VAD trim</small></div>
+    <div class="node"><svg viewBox="0 0 24 24"><path d="M2 12h3l2-6 3 12 3-9 2 6 2-3h5"/></svg><b>Pre-process</b><small>16 kHz &middot; trim &middot; pad to 6 s</small></div>
     <div class="arrow">&#8594;</div>
-    <div class="node ours"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg><b>Whisper + LoRA</b><small>noise-augmented fine-tuning</small></div>
+    <div class="node ours"><svg viewBox="0 0 24 24"><path d="M3 12h2M7 7v10M11 4v16M15 8v8M19 10v4M21 12h0"/></svg><b>Augment</b><small>white noise (training only)</small></div>
     <div class="arrow">&#8594;</div>
-    <div class="node ours"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M8.5 7.5h6.5M8.5 11h4.5"/></svg><b>Domain decoding</b><small>Bangladeshi lexicon &middot; beam 5</small></div>
+    <div class="node ours"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg><b>wav2vec 2.0</b><small>fine-tuned 3 / 8 / 15 epochs</small></div>
     <div class="arrow">&#8594;</div>
-    <div class="node"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h12M4 18h8"/></svg><b>Normalise</b><small>transcript or command</small></div>
+    <div class="node"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h12M4 18h8"/></svg><b>Prediction</b><small>1 of 50 phrases + confidence</small></div>
   </div>
-  <div class="chips">Baselines: <span>MFCC + k-NN &middot; SVM &middot; RF &middot; XGBoost</span><span>DTW</span><span>Vosk</span><span>wav2vec2</span><span>Whisper</span></div>
+  <div class="chips">Baselines: <span>MFCC + k-NN &middot; SVM &middot; RF &middot; XGBoost</span><span>untrained wav2vec 2.0</span></div>
 </div>
 
 <div class="panel" style="left:1164px;top:36px;width:400px;height:280px">
   <h3>TENVOICES DATASET</h3>
   <div class="stats">
     <div><b>10</b><span>speakers &middot; 5F / 5M target</span></div>
-    <div><b>1,200</b><span>utterances</span></div>
-    <div><b>~70</b><span>minutes of speech</span></div>
-    <div><b>7</b><span>prompt types</span></div>
+    <div><b>1,600</b><span>recordings</span></div>
+    <div><b>50</b><span>phrases (classes)</span></div>
+    <div><b>3&times;</b><span>repetitions each</span></div>
   </div>
-  <p class="note">commands &middot; numbers &middot; phonetic &middot; everyday &middot; Bangladeshi names &middot; unique &middot; spontaneous, in clean and real-noise conditions, recorded with consent</p>
+  <p class="note">commands &middot; numbers &middot; everyday sentences &middot; Bangladeshi names &middot; phonetic sentences, plus real-noise takes, recorded with consent</p>
 </div>
 
 <div class="panel card" style="left:1236px;top:446px;width:328px;height:262px">
-  <h3>EXAMPLE PROMPTS</h3>
+  <h3>EXAMPLE PHRASES</h3>
   <div class="ex"><small>NER01 &middot; SENTENCE</small><p>I took a bus from <mark>Mohakhali</mark> to <mark>Sylhet</mark>.</p></div>
-  <div class="ex"><small>CMD05 &middot; COMMAND MODE</small><p>Set an alarm for six thirty.</p><span class="chip">&#8594; CMD05</span></div>
-  <p class="legend"><mark>Amber</mark>: names the decoder is biased towards</p>
+  <div class="ex"><small>CMD02 &middot; COMMAND</small><p>Turn <mark>off</mark> the fan.</p><span class="chip">&#8594; class CMD02</span></div>
+  <p class="legend">Each phrase is one of 50 classes; <mark>on / off</mark> pairs test the words, not the voice</p>
 </div>
 
 <div class="panel" style="left:36px;top:830px;width:500px;height:196px">
   <h3>HOW WE MEASURE</h3>
   <ul class="list">
-    <li>Leave-2-speakers-out <em>5-fold</em> cross-validation</li>
-    <li>Headline: <em>unseen speakers + unseen sentences</em></li>
-    <li>WER &middot; CER &middot; command accuracy &middot; real-time factor</li>
-    <li>Noise sweep 20 &#8594; 0 dB + real noisy takes</li>
-    <li>95% bootstrap CIs + Wilcoxon signed-rank tests</li>
+    <li>Random 80/20 split <em>and</em> unseen speakers (5-fold)</li>
+    <li>Accuracy &middot; macro F1 &middot; weighted F1 &middot; confusion matrix</li>
+    <li>Per-speaker accuracy, McNemar &amp; Wilcoxon tests</li>
+    <li>White noise at 20 / 10 / 5 dB + real noisy takes</li>
+    <li>Best epoch chosen on validation, never on test</li>
   </ul>
 </div>
 
 <div class="panel" style="left:560px;top:830px;width:480px;height:196px">
   <h3>HYPOTHESES &middot; FIXED BEFORE TESTING</h3>
   <ul class="list hyp">
-    <li><b>H1</b>&ge; 15% lower WER than the best zero-shot baseline</li>
-    <li><b>H2</b>+20 points on Bangladeshi names</li>
-    <li><b>H3</b>ASR commands &ge; 95%, above all MFCC classifiers</li>
-    <li><b>H4</b>Degrades less at 5 dB and 0 dB SNR</li>
+    <li><b>H1</b>wav2vec 2.0 &ge; 20 points above best MFCC model</li>
+    <li><b>H2</b>MFCC models drop more on unseen speakers</li>
+    <li><b>H3</b>White-noise training helps on noisy audio</li>
+    <li><b>H4</b>8 &#8594; 15 epochs gains less than 3 &#8594; 8</li>
   </ul>
 </div>
 
 <div class="panel" style="left:1064px;top:830px;width:500px;height:196px">
   <h3>TEAM &middot; 6-WEEK PLAN</h3>
   <div class="team inline">
-    <div><b>Tanvir Ahmed</b><span>lead &middot; pipeline, ASR, evaluation, demo</span></div>
-    <div><b>Md. Shahriar Rakib Rabbi</b><span>dataset &middot; traditional ML</span></div>
+    <div><b>Tanvir Ahmed</b><span>lead &middot; pipeline, RF, wav2vec 2.0, evaluation, demo</span></div>
+    <div><b>Md. Shahriar Rakib Rabbi</b><span>dataset &middot; XGBoost &middot; wav2vec 2.0</span></div>
   </div>
   <div class="timeline">
-    <div>W1<i>setup</i></div><div>W2<i>dataset</i></div><div>W3<i>baselines</i></div>
-    <div>W4<i>method</i></div><div>W5<i>experiments</i></div><div>W6<i>report</i></div>
+    <div>W1<i>setup</i></div><div>W2<i>dataset</i></div><div>W3<i>classical</i></div>
+    <div>W4<i>wav2vec 2.0</i></div><div>W5<i>results</i></div><div>W6<i>report</i></div>
   </div>
 </div>
 
 <div class="banner">
   <div class="kicker">PROJECT PLAN &middot; NORTH SOUTH UNIVERSITY &middot; 2026</div>
   <h1>TenVoices: Speech Recognition from Ten Voices</h1>
-  <p>Ten Voices. Diverse Sentences. <span>Speaker-Independent</span> Recognition.</p>
+  <p>Ten Voices. Fifty Phrases. <span>Speaker-Independent</span> Recognition.</p>
 </div>
 
 <script>
@@ -264,15 +264,15 @@ el('path', {d: `M${CORE[0] + 66} ${CY} H1230 M1224 ${CY - 5} L1230 ${CY} L1224 $
 el('circle', {cx: CORE[0], cy: CORE[1], r: 76, fill: 'none', stroke: '#62a8ff', 'stroke-opacity': .18});
 el('circle', {cx: CORE[0], cy: CORE[1], r: 63, fill: 'none', stroke: '#3ee0cf', 'stroke-opacity': .6, 'stroke-dasharray': '4 6'});
 el('circle', {cx: CORE[0], cy: CORE[1], r: 50, fill: 'url(#gCore)', stroke: '#62a8ff', 'stroke-width': 2, filter: 'url(#glow)'});
-const t1 = el('text', {x: CORE[0], y: CORE[1] - 2, 'text-anchor': 'middle', fill: '#fff', 'font-family': 'Avenir Next, -apple-system, sans-serif', 'font-size': 24, 'font-weight': 700});
-t1.textContent = 'ASR';
+const t1 = el('text', {x: CORE[0], y: CORE[1] - 2, 'text-anchor': 'middle', fill: '#fff', 'font-family': 'Avenir Next, -apple-system, sans-serif', 'font-size': 18, 'font-weight': 700});
+t1.textContent = 'wav2vec 2.0';
 const t2 = el('text', {x: CORE[0], y: CORE[1] + 19, 'text-anchor': 'middle', fill: '#ffb454', 'font-family': 'SF Mono, Menlo, monospace', 'font-size': 11.5, 'font-weight': 600});
-t2.textContent = 'Whisper+LoRA';
+t2.textContent = 'fine-tuned';
 
 // stage guide line + labels
 const guide = el('g', {});
 el('line', {x1: 60, y1: 790, x2: 1560, y2: 790, stroke: '#7fb6ff', 'stroke-opacity': .25, 'stroke-dasharray': '2 6'}, guide);
-[[150, '01 · SPEAKERS'], [572, '02 · WAVEFORM'], [950, '03 · LOG-MEL SPECTROGRAM'], [1165, '04 · RECOGNISER'], [1400, '05 · TEXT']]
+[[150, '01 · SPEAKERS'], [572, '02 · WAVEFORM'], [950, '03 · LOG-MEL SPECTROGRAM'], [1165, '04 · RECOGNISER'], [1400, '05 · PHRASE']]
   .forEach(([x, s]) => {
     el('circle', {cx: x, cy: 790, r: 3.5, fill: '#3ee0cf'}, guide);
     const t = el('text', {x: x, y: 812, 'text-anchor': 'middle', fill: '#8aa0bb', 'font-family': 'SF Mono, Menlo, monospace',

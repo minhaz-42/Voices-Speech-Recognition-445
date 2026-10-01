@@ -3,18 +3,18 @@
 > **Source of truth for progress.** Claude reads this file at the start of every session and updates it at the end (rules in [CLAUDE.md](../CLAUDE.md)).
 > **Legend:** ⬜ to do · 🟡 in progress · ✅ done · ⛔ blocked · 👤 needs people (recording, consent, video)
 
-**Current phase:** Week 1: setup and tools
+**Current phase:** Week 1: setup, phrase list and recording tool
 **Next up:** finish T01 (M1 · Tanvir Ahmed): add Rabbi as collaborator, pin requirements, config + audio utilities
 **Last updated:** 2026-10-01 by Tanvir Ahmed (M1)
 
 ## 👥 Team
 
-| Slot | Member | Workstream |
-|---|---|---|
-| M1 | Tanvir Ahmed (lead) | Setup, data pipeline, ASR models and our approach, integration |
-| M2 | Md. Shahriar Rakib Rabbi | Dataset collection and curation, traditional ML baselines, augmentation, dataset release |
-| M3 | Tanvir Ahmed *(open slot)* | Evaluation: metrics, experiments, statistics, error analysis |
-| M4 | Tanvir Ahmed *(open slot)* | Demo app, figures, poster, slides, video |
+| Slot | Member | Traditional model | Deep-learning run | Main workstream |
+|---|---|---|---|---|
+| M1 | Tanvir Ahmed (lead) | Random Forest | 15 epochs + white noise | Data pipeline, shared training/evaluation code, inference, integration |
+| M2 | Md. Shahriar Rakib Rabbi | XGBoost | 8 epochs + white noise | Dataset collection and curation, dataset release |
+| M3 | Tanvir Ahmed *(open slot)* | k-NN | 3 epochs | Evaluation: results tables, statistics, noise tests, error analysis |
+| M4 | Tanvir Ahmed *(open slot)* | SVM | Untrained baseline | Demo app, figures, poster, slides, video |
 
 ## 💬 How to work with Claude
 
@@ -25,73 +25,75 @@
 
 ## 🗂️ Task Board
 
-### Week 1: Setup and tools
+### Week 1: Setup, phrase list and recording tool
 
 | ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
 |---|---|---|---|---|---|
-| T00 | Project plan, README, poster, protocol, consent form, draft prompts, `CLAUDE.md`, this board → committed | M1 | — | ✅ | Tanvir · 2026-10-01 |
-| T01 | Publish the GitHub repo and add Rabbi as collaborator; pin `requirements.txt`; `configs/config.yaml` + `support/config.py`; `support/audio.py` (load, mono, 16 kHz, loudness, VAD trim) + tests → tests pass and a sample WAV loads and trims | M1 | T00 | 🟡 | |
-| T02 | Recorder tool `tools/recorder.py` (Gradio; file naming + `utterances.csv` rows); 300-sentence pool `data/prompts/unique_pool.csv` (Common Voice, CC0); printable prompt sheets → a test session saves correct files | M2 | T01 | ⬜ | |
-| T03 | `support/metrics.py` (WER, CER, SER + Whisper normaliser) + `docs/METRICS_SPEC.md` + tests → hand-computed cases pass | M3 | T01 | ⬜ | |
-| T04 | 👤 Pilot sessions S01 (Tanvir) and S02 (Rabbi): consent signed, files backed up to Drive → 2 × 120 recordings | M1 + M2 | T02 | ⬜ | |
-| T05 | `tools/qc_report.py` (completeness, duration, clipping, silence, SNR) run on the pilot; fix the issues found → protocol v1 frozen | M2 | T04 | ⬜ | |
+| T00 | Project plan, README, poster, protocol, consent form, phrase list, `CLAUDE.md`, this board → committed | M1 | — | ✅ | Tanvir · 2026-10-01 |
+| T01 | Publish the GitHub repo ✅ and add Rabbi as collaborator; pin `requirements.txt`; `configs/config.yaml` + `support/config.py`; `support/audio.py` (load, mono, 16 kHz, trim silence, peak-normalise, pad to 6 s) + tests → tests pass and a sample WAV loads | M1 | T00 | 🟡 | |
+| T02 | Recorder tool `tools/recorder.py` (Gradio): 3 shuffled rounds of `data/prompts/phrases.csv` + the noisy block; file naming; one `utterances.csv` row per clip; printable phrase sheets → a test session saves correct files | M2 | T01 | ⬜ | |
+| T03 | `support/metrics.py`: accuracy, macro / weighted F1, classification report, confusion-matrix plot, per-speaker accuracy + tests → hand-computed cases pass | M3 | T01 | ⬜ | |
+| T04 | 👤 Pilot sessions S01 (Tanvir) and S02 (Rabbi): consent signed, files backed up to Drive → 2 × 160 clips | M1 + M2 | T02 | ⬜ | |
+| T05 | `tools/qc_report.py` (completeness, duration, clipping, silence, misread flags) run on the pilot; fix the issues found → protocol v1 frozen | M2 | T04 | ⬜ | |
 
 ### Week 2: Dataset collection
 
 | ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
 |---|---|---|---|---|---|
 | T06 | 👤 Record volunteers S03–S06 (recruited by M1) and S07–S10 (recruited by M2), including noisy takes; target 5F/5M overall → 10/10 speakers | M1 + M2 | T05 | ⬜ | |
-| T07 | QC all sessions; cross-check transcripts (M1 checks M2's speakers, M2 checks M1's); re-records; spontaneous transcripts → ≥ 97% of takes pass | M2 (+ M1) | T06 | ⬜ | |
-| T08 | Processed 16 kHz copies + SHA-256 manifest; `support/dataset.py`; `tools/make_splits.py` → `data/splits/folds.json`; leakage tests → tests prove no speaker or text leakage; tag `data-v1` | M1 | T07 | ⬜ | |
+| T07 | QC all sessions; listen-check (M1 checks M2's speakers, M2 checks M1's); re-record misreads → ≥ 97% of clips pass | M2 (+ M1) | T06 | ⬜ | |
+| T08 | Processed 16 kHz copies + manifest (label, speaker, rep, condition, SHA-256); `support/dataset.py`; `tools/make_splits.py` → random 80/20 split + 5 speaker-independent folds in `data/splits/`; leakage tests → tests pass; tag `data-v1` | M1 | T07 | ⬜ | |
 | T09 | Dataset statistics figure + datasheet `data/README.md` | M2 | T08 | ⬜ | |
-| T10 | `docs/ANALYSIS_PLAN.md`: hypotheses H1–H4, subsets, statistical tests → **frozen** before any main experiment | M3 | T03, T08 | ⬜ | |
+| T10 | `docs/ANALYSIS_PLAN.md`: hypotheses H1–H4, splits, metrics, tests → **frozen** before any main experiment | M3 | T03, T08 | ⬜ | |
 
-### Week 3: Baselines
-
-| ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
-|---|---|---|---|---|---|
-| T11 | `support/asr.py` (Whisper tiny/base/small, wav2vec 2.0, Vosk behind one interface); zero-shot runs on all folds → `results/zero_shot/` | M1 | T08 | ⬜ | |
-| T12 | `support/features.py` (MFCC + Δ + ΔΔ) and `support/classical/` (k-NN, SVM, Random Forest, XGBoost, DTW) on the 15 commands → `results/classical/` | M2 | T08 | ⬜ | |
-| T13 | `support/experiments.py` + `support/stats.py`: score every fold and subset; bootstrap CIs; Wilcoxon → `results/tables/baselines.csv` | M3 | T10, T11, T12 | ⬜ | |
-| T14 | `support/visualization.py`: baseline figures → `images/` | M4 | T13 | ⬜ | |
-| T15 | 👤 Individual update reports, if the course requires them (written from the handoff log) | all | T13 | ⬜ | |
-
-### Week 4: Our approach
+### Week 3: Traditional machine learning
 
 | ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
 |---|---|---|---|---|---|
-| T16 | 👤 Noise bank (20 × 60 s, split into train-noise / test-noise) + `support/augment.py` (noise at a target SNR, speed, gain) | M2 | T08 | ⬜ | |
-| T17 | `configs/lexicon_bd.txt` + domain-aware decoding + VAD in inference + LoRA notebook; train all 5 folds → `results/ours/` (adapters go to Drive, not git) | M1 | T11, T16 | ⬜ | |
-| T18 | `support/commands.py` (fuzzy matching + rejection) + main results table, H1–H3 → `results/tables/main.csv` | M3 | T12, T17 | ⬜ | |
-| T19 | Gradio demo `app.py` v0 (microphone → transcript, model switch, command mode) | M4 | T17 | ⬜ | |
+| T11 | `support/features.py` (MFCC 13 + Δ + ΔΔ, mean & std) + shared runner `support/classical.py` (scaler + model, both splits, validation tuning, saves report / predictions / confusion matrix) + shared `support/evaluate.py`; **Random Forest** results → `results/random_forest/` | M1 | T03, T08 | ⬜ | |
+| T12 | **XGBoost** results with the shared runner → `results/xgboost/` | M2 | T11 | ⬜ | |
+| T13 | **k-NN** results with the shared runner → `results/knn/` | M3 | T11 | ⬜ | |
+| T14 | **SVM** results with the shared runner → `results/svm/` | M4 | T11 | ⬜ | |
 
-### Week 5: Experiments and analysis
+### Week 4: wav2vec 2.0
 
 | ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
 |---|---|---|---|---|---|
-| T20 | Ablations + speed benchmark; `main.py` (transcribe / evaluate / reproduce) | M1 | T17 | ⬜ | |
-| T21 | Noise sweep (20/10/5/0 dB, held-out noise) + real-noise results + error analysis → `results/` | M3 | T16, T18 | ⬜ | |
-| T22 | Final figures + demo polish | M4 | T19, T21 | ⬜ | |
-| T23 | Unit tests + GitHub Actions CI + clean-environment reproducibility check → **feature freeze** | M1 | T20, T21 | ⬜ | |
+| T15 | Shared training script `support/train_wav2vec2.py` (`--epochs`, `--noise`, `--split`; validation-based model selection; fp16 on GPU) + Colab notebook; run **15 epochs + white noise** on the random split and all 5 folds → `results/w2v2_15ep_noise/` (models to Drive) | M1 | T08, T11 | ⬜ | |
+| T16 | Run **8 epochs + white noise** with the shared script → `results/w2v2_8ep_noise/` | M2 | T15 | ⬜ | |
+| T17 | Run **3 epochs** (no noise) with the shared script → `results/w2v2_3ep/` | M3 | T15 | ⬜ | |
+| T18 | **Untrained baseline** with the shared evaluation script → `results/w2v2_untrained/` | M4 | T15 | ⬜ | |
+| T19 | Run **15 epochs without noise** (ablation for H3) → `results/w2v2_15ep/` | M1 | T15 | ⬜ | |
+
+### Week 5: Results, analysis and demo
+
+| ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
+|---|---|---|---|---|---|
+| T20 | `support/results_table.py` + `support/stats.py`: `results/all_results.csv`, `images/all_results_table.png`, seen vs unseen speakers, per-speaker table, McNemar + bootstrap CIs; test H1, H2, H4 | M3 | T12, T13, T14, T16, T17, T18 | ⬜ | |
+| T21 | Noise tests (white noise at 20 / 10 / 5 dB + real noisy takes) for the best models; test H3; error analysis of the most-confused phrases → `results/noise/`, `results/errors/` | M3 | T19, T20 | ⬜ | |
+| T22 | `main.py` inference (WAV / MP3 / MP4 audio / microphone → top-5 phrases with confidence) + inference-time benchmark + unit tests + GitHub Actions CI | M1 | T15 | ⬜ | |
+| T23 | Gradio demo `app.py` + final figures (confusion matrices, accuracy vs SNR, per-speaker chart) → `images/` | M4 | T20, T21, T22 | ⬜ | |
+| T24 | Clean-environment reproducibility check → **feature freeze** | M1 | T20, T21, T22, T23 | ⬜ | |
 
 ### Week 6: Delivery
 
 | ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
 |---|---|---|---|---|---|
-| T24 | Final report (`others/final_report.tex`, IEEE, 8 pages) + final README | M1 | T23 | ⬜ | |
-| T25 | Dataset release (consenting speakers; FLAC, metadata, datasheet, checksums) as a GitHub Release asset | M2 | T23 | ⬜ | |
-| T26 | Results section of the report; check every number against `results/` | M3 | T23 | ⬜ | |
-| T27 | Results poster, slides, 👤 1-minute demo video | M4 | T22 | ⬜ | |
-| T28 | 👤 Final checklist, tag `v1.0`, submit | all | T24, T25, T26, T27 | ⬜ | |
+| T25 | Final report (paper format, ~8 pages) integration + final README with real results | M1 | T24 | ⬜ | |
+| T26 | Dataset release (consenting speakers; FLAC, metadata, datasheet, checksums) as a GitHub Release asset | M2 | T24 | ⬜ | |
+| T27 | Results poster, slides, 👤 1-minute demo video | M4 | T24 | ⬜ | |
+| T28 | 👤 Final checklist (every number matches `results/`), tag `v1.0`, submit | all | T25, T26, T27 | ⬜ | |
 
 ## 📝 Handoff Log (newest first)
 
-### 2026-10-01 · Tanvir Ahmed (M1) · T01 (part 1)
-- **Done:** published the repo at https://github.com/minhaz-42/Voices-Speech-Recognition-445 and pushed all planning files.
-- **Next:** finish T01 (M1): add Rabbi as a collaborator, pin `requirements.txt`, then `configs/config.yaml`, `support/config.py` and `support/audio.py` with tests.
+### 2026-10-01 · Tanvir Ahmed (M1) · T00 (revision)
+- **Done:** switched the method to spoken phrase recognition with 50 phrases, following the pipeline traditional ML → untrained baseline → fine-tuned wav2vec 2.0 (3 / 8 / 15 epochs, white noise). Rewrote the plan, README, protocol, phrase list (`data/prompts/phrases.csv`), poster and this board (new tasks T01–T28).
+- **Next:** finish T01 (M1). Once T01 is pushed, M2 can start T02 and M3 can start T03.
 - **Blockers:** Rabbi's GitHub username is needed to add him as a collaborator.
 
+### 2026-10-01 · Tanvir Ahmed (M1) · T01 (part 1)
+- **Done:** published the repo at https://github.com/minhaz-42/Voices-Speech-Recognition-445 and pushed all planning files.
+- **Next:** finish T01 (M1).
+
 ### 2026-10-01 · Tanvir Ahmed (M1) · T00
-- **Done:** project plan, README, poster, data-collection protocol, consent form, draft prompts (60 shared + 5 spontaneous), `CLAUDE.md` and this status board.
-- **Next:** T01 (M1). Once T01 is pushed, M2 can start T02 and M3 can start T03.
-- **Blockers:** course details and deadlines are TBD; add Rabbi's git user.name to `CLAUDE.md`.
+- **Done:** project plan, README, poster, data-collection protocol, consent form, `CLAUDE.md` and this status board.

@@ -1,1 +1,1 @@
-utt_id,speaker_id,prompt_id,category,text_group,rep,condition,noise_type,prompt_text,transcript,duration_s,orig_sample_rate,peak_dbfs,qc_status,qc_by,notes
+utt_id,speaker_id,phrase_id,category,rep,condition,noise_type,text,duration_s,orig_sample_rate,peak_dbfs,qc_status,qc_by,notes

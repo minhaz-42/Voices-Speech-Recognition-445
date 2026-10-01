@@ -4,14 +4,14 @@
 **Team:** Tanvir Ahmed, Md. Shahriar Rakib Rabbi
 
 ## What we are doing
-We are building and testing a computer system that turns speech into text. To check how well it works, we are recording 10 people reading short English sentences and answering a few simple questions.
+We are building and testing a computer system that recognises spoken phrases. To check how well it works, we are recording 10 people reading short English phrases.
 
 ## What you will do
-- Read about 100 short sentences and voice commands aloud, and answer 5 simple questions (about 30 minutes).
-- Read 10 of the sentences again in a noisier place (for example, a corridor or cafeteria).
+- Read 50 short English phrases aloud, three times each (about 30 minutes).
+- Read 10 of the phrases once more in a noisier place (for example, a corridor or cafeteria).
 
 ## What we store
-- Your voice recordings and their text transcripts.
+- Your voice recordings and the phrase each one contains.
 - A speaker code (for example, S07). **Your name is never stored with the recordings.**
 - Basic details you choose to give: gender, age band, home division, first language, the device used.
 

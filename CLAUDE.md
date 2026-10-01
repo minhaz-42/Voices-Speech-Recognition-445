@@ -4,14 +4,14 @@ Guide for Claude Code in the **TenVoices** repository. Every team member works t
 
 ## Project
 
-TenVoices is a university project (North South University). We build a **speech recognition system** and evaluate it on **TenVoices**, a dataset we record ourselves: 10 speakers, ~1,200 English utterances.
+TenVoices is a university project (North South University). We build a **speech recognition system** that recognises which of **50 phrases** was spoken, and evaluate it on **TenVoices**, a dataset we record ourselves: 10 speakers × 50 phrases × 3 repetitions, plus 10 noisy takes each (~1,600 clips).
 
-We compare three families of methods:
-1. Traditional ML on a 15-command task: MFCC + k-NN / SVM / Random Forest / XGBoost, and DTW.
-2. Zero-shot pre-trained ASR: Vosk, wav2vec 2.0, Whisper.
-3. Our approach: Whisper-small + noise-augmented LoRA + Bangladeshi-lexicon decoding.
+We compare three stages:
+1. Traditional ML: MFCC features + k-NN / SVM / Random Forest / XGBoost.
+2. Baseline: wav2vec 2.0 with an untrained classification head.
+3. Our approach: wav2vec 2.0 fine-tuned for 3 / 8 / 15 epochs with white-noise augmentation.
 
-All results use leave-2-speakers-out 5-fold cross-validation.
+Every model is reported on a random 80/20 split and with speaker-independent 5-fold cross-validation (the headline). Metrics: accuracy, macro F1, weighted F1 and confusion matrices.
 
 Repository: https://github.com/minhaz-42/Voices-Speech-Recognition-445 (we work on `main`).
 
@@ -26,10 +26,10 @@ Repository: https://github.com/minhaz-42/Voices-Speech-Recognition-445 (we work 
 
 | Slot | Member | git user.name | Workstream |
 |---|---|---|---|
-| M1 | Tanvir Ahmed (lead) | minhaz | Setup, data pipeline, ASR models and our approach, integration |
-| M2 | Md. Shahriar Rakib Rabbi | *(add)* | Dataset collection and curation, traditional ML baselines, augmentation, dataset release |
-| M3 | Tanvir Ahmed *(open slot)* | minhaz | Evaluation: metrics, experiments, statistics, error analysis |
-| M4 | Tanvir Ahmed *(open slot)* | minhaz | Demo app, figures, poster, slides, video |
+| M1 | Tanvir Ahmed (lead) | minhaz | Data pipeline, shared training/evaluation code, inference, integration · Random Forest · wav2vec 2.0 15 epochs + noise |
+| M2 | Md. Shahriar Rakib Rabbi | *(add)* | Dataset collection and curation, dataset release · XGBoost · wav2vec 2.0 8 epochs + noise |
+| M3 | Tanvir Ahmed *(open slot)* | minhaz | Evaluation: results tables, statistics, noise tests, error analysis · k-NN · wav2vec 2.0 3 epochs |
+| M4 | Tanvir Ahmed *(open slot)* | minhaz | Demo app, figures, poster, slides, video · SVM · untrained baseline |
 
 - One person can hold several slots. "My tasks" means the tasks of every slot that person holds.
 - When someone joins, update the team tables in this file, `README.md` and `docs/STATUS.md`. The open tasks of that slot then belong to the new member.
@@ -58,7 +58,7 @@ Repository: https://github.com/minhaz-42/Voices-Speech-Recognition-445 (we work 
 - Code rules:
   - Python 3.11, settings in `configs/config.yaml`, relative paths, CLI arguments.
   - Docstrings; `unittest` tests in `tests/`.
-  - One shared module per function; no personal copies of scripts.
+  - One shared module per function; no personal copies of scripts. A new run is a new set of CLI options (e.g. `--epochs 8 --noise white`), not a new script.
 - After the evaluation protocol is frozen (task T10), do not change folds, metrics or hypotheses without M1's approval and a note in `docs/STATUS.md`.
 - Don't mention other or earlier projects in any document.
 
@@ -77,7 +77,7 @@ Repository: https://github.com/minhaz-42/Voices-Speech-Recognition-445 (we work 
 
 ## Never commit
 
-- Audio (`*.wav`, `*.flac`, `*.mp3`, …), model weights or LoRA adapters
+- Audio (`*.wav`, `*.flac`, `*.mp3`, …), model weights or checkpoints
 - Signed consent forms, volunteer names, phone numbers or Drive links
 - Large generated files in `outputs/`
 

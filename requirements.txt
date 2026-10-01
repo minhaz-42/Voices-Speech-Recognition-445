@@ -6,33 +6,24 @@ numpy>=1.26
 pandas>=2.1
 scipy>=1.11
 matplotlib>=3.8
+seaborn>=0.13
 pyyaml>=6.0
 tqdm>=4.66
 
 # Audio
 librosa>=0.10
 soundfile>=0.12
-pyloudnorm>=0.1
-silero-vad>=5.1
-audiomentations>=0.35
 
-# Traditional machine-learning baselines
+# Traditional machine learning
 scikit-learn>=1.4
 xgboost>=2.0
 
-# Models (CUDA on Colab, MPS on Apple Silicon, CPU fallback)
+# Deep learning (CUDA on Colab, MPS on Apple Silicon, CPU fallback)
 torch>=2.3
 torchaudio>=2.3
 transformers>=4.44
-peft>=0.12
+datasets>=2.20
 accelerate>=0.33
 
-# Evaluation
-jiwer>=3.0
-rapidfuzz>=3.9
-
-# Recorder tool and demo app
+# Demo app
 gradio>=4.40
-
-# Optional Kaldi-based baseline (install separately if no wheel exists for your platform)
-# vosk>=0.3.45
