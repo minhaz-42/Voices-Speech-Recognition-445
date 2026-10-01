@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TenVoices Poster</title>
+<!--
+  Planning-edition poster (1600x1200, 4:3). Render to images/poster.png with:
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --disable-gpu --hide-scrollbars \
+    --force-device-scale-factor=2 --window-size=1600,1200 --virtual-time-budget=3000 \
+    --screenshot=images/poster.png "file://$PWD/poster/poster.html"
+  Week 6 (Day 36): replace the hypothesis panel with real results for the results edition.
+-->
+<style>
+  :root{
+    --bg:#04070e; --panel:rgba(8,19,35,.80); --edge:rgba(62,224,207,.50);
+    --teal:#3ee0cf; --blue:#62a8ff; --violet:#a78bfa; --amber:#ffb454;
+    --txt:#eaf2ff; --mut:#9fb2cc; --dim:#71859f;
+    --mono:"SF Mono",Menlo,Consolas,monospace;
+    --display:"Avenir Next",-apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1600px;height:1200px;overflow:hidden;background:var(--bg);color:var(--txt);
+    font-family:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif}
+  .bg{position:absolute;inset:0;background:
+      radial-gradient(720px 520px at 19% 50%, rgba(46,210,195,.20), transparent 70%),
+      radial-gradient(760px 540px at 70% 47%, rgba(80,140,255,.18), transparent 70%),
+      radial-gradient(620px 380px at 90% 95%, rgba(255,170,70,.10), transparent 70%),
+      radial-gradient(1000px 520px at 50% 112%, rgba(46,210,195,.10), transparent 70%)}
+  svg#scene{position:absolute;left:0;top:0}
+  .panel{position:absolute;background:var(--panel);border:1px solid var(--edge);border-radius:16px;
+    padding:18px 22px;box-shadow:inset 0 0 40px rgba(62,224,207,.05),0 12px 40px rgba(0,0,0,.5)}
+  .panel::before{content:"";position:absolute;left:18px;top:-1px;width:46px;height:2px;background:var(--teal);border-radius:2px}
+  h3{font:600 15px/1.2 var(--mono);letter-spacing:.2em;color:var(--teal);margin-bottom:14px}
+  em{font-style:normal;color:var(--teal)}
+  .note{margin-top:14px;font-size:14.5px;line-height:1.4;color:var(--mut)}
+  /* brief */
+  .brief{list-style:none;display:grid;gap:12px}
+  .brief li{display:flex;gap:14px;font-size:19px;line-height:1.3}
+  .brief b{font:700 14px/27px var(--mono);color:var(--amber)}
+  /* pipeline */
+  .flow{display:flex;justify-content:space-between}
+  .node{width:108px;height:146px;border:1px solid rgba(98,168,255,.45);border-radius:12px;background:rgba(10,26,48,.85);
+    display:flex;flex-direction:column;align-items:center;padding:14px 7px 8px;text-align:center}
+  .node svg{flex-shrink:0;width:30px;height:30px;stroke:var(--blue);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;margin-bottom:9px}
+  .node b{font-size:15px;line-height:1.2;font-weight:650}
+  .node small{margin-top:6px;font-size:12.5px;line-height:1.3;color:var(--mut)}
+  .node.ours{border-color:var(--amber);box-shadow:0 0 24px rgba(255,180,84,.28)}
+  .node.ours svg{stroke:var(--amber)}
+  .node.ours small{color:#f3d3a6}
+  .arrow{align-self:center;color:var(--teal);font-size:20px;width:20px;text-align:center}
+  .chips{margin-top:16px;display:flex;flex-wrap:wrap;gap:7px;align-items:center;font-size:13.5px;color:var(--mut)}
+  .chips span{border:1px solid rgba(159,178,204,.38);border-radius:999px;padding:4px 10px;color:var(--txt)}
+  /* dataset */
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
+  .stats div{display:flex;flex-direction:column}
+  .stats b{font:700 42px/1 var(--display);background:linear-gradient(90deg,var(--teal),var(--blue));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .stats span{font-size:15px;color:var(--mut);margin-top:3px}
+  /* example card */
+  .card .ex{margin-bottom:13px}
+  .card small{display:block;font:500 12px var(--mono);letter-spacing:.08em;color:var(--dim);margin-bottom:4px}
+  .card p{font-size:20px;line-height:1.3}
+  mark{background:none;color:var(--amber);font-weight:650}
+  .chip{display:inline-block;margin-top:7px;font:600 12px var(--mono);color:#04130f;background:var(--teal);border-radius:6px;padding:3px 8px}
+  .card p.legend{font-size:12.5px;color:var(--mut)}
+  /* bottom panels */
+  .list{list-style:none;display:grid;gap:6px;font-size:16.5px;line-height:1.3}
+  .list li::before{content:"\25B8";color:var(--teal);margin-right:9px}
+  .hyp li::before{content:none}
+  .hyp b{font:700 14px var(--mono);color:var(--amber);margin-right:10px}
+  .team{display:grid;grid-template-columns:1fr 1fr;gap:9px 16px}
+  .team b{display:block;font-size:16.5px;font-weight:650}
+  .team span{font-size:13.5px;color:var(--mut)}
+  .timeline{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-top:15px}
+  .timeline div{border-top:3px solid var(--blue);padding-top:5px;font:600 12px/1.35 var(--mono)}
+  .timeline div:nth-child(3n+1){border-color:var(--teal)}
+  .timeline div:nth-child(3n+3){border-color:var(--violet)}
+  .timeline i{display:block;font:400 11.5px -apple-system,sans-serif;color:var(--mut);font-style:normal}
+  /* banner */
+  .banner{position:absolute;left:140px;top:1044px;width:1320px;height:128px;border:1.5px solid rgba(150,220,255,.5);
+    border-radius:20px;background:rgba(4,10,20,.74);text-align:center;padding-top:15px;box-shadow:0 0 44px rgba(62,224,207,.12)}
+  .kicker{font:600 13px var(--mono);letter-spacing:.3em;color:var(--teal)}
+  h1{font:600 50px/1.15 var(--display);margin-top:5px}
+  .banner p{font-size:24px;color:#cfdced;margin-top:3px}
+  .banner p span{color:var(--teal)}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<svg id="scene" width="1600" height="1200" viewBox="0 0 1600 1200"></svg>
+
+<div class="panel" style="left:36px;top:36px;width:400px;height:280px">
+  <h3>THE BRIEF</h3>
+  <ol class="brief">
+    <li><b>01</b><span>Create a speech recognition system</span></li>
+    <li><b>02</b><span>Gather speech from <em>10 speakers</em> uttering diverse phrases &amp; sentences</span></li>
+    <li><b>03</b><span>Showcase its effectiveness on <em>this dataset</em></span></li>
+  </ol>
+  <p class="note">Our reading: open-vocabulary speech-to-text, judged on voices and sentences it has never seen.</p>
+</div>
+
+<div class="panel" style="left:460px;top:36px;width:680px;height:280px">
+  <h3>PIPELINE</h3>
+  <div class="flow">
+    <div class="node"><svg viewBox="0 0 24 24"><rect x="9" y="2.5" width="6" height="11.5" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg><b>Input</b><small>microphone or WAV file</small></div>
+    <div class="arrow">&#8594;</div>
+    <div class="node"><svg viewBox="0 0 24 24"><path d="M2 12h3l2-6 3 12 3-9 2 6 2-3h5"/></svg><b>Pre-process</b><small>16 kHz &middot; loudness &middot; VAD trim</small></div>
+    <div class="arrow">&#8594;</div>
+    <div class="node ours"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg><b>Whisper + LoRA</b><small>noise-augmented fine-tuning</small></div>
+    <div class="arrow">&#8594;</div>
+    <div class="node ours"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M8.5 7.5h6.5M8.5 11h4.5"/></svg><b>Domain decoding</b><small>Bangladeshi lexicon &middot; beam 5</small></div>
+    <div class="arrow">&#8594;</div>
+    <div class="node"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h12M4 18h8"/></svg><b>Normalise</b><small>transcript or command</small></div>
+  </div>
+  <div class="chips">Baselines (same folds): <span>MFCC + DTW</span><span>Vosk (Kaldi)</span><span>wav2vec2-CTC</span><span>Whisper zero-shot</span></div>
+</div>
+
+<div class="panel" style="left:1164px;top:36px;width:400px;height:280px">
+  <h3>TENVOICES DATASET</h3>
+  <div class="stats">
+    <div><b>10</b><span>speakers &middot; 5F / 5M target</span></div>
+    <div><b>1,200</b><span>utterances</span></div>
+    <div><b>~70</b><span>minutes of speech</span></div>
+    <div><b>7</b><span>prompt types</span></div>
+  </div>
+  <p class="note">commands &middot; numbers &middot; phonetic &middot; everyday &middot; Bangladeshi names &middot; unique &middot; spontaneous, in clean and real-noise conditions, recorded with consent</p>
+</div>
+
+<div class="panel card" style="left:1236px;top:446px;width:328px;height:262px">
+  <h3>EXAMPLE PROMPTS</h3>
+  <div class="ex"><small>NER01 &middot; SENTENCE</small><p>I took a bus from <mark>Mohakhali</mark> to <mark>Sylhet</mark>.</p></div>
+  <div class="ex"><small>CMD05 &middot; COMMAND MODE</small><p>Set an alarm for six thirty.</p><span class="chip">&#8594; CMD05</span></div>
+  <p class="legend"><mark>Amber</mark>: names the decoder is biased towards</p>
+</div>
+
+<div class="panel" style="left:36px;top:830px;width:500px;height:196px">
+  <h3>HOW WE MEASURE</h3>
+  <ul class="list">
+    <li>Leave-2-speakers-out <em>5-fold</em> cross-validation</li>
+    <li>Headline: <em>unseen speakers + unseen sentences</em></li>
+    <li>WER &middot; CER &middot; command accuracy &middot; real-time factor</li>
+    <li>Noise sweep 20 &#8594; 0 dB + real noisy takes</li>
+    <li>95% bootstrap CIs + Wilcoxon signed-rank tests</li>
+  </ul>
+</div>
+
+<div class="panel" style="left:560px;top:830px;width:480px;height:196px">
+  <h3>HYPOTHESES &middot; FIXED BEFORE TESTING</h3>
+  <ul class="list hyp">
+    <li><b>H1</b>&ge; 15% lower WER than the best zero-shot baseline</li>
+    <li><b>H2</b>+20 points on Bangladeshi names</li>
+    <li><b>H3</b>DTW fails across speakers; ASR commands &ge; 95%</li>
+    <li><b>H4</b>Degrades less at 5 dB and 0 dB SNR</li>
+  </ul>
+</div>
+
+<div class="panel" style="left:1064px;top:830px;width:500px;height:196px">
+  <h3>TEAM &middot; 6-WEEK PLAN</h3>
+  <div class="team">
+    <div><b>Shakil Ahmed</b><span>data &amp; pipeline</span></div>
+    <div><b>Fahim Foysal</b><span>ASR models</span></div>
+    <div><b>Shefa Tabassum</b><span>collection &amp; demo</span></div>
+    <div><b>Tanvir Ahmed</b><span>evaluation</span></div>
+  </div>
+  <div class="timeline">
+    <div>W1<i>tools</i></div><div>W2<i>record</i></div><div>W3<i>baselines</i></div>
+    <div>W4<i>method</i></div><div>W5<i>robustness</i></div><div>W6<i>report</i></div>
+  </div>
+</div>
+
+<div class="banner">
+  <div class="kicker">PROJECT PLAN &middot; NORTH SOUTH UNIVERSITY &middot; 2026</div>
+  <h1>TenVoices: Speech Recognition from Ten Voices</h1>
+  <p>Ten Voices. Diverse Sentences. <span>Speaker-Independent</span> Recognition.</p>
+</div>
+
+<script>
+const S = document.getElementById('scene'), NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, parent) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  (parent || S).appendChild(e);
+  return e;
+}
+let seed = 20261003;  // deterministic render
+function rnd() {
+  seed = (seed + 0x6D2B79F5) | 0;
+  let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+}
+const CY = 576, WX0 = 372, WX1 = 772, SX0 = 800, SY0 = 476, CORE = [1165, 576];
+const defs = el('defs', {});
+const wg = el('linearGradient', {id: 'gWave', gradientUnits: 'userSpaceOnUse', x1: WX0, y1: 0, x2: WX1, y2: 0}, defs);
+el('stop', {offset: 0, 'stop-color': '#3ee0cf'}, wg); el('stop', {offset: 1, 'stop-color': '#62a8ff'}, wg);
+const cg = el('radialGradient', {id: 'gCore'}, defs);
+el('stop', {offset: 0, 'stop-color': '#21508a'}, cg); el('stop', {offset: 1, 'stop-color': '#0a1a30'}, cg);
+const glow = el('filter', {id: 'glow', x: '-20%', y: '-20%', width: '140%', height: '140%'}, defs);
+el('feGaussianBlur', {stdDeviation: 3, result: 'b'}, glow);
+const mg = el('feMerge', {}, glow); el('feMergeNode', {in: 'b'}, mg); el('feMergeNode', {in: 'SourceGraphic'}, mg);
+
+// HUD grid + particles
+const grid = el('g', {stroke: '#7fb6ff', 'stroke-opacity': .045});
+for (let x = 0; x <= 1600; x += 40) el('line', {x1: x, y1: 0, x2: x, y2: 1200}, grid);
+for (let y = 0; y <= 1200; y += 40) el('line', {x1: 0, y1: y, x2: 1600, y2: y}, grid);
+for (let i = 0; i < 150; i++)
+  el('circle', {cx: rnd() * 1600, cy: rnd() * 1200, r: .5 + rnd() * 1.3,
+                fill: rnd() < .8 ? '#9fd8ff' : '#ffd29a', 'fill-opacity': .12 + rnd() * .35});
+
+// speech-like loudness envelope (syllable bumps)
+const SYL = [[.07,.045,.75],[.19,.05,1],[.33,.04,.8],[.47,.055,.95],[.62,.045,.65],[.76,.05,.9],[.9,.04,.7]];
+const env = t => Math.min(1.1, SYL.reduce((v, [c, w, a]) => v + a * Math.exp(-((t - c) ** 2) / (2 * w * w)), .04));
+
+// 01 speakers on an arc, linked into the waveform
+const COLORS = ['#3ee0cf', '#62a8ff', '#a78bfa', '#ffb454'];
+const links = el('g', {fill: 'none', 'stroke-width': 1.4});
+const nodes = el('g', {});
+for (let i = 0; i < 10; i++) {
+  const y = 380 + i * 44, u = (y - CY) / 204, x = 96 + 110 * (1 - u * u), c = COLORS[i % 4];
+  el('path', {d: `M${x + 19} ${y} C${x + 100} ${y}, ${WX0 - 100} ${CY}, ${WX0} ${CY}`, stroke: c, 'stroke-opacity': .32}, links);
+  el('circle', {cx: x, cy: y, r: 25, fill: 'none', stroke: c, 'stroke-opacity': .22}, nodes);
+  el('circle', {cx: x, cy: y, r: 19, fill: '#07101d', stroke: c, 'stroke-width': 2}, nodes);
+  const t = el('text', {x: x, y: y + 4.5, 'text-anchor': 'middle', fill: '#dfe9f7',
+                        'font-family': 'SF Mono, Menlo, monospace', 'font-size': 12.5, 'font-weight': 600}, nodes);
+  t.textContent = 'S' + String(i + 1).padStart(2, '0');
+}
+
+// 02 waveform
+const wave = el('g', {stroke: 'url(#gWave)', 'stroke-width': 2.4, 'stroke-linecap': 'round', filter: 'url(#glow)'});
+el('line', {x1: WX0, y1: CY, x2: WX1, y2: CY, stroke: '#3ee0cf', 'stroke-opacity': .35, 'stroke-width': 1});
+for (let x = WX0; x <= WX1; x += 4) {
+  const h = Math.max(2, env((x - WX0) / (WX1 - WX0)) * (.35 + .65 * rnd()) * 170);
+  el('line', {x1: x, y1: CY - h / 2, x2: x, y2: CY + h / 2}, wave);
+}
+
+// 03 log-mel-style spectrogram (formant tracks shaped by the same envelope)
+const STOPS = [[0, [6, 16, 31]], [.35, [15, 59, 92]], [.6, [30, 167, 160]], [.85, [127, 240, 216]], [1, [244, 255, 249]]];
+function cmap(v) {
+  v = Math.max(0, Math.min(1, v));
+  for (let k = 1; k < STOPS.length; k++) if (v <= STOPS[k][0]) {
+    const [a, ca] = STOPS[k - 1], [b, cb] = STOPS[k], f = (v - a) / (b - a);
+    return `rgb(${ca.map((q, j) => Math.round(q + (cb[j] - q) * f)).join(',')})`;
+  }
+}
+const spec = el('g', {});
+const g1 = (f, m, s) => Math.exp(-((f - m) ** 2) / (2 * s * s));
+for (let c = 0; c < 60; c++) {
+  const t = c / 59, e = Math.pow(env(t), .9);
+  const F1 = .12 + .05 * Math.sin(6.3 * t + .5), F2 = .38 + .1 * Math.sin(4.1 * t + 1.3), F3 = .66 + .07 * Math.sin(3.3 * t + 2.1);
+  for (let r = 0; r < 40; r++) {
+    const f = r / 39;
+    const v = 1.25 * e * (g1(f, F1, .045) + .85 * g1(f, F2, .05) + .6 * g1(f, F3, .05) + .3 * Math.exp(-4 * f))
+              * (.78 + .22 * Math.cos(2 * Math.PI * f * 13)) + .07 * rnd();
+    el('rect', {x: SX0 + c * 5, y: SY0 + (39 - r) * 5, width: 5.2, height: 5.2, fill: cmap(v)}, spec);
+  }
+}
+el('rect', {x: SX0 - 4, y: SY0 - 4, width: 308, height: 208, rx: 7, fill: 'none', stroke: '#62a8ff', 'stroke-opacity': .5});
+
+// 04 recogniser core + connectors
+const conn = el('g', {stroke: '#3ee0cf', 'stroke-opacity': .7, 'stroke-width': 1.6, fill: 'none'});
+el('path', {d: `M${WX1 + 8} ${CY} H${SX0 - 10} M${SX0 - 16} ${CY - 5} L${SX0 - 10} ${CY} L${SX0 - 16} ${CY + 5}`}, conn);
+el('path', {d: `M${SX0 + 306} ${CY} H${CORE[0] - 66} M${CORE[0] - 72} ${CY - 5} L${CORE[0] - 66} ${CY} L${CORE[0] - 72} ${CY + 5}`}, conn);
+el('path', {d: `M${CORE[0] + 66} ${CY} H1230 M1224 ${CY - 5} L1230 ${CY} L1224 ${CY + 5}`}, conn);
+el('circle', {cx: CORE[0], cy: CORE[1], r: 76, fill: 'none', stroke: '#62a8ff', 'stroke-opacity': .18});
+el('circle', {cx: CORE[0], cy: CORE[1], r: 63, fill: 'none', stroke: '#3ee0cf', 'stroke-opacity': .6, 'stroke-dasharray': '4 6'});
+el('circle', {cx: CORE[0], cy: CORE[1], r: 50, fill: 'url(#gCore)', stroke: '#62a8ff', 'stroke-width': 2, filter: 'url(#glow)'});
+const t1 = el('text', {x: CORE[0], y: CORE[1] - 2, 'text-anchor': 'middle', fill: '#fff', 'font-family': 'Avenir Next, -apple-system, sans-serif', 'font-size': 24, 'font-weight': 700});
+t1.textContent = 'ASR';
+const t2 = el('text', {x: CORE[0], y: CORE[1] + 19, 'text-anchor': 'middle', fill: '#ffb454', 'font-family': 'SF Mono, Menlo, monospace', 'font-size': 11.5, 'font-weight': 600});
+t2.textContent = 'Whisper+LoRA';
+
+// stage guide line + labels
+const guide = el('g', {});
+el('line', {x1: 60, y1: 790, x2: 1560, y2: 790, stroke: '#7fb6ff', 'stroke-opacity': .25, 'stroke-dasharray': '2 6'}, guide);
+[[150, '01 · SPEAKERS'], [572, '02 · WAVEFORM'], [950, '03 · LOG-MEL SPECTROGRAM'], [1165, '04 · RECOGNISER'], [1400, '05 · TEXT']]
+  .forEach(([x, s]) => {
+    el('circle', {cx: x, cy: 790, r: 3.5, fill: '#3ee0cf'}, guide);
+    const t = el('text', {x: x, y: 812, 'text-anchor': 'middle', fill: '#8aa0bb', 'font-family': 'SF Mono, Menlo, monospace',
+                          'font-size': 12.5, 'letter-spacing': '2'}, guide);
+    t.textContent = s;
+  });
+</script>
+</body>
+</html>
