@@ -13,6 +13,8 @@ We compare three families of methods:
 
 All results use leave-2-speakers-out 5-fold cross-validation.
 
+Repository: https://github.com/minhaz-42/Voices-Speech-Recognition-445 (we work on `main`).
+
 | File | Use |
 |---|---|
 | `docs/STATUS.md` | **Task board + handoff log: the source of truth for progress** |

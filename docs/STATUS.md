@@ -4,7 +4,7 @@
 > **Legend:** ⬜ to do · 🟡 in progress · ✅ done · ⛔ blocked · 👤 needs people (recording, consent, video)
 
 **Current phase:** Week 1: setup and tools
-**Next up:** T01 (M1 · Tanvir Ahmed)
+**Next up:** finish T01 (M1 · Tanvir Ahmed): add Rabbi as collaborator, pin requirements, config + audio utilities
 **Last updated:** 2026-10-01 by Tanvir Ahmed (M1)
 
 ## 👥 Team
@@ -30,7 +30,7 @@
 | ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
 |---|---|---|---|---|---|
 | T00 | Project plan, README, poster, protocol, consent form, draft prompts, `CLAUDE.md`, this board → committed | M1 | — | ✅ | Tanvir · 2026-10-01 |
-| T01 | Publish the GitHub repo and add Rabbi as collaborator; pin `requirements.txt`; `configs/config.yaml` + `support/config.py`; `support/audio.py` (load, mono, 16 kHz, loudness, VAD trim) + tests → tests pass and a sample WAV loads and trims | M1 | T00 | ⬜ | |
+| T01 | Publish the GitHub repo and add Rabbi as collaborator; pin `requirements.txt`; `configs/config.yaml` + `support/config.py`; `support/audio.py` (load, mono, 16 kHz, loudness, VAD trim) + tests → tests pass and a sample WAV loads and trims | M1 | T00 | 🟡 | |
 | T02 | Recorder tool `tools/recorder.py` (Gradio; file naming + `utterances.csv` rows); 300-sentence pool `data/prompts/unique_pool.csv` (Common Voice, CC0); printable prompt sheets → a test session saves correct files | M2 | T01 | ⬜ | |
 | T03 | `support/metrics.py` (WER, CER, SER + Whisper normaliser) + `docs/METRICS_SPEC.md` + tests → hand-computed cases pass | M3 | T01 | ⬜ | |
 | T04 | 👤 Pilot sessions S01 (Tanvir) and S02 (Rabbi): consent signed, files backed up to Drive → 2 × 120 recordings | M1 + M2 | T02 | ⬜ | |
@@ -85,6 +85,11 @@
 | T28 | 👤 Final checklist, tag `v1.0`, submit | all | T24, T25, T26, T27 | ⬜ | |
 
 ## 📝 Handoff Log (newest first)
+
+### 2026-10-01 · Tanvir Ahmed (M1) · T01 (part 1)
+- **Done:** published the repo at https://github.com/minhaz-42/Voices-Speech-Recognition-445 and pushed all planning files.
+- **Next:** finish T01 (M1): add Rabbi as a collaborator, pin `requirements.txt`, then `configs/config.yaml`, `support/config.py` and `support/audio.py` with tests.
+- **Blockers:** Rabbi's GitHub username is needed to add him as a collaborator.
 
 ### 2026-10-01 · Tanvir Ahmed (M1) · T00
 - **Done:** project plan, README, poster, data-collection protocol, consent form, draft prompts (60 shared + 5 spontaneous), `CLAUDE.md` and this status board.

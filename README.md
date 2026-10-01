@@ -150,7 +150,7 @@ Tasks, owners, dependencies and progress: [docs/STATUS.md](docs/STATUS.md).
 
 ## 📁 Repository Structure (planned)
 ```text
-TenVoices-Speech-Recognition/
+Voices-Speech-Recognition-445/
 |-- CLAUDE.md                   instructions for Claude Code (read every session)
 |-- main.py                     transcribe / evaluate / reproduce
 |-- app.py                      Gradio live demo
@@ -181,8 +181,8 @@ TenVoices-Speech-Recognition/
 
 1.  **Clone the repository:**
     ```bash
-    git clone <this-repo-url>
-    cd TenVoices-Speech-Recognition
+    git clone https://github.com/minhaz-42/Voices-Speech-Recognition-445.git
+    cd Voices-Speech-Recognition-445
     ```
 
 2.  **Create a virtual environment (Recommended):**
