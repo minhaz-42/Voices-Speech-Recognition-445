@@ -1,8 +1,8 @@
 # TenVoices: Full Project Plan
 
-> **Plan version 1.0 · written 1 Oct 2026 · status: planning.** Implementation starts on **Day 1 (Sat 3 Oct 2026)**.
-> Day-by-day tasks are in [DAILY_PLAN.md](DAILY_PLAN.md) and recording rules are in [DATA_COLLECTION_PROTOCOL.md](DATA_COLLECTION_PROTOCOL.md).
-> Items marked *(confirm Day 1)* are defaults the team must confirm at the kick-off meeting (see §16).
+> **Plan version 1.1 · 1 Oct 2026 · status: planning.** The work is planned week by week (§11), in the same format as our Group 5 project.
+> Recording rules are in [DATA_COLLECTION_PROTOCOL.md](DATA_COLLECTION_PROTOCOL.md).
+> Items marked *(confirm at kick-off)* are defaults the team must confirm at the first meeting (see §16).
 
 ---
 
@@ -15,7 +15,7 @@
 | **Our dataset** | **TenVoices v1**: 10 speakers × 120 recordings ≈ **1,200 utterances (~70 min)** across 7 prompt types (incl. spontaneous speech), in clean and real-noise conditions, collected with written consent |
 | **Effectiveness** | Speaker-independent **5-fold cross-validation** (2 unseen speakers per fold). The headline WER is on **unseen speakers + unseen sentences**, compared against 4 baseline families, with 95% CIs and significance tests. |
 | **Team** | 4 members, one module and one Git branch each (same workflow as our Group 5 MDP project) |
-| **Timeline** | 6 weeks / 42 days: **Sat 3 Oct → Fri 13 Nov 2026**, with Fridays as buffer days *(shift dates if deadlines differ)* |
+| **Timeline** | 6 weeks, planned week by week (§11) like the Group 5 roadmap |
 | **Deliverables** | Open GitHub repo, dataset release + datasheet, CLI + demo app, individual update reports, 8-page IEEE report, slides, 1-minute demo video, poster |
 
 ---
@@ -47,7 +47,7 @@
 - **Deliverable set.** Individual update reports (weekly-log format), an 8-page IEEE LaTeX report compiled with `tectonic`, slides, voice-over script, one-minute demo video, poster.
 
 **Improve:**
-- **Fix the evaluation design before writing code.** In the MDP project the science-"camping" flaw only showed up during experiments and was patched at experiment level. Here, split rules, metrics and hypotheses are frozen on **Day 13**, before the main runs.
+- **Fix the evaluation design before writing code.** In the MDP project the science-"camping" flaw only showed up during experiments and was patched at experiment level. Here, split rules, metrics and hypotheses are frozen at the end of **Week 2**, before the main runs.
 - **Report uncertainty** (confidence intervals, significance tests), not only averages.
 
 ### 2.2 Group 6: Speech Accent Recognition (same topic area)
@@ -61,7 +61,7 @@
 | One random 80/20 split, no confidence intervals | Leave-2-speakers-out 5-fold CV, sentence-disjoint test text, bootstrap CIs, Wilcoxon tests |
 | Class imbalance noted but not handled | Balanced design: same prompts for every speaker, 5F/5M target, fixed counts per category |
 | One copy of the same script per person (`ahmad_fahmid_*`, `fahim_*`, `shefa_*`) and hard-coded `C:\Users\...` paths | One shared module per function, config file, relative paths, CLI arguments |
-| README points to scripts that don't exist and a placeholder clone URL; README and paper report different headline numbers (48.13% vs 52.1%) | README commands tested on a clean clone (Day 38); every number generated from `outputs/` |
+| README points to scripts that don't exist and a placeholder clone URL; README and paper report different headline numbers (48.13% vs 52.1%) | README commands tested on a clean clone (Week 6); every number generated from `outputs/` |
 | GPU disabled, slow CPU-only training | LoRA on Colab GPU / Apple MPS; CPU only for inference benchmarks |
 | ~70 MB of video committed to git | Audio and models never go into git; they are released as assets |
 
@@ -82,7 +82,7 @@
 - **RQ2** Does our adaptation (VAD front-end + domain-aware decoding + noise-augmented LoRA fine-tuning) reduce errors on unseen speakers *and* unseen sentences?
 - **RQ3** Where do errors remain: which speakers, which prompt types (numbers, names, commands, spontaneous speech), and which noise levels?
 
-**Hypotheses.** These are frozen on Day 13 in `docs/ANALYSIS_PLAN.md`, before the main runs, and reported whether or not they hold.
+**Hypotheses.** These are frozen at the end of Week 2 in `docs/ANALYSIS_PLAN.md`, before the main runs, and reported whether or not they hold.
 
 | ID | Hypothesis | Pass criterion |
 |---|---|---|
@@ -118,7 +118,7 @@ Full rules are in [DATA_COLLECTION_PROTOCOL.md](DATA_COLLECTION_PROTOCOL.md); th
 **Speakers:**
 - S01–S04 are team members; S05–S10 are volunteers.
 - Target: 5 female / 5 male (self-reported), adults (18+), from a mix of home divisions.
-- Everyone reads English naturally, i.e. Bangladeshi-accented English *(language: confirm Day 1)*.
+- Everyone reads English naturally, i.e. Bangladeshi-accented English *(language: confirm at kick-off)*.
 
 **Per speaker: 120 recordings in one 30–35 min session**
 
@@ -193,9 +193,9 @@ flowchart LR
 
 ---
 
-## 8. Evaluation protocol (frozen on Day 13)
+## 8. Evaluation protocol (frozen at the end of Week 2)
 
-- **Folds.** 5 folds, each with 2 test speakers (one female and one male where possible), 1 dev speaker and 7 train speakers. Generated once by `tools/make_splits.py` (seed 42) and frozen in `data/splits/folds.json` on Day 12. Every speaker is a test speaker exactly once.
+- **Folds.** 5 folds, each with 2 test speakers (one female and one male where possible), 1 dev speaker and 7 train speakers. Generated once by `tools/make_splits.py` (seed 42) and frozen in `data/splits/folds.json` in Week 2. Every speaker is a test speaker exactly once.
 - **Reported subsets:**
   - **USUT** (unseen speaker + unseen text) = test speakers' B + U + S utterances. **This is the headline number.**
   - **USST** (unseen speaker, seen text) = test speakers' A utterances. Secondary.
@@ -226,7 +226,7 @@ flowchart LR
 
 ## 9. Team, roles and file ownership
 
-Default roles keep each person's Group 5 strengths *(confirm Day 1)*.
+Default roles keep each person's Group 5 strengths *(confirm at kick-off)*.
 
 | Member | Role | Owns (planned files) | Also responsible for |
 |---|---|---|---|
@@ -235,7 +235,7 @@ Default roles keep each person's Group 5 strengths *(confirm Day 1)*.
 | **M3 · Shefa Tabassum** | Data collection, augmentation & demo lead | `tools/recorder.py`, `support/augment.py`, `support/visualization.py`, `app.py`, `poster/`, `images/`, collection docs | Volunteer scheduling, noise bank, demo video, poster |
 | **M4 · Tanvir Ahmed** | Evaluation & experiments lead | `support/metrics.py`, `support/features.py`, `support/dtw.py`, `support/commands.py`, `support/stats.py`, `support/experiments.py` | Analysis plan, results tables, report results section |
 
-**Everyone** records themselves, recruits volunteers, checks another member's recordings, writes tests for their own code, keeps a daily log, and writes their own update report and report section.
+**Everyone** records themselves, recruits volunteers, checks another member's recordings, writes tests for their own code, keeps a weekly log, and writes their own update report and report section.
 
 | Recruiting member | Speakers | Cross-checks the recordings of |
 |---|---|---|
@@ -252,10 +252,10 @@ Each member also names one backup volunteer. Recruit so the full set of 10 reach
 
 - **Branches:** `member1-data`, `member2-asr`, `member3-collection`, `member4-evaluation`. Rebase on `main` → pull request → 1 reviewer → merge. `main` is protected.
 - **Commit prefixes:** `feat:`, `fix:`, `data:`, `exp:`, `docs:`, `test:`.
-- **Daily stand-up** (async, group chat, 10 pm): *done today / next / blocked*. Anyone blocked for more than a day calls a 10-minute meeting.
-- **Weekly meeting** (Saturday, 30 min): demo progress, merge the week's PRs, check the week's exit criteria, adjust the plan.
-- **Daily log:** each member adds 2–3 lines to `docs/logs/<member>.md` every working day. These become the weekly log in the individual update report.
-- **Tracking:** GitHub Project board with one issue per member per week, using the checklist from DAILY_PLAN. Only M1 edits `DAILY_PLAN.md` (at the weekly meeting), to avoid merge conflicts.
+- **Check-ins:** short progress updates in the group chat; anyone who is blocked calls a quick meeting.
+- **Weekly meeting** (30 min): demo progress, merge the week's PRs, check the week's output (§11), adjust the plan.
+- **Weekly log:** each member adds a short entry to `docs/logs/<member>.md` every week. These entries become the weekly log in the individual update report.
+- **Tracking:** GitHub Project board with one issue per member per week, using that week's tasks from §11.
 - **Definition of done:**
   - Runs from the repo root with relative paths, and is config-driven.
   - Has docstrings and unit tests where testable.
@@ -265,24 +265,56 @@ Each member also names one backup volunteer. Recruit so the full set of 10 reach
 
 ---
 
-## 11. Timeline and milestones
+## 11. Development roadmap
 
-| Week | Dates (2026) | Goal | Milestone |
-|---|---|---|---|
-| 1 | Sat 3 – Fri 9 Oct | Foundations, recorder, metrics, pilot sessions (S01–S04) | **M1 Ready to record** · Thu 8 Oct |
-| 2 | Sat 10 – Fri 16 Oct | Record S05–S10, QC, transcripts, splits, freeze data | **M2 TenVoices v1 frozen** · Thu 15 Oct |
-| 3 | Sat 17 – Fri 23 Oct | Zero-shot + DTW baselines, evaluation harness, Update 1 | **M3 Baselines + Update 1** · Thu 22 Oct |
-| 4 | Sat 24 – Fri 30 Oct | Our method: VAD, domain decoding, augmentation, LoRA 5-fold | **M4 Method results** · Thu 29 Oct |
-| 5 | Sat 31 Oct – Fri 6 Nov | Noise sweep, ablations, error analysis, demo; feature freeze Wed 4 Nov | **M5 Results frozen** · Thu 5 Nov |
-| 6 | Sat 7 – Fri 13 Nov | Report, slides, video, results poster, dataset release | **M6 Final submission** · Thu 12 Nov |
+The work is planned week by week, like the Group 5 roadmap. There is no fixed day-by-day schedule: each member finishes their part of the week's focus before the weekly merge.
 
-If the instructor's real dates differ, shift the calendar. The order of the work stays the same.
+- **Week 1: Planning, repository setup and recording tool**
+  - Member 1: publish the repo, create branches and the project board; configuration system; audio loading and resampling utilities.
+  - Member 2: Python environment (local + Colab); common recogniser interface; first Whisper transcription test.
+  - Member 3: recorder tool; final prompts, protocol and consent form; recruit volunteers.
+  - Member 4: WER/CER/SER metrics; transcription and normalisation conventions.
+  - All: pilot recordings of the four team members (S01–S04).
+  - *Output: repo live, recorder working, protocol v1, pilot recordings.*
+- **Week 2: Dataset collection and quality control**
+  - Member 1: QC report, metadata manifest with checksums, fold generation with leakage tests.
+  - Member 2: zero-shot sanity runs on the new recordings.
+  - Member 3: run volunteer sessions; record the noise bank; dataset statistics and datasheet.
+  - Member 4: analysis plan with the hypotheses, frozen before the main experiments.
+  - All: record your volunteers (S05–S10) and cross-check another member's recordings (pairs in §9).
+  - *Output: TenVoices v1 frozen (1,200 clips, verified transcripts, 5 folds).*
+- **Week 3: Pre-processing, baseline recognisers and evaluation**
+  - Member 1: VAD and loudness pre-processing; dataset loader; `main.py transcribe`.
+  - Member 2: Vosk, wav2vec2 and Whisper tiny/base/small zero-shot runs on all folds.
+  - Member 3: visualisation module; noise augmentation module.
+  - Member 4: MFCC + DTW baseline; experiment runner; bootstrap and Wilcoxon statistics.
+  - *Output: baseline results tables (E1, E2).*
+- **Week 4: Our method**
+  - Member 1: per-fold training manifests; VAD in the inference path; adapter storage.
+  - Member 2: domain-aware decoding; LoRA fine-tuning on all 5 folds; ablations.
+  - Member 3: noise-augmented training data; first version of the demo app.
+  - Member 4: command matcher; main results table; tests of H1–H3.
+  - *Output: method results on all 5 folds (E3–E5).*
+- **Week 5: Experiments, error analysis and demo**
+  - Member 1: one-command reproduction (`main.py reproduce`); unit tests and CI.
+  - Member 2: speed and size benchmark; real-noise results.
+  - Member 3: synthetic noisy test sets; final figures; demo app polish.
+  - Member 4: noise sweep (H4); error analysis; final tables.
+  - *Output: all results frozen (feature freeze at the end of the week).*
+- **Week 6: Demo, report, slides and final polish**
+  - Member 1: integrate the report; final README; dataset release.
+  - Member 2: slides and voice-over script.
+  - Member 3: results poster and demo video.
+  - Member 4: results section; check every number against `outputs/`; proofreading.
+  - *Output: final submission and Git tag `v1.0`.*
+
+If the instructor's deadlines differ, stretch or compress the weeks; the order of the work stays the same.
 
 ---
 
 ## 12. Deliverables and reporting
 
-- **Individual update report:** 2 pages, in the weekly-log format used in Group 5 (template: [templates/individual_update_report.md](templates/individual_update_report.md)). Planned for Day 20; if a second update is required, it reports the Day 34 state.
+- **Individual update report:** 2 pages, in the weekly-log format used in Group 5 (template: [templates/individual_update_report.md](templates/individual_update_report.md)). Submitted at the instructor's Update 1 deadline, covering the weeks completed so far.
 - **Final report:** 8-page IEEE double-column LaTeX (`others/final_report.tex`, compiled with `tectonic`), following the Group 5 structure:
 
 | Section | Owner |
@@ -298,7 +330,7 @@ If the instructor's real dates differ, shift the calendar. The order of the work
 
 - **Slides** (12–15) and **rehearsals**: M2 leads, everyone presents their own part.
 - **Voice-over script + 1-minute demo video**: M2 + M3.
-- **Results poster**: replaces the planning poster on Day 36. M3 owns it.
+- **Results poster**: replaces the planning poster in Week 6. M3 owns it.
 - **README** with final results, figures and a working how-to-run: M1.
 
 ---
@@ -317,15 +349,15 @@ If the instructor's real dates differ, shift the calendar. The order of the work
 | Risk | Likelihood | Impact | Mitigation | Owner |
 |---|---|---|---|---|
 | Volunteers cancel or run late | Medium | High | Book sessions in Week 1, keep 2 backups, allow remote sessions with the recorder on the volunteer's laptop | M3 |
-| Inconsistent audio quality | Medium | Medium | Pilot day, written protocol, QC script, re-record budget on Day 12 | M1 |
+| Inconsistent audio quality | Medium | Medium | Pilot sessions in Week 1, written protocol, QC script, re-records in Week 2 | M1 |
 | Some speakers decline public release | Medium | Medium | Opt-in consent; release audio only for consenting speakers; publish metrics for everyone | M3 |
 | No GPU / slow training | Medium | Medium | LoRA, Whisper-base fallback, Colab across 4 accounts | M2 |
 | Fine-tuning doesn't help or overfits | Medium | Medium | Early stopping on the dev speaker; VAD + prompt still form a method; H1 is falsifiable, so a negative result is reported honestly | M2 |
-| Normalisation artefacts inflate WER | Medium | Medium | Written conventions + tests (Day 3); manual review of 50 errors | M4 |
+| Normalisation artefacts inflate WER | Medium | Medium | Written conventions + tests (Week 1); manual review of 50 errors | M4 |
 | Data leakage between train and test | Low | High | Split rules + unit tests | M1, M4 |
-| Merge conflicts / uneven workload | Medium | Medium | File ownership, weekly merges, Friday buffer days | M1 |
-| Scope creep | Medium | Medium | MoSCoW list; feature freeze on Day 33 | All |
-| Real deadlines differ from this plan | Medium | Medium | Shift the calendar; the order of work stays valid | All |
+| Merge conflicts / uneven workload | Medium | Medium | File ownership, weekly merges, slack at the end of each week | M1 |
+| Scope creep | Medium | Medium | MoSCoW list; feature freeze at the end of Week 5 | All |
+| Real deadlines differ from this plan | Medium | Medium | Stretch or compress the weeks; the order of work stays valid | All |
 
 ---
 
@@ -341,10 +373,10 @@ If the instructor's real dates differ, shift the calendar. The order of the work
 
 ---
 
-## 16. Decisions to confirm at kick-off (Day 1)
+## 16. Decisions to confirm at kick-off (Week 1)
 
 1. Team composition and roles (defaults are taken from Group 5).
-2. Course code, section, group number, instructor and real deadlines. Update the README table and the calendar.
+2. Course code, section, group number, instructor and real deadlines. Update the README table and the roadmap if needed.
 3. Language: English read with a Bangladeshi accent (**recommended**), Bangla, or English plus a small Bangla extension.
 4. Public dataset release for consenting speakers (**recommended: yes**).
 5. Model size for "ours": Whisper-small (default) or Whisper-base if compute is tight.

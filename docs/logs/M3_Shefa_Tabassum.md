@@ -1,8 +1,8 @@
 # Progress log: Member 3 - Shefa Tabassum (collection, augmentation, demo)
 
-Add 2-3 lines at the end of every working day: what you did, what is next, any blocker.
+Add a short entry at the end of every week: what you did, what is next, any blockers.
 These entries become the weekly log of your individual update report.
 
-## Week 1 (Sat 3 Oct - Fri 9 Oct 2026)
+## Week 1
 
-- Day 1 (Sat 3 Oct):
+- 

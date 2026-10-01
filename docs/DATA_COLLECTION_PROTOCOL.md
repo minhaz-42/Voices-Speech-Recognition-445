@@ -1,6 +1,6 @@
 # TenVoices: Data Collection Protocol
 
-> **Version 0 (draft).** Pilot-tested on Day 5, frozen as v1 on **Day 6 (Thu 8 Oct 2026)**. Owner: **M3 Shefa Tabassum**; QC tooling: **M1 Shakil Ahmed**.
+> **Version 0 (draft).** Pilot-tested with the team's own recordings and frozen as v1 in **Week 1**. Owner: **M3 Shefa Tabassum**; QC tooling: **M1 Shakil Ahmed**.
 > Prompts: [`data/prompts/prompts_v0.csv`](../data/prompts/prompts_v0.csv) · Consent: [consent_form.md](consent_form.md)
 
 ## 1. Targets
@@ -16,7 +16,7 @@
 
 - **Operator:** the member who recruited the speaker. Runs the recorder, watches levels, asks for re-takes, writes the session log.
 - **Speaker:** reads the prompts.
-- **Cross-checker:** a different member who later listens to every file and verifies the transcripts (schedule in [DAILY_PLAN.md](DAILY_PLAN.md)).
+- **Cross-checker:** a different member who later listens to every file and verifies the transcripts (pairs in [PROJECT_PLAN.md §9](PROJECT_PLAN.md#9-team-roles-and-file-ownership)).
 
 ## 3. Who can take part
 
@@ -114,7 +114,7 @@ Templates are in [`data/metadata/`](../data/metadata/).
 - Leave out filled pauses (*uh, um*) and cut-off partial words. Keep real repetitions and self-corrections as spoken.
 - Use standard spellings for names: Mohakhali, Sylhet, Chattogram, Cox's Bazar, Dhanmondi, Sreemangal, Sirajganj.
 - Mark unintelligible words as `[unk]`. Utterances containing `[unk]` are left out of scoring and counted in the datasheet.
-- Scoring applies the same normaliser to references and hypotheses (lower case, no punctuation, numbers and contractions normalised; see `docs/METRICS_SPEC.md`, written on Day 1).
+- Scoring applies the same normaliser to references and hypotheses (lower case, no punctuation, numbers and contractions normalised; see `docs/METRICS_SPEC.md`, written in Week 1).
 
 ## 11. Quality control
 
@@ -132,7 +132,7 @@ Templates are in [`data/metadata/`](../data/metadata/).
 **Human:**
 - The operator spot-listens during the session.
 - The cross-checker listens to **100%** of the speaker's files and verifies every transcript.
-- Every take ends with a `qc_status`. The target is ≥ 97% `ok` or `fixed_transcript` after re-records on Day 12.
+- Every take ends with a `qc_status`. The target is ≥ 97% `ok` or `fixed_transcript` after re-records in Week 2.
 
 ## 12. Noise bank (for augmentation and noise tests)
 
