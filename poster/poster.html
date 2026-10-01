@@ -112,7 +112,7 @@
     <div class="arrow">&#8594;</div>
     <div class="node"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h12M4 18h8"/></svg><b>Normalise</b><small>transcript or command</small></div>
   </div>
-  <div class="chips">Baselines (same folds): <span>MFCC + DTW</span><span>Vosk (Kaldi)</span><span>wav2vec2-CTC</span><span>Whisper zero-shot</span></div>
+  <div class="chips">Baselines: <span>MFCC + k-NN &middot; SVM &middot; RF &middot; XGBoost</span><span>DTW</span><span>Vosk</span><span>wav2vec2</span><span>Whisper</span></div>
 </div>
 
 <div class="panel" style="left:1164px;top:36px;width:400px;height:280px">
@@ -149,7 +149,7 @@
   <ul class="list hyp">
     <li><b>H1</b>&ge; 15% lower WER than the best zero-shot baseline</li>
     <li><b>H2</b>+20 points on Bangladeshi names</li>
-    <li><b>H3</b>DTW fails across speakers; ASR commands &ge; 95%</li>
+    <li><b>H3</b>ASR commands &ge; 95%, above all MFCC classifiers</li>
     <li><b>H4</b>Degrades less at 5 dB and 0 dB SNR</li>
   </ul>
 </div>

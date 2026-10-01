@@ -2,7 +2,7 @@
 
 **Name:** <full name> **ID:** <student ID> **Role:** Member <n>, <role> **Group:** <group>
 
-> Same 2-page, two-column format as our Group 5 update reports. Write it from your `docs/logs/<you>.md` entries.
+> 2 pages, two-column format. Write it from your weekly entries in `docs/logs/<you>.md`.
 
 ## Week 1 (<dates>)
 What you did, what you learned, what you decided and why. Name the files and functions you wrote.

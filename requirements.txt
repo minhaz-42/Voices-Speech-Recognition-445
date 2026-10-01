@@ -16,6 +16,10 @@ pyloudnorm>=0.1
 silero-vad>=5.1
 audiomentations>=0.35
 
+# Traditional machine-learning baselines
+scikit-learn>=1.4
+xgboost>=2.0
+
 # Models (CUDA on Colab, MPS on Apple Silicon, CPU fallback)
 torch>=2.3
 torchaudio>=2.3

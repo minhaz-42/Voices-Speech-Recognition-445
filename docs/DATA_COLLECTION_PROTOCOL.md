@@ -16,7 +16,7 @@
 
 - **Operator:** the member who recruited the speaker. Runs the recorder, watches levels, asks for re-takes, writes the session log.
 - **Speaker:** reads the prompts.
-- **Cross-checker:** a different member who later listens to every file and verifies the transcripts (pairs in [PROJECT_PLAN.md §9](PROJECT_PLAN.md#9-team-roles-and-file-ownership)).
+- **Cross-checker:** a different member who later listens to every file and verifies the transcripts (pairs in [PROJECT_PLAN.md](PROJECT_PLAN.md), section *Team, Roles and File Ownership*).
 
 ## 3. Who can take part
 
