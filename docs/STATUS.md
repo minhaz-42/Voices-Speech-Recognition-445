@@ -4,7 +4,7 @@
 > **Legend:** ⬜ to do · 🟡 in progress · ✅ done · ⛔ blocked · 👤 needs people (recording, consent, video)
 
 **Current phase:** Week 1: setup, phrase list and recording tool
-**Next up:** T02 recorder (M2 · Rabbi) and T03 metrics (M3 · Tanvir); invite Rabbi as collaborator
+**Next up:** T02 recorder (M2 · Rabbi); invite Rabbi as collaborator. M1, M3 and M4 wait for T02 → T04 (pilot sessions)
 **Last updated:** 2026-10-04 by Tanvir Ahmed (M1)
 
 ## 👥 Team
@@ -32,7 +32,7 @@
 | T00 | Project plan, README, poster, protocol, consent form, phrase list, `CLAUDE.md`, this board → committed | M1 | — | ✅ | Tanvir · 2026-10-01 |
 | T01 | Publish the GitHub repo ✅ and add Rabbi as collaborator (⛔ invite pending: needs Rabbi's GitHub username); pin `requirements.txt`; `configs/config.yaml` + `support/config.py`; `support/audio.py` (load, mono, 16 kHz, trim silence, peak-normalise, pad to 6 s) + tests → tests pass and a sample WAV loads | M1 | T00 | ✅ | Tanvir · 2026-10-04 |
 | T02 | Recorder tool `tools/recorder.py` (Gradio): 3 shuffled rounds of `data/prompts/phrases.csv` + the noisy block; file naming; one `utterances.csv` row per clip; printable phrase sheets → a test session saves correct files | M2 | T01 | ⬜ | |
-| T03 | `support/metrics.py`: accuracy, macro / weighted F1, classification report, confusion-matrix plot, per-speaker accuracy + tests → hand-computed cases pass | M3 | T01 | ⬜ | |
+| T03 | `support/metrics.py`: accuracy, macro / weighted F1, classification report, confusion-matrix plot, per-speaker accuracy + tests → hand-computed cases pass | M3 | T01 | ✅ | Tanvir · 2026-10-04 |
 | T04 | 👤 Pilot sessions S01 (Tanvir) and S02 (Rabbi): consent signed, files backed up to Drive → 2 × 160 clips | M1 + M2 | T02 | ⬜ | |
 | T05 | `tools/qc_report.py` (completeness, duration, clipping, silence, misread flags) run on the pilot; fix the issues found → protocol v1 frozen | M2 | T04 | ⬜ | |
 
@@ -85,6 +85,13 @@
 | T28 | 👤 Final checklist (every number matches `results/`), tag `v1.0`, submit | all | T25, T26, T27 | ⬜ | |
 
 ## 📝 Handoff Log (newest first)
+
+### 2026-10-04 · Tanvir Ahmed (M3) · T03
+- **Done:** `support/metrics.py`: `compute_metrics` (accuracy, macro F1, weighted F1), `classification_report_table` (per-class precision / recall / F1 / support + averages), `confusion_matrix_table`, `plot_confusion_matrix` (row-normalised or counts, readable at 50 classes, saves PNG/PDF/SVG), `accuracy_by_group` and `per_speaker_accuracy` (also works per category). 14 tests against a hand-computed 6-clip example (accuracy 4/6, macro F1 59/90, weighted F1 61/90).
+- **Files:** `support/metrics.py`, `tests/test_metrics.py`, `docs/STATUS.md`.
+- **Notes:** F1 is averaged over the classes that occur in the true or predicted labels. Pass the full phrase list as `labels` to reports and confusion matrices, so every model's tables share the same row order. `support/evaluate.py` (T11) should call these functions rather than sklearn directly.
+- **Next:** T10 (analysis plan, M3) waits for T08. M1 / M3 / M4 have nothing unblocked until M2 finishes T02.
+- **Blockers:** none for this task.
 
 ### 2026-10-04 · Tanvir Ahmed (M1) · T01
 - **Done:** `configs/config.yaml` (seed, paths, audio settings); `support/config.py` (`load_config`, `resolve_path`); `support/audio.py` (read, int16 → float, mono, resample to 16 kHz, trim silence with a 0.1 s margin, peak-normalise to −1 dBFS, zero-pad to 6 s; a clip still longer than 6 s after trimming raises an error instead of being cut; `save_wav`; CLI). 23 unit tests. A spoken sample (44.1 kHz) loads as 6.00 s of 16 kHz mono at −1.0 dBFS.
