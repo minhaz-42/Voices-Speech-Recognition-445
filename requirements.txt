@@ -1,29 +1,29 @@
-# TenVoices - planned dependencies (Python 3.10-3.12, 3.11 recommended).
-# Exact versions are pinned in task T01 (see docs/STATUS.md).
+# TenVoices dependencies, pinned in task T01 (tested on Python 3.11, macOS arm64).
+# On Colab, keep the preinstalled torch (it matches the GPU's CUDA build):
+#   grep -v '^torch==' requirements.txt | pip install -r /dev/stdin
 
 # Core
-numpy>=1.26
-pandas>=2.1
-scipy>=1.11
-matplotlib>=3.8
-seaborn>=0.13
-pyyaml>=6.0
-tqdm>=4.66
+numpy==2.4.6
+pandas==3.0.6
+scipy==1.17.1
+matplotlib==3.11.2
+seaborn==0.13.2
+pyyaml==6.0.3
+tqdm==4.70.1
 
 # Audio
-librosa>=0.10
-soundfile>=0.12
+librosa==0.11.0
+soundfile==0.14.0
 
 # Traditional machine learning
-scikit-learn>=1.4
-xgboost>=2.0
+scikit-learn==1.9.1
+xgboost==3.2.0
 
 # Deep learning (CUDA on Colab, MPS on Apple Silicon, CPU fallback)
-torch>=2.3
-torchaudio>=2.3
-transformers>=4.44
-datasets>=2.20
-accelerate>=0.33
+torch==2.14.1
+transformers==5.18.0
+datasets==5.0.1
+accelerate==1.15.0
 
 # Demo app
-gradio>=4.40
+gradio==6.29.1

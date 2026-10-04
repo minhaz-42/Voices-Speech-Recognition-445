@@ -1,0 +1,23 @@
+# TenVoices: shared settings.
+# Every path is relative to the repository root. Change settings here, not in code;
+# a single run can override them with CLI options.
+
+seed: 42
+
+paths:
+  phrases: data/prompts/phrases.csv
+  metadata: data/metadata
+  raw: data/raw
+  processed: data/processed
+  splits: data/splits
+  results: results
+  images: images
+  outputs: outputs
+
+audio:
+  sample_rate: 16000      # Hz, input rate of wav2vec 2.0 and the MFCC features
+  mono: true
+  trim_top_db: 30         # frames this many dB below the clip's peak count as silence
+  trim_margin_s: 0.10     # silence kept before and after the speech, so soft onsets are not cut
+  peak_dbfs: -1.0         # peak level after normalisation
+  max_duration_s: 6.0     # clips are padded to this length and never truncated

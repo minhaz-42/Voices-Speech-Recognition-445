@@ -4,8 +4,8 @@
 > **Legend:** ⬜ to do · 🟡 in progress · ✅ done · ⛔ blocked · 👤 needs people (recording, consent, video)
 
 **Current phase:** Week 1: setup, phrase list and recording tool
-**Next up:** finish T01 (M1 · Tanvir Ahmed): add Rabbi as collaborator, pin requirements, config + audio utilities
-**Last updated:** 2026-10-01 by Tanvir Ahmed (M1)
+**Next up:** T02 recorder (M2 · Rabbi) and T03 metrics (M3 · Tanvir); invite Rabbi as collaborator
+**Last updated:** 2026-10-04 by Tanvir Ahmed (M1)
 
 ## 👥 Team
 
@@ -30,7 +30,7 @@
 | ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
 |---|---|---|---|---|---|
 | T00 | Project plan, README, poster, protocol, consent form, phrase list, `CLAUDE.md`, this board → committed | M1 | — | ✅ | Tanvir · 2026-10-01 |
-| T01 | Publish the GitHub repo ✅ and add Rabbi as collaborator; pin `requirements.txt`; `configs/config.yaml` + `support/config.py`; `support/audio.py` (load, mono, 16 kHz, trim silence, peak-normalise, pad to 6 s) + tests → tests pass and a sample WAV loads | M1 | T00 | 🟡 | |
+| T01 | Publish the GitHub repo ✅ and add Rabbi as collaborator (⛔ invite pending: needs Rabbi's GitHub username); pin `requirements.txt`; `configs/config.yaml` + `support/config.py`; `support/audio.py` (load, mono, 16 kHz, trim silence, peak-normalise, pad to 6 s) + tests → tests pass and a sample WAV loads | M1 | T00 | ✅ | Tanvir · 2026-10-04 |
 | T02 | Recorder tool `tools/recorder.py` (Gradio): 3 shuffled rounds of `data/prompts/phrases.csv` + the noisy block; file naming; one `utterances.csv` row per clip; printable phrase sheets → a test session saves correct files | M2 | T01 | ⬜ | |
 | T03 | `support/metrics.py`: accuracy, macro / weighted F1, classification report, confusion-matrix plot, per-speaker accuracy + tests → hand-computed cases pass | M3 | T01 | ⬜ | |
 | T04 | 👤 Pilot sessions S01 (Tanvir) and S02 (Rabbi): consent signed, files backed up to Drive → 2 × 160 clips | M1 + M2 | T02 | ⬜ | |
@@ -85,6 +85,16 @@
 | T28 | 👤 Final checklist (every number matches `results/`), tag `v1.0`, submit | all | T25, T26, T27 | ⬜ | |
 
 ## 📝 Handoff Log (newest first)
+
+### 2026-10-04 · Tanvir Ahmed (M1) · T01
+- **Done:** `configs/config.yaml` (seed, paths, audio settings); `support/config.py` (`load_config`, `resolve_path`); `support/audio.py` (read, int16 → float, mono, resample to 16 kHz, trim silence with a 0.1 s margin, peak-normalise to −1 dBFS, zero-pad to 6 s; a clip still longer than 6 s after trimming raises an error instead of being cut; `save_wav`; CLI). 23 unit tests. A spoken sample (44.1 kHz) loads as 6.00 s of 16 kHz mono at −1.0 dBFS.
+- **Files:** `configs/config.yaml`, `support/__init__.py`, `support/config.py`, `support/audio.py`, `tools/__init__.py`, `tests/test_config.py`, `tests/test_audio.py`, `requirements.txt`, `README.md`, `CLAUDE.md`.
+- **Notes for everyone:**
+  - `requirements.txt` is now pinned (Python 3.11). torchaudio was removed: nothing uses it, and pip paired it with a mismatched torch. On Colab, keep the preinstalled torch (command in `requirements.txt`).
+  - Run scripts as modules from the repo root: `python -m support.audio clip.wav`, `python -m tools.recorder ...`. `tools/` is a package, so M2's recorder can `from support.audio import ...`.
+  - Use `support.audio.preprocess` for microphone arrays (accepts int16) and `load_audio(path, pad=False)` when padding would distort the result (MFCC statistics).
+- **Next:** M2 starts T02 (recorder). M3 can start T03 (metrics).
+- **Blockers:** Rabbi's collaborator invite needs his GitHub username (Settings → Collaborators on the repo page).
 
 ### 2026-10-01 · Tanvir Ahmed (M1) · T00 (revision)
 - **Done:** switched the method to spoken phrase recognition with 50 phrases, following the pipeline traditional ML → untrained baseline → fine-tuned wav2vec 2.0 (3 / 8 / 15 epochs, white noise). Rewrote the plan, README, protocol, phrase list (`data/prompts/phrases.csv`), poster and this board (new tasks T01–T28).

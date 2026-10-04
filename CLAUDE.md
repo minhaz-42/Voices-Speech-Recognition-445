@@ -85,6 +85,9 @@ Small result tables (CSV/JSON under 1 MB) go in `results/` and **are** committed
 
 ## Commands
 
-- Setup: `python -m venv venv && source venv/bin/activate && pip install -r requirements.txt`
+- Setup: `python3.11 -m venv venv && source venv/bin/activate && pip install -r requirements.txt`
 - Tests: `python -m unittest discover -s tests -v`
+- Run scripts in `support/` and `tools/` as modules from the repo root: `python -m support.audio clip.wav`, not `python support/audio.py`.
+- Print settings: `python -m support.config`
+- Pre-process one clip: `python -m support.audio clip.wav [--out clip_16k.wav] [--no-pad]`
 - *(Add new commands here when a task creates them.)*

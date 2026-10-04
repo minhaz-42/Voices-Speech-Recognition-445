@@ -175,9 +175,9 @@ Voices-Speech-Recognition-445/
     cd Voices-Speech-Recognition-445
     ```
 
-2.  **Create a virtual environment (Recommended):**
+2.  **Create a virtual environment with Python 3.11 (Recommended):**
     ```bash
-    python -m venv venv
+    python3.11 -m venv venv
     # Windows
     .\venv\Scripts\activate
     # Mac/Linux
@@ -191,15 +191,18 @@ Voices-Speech-Recognition-445/
 
 ---
 
-## 🚀 Usage (planned)
-The code is not written yet. These are the planned entry points; each will be documented here once it works.
+## 🚀 Usage
+Run every command from the repository root. Scripts in `support/` and `tools/` are run as modules (`python -m ...`) so they can import the shared code. Entry points marked *planned* are documented here once they work.
 
 | Command | Purpose | Planned for |
 | :--- | :--- | :---: |
-| `python tools/recorder.py --speaker S03` | Record one speaker session | Week 1 |
-| `python support/classical.py --model svm --split folds` | Train and evaluate a traditional model | Week 3 |
-| `python support/train_wav2vec2.py --epochs 15 --noise white --split folds` | Fine-tune wav2vec 2.0 | Week 4 |
-| `python support/evaluate.py --run w2v2_15ep_noise` | Accuracy, F1, confusion matrix for one run | Week 4 |
+| `python -m unittest discover -s tests -v` | Run the unit tests | ✅ ready |
+| `python -m support.config` | Print the settings and resolved paths | ✅ ready |
+| `python -m support.audio clip.wav [--out clip_16k.wav]` | Load and pre-process one clip (mono, 16 kHz, trimmed, normalised, padded to 6 s) | ✅ ready |
+| `python -m tools.recorder --speaker S03` | Record one speaker session | Week 1 |
+| `python -m support.classical --model svm --split folds` | Train and evaluate a traditional model | Week 3 |
+| `python -m support.train_wav2vec2 --epochs 15 --noise white --split folds` | Fine-tune wav2vec 2.0 | Week 4 |
+| `python -m support.evaluate --run w2v2_15ep_noise` | Accuracy, F1, confusion matrix for one run | Week 4 |
 | `python main.py --audio clip.wav` | Predict the phrase in an audio file (also `--video`, `--mic`) | Week 5 |
 | `python app.py` | Live microphone demo (Gradio) | Week 5 |
 
