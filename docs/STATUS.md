@@ -63,7 +63,7 @@ Each of these has a task card: `docs/tasks/<ID>.md`.
 |---|---|---|---|---|---|
 | T42 | `tools/select_subsets.py`: the selection rules of [DATASETS.md](DATASETS.md) §2 (seed 42) → `data/subsets/fsc.csv`, `data/subsets/l2arctic.csv`, `data/prompts/fsc_phrases.csv`, `data/prompts/l2arctic_sentences.csv`; `support/phrases.py` loads the new lists; tests on synthetic metadata → lists committed and a rerun gives identical files | M2 | T41 | ⬜ | |
 | T43 | `tools/qc_report.py` on both subsets (format, duration, clipping, silence, SNR, 10% listen-check); failed clips replaced by rerunning the selection → ≥ 97% of clips pass, `data/subsets/qc_<dataset>.csv` | M2 | T42 | ⬜ | |
-| T08 | Processed 16 kHz copies + manifest (label, speaker, take, dataset, SHA-256); `support/dataset.py` (`--dataset fsc` or `l2arctic`); `tools/make_splits.py` → per dataset a random 80/20 split + 5 speaker-independent folds in `data/splits/<dataset>/` (TenVoices-L2: the two test speakers of a fold share a first language); leakage tests → tests pass; tag `data-v1` | M1 | T43 | ⬜ | |
+| T08 | Processed 16 kHz copies + manifest (label, speaker, take, dataset, SHA-256); `support/dataset.py` (`--dataset fsc` or `l2arctic`); `tools/make_splits.py` → per dataset a random 80/20 split + 5 speaker-independent folds in `data/splits/<dataset>/` (TenVoices-L2: the two test speakers of a fold share a first language); leakage tests → tests pass; tag `data-v1` | M1 | T43 | 🟡 code + tests ready; run waits for T43 | |
 | T09 | Dataset statistics figure + datasheet `data/README.md` for both subsets (sources, selection, QC, statistics, licences) | M2 | T08 | ⬜ | |
 
 ### Week 3: Traditional machine learning

@@ -34,6 +34,13 @@ datasets:
     speakers: [ASI, RRBI, SVBI, TNI, ABA, SKA, BWC, LXC, EBVS, NJS]   # Hindi ×4, Arabic, Mandarin, Spanish
     n_phrases: 50
     takes: 1
+    fold_by_l1: true      # the two test speakers of a fold share a first language; folds follow the order above
+
+# Random split and speaker-independent folds (tools/make_splits.py, T08)
+splits:
+  test_size: 0.2          # random split: share of clips for testing (stratified by phrase)
+  val_size: 0.1           # share of the training part held out for validation
+  n_folds: 5              # each fold: 2 test speakers (1 F + 1 M), 1 validation, 7 training
 
 audio:
   sample_rate: 16000      # Hz, input rate of wav2vec 2.0 and the MFCC features
