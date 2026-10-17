@@ -68,6 +68,16 @@ class TestTrainWav2vec2(unittest.TestCase):
         self.assertTrue(d["noise_changes_clip"])
         self.assertTrue(d["noise_differs_each_pass"])
 
+    def test_saved_model_recognises_raw_audio(self):
+        inf = self.report["inference"]
+        self.assertTrue(inf["is_wav2vec2"])
+        self.assertEqual(inf["labels"], ["P01", "P02", "P03"])
+        self.assertEqual(inf["top_ids"], ["P01", "P02", "P03"])
+        self.assertAlmostEqual(inf["score_sum"], 1.0, places=4)
+        self.assertTrue(inf["sorted"])
+        self.assertEqual(inf["text_of_p01"], "phrase number 1")
+        self.assertTrue(inf["too_long_raises"])
+
     def test_unknown_noise_option_raises(self):
         self.assertTrue(self.report["bad_noise_raises"])
 

@@ -76,6 +76,26 @@ def main(out: Path) -> dict:
         "untrained_model_saved": (out / "outputs" / "models" / "w2v2_untrained").exists(),
     }
     report["augmentation_cfg"] = cfg["augmentation"]
+
+    # Inference with the saved model (support.inference / main.py), on raw 48 kHz stereo audio.
+    from support.inference import Wav2Vec2Recognizer, load_recognizer
+
+    with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+        rec = load_recognizer(out / "outputs" / "models" / "w2v2_3ep_noise" / "fsc" / "fold1", device="cpu")
+        t = np.arange(int(0.5 * 48000)) / 48000
+        clip = np.stack([0.3 * np.sin(2 * np.pi * 390 * t)] * 2, axis=1)
+        top = rec.predict(clip, 48000, k=3, texts={"P01": "phrase number 1"})
+        try:
+            rec.predict(0.5 * np.ones(16000 * 7), 16000)  # 7 s without silence: longer than the 6 s input
+            too_long_raises = False
+        except ValueError:
+            too_long_raises = True
+    report["inference"] = {
+        "is_wav2vec2": isinstance(rec, Wav2Vec2Recognizer), "labels": rec.labels,
+        "top_ids": sorted(r["phrase_id"] for r in top), "score_sum": sum(r["score"] for r in top),
+        "sorted": [r["score"] for r in top] == sorted((r["score"] for r in top), reverse=True),
+        "text_of_p01": next(r["text"] for r in top if r["phrase_id"] == "P01"), "too_long_raises": too_long_raises,
+    }
     return report
 
 
