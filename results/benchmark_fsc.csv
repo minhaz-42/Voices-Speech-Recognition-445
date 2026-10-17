@@ -1,0 +1,4 @@
+run,dataset,split_model,device,mean_ms_per_clip,median_ms_per_clip,repeats,model_size_mb
+w2v2_15ep_noise,fsc,random,mps,38.2,38.1,50,378.4
+w2v2_15ep_noise,fsc,random,cpu,74.9,74.9,20,378.4
+random_forest,fsc,random,cpu,13.7,14.1,50,75.7
