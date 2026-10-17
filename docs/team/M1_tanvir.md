@@ -28,7 +28,7 @@ The task board and handoff log for M1 are in [STATUS.md](../STATUS.md). This pag
 | T08 | Processed copies, splits, leakage tests (TenVoices-FSC) | — | ✅ 2026-10-17 |
 | T11 | Features, shared runner, evaluation ✅; Random Forest run | — | 🟡 |
 | T30 | Whisper on the test clips (FSC now, L2 in T47) | — | 🟡 |
-| T15 | Training script + Colab ✅; wav2vec 2.0 15 epochs + noise run | — | 🟡 |
+| T15 | Training script + Colab ✅; wav2vec 2.0 15 epochs + noise on FSC ✅ | — | ✅ FSC |
 | T19 | wav2vec 2.0 15 epochs without noise | — | ⬜ |
 | T21 | Noise tests, H3 | T15, T19 | 🟡 code ✅ |
 | T22 | Inference + CI ✅; benchmark | T15 | 🟡 |

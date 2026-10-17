@@ -82,7 +82,7 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 |---|---|---|---|---|
 | T11 | Features, shared runner and evaluation ✅; **Random Forest** → `results/random_forest/fsc/` ✅ (FSC: random split 0.310, unseen speakers 0.209) | — | ✅ | Tanvir · 2026-10-17 |
 | T30 | **Whisper zero-shot** → `results/whisper_small/{fsc,l2arctic}/` ✅: FSC unseen speakers 0.987, WER 0.039; L2 unseen speakers 0.996, WER 0.100 (per first language 0.040–0.168) | — | ✅ | Tanvir · 2026-10-17 |
-| T15 | Training script + Colab notebook ✅; **wav2vec 2.0, 15 epochs + white noise** → `results/w2v2_15ep_noise/fsc/` (models to Drive) | — | 🟡 code ✅ | |
+| T15 | Training script + Colab notebook ✅; **wav2vec 2.0, 15 epochs + white noise** → `results/w2v2_15ep_noise/fsc/` ✅ (unseen speakers 0.885, random split 1.000); models in `outputs/models/` (to Drive) | — | ✅ FSC | Tanvir · 2026-10-17 |
 | T19 | **wav2vec 2.0, 15 epochs without noise** (H3 ablation) → `results/w2v2_15ep/fsc/` | — | ⬜ | |
 | T21 | Noise tests at 20 / 10 / 5 dB for T15 and T19 (and every merged run) → `results/noise/`; H3 | T15, T19 | 🟡 code ✅ | |
 | T22 | `main.py`, inference, CI ✅; inference-time benchmark with the T15 model | T15 | 🟡 code ✅ | |

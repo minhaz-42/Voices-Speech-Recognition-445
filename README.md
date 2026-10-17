@@ -104,7 +104,7 @@ Measured so far on **TenVoices-FSC** (1,000 clips). Every number comes from `res
 | **XGBoost** | Rabbi | TBD | TBD | TBD | TBD | Gradient boosting on MFCC features |
 | **wav2vec 2.0, 3 epochs** | Mahir | TBD | TBD | TBD | TBD | Short fine-tuning |
 | **wav2vec 2.0, 8 epochs + noise** | Rabbi | TBD | TBD | TBD | TBD | Medium fine-tuning with augmentation |
-| **wav2vec 2.0, 15 epochs + noise** | Tanvir | TBD | TBD | TBD | TBD | Full fine-tuning with augmentation |
+| **wav2vec 2.0, 15 epochs + noise** | Tanvir | **88.5%** | 0.881 | **100.0%** | 1.000 | Full fine-tuning with augmentation |
 | **wav2vec 2.0, 15 epochs, no noise** | Tanvir | TBD | TBD | TBD | TBD | Effect of noise augmentation (H3) |
 | **WavLM Base+, 15 epochs + noise** | Rabbi | TBD | TBD | TBD | TBD | Another self-supervised model |
 | **HuBERT Base, 15 epochs + noise** | Mahir | TBD | TBD | TBD | TBD | Another self-supervised model |
@@ -113,6 +113,7 @@ Measured so far on **TenVoices-FSC** (1,000 clips). Every number comes from `res
 
 * **Random Forest** drops from 31.0% to 20.9% when the test speakers were never heard in training: MFCC statistics depend heavily on the speaker.
 * **Whisper** recognises the commands almost perfectly without any training; its word error rate on the unseen-speaker folds is 3.9%.
+* **Fine-tuned wav2vec 2.0** (15 epochs + noise, trained on 7 speakers per fold) reaches 88.5% on unseen speakers (fold mean 88.5% ± 10.4), 67.6 points above Random Forest.
 * Confusion matrices: [images/confusion/](images/confusion/).
 
 Measured so far on **TenVoices-L2** (500 clips, 10 non-native speakers; every fold tests a first language never heard in training). Numbers from `results/<run>/l2arctic/summary.json`.
