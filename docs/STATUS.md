@@ -5,7 +5,7 @@
 
 **Current phase:** Week 1: setup, phrase list and recording tool
 **Next up:** T02 recorder (M2 · Rabbi); phrase-catalog validation is complete, recorder implementation remains. M1, M3 and M4 wait for T02 → T04 (pilot sessions)
-**Last updated:** 2026-10-07 by Md. Shahriar Rakib Rabbi (M2)
+**Last updated:** 2026-10-17 by Tanvir Ahmed (M1)
 
 ## 👥 Team
 
@@ -44,7 +44,7 @@
 | T07 | QC all sessions; listen-check (M1 checks M2's speakers, M2 checks M1's); re-record misreads → ≥ 97% of clips pass                                                                                                                          | M2 (+ M1) | T06        | ⬜     |                |
 | T08 | Processed 16 kHz copies + manifest (label, speaker, rep, condition, SHA-256); `support/dataset.py`; `tools/make_splits.py` → random 80/20 split + 5 speaker-independent folds in `data/splits/`; leakage tests → tests pass; tag `data-v1` | M1        | T07        | ⬜     |                |
 | T09 | Dataset statistics figure + datasheet `data/README.md`                                                                                                                                                                                     | M2        | T08        | ⬜     |                |
-| T10 | `docs/ANALYSIS_PLAN.md`: hypotheses H1–H4, splits, metrics, tests → **frozen** before any main experiment                                                                                                                                  | M3        | T03, T08   | ⬜     |                |
+| T10 | `docs/ANALYSIS_PLAN.md`: hypotheses H1–H5, splits, metrics, tests → **frozen** before any main experiment                                                                                                                                  | M3        | T03, T08   | ⬜     |                |
 
 ### Week 3: Traditional machine learning
 
@@ -64,6 +64,8 @@
 | T17 | Run **3 epochs** (no noise) with the shared script → `results/w2v2_3ep/`                                                                                                                                                                                                  | M3    | T15        | ⬜     |                |
 | T18 | **Untrained baseline** with the shared evaluation script → `results/w2v2_untrained/`                                                                                                                                                                                      | M4    | T15        | ⬜     |                |
 | T19 | Run **15 epochs without noise** (ablation for H3) → `results/w2v2_15ep/`                                                                                                                                                                                                  | M1    | T15        | ⬜     |                |
+| T29 | Whisper pipeline `support/whisper_asr.py`: zero-shot transcription (`--model small`), Whisper's English text normaliser, nearest-phrase matching (word-level edit distance), WER / CER, predictions in the shared format + tests; smoke test on a few self-recorded phrases → tests pass | M1 | T01, T03 | ⬜ | |
+| T30 | Run Whisper on the test clips of the random split and all 5 folds → `results/whisper_small/`; WER / CER per category and speaker; test H5; `--asr whisper` transcript mode in `main.py` | M1 | T08, T11, T22, T29 | ⬜ | |
 
 ### Week 5: Results, analysis and demo
 
@@ -73,7 +75,7 @@
 | T21 | Noise tests (white noise at 20 / 10 / 5 dB + real noisy takes) for the best models; test H3; error analysis of the most-confused phrases → `results/noise/`, `results/errors/`                   | M3    | T19, T20                     | ⬜     |                |
 | T22 | `main.py` inference (WAV / MP3 / MP4 audio / microphone → top-5 phrases with confidence) + inference-time benchmark + unit tests + GitHub Actions CI                                             | M1    | T15                          | ⬜     |                |
 | T23 | Gradio demo `app.py` + final figures (confusion matrices, accuracy vs SNR, per-speaker chart) → `images/`                                                                                        | M4    | T20, T21, T22                | ⬜     |                |
-| T24 | Clean-environment reproducibility check → **feature freeze**                                                                                                                                     | M1    | T20, T21, T22, T23           | ⬜     |                |
+| T24 | Clean-environment reproducibility check → **feature freeze**                                                                                                                                     | M1    | T20, T21, T22, T23, T30          | ⬜     |                |
 
 ### Week 6: Delivery
 
@@ -85,6 +87,13 @@
 | T28 | 👤 Final checklist (every number matches `results/`), tag `v1.0`, submit                              | all   | T25, T26, T27 | ⬜     |                |
 
 ## 📝 Handoff Log (newest first)
+
+### 2026-10-17 · Tanvir Ahmed (M1) · T00 (Whisper pipeline)
+
+- **Done:** added a fourth stage, **Whisper used zero-shot** (speech-to-text, then the nearest of the 50 phrases), to the plan, README and team guide: research question RQ5, hypothesis **H5** (Whisper errs most on Bangladeshi names and places, where fine-tuned wav2vec 2.0 beats it), experiment E8, WER / CER metrics, methodology section 4, results-table row. New tasks **T29** (pipeline code, can start now) and **T30** (runs on the dataset, test H5, transcript mode in `main.py`), both M1.
+- **Files:** `docs/PROJECT_PLAN.md`, `README.md`, `CLAUDE.md`, `docs/STATUS.md`.
+- **Next:** H5 goes into the analysis plan (T10) before it is frozen.
+- **Blockers:** none.
 
 ### 2026-10-07 · Md. Shahriar Rakib Rabbi (M2) · T02 in progress
 

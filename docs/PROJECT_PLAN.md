@@ -12,7 +12,7 @@
 | **Brief** | *Create a speech recognition system. Gather a dataset consisting of speech samples from 10 speakers uttering diverse phrases or sentences. Showcase the effectiveness of your method using this dataset.* |
 | **Task** | **Spoken phrase recognition:** given a recording, recognise which of **50 diverse phrases** was spoken |
 | **Dataset** | **TenVoices v1**, recorded by us with consent: 10 speakers × 50 phrases × 3 repetitions + 10 real-noise takes each ≈ **1,600 clips (~1 hour)** |
-| **Methods** | Traditional ML (MFCC + k-NN / SVM / Random Forest / XGBoost) vs an untrained wav2vec 2.0 baseline vs **fine-tuned wav2vec 2.0** (3 / 8 / 15 epochs, white-noise augmentation) |
+| **Methods** | Traditional ML (MFCC + k-NN / SVM / Random Forest / XGBoost) vs an untrained wav2vec 2.0 baseline vs **fine-tuned wav2vec 2.0** (3 / 8 / 15 epochs, white-noise augmentation), plus **Whisper** used zero-shot as an open-vocabulary recogniser (speech-to-text, then the nearest phrase) |
 | **Evaluation** | Accuracy, macro F1, weighted F1, confusion matrices. Reported on a random 80/20 split (seen speakers) **and** with speaker-independent 5-fold cross-validation (unseen speakers, the headline). |
 | **Team** | Tanvir Ahmed (lead) and Md. Shahriar Rakib Rabbi, plus 2 open member slots. Each slot owns one traditional model and one deep-learning run. Work is handed over through Claude Code (`CLAUDE.md`, `docs/STATUS.md`). |
 | **Timeline** | 6 weeks, planned week by week |
@@ -26,11 +26,12 @@
 |---|---|---|
 | "Create a speech recognition system" | A recogniser that tells which of 50 phrases was spoken, with an inference script (`main.py`) and a live demo (`app.py`) | Run the demo and say a phrase |
 | "Gather a dataset … from 10 speakers uttering diverse phrases or sentences" | **TenVoices v1**: 50 phrases in 5 categories (commands, numbers, everyday sentences, Bangladeshi names and places, phonetically rich sentences), 3 repetitions per speaker, plus real-noise takes | `data/` metadata, datasheet, released audio |
-| "Showcase the effectiveness of your method using this dataset" | A comparison of traditional ML, an untrained baseline and fine-tuned wav2vec 2.0, on seen and unseen speakers, in clean and noisy audio | `results/all_results.csv`, confusion matrices, statistics |
+| "Showcase the effectiveness of your method using this dataset" | A comparison of traditional ML, an untrained baseline, fine-tuned wav2vec 2.0 and zero-shot Whisper speech-to-text, on seen and unseen speakers, in clean and noisy audio | `results/all_results.csv`, confusion matrices, statistics |
 
 **Interpretation**
 - Speech recognition is framed as **closed-set phrase recognition**, the same way spoken commands are recognised by voice assistants. Every phrase is a class; the 50 phrases are deliberately diverse in length, content and difficulty.
 - We include confusable pairs on purpose, such as "turn **on** / turn **off** the lights", "**increase** / **decrease** the volume" and "**play** / **stop** the music". Recognising them requires the actual words, not just the voice.
+- The system can also **transcribe** free speech. Whisper, a general-purpose speech-to-text model, turns a recording into text without any training on our data, and the closest of the 50 phrases becomes its prediction. This shows what an off-the-shelf recogniser achieves on Bangladeshi-accented English and local names, next to the models trained on TenVoices.
 - **Effectiveness** must hold for **speakers the system has never heard**. Every model is also scored on a random split, so the gap between seen and unseen speakers is visible.
 
 ---
@@ -40,7 +41,7 @@
 **Objectives**
 - **O1** Build TenVoices v1 (10 speakers, ~1,600 clips) with consent, metadata and quality control.
 - **O2** Build a working phrase recogniser with an inference script and a live demo.
-- **O3** Compare traditional ML and fine-tuned wav2vec 2.0 on seen and unseen speakers, in clean and noisy audio.
+- **O3** Compare traditional ML, fine-tuned wav2vec 2.0 and zero-shot Whisper on seen and unseen speakers, in clean and noisy audio.
 - **O4** Release code, data (from consenting speakers) and results openly and reproducibly.
 
 **Research questions**
@@ -48,6 +49,7 @@
 - **RQ2** How much does fine-tuning wav2vec 2.0 improve on them, and how do 3, 8 and 15 epochs compare?
 - **RQ3** How much accuracy is lost on unseen speakers compared with a random split?
 - **RQ4** Does white-noise augmentation make the model more robust to noisy audio?
+- **RQ5** How does a general-purpose speech-to-text model (Whisper, zero-shot) compare with models trained on TenVoices, and which phrase categories does it get wrong?
 
 **Hypotheses.** These are frozen in `docs/ANALYSIS_PLAN.md` before the main experiments (task T10) and reported whether or not they hold.
 
@@ -57,6 +59,7 @@
 | H2 | Traditional models depend more on knowing the speaker | The accuracy drop from random split to unseen speakers is larger for the best MFCC model than for wav2vec 2.0 |
 | H3 | White-noise augmentation improves robustness | Higher accuracy at 10 dB and 5 dB SNR and on real noisy takes than the same run without noise, with ≤ 2 points loss on clean audio |
 | H4 | Longer fine-tuning has diminishing returns | The gain from 8 → 15 epochs is smaller than from 3 → 8 epochs |
+| H5 | A general-purpose speech-to-text model struggles most with local names | Whisper's word error rate is highest on the *Bangladeshi names and places* category, and fine-tuned wav2vec 2.0 beats Whisper + phrase matching on that category (McNemar test p < 0.05) |
 
 ---
 
@@ -72,8 +75,8 @@
   - Accuracy / macro F1 / weighted F1 with confusion matrices
   - `results/all_results.csv`
   - `main.py` inference, README, report, slides, demo video, poster
-- **Should:** white-noise SNR tests and real noisy takes, a 15-epoch run without noise (to isolate the effect of noise), per-speaker analysis, significance tests, Gradio demo, GitHub Actions unit tests.
-- **Could:** other self-supervised models (WavLM-base-plus, XLS-R 300M), open-vocabulary transcription with Whisper as an extra experiment, Bangla phrases, a Hugging Face Space demo.
+- **Should:** Whisper zero-shot speech-to-text with phrase matching and word error rate per category, white-noise SNR tests and real noisy takes, a 15-epoch run without noise (to isolate the effect of noise), per-speaker analysis, significance tests, Gradio demo, GitHub Actions unit tests.
+- **Could:** other self-supervised models (WavLM-base-plus, XLS-R 300M), fine-tuning Whisper, Bangla phrases, a Hugging Face Space demo.
 - **Won't (this semester):** open-vocabulary transcription as the main task, training a model from scratch, more than 10 speakers.
 
 ---
@@ -112,9 +115,12 @@ flowchart LR
     M --> T[1. Traditional ML<br/>k-NN · SVM · RF · XGBoost]
     B --> U[2. Baseline<br/>wav2vec 2.0, untrained head]
     B --> W[3. wav2vec 2.0 fine-tuned<br/>3 / 8 / 15 epochs · white noise]
+    B --> X[4. Whisper zero-shot<br/>speech-to-text → nearest phrase]
     T --> P[Predicted phrase<br/>+ confidence]
     U --> P
     W --> P
+    X --> P
+    X --> Q[Transcript<br/>+ word error rate]
 ```
 
 ### 1. Traditional Machine Learning (Baseline)
@@ -138,9 +144,20 @@ flowchart LR
 | Model selection | Best epoch chosen on **validation data**, never on the test set |
 | Hardware | Google Colab GPU (T4) or Apple Silicon (MPS); one shared script for every run |
 
+### 4. Open-Vocabulary Pipeline: Whisper (Zero-Shot)
+
+| Setting | Plan |
+|---|---|
+| Model | `openai/whisper-small`, English transcription, **no training on TenVoices** |
+| Text normalisation | Whisper's English text normaliser is applied to the transcript and to the 50 phrase texts (case, punctuation, numbers as words or digits) |
+| Phrase matching | The prediction is the phrase with the smallest word-level edit distance to the transcript, so it fits the same tables, metrics and statistical tests as the other models |
+| Extra output | The transcript itself, with word and character error rate (WER, CER) per clip, per category and per speaker |
+| Demo | `main.py` and `app.py` show the transcript; a transcript far from every phrase is reported as "not one of the 50 phrases" |
+| Hardware | Laptop CPU / MPS for development, Colab GPU for the full set |
+
 ### Shared Components
 - **One evaluation script for every model:** it writes a classification report, the predictions, a confusion matrix and a row of `results/all_results.csv`.
-- **Inference (`main.py`):** loads the best model, reads a WAV/MP3 (or the audio of an MP4) or a microphone recording, and prints the top-5 phrases with confidence.
+- **Inference (`main.py`):** loads the best model, reads a WAV/MP3 (or the audio of an MP4) or a microphone recording, and prints the top-5 phrases with confidence. With `--asr whisper` it also prints the Whisper transcript.
 - **Demo (`app.py`):** a Gradio page with microphone input, the predicted phrase and a confidence bar chart.
 
 ---
@@ -157,6 +174,7 @@ flowchart LR
 | E5 | Noise robustness | White noise at 20 / 10 / 5 dB on clean test clips + real noisy takes; 15 epochs with vs without noise | Accuracy vs SNR | M3 (15-epoch no-noise run: M1) | 5 | Should |
 | E6 | Where are the errors? | Most-confused phrase pairs (e.g. on/off), accuracy per category | Confusion analysis | M3 | 5 | Must |
 | E7 | Is it practical? | Inference time per clip on laptop CPU vs GPU; model size | ms per clip, MB | M1 | 5 | Should |
+| E8 | How good is general-purpose speech-to-text without training? | Whisper small, zero-shot, + phrase matching on the test clips of both splits; WER per category and speaker | Accuracy, F1, WER, CER | M1 | 4 | Should |
 
 ---
 
@@ -169,8 +187,10 @@ flowchart LR
 - **Noisy tests.**
   - White noise added to the clean test clips at 20 / 10 / 5 dB SNR.
   - Each speaker's 10 real noisy takes are scored by the fold model in which that speaker is a test speaker.
+- **Whisper (zero-shot)** uses no training data. It is scored on exactly the same test clips as the other models, so its results sit in the same tables.
 - **Metrics:**
   - Accuracy (primary), macro F1, weighted F1.
+  - Word and character error rate (WER, CER) for the Whisper transcripts.
   - Per-class F1 and confusion matrices.
   - Per-speaker accuracy.
 - **Statistics:**
@@ -354,3 +374,4 @@ The tasks for each week (T01–T28), with owners and dependencies, are in [STATU
 10. Q. McNemar, "Note on the Sampling Error of the Difference Between Correlated Proportions or Percentages," *Psychometrika*, 1947.
 11. IEEE Subcommittee on Subjective Measurements, "IEEE Recommended Practice for Speech Quality Measurements," *IEEE Trans. Audio and Electroacoustics*, 1969. (Harvard sentences)
 12. T. Gebru et al., "Datasheets for Datasets," *Communications of the ACM*, 2021.
+13. A. Radford, J. W. Kim, T. Xu, G. Brockman, C. McLeavey and I. Sutskever, "Robust Speech Recognition via Large-Scale Weak Supervision," *ICML*, 2023. (Whisper)

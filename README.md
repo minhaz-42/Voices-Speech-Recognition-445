@@ -31,12 +31,13 @@
 > Code, data and results will be added week by week (see the roadmap below).
 
 ## 📖 Overview
-This project builds a **speech recognition system** that recognises which of **50 diverse phrases** a person has spoken. We record our own dataset, **TenVoices**, from **10 speakers**, and use it to compare traditional machine learning with a fine-tuned self-supervised speech model.
+This project builds a **speech recognition system** that recognises which of **50 diverse phrases** a person has spoken. We record our own dataset, **TenVoices**, from **10 speakers**, and use it to compare traditional machine learning, a fine-tuned self-supervised speech model and a general-purpose speech-to-text model.
 
-The comparison has three stages:
+The comparison has four stages:
 * **Traditional Machine Learning:** MFCC features with k-NN, SVM, Random Forest and XGBoost.
 * **Deep Learning baseline:** wav2vec 2.0 with an untrained classification head, which shows the chance level.
 * **Our approach:** wav2vec 2.0 **fine-tuned** on TenVoices for 3, 8 and 15 epochs, with white-noise augmentation for robustness.
+* **Open-vocabulary pipeline:** **Whisper** speech-to-text used **zero-shot** (no training on our data). Its transcript is matched to the closest of the 50 phrases, and its word error rate shows how a general-purpose recogniser copes with our accents and local names.
 
 Every model is tested two ways:
 * on a random 80/20 split, where the speakers have been seen in training;
@@ -84,12 +85,18 @@ We fine-tune a pre-trained **wav2vec 2.0 Base** model (`facebook/wav2vec2-base`)
 * **Input length:** clips are padded to 6 s, so no phrase is ever cut off.
 * **Hardware:** Google Colab GPU (T4) or Apple Silicon (MPS).
 
+### 4. Open-Vocabulary Pipeline: Whisper (Zero-Shot)
+* **Model:** `openai/whisper-small`, transcribing English, with **no training** on TenVoices.
+* **Phrase matching:** the transcript and the 50 phrases are normalised the same way (case, punctuation, numbers), and the phrase with the smallest word-level edit distance is the prediction. Whisper then fits the same tables and tests as every other model.
+* **Extra output:** the transcript itself, with word and character error rate per clip, per category and per speaker.
+* **Demo:** the app shows the transcript, and says "not one of the 50 phrases" when the speech matches none of them.
+
 ---
 
 ## 📏 Evaluation Protocol
 * **Random split (seen speakers):** stratified 80/20 split of the clean clips (seed 42).
 * **Speaker-independent CV (unseen speakers):** 5 folds, each with 2 test speakers, 1 validation speaker and 7 training speakers. Every speaker is tested exactly once.
-* **Metrics:** Accuracy, Macro F1, Weighted F1, per-class F1, confusion matrices and per-speaker accuracy.
+* **Metrics:** Accuracy, Macro F1, Weighted F1, per-class F1, confusion matrices and per-speaker accuracy; word and character error rate for the Whisper transcripts.
 * **Noise tests:** white noise added at 20 / 10 / 5 dB SNR, plus the real noisy recordings.
 * **Statistics:** 95% bootstrap confidence intervals, McNemar's test between models, Wilcoxon test over speakers.
 
@@ -108,6 +115,7 @@ The results will be filled in after the experiments in Weeks 3–5. **Nothing be
 | **Wav2Vec2 (Fine-Tuned) 3 epochs** | TBD | TBD | TBD | TBD | Short fine-tuning |
 | **Wav2Vec2 (Fine-Tuned) 8 epochs + noise** | TBD | TBD | TBD | TBD | Medium fine-tuning with augmentation |
 | **Wav2Vec2 (Fine-Tuned) 15 epochs + noise** | TBD | TBD | TBD | TBD | Full fine-tuning with augmentation |
+| **Whisper small (zero-shot) + phrase matching** | TBD | TBD | TBD | TBD | General-purpose speech-to-text, no training |
 
 **Hypotheses** (fixed before testing; reported whether or not they hold):
 
@@ -117,6 +125,7 @@ The results will be filled in after the experiments in Weeks 3–5. **Nothing be
 | H2 | Traditional models lose more accuracy than wav2vec 2.0 when moving from seen to unseen speakers |
 | H3 | White-noise augmentation improves accuracy on noisy audio without hurting clean accuracy |
 | H4 | Longer fine-tuning has diminishing returns (8 → 15 epochs gains less than 3 → 8) |
+| H5 | Zero-shot Whisper makes the most errors on Bangladeshi names and places, where fine-tuned wav2vec 2.0 beats it |
 
 **Planned figures:**
 * Combined results table (`images/all_results_table.png`)
@@ -130,7 +139,7 @@ The results will be filled in after the experiments in Weeks 3–5. **Nothing be
 - Week 1: Planning, repository setup, phrase list, recording tool and pilot recordings.
 - Week 2: Dataset collection from 10 speakers, quality control and data splits.
 - Week 3: MFCC features and traditional ML models (k-NN, SVM, Random Forest, XGBoost).
-- Week 4: wav2vec 2.0: untrained baseline and fine-tuning for 3, 8 and 15 epochs with white noise.
+- Week 4: wav2vec 2.0: untrained baseline and fine-tuning for 3, 8 and 15 epochs with white noise; Whisper zero-shot speech-to-text.
 - Week 5: Combined results, seen vs unseen speakers, noise tests, error analysis, inference script and demo.
 - Week 6: Report, slides, demo video, poster and final polish.
 
@@ -150,6 +159,7 @@ Voices-Speech-Recognition-445/
 |   |-- config.py, audio.py, dataset.py, features.py      data pipeline
 |   |-- classical.py          k-NN / SVM / Random Forest / XGBoost runner
 |   |-- train_wav2vec2.py     fine-tuning (--epochs, --noise, --split)
+|   |-- whisper_asr.py        zero-shot Whisper speech-to-text + phrase matching
 |   |-- evaluate.py           one evaluation script for every model
 |   |-- metrics.py, stats.py, results_table.py
 |   `-- visualization.py      confusion matrices and charts
@@ -203,13 +213,14 @@ Run every command from the repository root. Scripts in `support/` and `tools/` a
 | `python -m support.classical --model svm --split folds` | Train and evaluate a traditional model | Week 3 |
 | `python -m support.train_wav2vec2 --epochs 15 --noise white --split folds` | Fine-tune wav2vec 2.0 | Week 4 |
 | `python -m support.evaluate --run w2v2_15ep_noise` | Accuracy, F1, confusion matrix for one run | Week 4 |
+| `python -m support.whisper_asr --model small --split folds` | Zero-shot Whisper: transcripts, WER and the matched phrase | Week 4 |
 | `python main.py --audio clip.wav` | Predict the phrase in an audio file (also `--video`, `--mic`) | Week 5 |
 | `python app.py` | Live microphone demo (Gradio) | Week 5 |
 
 ---
 
 ## 🔮 Future Work
-* **Open-vocabulary recognition:** move from 50 known phrases to free speech-to-text with Whisper or wav2vec 2.0 CTC.
+* **Fine-tuned speech-to-text:** fine-tune Whisper (or wav2vec 2.0 with CTC) on TenVoices to fix its errors on local names, and move fully from 50 known phrases to free speech-to-text.
 * **Stronger models:** compare with WavLM and XLS-R, which are pre-trained on more varied speech.
 * **Bangla phrases:** add Bangla and mixed Bangla–English phrases to TenVoices.
 * **More speakers and devices:** grow beyond 10 speakers and measure how results scale.

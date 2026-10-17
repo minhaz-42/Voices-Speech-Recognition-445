@@ -6,12 +6,13 @@ Guide for Claude Code in the **TenVoices** repository. Every team member works t
 
 TenVoices is a university project (North South University). We build a **speech recognition system** that recognises which of **50 phrases** was spoken, and evaluate it on **TenVoices**, a dataset we record ourselves: 10 speakers × 50 phrases × 3 repetitions, plus 10 noisy takes each (~1,600 clips).
 
-We compare three stages:
+We compare four stages:
 1. Traditional ML: MFCC features + k-NN / SVM / Random Forest / XGBoost.
 2. Baseline: wav2vec 2.0 with an untrained classification head.
 3. Our approach: wav2vec 2.0 fine-tuned for 3 / 8 / 15 epochs with white-noise augmentation.
+4. Open-vocabulary pipeline: Whisper speech-to-text, zero-shot; the transcript is matched to the nearest phrase.
 
-Every model is reported on a random 80/20 split and with speaker-independent 5-fold cross-validation (the headline). Metrics: accuracy, macro F1, weighted F1 and confusion matrices.
+Every model is reported on a random 80/20 split and with speaker-independent 5-fold cross-validation (the headline). Metrics: accuracy, macro F1, weighted F1 and confusion matrices, plus word error rate for Whisper.
 
 Repository: https://github.com/minhaz-42/Voices-Speech-Recognition-445 (we work on `main`).
 
