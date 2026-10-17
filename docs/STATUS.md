@@ -6,7 +6,7 @@
 **Nobody waits for anyone.** Every member task below depends only on work that is already merged (shared code ✅, TenVoices-FSC subsets and splits ✅) or on the member's own earlier tasks. Work that needs everyone's results is split: members write and test the code; the lead runs it once on all merged results at the end (T24). TenVoices-L2 is prepared and run by the lead (T47).
 
 **Current phase:** every member can start all of their tasks now, on TenVoices-FSC.
-**Next up:** M2 · Rabbi: T12, T16, T44, T09 · M3 · Mahir: T10, T33, T37, T13, T17, T45 · M4 · Shafil: T35, T38, T39, T14, T18, T46 · M1 · Tanvir: T11 (Random Forest), T30, T15 / T19 runs, 👤 L2-ARCTIC form (T47)
+**Next up:** M2 · Rabbi: T12, T16, T44, T09 · M3 · Mahir: T10, T33, T37, T13, T17, T45 · M4 · Shafil: T35, T38, T39, T14, T18, T46 · M1 · Tanvir: wav2vec 2.0 runs (T15, T19, running), Whisper and the other L2 runs (T47). Both datasets are ready; nothing is waiting for a form any more.
 **Last updated:** 2026-10-17 by Tanvir Ahmed (M1)
 
 ## 👥 Team
@@ -86,7 +86,7 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 | T19 | **wav2vec 2.0, 15 epochs without noise** (H3 ablation) → `results/w2v2_15ep/fsc/` | — | ⬜ | |
 | T21 | Noise tests at 20 / 10 / 5 dB for T15 and T19 (and every merged run) → `results/noise/`; H3 | T15, T19 | 🟡 code ✅ | |
 | T22 | `main.py`, inference, CI ✅; inference-time benchmark with the T15 model | T15 | 🟡 code ✅ | |
-| T47 | **TenVoices-L2:** 👤 request L2-ARCTIC (form), download, select, QC, splits; run every merged model's command on L2; Whisper per first language; H5 | — | ⬜ | |
+| T47 | **TenVoices-L2:** data from a free copy of L2-ARCTIC (no form) ✅: 10 speakers × 50 sentences = 500 clips, QC 500 / 500, splits (each fold holds out one first language); Random Forest ✅; next: Whisper, the wav2vec 2.0 runs and every merged model on L2; H5 | — | 🟡 data ✅ | Tanvir · 2026-10-17 (data) |
 
 ### At the end (needs everyone's merged work)
 
@@ -116,6 +116,14 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 | T02, T04–T07, T31, T32 | Recorder, pilot, recording sessions, recording QC | We use published datasets (2026-10-17) |
 
 ## 📝 Handoff Log (newest first)
+
+### 2026-10-17 · Tanvir Ahmed (M1) · T47 (TenVoices-L2 without the form)
+
+- **Done:** TenVoices-L2 now comes from a free Hugging Face copy of L2-ARCTIC (`NathanRoll/l2-arctic-dataset`: 15 of the 24 speakers × the same 150 prompts, original 44.1 kHz WAV). Its transcripts match the CMU ARCTIC prompt list (2,183 / 2,250 identical, the rest spelling variants or actual readings), and its speaker labels match the corpus table (`data/SOURCES.md`). `support/l2arctic_from_hf.py` unpacks it into the corpus layout, so the selection code is unchanged.
+- **Design change (before any L2 model was trained):** the copy lacks some planned speakers (it has one Arabic speaker and only one female Hindi speaker), so TenVoices-L2 is now one female and one male for each of **Hindi, Mandarin, Spanish, Korean, Vietnamese**: TNI/ASI, LXC/BWC, NJS/EBVS, HJK/YKWK, PNV/HQTV. **Every fold now holds out one whole first language** (before: 3 of 5). H5 is unchanged. Updated: `configs/config.yaml`, `docs/DATASETS.md` (M2's file; noted on Rabbi's page), `docs/PROJECT_PLAN.md`, `README.md`, the T10 card on Mahir's page.
+- **Data:** 500 clips (10 speakers × 50 sentences), 25.9 min of speech; QC 500 / 500 pass; random split 360 / 40 / 100 and 5 folds in `data/splits/l2arctic/`.
+- **Random Forest on L2:** random split 0.090, unseen speakers 0.170 ± 0.025 (`results/random_forest/l2arctic/summary.json`). Seen speakers score *lower* here: each L2 speaker reads each sentence once, so in the random split the speaker's voice pulls the MFCC model towards that speaker's other sentences (stable over 5 seeds: 0.08–0.11). Evidence for H2's "depends on the speaker".
+- **Tests:** 135 pass (the synthetic L2 fixtures follow the new design; `tests/test_l2arctic_from_hf.py` is new).
 
 ### 2026-10-17 · Tanvir Ahmed (M1) · T00 (simpler layout, one page per member)
 

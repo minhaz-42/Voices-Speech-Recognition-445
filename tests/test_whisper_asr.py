@@ -203,8 +203,8 @@ class TestRunSplits(unittest.TestCase):
             self.assertTrue(summary["zero_shot"])
             root = tmp / "results" / "whisper_fake" / "l2arctic"
             per_l1 = pd.read_csv(root / "wer_per_l1.csv")
-            self.assertEqual(sorted(per_l1["l1"]), ["Arabic", "Hindi", "Mandarin", "Spanish"])
-            self.assertEqual(int(per_l1.loc[per_l1["l1"] == "Hindi", "n"].iloc[0]), 12)
+            self.assertEqual(sorted(per_l1["l1"]), ["Hindi", "Korean", "Mandarin", "Spanish", "Vietnamese"])
+            self.assertEqual(int(per_l1.loc[per_l1["l1"] == "Hindi", "n"].iloc[0]), 6)  # 2 speakers x 3 phrases
             per_spk = pd.read_csv(root / "wer_per_speaker.csv")
             self.assertEqual(len(per_spk), 10)
             preds = pd.read_csv(root / "predictions_fold1.csv")

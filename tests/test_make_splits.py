@@ -57,7 +57,7 @@ class TestSpeakerFolds(unittest.TestCase):
         ms.check_folds(folds, speakers, fold_by_l1=True)
         l1 = {s: lang for s, _, lang in L2_SPEAKERS}
         self.assertEqual([l1[f.test[0]] for f in folds.itertuples()],
-                         ["Hindi", "Hindi", "Arabic", "Mandarin", "Spanish"])
+                         ["Hindi", "Mandarin", "Spanish", "Korean", "Vietnamese"])  # each fold holds out a language
 
     def test_unbalanced_genders_raise(self):
         speakers = speakers_of(make_subset("fsc", n_phrases=1))
@@ -67,7 +67,7 @@ class TestSpeakerFolds(unittest.TestCase):
 
     def test_language_group_that_cannot_be_paired_raises(self):
         speakers = speakers_of(make_subset("l2arctic", n_phrases=1, takes=1))
-        speakers.loc[speakers["speaker_id"] == "ABA", "l1"] = "Mandarin"  # Arabic: 1 F, Mandarin: 1 F + 2 M
+        speakers.loc[speakers["speaker_id"] == "HQTV", "l1"] = "Korean"  # Vietnamese: 1 F, Korean: 1 F + 2 M
         with self.assertRaises(ValueError):
             ms.speaker_folds(speakers, fold_by_l1=True, l1_order=L1_ORDER)
 

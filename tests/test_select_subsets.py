@@ -119,7 +119,7 @@ class TestSelectL2(unittest.TestCase):
                         continue                                    # one speaker lacks a prompt
                     write_tone(raw / spk / "wav" / f"{pid}.wav", 0.6, sr=44100, seed=n)
                     (raw / spk / "transcript").mkdir(parents=True, exist_ok=True)
-                    changed = "a different sentence" if (spk == "ABA" and pid == "arctic_a0007") else text
+                    changed = "a different sentence" if (spk == "NJS" and pid == "arctic_a0007") else text
                     (raw / spk / "transcript" / f"{pid}.txt").write_text(changed + "\n")
             cfg = base_config(tmp)
             cfg["datasets"]["l2arctic"]["n_phrases"] = 3

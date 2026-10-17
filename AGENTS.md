@@ -134,7 +134,7 @@ Small result tables (CSV/JSON under 1 MB) go in `results/` and **are** committed
 - Pre-process one clip: `python -m support.audio clip.wav [--out clip_16k.wav] [--no-pad]`
 - Whisper on clips: `python -m support.whisper_asr clip.wav [...]`; on a clip list: `python -m support.whisper_asr --list clips.csv --out <folder>` (columns `utt_id, path, phrase_id[, speaker_id]`)
 - Run any model on TenVoices-FSC (get the audio, build, run, commit): [docs/RUNS.md](docs/RUNS.md)
-- Data preparation (M1): `python -m support.select_subsets --dataset fsc` → `python -m support.qc_report --dataset fsc` → `python -m support.dataset --dataset fsc --build` → `python -m support.make_splits --dataset fsc`
+- Data preparation (M1): `python -m support.select_subsets --dataset fsc` → `python -m support.qc_report --dataset fsc` → `python -m support.dataset --dataset fsc --build` → `python -m support.make_splits --dataset fsc` (for TenVoices-L2, first unpack the free copy: `python -m support.l2arctic_from_hf`)
 - Other self-supervised models: `python -m support.train_wav2vec2 --dataset fsc --model microsoft/wavlm-base-plus --epochs 15 --noise white` (run name from the model) · linear probe: `python -m support.classical --model logreg --features w2v2 --run w2v2_probe --dataset fsc`
 - Traditional model: `python -m support.classical --dataset fsc --model random_forest [--split all|folds|random|foldN]`
 - wav2vec 2.0: `python -m support.train_wav2vec2 --dataset fsc --epochs 15 --noise white [--split …] [--limit 40]`; baseline: `--untrained`; Colab: `notebooks/train_wav2vec2.ipynb`

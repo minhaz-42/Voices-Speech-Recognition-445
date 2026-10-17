@@ -31,10 +31,10 @@ datasets:
     raw: data/raw/l2arctic
     phrases: data/prompts/l2arctic_sentences.csv
     subset: data/subsets/l2arctic.csv
-    speakers: [ASI, RRBI, SVBI, TNI, ABA, SKA, BWC, LXC, EBVS, NJS]   # Hindi ×4, Arabic, Mandarin, Spanish
+    speakers: [TNI, ASI, LXC, BWC, NJS, EBVS, HJK, YKWK, PNV, HQTV]   # (F, M) of Hindi, Mandarin, Spanish, Korean, Vietnamese
     n_phrases: 50
     takes: 1
-    fold_by_l1: true      # the two test speakers of a fold share a first language; folds follow the order above
+    fold_by_l1: true      # each fold tests one first language (1 F + 1 M) never heard in training; folds follow the order above
 
 # Random split and speaker-independent folds (support/make_splits.py, T08)
 splits:

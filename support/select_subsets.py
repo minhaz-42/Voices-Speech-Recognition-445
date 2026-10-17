@@ -42,10 +42,15 @@ from support.dataset import SUBSET_COLUMNS, dataset_config, sha256_file
 FSC_ROOT = "fluent_speech_commands_dataset"
 FSC_RATE, L2_RATE = 16000, 44100
 MIN_S, MAX_S = 0.5, 6.0
-L2_SPEAKERS = {  # speaker: (gender, first language), the fixed TenVoices-L2 design (DATASETS.md §2)
+L2_SPEAKERS = {  # speaker: (gender, first language), from the L2-ARCTIC speaker table (DATASETS.md §2)
     "ASI": ("male", "Hindi"), "RRBI": ("male", "Hindi"), "SVBI": ("female", "Hindi"), "TNI": ("female", "Hindi"),
-    "ABA": ("male", "Arabic"), "SKA": ("female", "Arabic"), "BWC": ("male", "Mandarin"),
-    "LXC": ("female", "Mandarin"), "EBVS": ("male", "Spanish"), "NJS": ("female", "Spanish"),
+    "ABA": ("male", "Arabic"), "SKA": ("female", "Arabic"), "YBAA": ("male", "Arabic"), "ZHAA": ("female", "Arabic"),
+    "BWC": ("male", "Mandarin"), "LXC": ("female", "Mandarin"), "NCC": ("female", "Mandarin"),
+    "TXHC": ("male", "Mandarin"), "EBVS": ("male", "Spanish"), "ERMS": ("male", "Spanish"),
+    "MBMPS": ("female", "Spanish"), "NJS": ("female", "Spanish"), "HJK": ("female", "Korean"),
+    "HKK": ("male", "Korean"), "YDCK": ("female", "Korean"), "YKWK": ("male", "Korean"),
+    "HQTV": ("male", "Vietnamese"), "PNV": ("female", "Vietnamese"), "THV": ("female", "Vietnamese"),
+    "TLV": ("male", "Vietnamese"),
 }
 
 

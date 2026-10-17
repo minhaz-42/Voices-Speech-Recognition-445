@@ -1,0 +1,20 @@
+{
+  "dataset": "l2arctic",
+  "n": 500,
+  "pass": 500,
+  "flag": 0,
+  "replace": 0,
+  "pass_rate": 1.0,
+  "flags": {},
+  "listen_check_clips": 50,
+  "limits": {
+    "min_s": 0.5,
+    "max_s": 6.0,
+    "clip_dbfs": -0.5,
+    "silence_s": 2.0,
+    "snr_db": 15.0,
+    "listen_share": 0.1
+  },
+  "snr_db_median": 26.05,
+  "peak_dbfs_max": -1.0
+}

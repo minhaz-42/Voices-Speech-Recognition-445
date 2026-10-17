@@ -16,7 +16,9 @@ On this page: [My tasks](#my-tasks) · [Faculty update](#faculty-update) · [Tas
 
 ## Start here (from Tanvir, 2026-10-17)
 
-**What changed since you last worked:** we no longer record our own speakers. TenVoices is now two 10-speaker subsets of published datasets ([docs/DATASETS.md](../DATASETS.md), which you own). The recorder you started (T02) was cancelled; your `support/phrases.py` and its tests are kept and count as done. Tanvir has already downloaded, selected, checked and split **TenVoices-FSC**, so everything your tasks need is on `main` and **nothing you do waits for anyone**. Your tasks are in **My tasks** below, and the exact card for each one is in **Task cards** at the end of this page.
+**What changed since you last worked:** we no longer record our own speakers. TenVoices is now two 10-speaker subsets of published datasets ([docs/DATASETS.md](../DATASETS.md), which you own). The recorder you started (T02) was cancelled; your `support/phrases.py` and its tests are kept and count as done. Tanvir has already downloaded, selected, checked and split **TenVoices-FSC**, so everything your tasks need is on `main` and **nothing you do waits for anyone**.
+
+**Update (2026-10-17, evening):** **TenVoices-L2** is also selected, checked and split, from a free copy of L2-ARCTIC (no form; `data/SOURCES.md`). Tanvir updated your `docs/DATASETS.md` for it (§1 access and §2 speakers: one female and one male each with Hindi, Mandarin, Spanish, Korean and Vietnamese). The datasheet (T09) can cover both subsets; the L2 listen-check clips are marked in `data/subsets/qc_l2arctic.csv`. Your tasks are in **My tasks** below, and the exact card for each one is in **Task cards** at the end of this page.
 
 ### First-time setup (once)
 

@@ -12,12 +12,12 @@ import soundfile as sf
 from support.config import load_config
 from support.dataset import SUBSET_COLUMNS, sha256_file
 
-L2_SPEAKERS = [  # speaker, gender, first language (the fixed TenVoices-L2 design)
-    ("ASI", "M", "Hindi"), ("RRBI", "M", "Hindi"), ("SVBI", "F", "Hindi"), ("TNI", "F", "Hindi"),
-    ("ABA", "M", "Arabic"), ("SKA", "F", "Arabic"), ("BWC", "M", "Mandarin"), ("LXC", "F", "Mandarin"),
-    ("EBVS", "M", "Spanish"), ("NJS", "F", "Spanish"),
+L2_SPEAKERS = [  # speaker, gender, first language (the TenVoices-L2 design: 1 F + 1 M per language)
+    ("TNI", "F", "Hindi"), ("ASI", "M", "Hindi"), ("LXC", "F", "Mandarin"), ("BWC", "M", "Mandarin"),
+    ("NJS", "F", "Spanish"), ("EBVS", "M", "Spanish"), ("HJK", "F", "Korean"), ("YKWK", "M", "Korean"),
+    ("PNV", "F", "Vietnamese"), ("HQTV", "M", "Vietnamese"),
 ]
-L1_ORDER = ["Hindi", "Arabic", "Mandarin", "Spanish"]
+L1_ORDER = ["Hindi", "Mandarin", "Spanish", "Korean", "Vietnamese"]
 
 
 def fsc_speakers() -> list[tuple[str, str, str]]:

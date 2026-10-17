@@ -25,9 +25,23 @@ Where the source audio of TenVoices came from, so anyone can check they have exa
 
 248 distinct transcriptions and 31 intents (action, object, location), as in the paper. `speaker_demographics.csv` has 101 rows with `speakerId`, gender, first language, fluency and age range.
 
-## L2-ARCTIC v5.0 → `data/raw/l2arctic/`
+## L2-ARCTIC → `data/raw/l2arctic/`
 
-**Not downloaded yet.** The publisher's page ([psi.engr.tamu.edu/l2-arctic-corpus](https://psi.engr.tamu.edu/l2-arctic-corpus/)) needs a form with a person's name, email and affiliation; the download link arrives by email. A team member fills it in (task T41, 👤), then this section gets the same table as above.
+| | |
+|---|---|
+| Downloaded | 2026-10-17 by Tanvir Ahmed (M1), task T47 |
+| Source used | A free Hugging Face copy, [`NathanRoll/l2-arctic-dataset`](https://huggingface.co/datasets/NathanRoll/l2-arctic-dataset) (not gated, no form) |
+| Files | `https://huggingface.co/datasets/NathanRoll/l2-arctic-dataset/resolve/main/data/train-00000-of-00002.parquet` (349 MB, SHA-256 `0475980d781735898822a76f71a8f5e1b848a24e699aed4d530541d587af3e69`) and `…/train-00001-of-00002.parquet` (364 MB, SHA-256 `a5db0202bcecd3b285e1dd47f8551f2dfc57f63c9d4076b98198c8f7a402120b`), saved in `data/raw/l2arctic_hf/` |
+| Why this copy | The publisher's download ([psi.engr.tamu.edu/l2-arctic-corpus](https://psi.engr.tamu.edu/l2-arctic-corpus/)) needs a form with a person's name, email and affiliation and an emailed link; this copy is available at once |
+| Licence | CC BY-NC 4.0 (the corpus's licence, which allows sharing unmodified copies for non-commercial use) |
+| Contents | 15 of the corpus's 24 speakers (Arabic ZHAA; Hindi ASI, RRBI, TNI; Korean HJK, YKWK; Mandarin BWC, LXC, NCC; Spanish EBVS, ERMS, MBMPS, NJS; Vietnamese HQTV, PNV), each with the same 150 prompts `arctic_a0001` … `arctic_a0150`; 2,250 clips, 2.2 h; the **original 44.1 kHz WAV files** stored as bytes (every clip starts with a `RIFF` header) |
+| Unpacked with | `python -m support.l2arctic_from_hf` → `data/raw/l2arctic/<SPK>/wav/arctic_<id>.wav` (bytes unchanged) and `…/transcript/arctic_<id>.txt` |
+
+**Checks, all passed:**
+
+- **Transcripts:** compared with the official CMU ARCTIC prompt list (`http://www.festvox.org/cmu_arctic/cmuarctic.data`) after lower-casing and removing punctuation: 2,183 of 2,250 identical. The others are spelling variants ("rifle shot" for "rifle-shot") or the speaker's actual reading ("and etc"). The selection only keeps prompts whose text is identical for all 10 speakers.
+- **Speakers:** the copy's first-language and gender labels are consistent for every speaker and match the published L2-ARCTIC speaker table.
+- **Audio:** 44.1 kHz WAV for every clip; the selection and QC reread every selected file (`data/subsets/qc_l2arctic.csv`: 500 / 500 clips pass).
 
 ## Team Drive
 

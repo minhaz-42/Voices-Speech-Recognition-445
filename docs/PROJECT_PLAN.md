@@ -94,7 +94,7 @@ Sources, licences, download steps, folder layout and the exact selection and QC 
 | Source | *Fluent Speech Commands* (Lugosch et al., Interspeech 2019) | *L2-ARCTIC* v5 (Zhao et al., Interspeech 2018) |
 | Source size | 30,043 clips, 97 speakers, 248 phrasings of 31 intents, 19 hours, 16 kHz mono | 24 non-native speakers (6 first languages × 2 F + 2 M), about 1 hour each, 44.1 kHz |
 | What speakers say | Smart-home commands ("put on the music", "turn up the heat in the kitchen"); each speaker was recorded saying each phrasing twice | The same CMU ARCTIC prompt sentences, read once by every speaker |
-| Our 10 speakers | 5 female, 5 male, chosen by script from the dataset's demographics file | Hindi: ASI (M), RRBI (M), SVBI (F), TNI (F) · Arabic: ABA (M), SKA (F) · Mandarin: BWC (M), LXC (F) · Spanish: EBVS (M), NJS (F) |
+| Our 10 speakers | 5 female, 5 male, chosen by script from the dataset's demographics file | Hindi: TNI (F), ASI (M) · Mandarin: LXC (F), BWC (M) · Spanish: NJS (F), EBVS (M) · Korean: HJK (F), YKWK (M) · Vietnamese: PNV (F), HQTV (M) |
 | Our 50 classes | The 50 phrasings recorded twice by the most speakers | 50 sentences read by all 10 speakers, drawn with seed 42 |
 | Takes per speaker and class | 2 | 1 |
 | Clips | up to **1,000** (the datasheet reports the exact number) | **500** |
@@ -102,7 +102,7 @@ Sources, licences, download steps, folder layout and the exact selection and QC 
 
 - **Selection is code, not hand-picking:** `support/select_subsets.py` (task T42) applies the rules in DATASETS.md with seed 42 and writes the subset lists to `data/subsets/`, so anyone with the source data gets the same clips.
 - **Every clip is checked** (task T43): readable, 0.5–6 s after trimming, no clipping. A clip that fails is replaced by the next eligible one under the same rule.
-- **Hindi speakers.** L2-ARCTIC has no Bangla-L1 speakers; its four Hindi-L1 speakers are the closest accent to Bangladeshi English in the corpus, so all four are included.
+- **Accents.** L2-ARCTIC has no Bangla-L1 speakers; Hindi is its closest accent to Bangladeshi English. TenVoices-L2 uses a free copy of the corpus (15 of its 24 speakers, `data/SOURCES.md`), so it has one female and one male for each of five first languages: Hindi, Mandarin, Spanish, Korean and Vietnamese.
 
 ---
 
@@ -189,7 +189,7 @@ Every experiment runs on both datasets unless the setup says otherwise.
 | E6 | Where are the errors? | Most-confused phrase pairs (e.g. two wordings of one request, or commands that differ in one word), accuracy per phrase and per intent | Confusion analysis | M3 | 5 | Must |
 | E7 | Is it practical? | Inference time per clip on laptop CPU vs GPU; model size | ms per clip, MB | M1 | 5 | Should |
 | E8 | How good is general-purpose speech-to-text without training? | Whisper small, zero-shot, + phrase matching on the test clips of both splits | Accuracy, F1, WER, CER per speaker and dataset | M1 | 4 | Should |
-| E9 | Do accents matter? | TenVoices-L2 only: accuracy and Whisper WER per first language; folds 3–5 hold out a whole first language | Per-L1 accuracy and WER | M3 | 5 | Should |
+| E9 | Do accents matter? | TenVoices-L2 only: accuracy and Whisper WER per first language; every fold holds out a whole first language | Per-L1 accuracy and WER | M3 | 5 | Should |
 | E10 | Do other self-supervised models or frozen features do as well? | WavLM Base+ (M2), HuBERT Base (M3), 15 epochs + noise; linear probe on frozen wav2vec 2.0 (M4); compared with wav2vec 2.0 15 epochs + noise | Same; McNemar (exploratory) | M2–M4 | 4 | Should |
 
 ---
@@ -202,7 +202,7 @@ Applied to each dataset separately.
 - **Speaker-independent CV (unseen speakers, the headline).**
   - 5 folds, each with 2 test speakers (one female and one male), 1 validation speaker and 7 training speakers.
   - Every speaker is a test speaker exactly once. Splits are saved in `data/splits/<dataset>/`.
-  - On TenVoices-L2 the two test speakers of a fold share a first language: folds 1–2 test the four Hindi speakers, and folds 3–5 test Arabic, Mandarin and Spanish, accents the model has never heard in training.
+  - On TenVoices-L2 the two test speakers of a fold share a first language, so each fold tests an accent the model has never heard in training: fold 1 Hindi, 2 Mandarin, 3 Spanish, 4 Korean, 5 Vietnamese. (Changed on 2026-10-17, before any L2 model was trained: the free copy of the corpus lacks some of the speakers first planned.)
 - **Noisy tests.** White noise added to the clean test clips at 20 / 10 / 5 dB SNR.
 - **Whisper (zero-shot)** uses no training data. It is scored on exactly the same test clips as the other models, so its results sit in the same tables.
 - **Metrics:**

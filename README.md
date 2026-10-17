@@ -55,10 +55,10 @@ We do not record our own audio (the instructor confirmed that published data mee
 | :--- | :--- | :--- |
 | **Source** | [Fluent Speech Commands](https://fluent.ai/research/fluent-speech-commands/) (Lugosch et al., Interspeech 2019) | [L2-ARCTIC](https://psi.engr.tamu.edu/l2-arctic-corpus/) v5.0 (Zhao et al., Interspeech 2018) |
 | **What is said** | Smart-home commands, e.g. "turn on the lights", "put on the music", "turn up the heat in the kitchen" | Read sentences from the CMU ARCTIC prompts |
-| **Speakers** | 10 of the 97, chosen by script | 10 non-native speakers: the 4 Hindi-L1 speakers, plus a female and a male each with Arabic, Mandarin and Spanish as first language |
+| **Speakers** | 10 of the 97, chosen by script | 10 non-native speakers: a female and a male each with Hindi, Mandarin, Spanish, Korean and Vietnamese as first language |
 | **Classes** | 50 commands; many share most of their words | 50 sentences read by all 10 speakers |
 | **Clips** | 1,000 (2 takes per speaker and command); 997 pass every quality check | 500 (1 per speaker and sentence) |
-| **Status** | ✅ selected, checked and split | ⬜ waiting for the download form (task T47) |
+| **Status** | ✅ selected, checked and split | ✅ selected, checked and split (from a free copy of the corpus, `data/SOURCES.md`) |
 | **Licence** | CC BY-NC-ND 4.0, academic research only | CC BY-NC 4.0 |
 
 The audio is not in this repository: we publish the subset lists, the selection script and checksums. Sources, download steps and selection rules: [docs/DATASETS.md](docs/DATASETS.md) · datasheet: [data/README.md](data/README.md)

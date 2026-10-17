@@ -11,7 +11,7 @@ TenVoices is two 10-speaker subsets of published datasets, selected by script:
 | Paper | Lugosch et al., Interspeech 2019, [arXiv:1904.03670](https://arxiv.org/abs/1904.03670) | Zhao et al., Interspeech 2018, [doi:10.21437/Interspeech.2018-1110](https://doi.org/10.21437/Interspeech.2018-1110) |
 | Official page | [fluent.ai/research/fluent-speech-commands](https://fluent.ai/research/fluent-speech-commands/) | [psi.engr.tamu.edu/l2-arctic-corpus](https://psi.engr.tamu.edu/l2-arctic-corpus/) |
 | Licence | CC BY-NC-ND 4.0, academic research only | CC BY-NC 4.0 |
-| Source size | 30,043 clips, 97 speakers, 248 phrasings, 31 intents, 19 h; splits 77 / 10 / 10 speakers | 24 speakers, 6 first languages × (2 F + 2 M), ~1,132 prompts each |
+| Source size | 30,043 clips, 97 speakers, 248 phrasings, 31 intents, 19 h; splits 77 / 10 / 10 speakers | 24 speakers, 6 first languages × (2 F + 2 M), ~1,132 prompts each; the free copy we use: 15 of the speakers × the same 150 prompts |
 | Audio | 16 kHz mono WAV | 44.1 kHz WAV |
 | Our subset | 10 speakers (5 F, 5 M) × 50 phrases × 2 takes, up to 1,000 clips | 10 speakers (5 F, 5 M) × 50 sentences × 1 take, 500 clips |
 
@@ -23,8 +23,8 @@ TenVoices is two 10-speaker subsets of published datasets, selected by script:
 3. Extract it into `data/raw/fsc/`, keeping the archive's own folders (`fluent_speech_commands_dataset/wavs/…`, `…/data/*.csv`, including the speaker demographics file).
 
 **L2-ARCTIC**
-1. Fill in the download form on the official page (name, email, affiliation, licence box). The download link arrives by email.
-2. Download v5.0 and extract the speaker folders into `data/raw/l2arctic/` (`data/raw/l2arctic/<SPK>/wav/…`, `…/transcript/…`). Only the 10 speakers below are needed, but keep the archive as it is.
+1. **Free copy (used, no form):** download the two parquet files of the Hugging Face dataset [`NathanRoll/l2-arctic-dataset`](https://huggingface.co/datasets/NathanRoll/l2-arctic-dataset) into `data/raw/l2arctic_hf/` (URLs and SHA-256 in [data/SOURCES.md](../data/SOURCES.md)), then run `python -m support.l2arctic_from_hf`. It writes the corpus's own layout, `data/raw/l2arctic/<SPK>/wav/arctic_<id>.wav` (the original 44.1 kHz bytes) and `…/transcript/arctic_<id>.txt`. The copy holds 15 of the 24 speakers, all with the same 150 prompts; its transcripts were checked against the CMU ARCTIC prompt list.
+2. *Alternative:* the full v5.0 from the publisher's page needs a form (name, email, affiliation); extract it into the same layout. The selection rules below work with either.
 
 **For both**
 - Upload the original archives to the private team Drive, `TenVoices/raw/fsc/` and `TenVoices/raw/l2arctic/`, so other members do not need to request access themselves. Both licences allow sharing unmodified copies for non-commercial use; never share them publicly.
@@ -47,7 +47,7 @@ TenVoices is two 10-speaker subsets of published datasets, selected by script:
 5. **Category:** the intent's *action* (e.g. `activate`, `decrease`), for per-intent error analysis.
 
 **TenVoices-L2**
-1. **Speakers (fixed):** Hindi ASI (M), RRBI (M), SVBI (F), TNI (F) · Arabic ABA (M), SKA (F) · Mandarin BWC (M), LXC (F) · Spanish EBVS (M), NJS (F). All four Hindi speakers are included because Hindi is the corpus's closest accent to Bangladeshi English; the other three languages add one female and one male each.
+1. **Speakers (fixed, 2026-10-17):** Hindi: TNI (F), ASI (M) · Mandarin: LXC (F), BWC (M) · Spanish: NJS (F), EBVS (M) · Korean: HJK (F), YKWK (M) · Vietnamese: PNV (F), HQTV (M). One female and one male for each of the five first languages that have both in the free copy (its only Arabic speaker is female). Hindi is the corpus's closest accent to Bangladeshi English. Every speaker-independent fold tests one first language that the model never hears in training.
 2. **Sentences:** the prompt IDs (e.g. `arctic_a0001`) that all 10 speakers have, with identical transcript text and an eligible clip for every speaker. Sort them, then draw 50 with `numpy.random.default_rng(42)`.
 3. **Phrase IDs:** the prompt IDs themselves. **Category:** `sentence`.
 4. **Clips:** one per speaker and sentence, 500 in total.
