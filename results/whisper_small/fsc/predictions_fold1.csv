@@ -1,0 +1,201 @@
+utt_id,speaker_id,l1,label,pred,transcript,wer,cer,match_wer,rejected
+fsc_W4XOzzNEbrtZz4dW_FSC01_t1,W4XOzzNEbrtZz4dW,English (United States),FSC01,FSC01,Bring my shoes.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC01_t2,W4XOzzNEbrtZz4dW,English (United States),FSC01,FSC01,Bring my shoes.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC02_t1,W4XOzzNEbrtZz4dW,English (United States),FSC02,FSC02,Change the language.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC02_t2,W4XOzzNEbrtZz4dW,English (United States),FSC02,FSC02,Change the language.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC03_t1,W4XOzzNEbrtZz4dW,English (United States),FSC03,FSC03,decrease the temperature in the bedroom.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC03_t2,W4XOzzNEbrtZz4dW,English (United States),FSC03,FSC03,Decrease the temperature in the bedroom.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC04_t1,W4XOzzNEbrtZz4dW,English (United States),FSC04,FSC04,Heat down.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC04_t2,W4XOzzNEbrtZz4dW,English (United States),FSC04,FSC04,Heat down.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC05_t1,W4XOzzNEbrtZz4dW,English (United States),FSC05,FSC05,Increase the heating.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC05_t2,W4XOzzNEbrtZz4dW,English (United States),FSC05,FSC05,Increase the heating.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC06_t1,W4XOzzNEbrtZz4dW,English (United States),FSC06,FSC06,increase the heating in the bathroom.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC06_t2,W4XOzzNEbrtZz4dW,English (United States),FSC06,FSC06,Increase the heating in the bathroom.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC07_t1,W4XOzzNEbrtZz4dW,English (United States),FSC07,FSC07,increase the heating in the kitchen.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC07_t2,W4XOzzNEbrtZz4dW,English (United States),FSC07,FSC07,Increase the heating in the kitchen.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC08_t1,W4XOzzNEbrtZz4dW,English (United States),FSC08,FSC08,Increase the heating in the washroom.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC08_t2,W4XOzzNEbrtZz4dW,English (United States),FSC08,FSC08,Increase the heating in the washroom.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC09_t1,W4XOzzNEbrtZz4dW,English (United States),FSC09,FSC09,increase the temperature.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC09_t2,W4XOzzNEbrtZz4dW,English (United States),FSC09,FSC09,increase the temperature.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC10_t1,W4XOzzNEbrtZz4dW,English (United States),FSC10,FSC10,increase the temperature in the bathroom.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC10_t2,W4XOzzNEbrtZz4dW,English (United States),FSC10,FSC10,increase the temperature in the bathroom.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC11_t1,W4XOzzNEbrtZz4dW,English (United States),FSC11,FSC11,increase the temperature in the bedroom.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC11_t2,W4XOzzNEbrtZz4dW,English (United States),FSC11,FSC11,increase the temperature in the bedroom.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC12_t1,W4XOzzNEbrtZz4dW,English (United States),FSC12,FSC12,Increase the temperature in the washroom.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC12_t2,W4XOzzNEbrtZz4dW,English (United States),FSC12,FSC12,increase the temperature in the washroom.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC13_t1,W4XOzzNEbrtZz4dW,English (United States),FSC13,FSC13,Kitchen lights on.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC13_t2,W4XOzzNEbrtZz4dW,English (United States),FSC13,FSC13,Kitchen lights on.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC14_t1,W4XOzzNEbrtZz4dW,English (United States),FSC14,FSC14,Lamp off.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC14_t2,W4XOzzNEbrtZz4dW,English (United States),FSC14,FSC14,Lamp off.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC15_t1,W4XOzzNEbrtZz4dW,English (United States),FSC15,FSC15,Lamp on.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC15_t2,W4XOzzNEbrtZz4dW,English (United States),FSC15,FSC15,Lamp on.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC16_t1,W4XOzzNEbrtZz4dW,English (United States),FSC16,FSC16,Lights off in the bedroom.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC16_t2,W4XOzzNEbrtZz4dW,English (United States),FSC16,FSC16,lights off in the bedroom.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC17_t1,W4XOzzNEbrtZz4dW,English (United States),FSC17,FSC17,Make the music softer.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC17_t2,W4XOzzNEbrtZz4dW,English (United States),FSC17,FSC17,Make the music softer.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC18_t1,W4XOzzNEbrtZz4dW,English (United States),FSC18,FSC18,Play the music.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC18_t2,W4XOzzNEbrtZz4dW,English (United States),FSC18,FSC18,played in music.,0.6667,0.3333,0.6667,True
+fsc_W4XOzzNEbrtZz4dW_FSC19_t1,W4XOzzNEbrtZz4dW,English (United States),FSC19,FSC19,Put on the music.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC19_t2,W4XOzzNEbrtZz4dW,English (United States),FSC19,FSC19,Put on the music.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC20_t1,W4XOzzNEbrtZz4dW,English (United States),FSC20,FSC20,quieter.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC20_t2,W4XOzzNEbrtZz4dW,English (United States),FSC20,FSC20,Quieter.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC21_t1,W4XOzzNEbrtZz4dW,English (United States),FSC21,FSC21,Resume.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC21_t2,W4XOzzNEbrtZz4dW,English (United States),FSC21,FSC21,Resume.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC22_t1,W4XOzzNEbrtZz4dW,English (United States),FSC22,FSC22,Start the music.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC22_t2,W4XOzzNEbrtZz4dW,English (United States),FSC22,FSC22,Start the music.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC23_t1,W4XOzzNEbrtZz4dW,English (United States),FSC23,FSC23,Stop the music.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC23_t2,W4XOzzNEbrtZz4dW,English (United States),FSC23,FSC23,Stop the music.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC24_t1,W4XOzzNEbrtZz4dW,English (United States),FSC24,FSC24,Switch off the lamp.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC24_t2,W4XOzzNEbrtZz4dW,English (United States),FSC24,FSC24,Switch off the lamp.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC25_t1,W4XOzzNEbrtZz4dW,English (United States),FSC25,FSC25,Switch off the lights.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC25_t2,W4XOzzNEbrtZz4dW,English (United States),FSC25,FSC25,Switch off the lights.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC26_t1,W4XOzzNEbrtZz4dW,English (United States),FSC26,FSC26,Switch off the washroom lights.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC26_t2,W4XOzzNEbrtZz4dW,English (United States),FSC26,FSC26,Switch off the washroom lights.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC27_t1,W4XOzzNEbrtZz4dW,English (United States),FSC27,FSC27,Switch on the bathroom lights.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC27_t2,W4XOzzNEbrtZz4dW,English (United States),FSC27,FSC27,Switch on the bathroom lights.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC28_t1,W4XOzzNEbrtZz4dW,English (United States),FSC28,FSC28,Switch on the kitchen lights.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC28_t2,W4XOzzNEbrtZz4dW,English (United States),FSC28,FSC28,Switch on the kitchen lights.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC29_t1,W4XOzzNEbrtZz4dW,English (United States),FSC29,FSC29,Switch the lights off.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC29_t2,W4XOzzNEbrtZz4dW,English (United States),FSC29,FSC29,Switch the lights off.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC30_t1,W4XOzzNEbrtZz4dW,English (United States),FSC30,FSC30,Switch the lights on.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC30_t2,W4XOzzNEbrtZz4dW,English (United States),FSC30,FSC30,Switch the lights on.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC31_t1,W4XOzzNEbrtZz4dW,English (United States),FSC31,FSC31,That's too loud.,0.6667,0.0833,0.6667,True
+fsc_W4XOzzNEbrtZz4dW_FSC31_t2,W4XOzzNEbrtZz4dW,English (United States),FSC31,FSC31,That's too loud.,0.6667,0.0833,0.6667,True
+fsc_W4XOzzNEbrtZz4dW_FSC32_t1,W4XOzzNEbrtZz4dW,English (United States),FSC32,FSC32,That's too quiet.,0.6667,0.0769,0.6667,True
+fsc_W4XOzzNEbrtZz4dW_FSC32_t2,W4XOzzNEbrtZz4dW,English (United States),FSC32,FSC32,That's too quiet.,0.6667,0.0769,0.6667,True
+fsc_W4XOzzNEbrtZz4dW_FSC33_t1,W4XOzzNEbrtZz4dW,English (United States),FSC33,FSC33,Turn down the volume.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC33_t2,W4XOzzNEbrtZz4dW,English (United States),FSC33,FSC33,Turn down the volume.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC34_t1,W4XOzzNEbrtZz4dW,English (United States),FSC34,FSC34,Turn off the lamp.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC34_t2,W4XOzzNEbrtZz4dW,English (United States),FSC34,FSC34,Turn off the lamp.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC35_t1,W4XOzzNEbrtZz4dW,English (United States),FSC35,FSC35,Turn off the music.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC35_t2,W4XOzzNEbrtZz4dW,English (United States),FSC35,FSC35,Turn off the music.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC36_t1,W4XOzzNEbrtZz4dW,English (United States),FSC36,FSC36,Turn on the bathroom lights.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC36_t2,W4XOzzNEbrtZz4dW,English (United States),FSC36,FSC36,Turn on the bathroom lights.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC37_t1,W4XOzzNEbrtZz4dW,English (United States),FSC37,FSC37,Turn on the lamp.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC37_t2,W4XOzzNEbrtZz4dW,English (United States),FSC37,FSC37,Turn on the lamp.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC38_t1,W4XOzzNEbrtZz4dW,English (United States),FSC38,FSC38,Turn the heat down.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC38_t2,W4XOzzNEbrtZz4dW,English (United States),FSC38,FSC38,Turn the heat down.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC39_t1,W4XOzzNEbrtZz4dW,English (United States),FSC39,FSC39,Turn the heat up.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC39_t2,W4XOzzNEbrtZz4dW,English (United States),FSC39,FSC39,Turn the heat up.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC40_t1,W4XOzzNEbrtZz4dW,English (United States),FSC40,FSC40,Turn the heat up in the washroom.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC40_t2,W4XOzzNEbrtZz4dW,English (United States),FSC40,FSC40,Turn the heat up in the washroom.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC41_t1,W4XOzzNEbrtZz4dW,English (United States),FSC41,FSC41,Turn the lights on.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC41_t2,W4XOzzNEbrtZz4dW,English (United States),FSC41,FSC41,Turn the lights on.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC42_t1,W4XOzzNEbrtZz4dW,English (United States),FSC42,FSC42,Turn the lights on in the kitchen.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC42_t2,W4XOzzNEbrtZz4dW,English (United States),FSC42,FSC42,Turn the lights on in the kitchen.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC43_t1,W4XOzzNEbrtZz4dW,English (United States),FSC43,FSC43,Turn the temperature down.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC43_t2,W4XOzzNEbrtZz4dW,English (United States),FSC43,FSC43,Turn the temperature down.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC44_t1,W4XOzzNEbrtZz4dW,English (United States),FSC44,FSC44,Turn the volume up.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC44_t2,W4XOzzNEbrtZz4dW,English (United States),FSC44,FSC44,Turn the volume up.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC45_t1,W4XOzzNEbrtZz4dW,English (United States),FSC45,FSC45,Turn up the heat in the kitchen.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC45_t2,W4XOzzNEbrtZz4dW,English (United States),FSC45,FSC45,Turn up the heat in the kitchen.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC46_t1,W4XOzzNEbrtZz4dW,English (United States),FSC46,FSC46,Turn up the temperature.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC46_t2,W4XOzzNEbrtZz4dW,English (United States),FSC46,FSC46,Turn up the temperature.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC47_t1,W4XOzzNEbrtZz4dW,English (United States),FSC47,FSC47,Turn up the temperature in the bedroom.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC47_t2,W4XOzzNEbrtZz4dW,English (United States),FSC47,FSC47,Turn up the temperature in the bedroom.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC48_t1,W4XOzzNEbrtZz4dW,English (United States),FSC48,FSC48,Volume Max.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC48_t2,W4XOzzNEbrtZz4dW,English (United States),FSC48,FSC48,Volume Max.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC49_t1,W4XOzzNEbrtZz4dW,English (United States),FSC49,FSC49,volume mute,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC49_t2,W4XOzzNEbrtZz4dW,English (United States),FSC49,FSC18,Vaayun Milt,1.0,0.8,1.0,True
+fsc_W4XOzzNEbrtZz4dW_FSC50_t1,W4XOzzNEbrtZz4dW,English (United States),FSC50,FSC50,Volume up.,0.0,0.0,0.0,False
+fsc_W4XOzzNEbrtZz4dW_FSC50_t2,W4XOzzNEbrtZz4dW,English (United States),FSC50,FSC50,Volume up.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC01_t1,zZezMeg5XvcbRdg3,English (United States),FSC01,FSC01,Bring my shoes.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC01_t2,zZezMeg5XvcbRdg3,English (United States),FSC01,FSC01,Bring my shoes.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC02_t1,zZezMeg5XvcbRdg3,English (United States),FSC02,FSC02,Change the language.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC02_t2,zZezMeg5XvcbRdg3,English (United States),FSC02,FSC02,Change the language.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC03_t1,zZezMeg5XvcbRdg3,English (United States),FSC03,FSC03,Decrease the temperature in the bedroom.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC03_t2,zZezMeg5XvcbRdg3,English (United States),FSC03,FSC03,Decrease the temperature in the bedroom.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC04_t1,zZezMeg5XvcbRdg3,English (United States),FSC04,FSC04,Heat down.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC04_t2,zZezMeg5XvcbRdg3,English (United States),FSC04,FSC04,Heat down.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC05_t1,zZezMeg5XvcbRdg3,English (United States),FSC05,FSC05,Increase the heating.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC05_t2,zZezMeg5XvcbRdg3,English (United States),FSC05,FSC05,Increase the heating.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC06_t1,zZezMeg5XvcbRdg3,English (United States),FSC06,FSC06,increase the heating in the bathroom.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC06_t2,zZezMeg5XvcbRdg3,English (United States),FSC06,FSC06,Increase the heating in the bathroom.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC07_t1,zZezMeg5XvcbRdg3,English (United States),FSC07,FSC07,Increase the heating in the kitchen.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC07_t2,zZezMeg5XvcbRdg3,English (United States),FSC07,FSC07,increase the heating in the kitchen.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC08_t1,zZezMeg5XvcbRdg3,English (United States),FSC08,FSC08,Increase the heating in the washroom.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC08_t2,zZezMeg5XvcbRdg3,English (United States),FSC08,FSC08,Increase the heating in the washroom.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC09_t1,zZezMeg5XvcbRdg3,English (United States),FSC09,FSC09,increase the temperature.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC09_t2,zZezMeg5XvcbRdg3,English (United States),FSC09,FSC09,Increase the temperature.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC10_t1,zZezMeg5XvcbRdg3,English (United States),FSC10,FSC10,Increase the temperature in the bathroom.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC10_t2,zZezMeg5XvcbRdg3,English (United States),FSC10,FSC10,increase the temperature in the bathroom.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC11_t1,zZezMeg5XvcbRdg3,English (United States),FSC11,FSC11,Increase the temperature in the bedroom.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC11_t2,zZezMeg5XvcbRdg3,English (United States),FSC11,FSC11,Increase the temperature in the bedroom.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC12_t1,zZezMeg5XvcbRdg3,English (United States),FSC12,FSC12,increase the temperature in the washroom.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC12_t2,zZezMeg5XvcbRdg3,English (United States),FSC12,FSC12,increase the temperature in the washroom.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC13_t1,zZezMeg5XvcbRdg3,English (United States),FSC13,FSC13,Kitchen lights on.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC13_t2,zZezMeg5XvcbRdg3,English (United States),FSC13,FSC13,Kitchen life on.,0.3333,0.2667,0.3333,False
+fsc_zZezMeg5XvcbRdg3_FSC14_t1,zZezMeg5XvcbRdg3,English (United States),FSC14,FSC14,Lamp off.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC14_t2,zZezMeg5XvcbRdg3,English (United States),FSC14,FSC14,lamp off.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC15_t1,zZezMeg5XvcbRdg3,English (United States),FSC15,FSC15,Lamp on.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC15_t2,zZezMeg5XvcbRdg3,English (United States),FSC15,FSC15,Lamp on.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC16_t1,zZezMeg5XvcbRdg3,English (United States),FSC16,FSC16,Lights off in the bedroom.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC16_t2,zZezMeg5XvcbRdg3,English (United States),FSC16,FSC16,Lights off in the bedroom.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC17_t1,zZezMeg5XvcbRdg3,English (United States),FSC17,FSC17,Make the music softer.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC17_t2,zZezMeg5XvcbRdg3,English (United States),FSC17,FSC17,Make the music softer.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC18_t1,zZezMeg5XvcbRdg3,English (United States),FSC18,FSC18,Play the music.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC18_t2,zZezMeg5XvcbRdg3,English (United States),FSC18,FSC18,Play the music.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC19_t1,zZezMeg5XvcbRdg3,English (United States),FSC19,FSC19,Put on the music.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC19_t2,zZezMeg5XvcbRdg3,English (United States),FSC19,FSC19,Put on the music.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC20_t1,zZezMeg5XvcbRdg3,English (United States),FSC20,FSC20,quieter.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC20_t2,zZezMeg5XvcbRdg3,English (United States),FSC20,FSC20,quieter.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC21_t1,zZezMeg5XvcbRdg3,English (United States),FSC21,FSC21,Resume.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC21_t2,zZezMeg5XvcbRdg3,English (United States),FSC21,FSC21,Resume.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC22_t1,zZezMeg5XvcbRdg3,English (United States),FSC22,FSC22,Start the music.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC22_t2,zZezMeg5XvcbRdg3,English (United States),FSC22,FSC22,Start the music.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC23_t1,zZezMeg5XvcbRdg3,English (United States),FSC23,FSC23,Stop the music.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC23_t2,zZezMeg5XvcbRdg3,English (United States),FSC23,FSC23,Stop the music.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC24_t1,zZezMeg5XvcbRdg3,English (United States),FSC24,FSC24,Switch off the lamp.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC24_t2,zZezMeg5XvcbRdg3,English (United States),FSC24,FSC24,switch off the lamp.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC25_t1,zZezMeg5XvcbRdg3,English (United States),FSC25,FSC25,Switch off the light.,0.25,0.0556,0.25,False
+fsc_zZezMeg5XvcbRdg3_FSC25_t2,zZezMeg5XvcbRdg3,English (United States),FSC25,FSC25,Switch off the lights.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC26_t1,zZezMeg5XvcbRdg3,English (United States),FSC26,FSC26,Switch off the washroom light.,0.2,0.0385,0.2,False
+fsc_zZezMeg5XvcbRdg3_FSC26_t2,zZezMeg5XvcbRdg3,English (United States),FSC26,FSC26,Switch off the washroom light.,0.2,0.0385,0.2,False
+fsc_zZezMeg5XvcbRdg3_FSC27_t1,zZezMeg5XvcbRdg3,English (United States),FSC27,FSC27,Switch on the bathroom light.,0.2,0.04,0.2,False
+fsc_zZezMeg5XvcbRdg3_FSC27_t2,zZezMeg5XvcbRdg3,English (United States),FSC27,FSC27,Switch on the bathroom light.,0.2,0.04,0.2,False
+fsc_zZezMeg5XvcbRdg3_FSC28_t1,zZezMeg5XvcbRdg3,English (United States),FSC28,FSC28,Switch on the kitchen light.,0.2,0.0417,0.2,False
+fsc_zZezMeg5XvcbRdg3_FSC28_t2,zZezMeg5XvcbRdg3,English (United States),FSC28,FSC28,Switch on the kitchen light.,0.2,0.0417,0.2,False
+fsc_zZezMeg5XvcbRdg3_FSC29_t1,zZezMeg5XvcbRdg3,English (United States),FSC29,FSC29,Switch the lights off.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC29_t2,zZezMeg5XvcbRdg3,English (United States),FSC29,FSC29,Switch the life off.,0.25,0.2222,0.25,False
+fsc_zZezMeg5XvcbRdg3_FSC30_t1,zZezMeg5XvcbRdg3,English (United States),FSC30,FSC30,Switch the light on.,0.25,0.0588,0.25,False
+fsc_zZezMeg5XvcbRdg3_FSC30_t2,zZezMeg5XvcbRdg3,English (United States),FSC30,FSC30,Switch the lights on.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC31_t1,zZezMeg5XvcbRdg3,English (United States),FSC31,FSC31,That's too loud.,0.6667,0.0833,0.6667,True
+fsc_zZezMeg5XvcbRdg3_FSC31_t2,zZezMeg5XvcbRdg3,English (United States),FSC31,FSC31,That's too loud.,0.6667,0.0833,0.6667,True
+fsc_zZezMeg5XvcbRdg3_FSC32_t1,zZezMeg5XvcbRdg3,English (United States),FSC32,FSC32,That's too quiet.,0.6667,0.0769,0.6667,True
+fsc_zZezMeg5XvcbRdg3_FSC32_t2,zZezMeg5XvcbRdg3,English (United States),FSC32,FSC32,That's too quiet.,0.6667,0.0769,0.6667,True
+fsc_zZezMeg5XvcbRdg3_FSC33_t1,zZezMeg5XvcbRdg3,English (United States),FSC33,FSC33,Turn down the volume.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC33_t2,zZezMeg5XvcbRdg3,English (United States),FSC33,FSC33,Turn down the volume.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC34_t1,zZezMeg5XvcbRdg3,English (United States),FSC34,FSC34,Turn off the lamp.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC34_t2,zZezMeg5XvcbRdg3,English (United States),FSC34,FSC34,Turn off the lamp.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC35_t1,zZezMeg5XvcbRdg3,English (United States),FSC35,FSC35,Turn off the music.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC35_t2,zZezMeg5XvcbRdg3,English (United States),FSC35,FSC35,Turn off the music.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC36_t1,zZezMeg5XvcbRdg3,English (United States),FSC36,FSC36,Turn on the bathroom light.,0.2,0.0435,0.2,False
+fsc_zZezMeg5XvcbRdg3_FSC36_t2,zZezMeg5XvcbRdg3,English (United States),FSC36,FSC36,Turn on the bathroom light.,0.2,0.0435,0.2,False
+fsc_zZezMeg5XvcbRdg3_FSC37_t1,zZezMeg5XvcbRdg3,English (United States),FSC37,FSC37,Turn on the lamp.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC37_t2,zZezMeg5XvcbRdg3,English (United States),FSC37,FSC37,Turn on the lamp.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC38_t1,zZezMeg5XvcbRdg3,English (United States),FSC38,FSC38,Turn the heat down.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC38_t2,zZezMeg5XvcbRdg3,English (United States),FSC38,FSC38,Turn the heat down.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC39_t1,zZezMeg5XvcbRdg3,English (United States),FSC39,FSC39,Turn the heat up.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC39_t2,zZezMeg5XvcbRdg3,English (United States),FSC39,FSC39,Turn the heat up.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC40_t1,zZezMeg5XvcbRdg3,English (United States),FSC40,FSC40,Turn the heat up in the washroom.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC40_t2,zZezMeg5XvcbRdg3,English (United States),FSC40,FSC40,Turn the heat up in the washroom.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC41_t1,zZezMeg5XvcbRdg3,English (United States),FSC41,FSC41,Turn the lights on.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC41_t2,zZezMeg5XvcbRdg3,English (United States),FSC41,FSC41,Turn the lights on.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC42_t1,zZezMeg5XvcbRdg3,English (United States),FSC42,FSC42,Turn the kitchen light on in the kitchen.,0.2857,0.2963,0.2857,False
+fsc_zZezMeg5XvcbRdg3_FSC42_t2,zZezMeg5XvcbRdg3,English (United States),FSC42,FSC42,Turn the lights on in the kitchen.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC43_t1,zZezMeg5XvcbRdg3,English (United States),FSC43,FSC43,Turn the temperature down.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC43_t2,zZezMeg5XvcbRdg3,English (United States),FSC43,FSC43,Turn the temperature down.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC44_t1,zZezMeg5XvcbRdg3,English (United States),FSC44,FSC44,Turn the volume up.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC44_t2,zZezMeg5XvcbRdg3,English (United States),FSC44,FSC44,Turn the volume up.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC45_t1,zZezMeg5XvcbRdg3,English (United States),FSC45,FSC45,Turn up the heat in the kitchen.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC45_t2,zZezMeg5XvcbRdg3,English (United States),FSC45,FSC45,Turn up the heat in the kitchen.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC46_t1,zZezMeg5XvcbRdg3,English (United States),FSC46,FSC46,Turn up the temperature.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC46_t2,zZezMeg5XvcbRdg3,English (United States),FSC46,FSC46,Turn up the temperature.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC47_t1,zZezMeg5XvcbRdg3,English (United States),FSC47,FSC47,Turn up the temperature in the bedroom.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC47_t2,zZezMeg5XvcbRdg3,English (United States),FSC47,FSC47,Turn up the temperature in the bedroom.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC48_t1,zZezMeg5XvcbRdg3,English (United States),FSC48,FSC48,Volume Mac.,0.5,0.1111,0.5,False
+fsc_zZezMeg5XvcbRdg3_FSC48_t2,zZezMeg5XvcbRdg3,English (United States),FSC48,FSC48,Volume Mac.,0.5,0.1111,0.5,False
+fsc_zZezMeg5XvcbRdg3_FSC49_t1,zZezMeg5XvcbRdg3,English (United States),FSC49,FSC49,Volume mute.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC49_t2,zZezMeg5XvcbRdg3,English (United States),FSC49,FSC49,Volume mute.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC50_t1,zZezMeg5XvcbRdg3,English (United States),FSC50,FSC50,Volume up.,0.0,0.0,0.0,False
+fsc_zZezMeg5XvcbRdg3_FSC50_t2,zZezMeg5XvcbRdg3,English (United States),FSC50,FSC50,Volume up.,0.0,0.0,0.0,False
