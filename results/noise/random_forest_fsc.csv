@@ -1,0 +1,9 @@
+run,dataset,protocol,snr_db,n,accuracy,macro_f1
+random_forest,fsc,random,clean,200,0.31,0.29890476190476195
+random_forest,fsc,folds,clean,1000,0.209,0.19914896312448796
+random_forest,fsc,random,20,200,0.04,0.012420537498470698
+random_forest,fsc,folds,20,1000,0.049,0.024449807362669457
+random_forest,fsc,random,10,200,0.02,0.0008376963350785341
+random_forest,fsc,folds,10,1000,0.023,0.003909767405501865
+random_forest,fsc,random,5,200,0.02,0.0007881773399014779
+random_forest,fsc,folds,5,1000,0.022,0.004113244207424776

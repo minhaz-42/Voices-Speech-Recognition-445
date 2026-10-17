@@ -1,0 +1,9 @@
+run,dataset,protocol,snr_db,n,accuracy,macro_f1
+w2v2_15ep_noise,fsc,random,clean,200,1.0,1.0
+w2v2_15ep_noise,fsc,folds,clean,1000,0.885,0.8813374299354538
+w2v2_15ep_noise,fsc,random,20,200,0.98,0.9791746031746033
+w2v2_15ep_noise,fsc,folds,20,1000,0.868,0.8644993673315521
+w2v2_15ep_noise,fsc,random,10,200,0.985,0.9847619047619048
+w2v2_15ep_noise,fsc,folds,10,1000,0.821,0.8168491233421505
+w2v2_15ep_noise,fsc,random,5,200,0.94,0.9385555555555554
+w2v2_15ep_noise,fsc,folds,5,1000,0.745,0.7393937922680283
