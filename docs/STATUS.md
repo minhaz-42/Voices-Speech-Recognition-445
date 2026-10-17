@@ -87,7 +87,7 @@ Every run from here on covers **both datasets**: results go to `results/<run>/fs
 | T17 | Run **3 epochs** (no noise) with the shared script → `results/w2v2_3ep/` | M3 | T15 | ⬜ | |
 | T18 | **Untrained baseline** with the shared evaluation script → `results/w2v2_untrained/` | M4 | T15 | ⬜ | |
 | T19 | Run **15 epochs without noise** (ablation for H3) → `results/w2v2_15ep/` | M1 | T15 | ⬜ | |
-| T30 | Run Whisper on the test clips of the random split and all 5 folds of both datasets → `results/whisper_small/`; WER / CER per speaker, dataset and first language; test H5; `--asr whisper` transcript mode in `main.py`; move the old phrase list used by `tests/test_whisper_asr.py` into a test fixture | M1 | T08, T11, T22, T29 | ⬜ | |
+| T30 | Run Whisper on the test clips of the random split and all 5 folds of both datasets → `results/whisper_small/`; WER / CER per speaker, dataset and first language; test H5; `--asr whisper` transcript mode in `main.py`; move the old phrase list used by `tests/test_whisper_asr.py` into a test fixture | M1 | T08, T11, T22, T29 | 🟡 split runner, WER per speaker / first language, `main.py --asr whisper` and test fixture ready; runs wait for T08 | |
 
 ### Week 5: Results, analysis and demo
 

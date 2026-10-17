@@ -13,6 +13,9 @@ from support import whisper_asr as asr
 from support.config import load_config
 from support.phrases import load_phrases
 
+# The original 50-phrase list, kept as a fixture so these tests do not depend on data/prompts/.
+PHRASES = Path(__file__).parent / "fixtures" / "phrases_v0.csv"
+
 
 class TestErrorRates(unittest.TestCase):
     def test_edit_distance_hand_cases(self):
@@ -73,7 +76,7 @@ class TestNormalisation(unittest.TestCase):
 class TestPhraseMatching(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.phrases = load_phrases()
+        cls.phrases = load_phrases(PHRASES)
         cls.reject = load_config()["whisper"]["reject_wer"]
 
     def match(self, transcript):
@@ -143,7 +146,7 @@ class TestRunClipList(unittest.TestCase):
             pd.DataFrame(rows).to_csv(tmp / "clips.csv", index=False)
 
             fake = FakeTranscriber(transcripts)
-            predictions, metrics = asr.run_clip_list(tmp / "clips.csv", tmp / "out", fake,
+            predictions, metrics = asr.run_clip_list(tmp / "clips.csv", tmp / "out", fake, load_phrases(PHRASES),
                                                      reject_wer=0.5, batch_size=2, model_name="fake")
 
             self.assertEqual(len(fake.seen), 3)
@@ -162,7 +165,61 @@ class TestRunClipList(unittest.TestCase):
             path = Path(tmp) / "clips.csv"
             pd.DataFrame([{"utt_id": "x", "path": "x.wav", "phrase_id": "XYZ99"}]).to_csv(path, index=False)
             with self.assertRaises(ValueError):
-                asr.run_clip_list(path, Path(tmp) / "out", FakeTranscriber([]))
+                asr.run_clip_list(path, Path(tmp) / "out", FakeTranscriber([]), load_phrases(PHRASES))
+
+
+class TestRunSplits(unittest.TestCase):
+    """Whisper on the dataset splits (T30) with a fake transcriber on a synthetic subset."""
+
+    def test_scores_every_split_and_transcribes_each_clip_once(self):
+        import contextlib
+        import io
+
+        from support.dataset import build_processed
+        from tests._synthetic import make_config, make_subset, write_audio
+        from tools.make_splits import make_splits
+
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            subset = write_audio(make_subset("l2arctic", n_phrases=3, takes=1), tmp / "raw")  # 30 clips
+            cfg = make_config(tmp, "l2arctic", subset)
+            cfg["paths"].update(results=str(tmp / "results"), images=str(tmp / "images"))
+            build_processed("l2arctic", cfg)
+            make_splits("l2arctic", cfg)
+
+            class Echo:
+                calls = 0
+
+                def __call__(self, clips):
+                    Echo.calls += len(clips)
+                    return ["Phrase number 1."] * len(clips)  # always the text of P01
+
+            splits = ["random"] + [f"fold{k}" for k in range(1, 6)]
+            with contextlib.redirect_stdout(io.StringIO()):
+                summary = asr.run_splits("l2arctic", splits, Echo(), cfg, run="whisper_fake", model_name="fake")
+            self.assertEqual(Echo.calls, 30)                 # folds cover every clip; random reuses them
+            self.assertEqual(summary["n_transcribed"], 30)
+            self.assertAlmostEqual(summary["folds"]["pooled"]["accuracy"], 1 / 3)
+            self.assertTrue(summary["zero_shot"])
+            root = tmp / "results" / "whisper_fake" / "l2arctic"
+            per_l1 = pd.read_csv(root / "wer_per_l1.csv")
+            self.assertEqual(sorted(per_l1["l1"]), ["Arabic", "Hindi", "Mandarin", "Spanish"])
+            self.assertEqual(int(per_l1.loc[per_l1["l1"] == "Hindi", "n"].iloc[0]), 12)
+            per_spk = pd.read_csv(root / "wer_per_speaker.csv")
+            self.assertEqual(len(per_spk), 10)
+            preds = pd.read_csv(root / "predictions_fold1.csv")
+            self.assertIn("transcript", preds.columns)
+            self.assertEqual(set(preds.loc[preds["label"] == "P01", "wer"]), {0.0})
+
+    def test_helpers(self):
+        self.assertEqual(asr.run_name_for("openai/whisper-small"), "whisper_small")
+        frame = pd.DataFrame({"speaker_id": ["a", "a", "b"], "label": ["X", "Y", "X"], "pred": ["X", "X", "X"],
+                              "transcript": ["turn on", "turn off", "turn"]})
+        table = asr.error_rates_by(frame, {"X": "turn on", "Y": "turn off"}, "speaker_id")
+        self.assertEqual(list(table["n"]), [2, 1])
+        self.assertAlmostEqual(table.loc[0, "wer"], 0.0)       # speaker a: both exact
+        self.assertAlmostEqual(table.loc[1, "wer"], 0.5)       # speaker b: one of two words missing
+        self.assertAlmostEqual(table.loc[0, "accuracy"], 0.5)
 
 
 class TestConfig(unittest.TestCase):

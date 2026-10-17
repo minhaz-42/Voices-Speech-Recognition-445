@@ -15,6 +15,7 @@ Usage::
 
     python -m support.whisper_asr clip.wav [more.wav ...]          # transcript + top-5 phrases
     python -m support.whisper_asr --list clips.csv --out results/whisper_small/
+    python -m support.whisper_asr --dataset fsc --split all     # T30: same test clips as every model
 
 ``clips.csv`` has the columns ``utt_id, path, phrase_id`` and optionally
 ``speaker_id``; paths are relative to the repository root.
@@ -262,6 +263,86 @@ def run_clip_list(
     return predictions, metrics
 
 
+def run_name_for(model_name: str) -> str:
+    """``openai/whisper-small`` → ``whisper_small``."""
+    return Path(model_name).name.replace("-", "_")
+
+
+def dataset_phrases(dataset: str, cfg: dict[str, Any] | None = None) -> list[Phrase]:
+    """The phrase list of a TenVoices subset in the form :func:`rank_phrases` expects."""
+    from support.dataset import load_labels
+
+    labels = load_labels(dataset, cfg)
+    category = labels["category"] if "category" in labels.columns else [""] * len(labels)
+    return [{"phrase_id": pid, "category": cat, "noisy_take": False, "text": text}
+            for pid, cat, text in zip(labels["phrase_id"], category, labels["text"])]
+
+
+def error_rates_by(frame: pd.DataFrame, texts: dict[str, str], column: str) -> pd.DataFrame:
+    """Corpus WER / CER per value of ``column`` (e.g. speaker or first language)."""
+    rows = []
+    for value, group in frame.groupby(column, sort=True):
+        rates = corpus_error_rates([texts[l] for l in group["label"]], list(group["transcript"]))
+        rows.append({column: value, "n": len(group), **rates,
+                     "accuracy": float((group["label"] == group["pred"]).mean())})
+    return pd.DataFrame(rows)
+
+
+def run_splits(dataset: str, splits: Sequence[str], transcriber: Transcriber, cfg: dict[str, Any] | None = None,
+               run: str = "whisper_small", model_name: str = "", batch_size: int = 8) -> dict[str, Any]:
+    """Score Whisper on the test clips of each split, like every other model (task T30).
+
+    Whisper is zero-shot, so each clip is transcribed once and reused by every split it
+    is a test clip of. Accuracy, F1 and the confusion matrix come from
+    ``support.evaluate.save_run``; WER / CER are added per split, and per speaker and
+    first language over the pooled folds (every clip once), for hypothesis H5.
+    """
+    from support.dataset import load_split, read_processed
+    from support.evaluate import FOLD_NAMES, run_dir, save_run
+
+    cfg = cfg if cfg is not None else load_config()
+    phrases = dataset_phrases(dataset, cfg)
+    texts = {p["phrase_id"]: p["text"] for p in phrases}
+    reject = float(cfg["whisper"]["reject_wer"])
+    tests = {split: load_split(dataset, split, cfg)["test"] for split in splits}
+    clips = pd.concat(tests.values()).drop_duplicates("utt_id").reset_index(drop=True)
+
+    transcripts: dict[str, str] = {}
+    for start in range(0, len(clips), batch_size):
+        chunk = clips.iloc[start:start + batch_size]
+        for utt, text in zip(chunk["utt_id"], transcriber([read_processed(p) for p in chunk["path"]])):
+            transcripts[utt] = text
+
+    def predictions(test: pd.DataFrame) -> pd.DataFrame:
+        rows = []
+        for clip in test.itertuples(index=False):
+            transcript = transcripts[clip.utt_id]
+            match = match_phrase(transcript, phrases, reject)
+            rows.append({"utt_id": clip.utt_id, "speaker_id": clip.speaker_id, "l1": clip.l1, "label": clip.label,
+                         "pred": match["phrase_id"], "transcript": transcript,
+                         "wer": round(wer(texts[clip.label], transcript), 4),
+                         "cer": round(cer(texts[clip.label], transcript), 4),
+                         "match_wer": round(match["wer"], 4), "rejected": match["rejected"]})
+        return pd.DataFrame(rows)
+
+    preds = {split: predictions(test) for split, test in tests.items()}
+    error_rates = {split: corpus_error_rates([texts[l] for l in df["label"]], list(df["transcript"]))
+                   for split, df in preds.items()}
+    extra: dict[str, Any] = {"model": model_name, "zero_shot": True, "reject_wer": reject, "error_rates": error_rates,
+                             "n_transcribed": len(transcripts)}
+    folds = [preds[s] for s in splits if s in FOLD_NAMES]
+    if folds:
+        pooled = pd.concat(folds, ignore_index=True)
+        extra["error_rates_pooled_folds"] = corpus_error_rates([texts[l] for l in pooled["label"]],
+                                                               list(pooled["transcript"]))
+    summary = save_run(run, dataset, preds, [p["phrase_id"] for p in phrases], extra, cfg)
+    if folds:
+        root = run_dir(run, dataset, cfg)
+        error_rates_by(pooled, texts, "speaker_id").to_csv(root / "wer_per_speaker.csv", index=False)
+        error_rates_by(pooled, texts, "l1").to_csv(root / "wer_per_l1.csv", index=False)
+    return summary
+
+
 # ---------------------------------------------------------------- CLI
 
 def main() -> None:
@@ -270,14 +351,18 @@ def main() -> None:
     parser.add_argument("audio", nargs="*", help="audio files to transcribe")
     parser.add_argument("--list", dest="list_csv", help="CSV of clips (utt_id, path, phrase_id[, speaker_id])")
     parser.add_argument("--out", help="output folder for --list, e.g. results/whisper_small/")
+    parser.add_argument("--dataset", help="fsc or l2arctic: match against its phrase list; without files, "
+                                          "score its splits (T30)")
+    parser.add_argument("--split", default="all", help="with --dataset: all (default), folds, random or foldN")
+    parser.add_argument("--run", default=None, help="results folder for --dataset (default: from the model name)")
     parser.add_argument("--config", default=None, help="config file (default: configs/config.yaml)")
     parser.add_argument("--model", default=None, help="Hugging Face checkpoint (default: config whisper.model)")
     parser.add_argument("--device", default=None, help="cuda, mps or cpu (default: best available)")
     parser.add_argument("--batch-size", type=int, default=None)
     parser.add_argument("--top-k", type=int, default=None)
     args = parser.parse_args()
-    if not args.audio and not args.list_csv:
-        parser.error("give audio files or --list")
+    if not args.audio and not args.list_csv and not args.dataset:
+        parser.error("give audio files, --list or --dataset")
     if args.list_csv and not args.out:
         parser.error("--list needs --out")
 
@@ -286,7 +371,15 @@ def main() -> None:
     model_name = args.model or wcfg["model"]
     batch_size = args.batch_size or wcfg["batch_size"]
     transcriber = WhisperTranscriber(model_name, args.device, batch_size, wcfg["language"])
-    phrases = load_phrases()
+    phrases = dataset_phrases(args.dataset, cfg) if args.dataset else load_phrases()
+
+    if args.dataset and not args.audio and not args.list_csv:
+        from support.dataset import parse_splits
+
+        summary = run_splits(args.dataset, parse_splits(args.split), transcriber, cfg,
+                             args.run or run_name_for(model_name), model_name, batch_size)
+        print(json.dumps({k: summary.get(k) for k in ("random", "folds", "error_rates")}, indent=2)[:2000])
+        return
 
     if args.list_csv:
         _, metrics = run_clip_list(args.list_csv, args.out, transcriber, phrases,
@@ -300,7 +393,7 @@ def main() -> None:
         print(f"\n{path}\n  transcript: {transcript!r}")
         ranking = rank_phrases(transcript, phrases, args.top_k or wcfg["top_k"])
         if ranking[0]["wer"] > wcfg["reject_wer"]:
-            print("  -> not one of the 50 phrases")
+            print("  -> not one of the phrases")
         for r in ranking:
             print(f"  {r['phrase_id']}  WER {r['wer']:.2f}  {r['text']}")
 
