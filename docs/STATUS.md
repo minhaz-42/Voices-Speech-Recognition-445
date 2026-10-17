@@ -72,7 +72,7 @@ Every run from here on covers **both datasets**: results go to `results/<run>/fs
 
 | ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
 |---|---|---|---|---|---|
-| T11 | `support/features.py` (MFCC 13 + Δ + ΔΔ, mean & std) + shared runner `support/classical.py` (scaler + model, both splits, validation tuning, saves report / predictions / confusion matrix) + shared `support/evaluate.py`; **Random Forest** results → `results/random_forest/` | M1 | T03, T08, T10 | ⬜ | |
+| T11 | `support/features.py` (MFCC 13 + Δ + ΔΔ, mean & std) + shared runner `support/classical.py` (scaler + model, both splits, validation tuning, saves report / predictions / confusion matrix) + shared `support/evaluate.py`; **Random Forest** results → `results/random_forest/` | M1 | T03, T08, T10 | 🟡 code + tests ready; Random Forest run waits for T08 and T10 | |
 | T12 | **XGBoost** results with the shared runner → `results/xgboost/` | M2 | T11 | ⬜ | |
 | T13 | **k-NN** results with the shared runner → `results/knn/` | M3 | T11 | ⬜ | |
 | T14 | **SVM** results with the shared runner → `results/svm/` | M4 | T11 | ⬜ | |

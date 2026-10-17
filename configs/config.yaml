@@ -50,6 +50,31 @@ audio:
   peak_dbfs: -1.0         # peak level after normalisation
   max_duration_s: 6.0     # clips are padded to this length and never truncated
 
+# MFCC summary features for the traditional models (support/features.py, T11)
+features:
+  n_mfcc: 13              # + delta + delta-delta, each summarised by mean and std -> 78 values
+  n_fft: 512              # 32 ms window at 16 kHz
+  hop_length: 160         # 10 ms hop
+  n_mels: 40
+
+# Traditional models (support/classical.py, T11-T14): every combination is tried on the
+# validation part; the best one is scored once on the test part.
+classical:
+  random_forest:
+    n_estimators: [300]
+    max_depth: [null, 20]
+    min_samples_leaf: [1, 2]
+  xgboost:
+    n_estimators: [300]
+    max_depth: [4, 6]
+    learning_rate: [0.1, 0.3]
+  knn:
+    n_neighbors: [1, 3, 5, 7]
+    weights: [uniform, distance]
+  svm:
+    C: [1, 10, 100]
+    gamma: [scale, 0.01]
+
 whisper:
   model: openai/whisper-small
   language: en
