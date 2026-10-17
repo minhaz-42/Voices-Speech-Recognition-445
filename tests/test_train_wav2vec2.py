@@ -78,6 +78,11 @@ class TestTrainWav2vec2(unittest.TestCase):
         self.assertEqual(inf["text_of_p01"], "phrase number 1")
         self.assertTrue(inf["too_long_raises"])
 
+    def test_noise_test_with_a_wav2vec2_model(self):
+        nt = self.report["noise_test"]
+        self.assertEqual(nt["snrs"], ["10", "clean"])
+        self.assertEqual(nt["n"], 12)  # fold1 tests 2 speakers x 3 phrases x 2 takes
+
     def test_unknown_noise_option_raises(self):
         self.assertTrue(self.report["bad_noise_raises"])
 

@@ -94,7 +94,7 @@ Every run from here on covers **both datasets**: results go to `results/<run>/fs
 | ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
 |---|---|---|---|---|---|
 | T40 | Final results once every run is merged: regenerate T20's tables and test H1, H2, H4 with `support/stats.py` → `results/hypotheses.csv` | M3 | T12, T13, T14, T15, T16, T17, T18, T19, T20 | ⬜ | |
-| T21 | Noise tests: white noise at 20 / 10 / 5 dB on the test clips, for the 15-epoch runs with and without noise and every other merged run; test H3 → `results/noise/` | M1 | T15, T19 | ⬜ | |
+| T21 | Noise tests: white noise at 20 / 10 / 5 dB on the test clips, for the 15-epoch runs with and without noise and every other merged run; test H3 → `results/noise/` | M1 | T15, T19 | 🟡 noise-test runner and tests ready; runs wait for the T15 / T19 models | |
 | T34 | `support/error_analysis.py`: most-confused phrase pairs, accuracy per category and per speaker for any run; write-up for the best traditional and the best wav2vec 2.0 model → `results/errors/` | M3 | T40 | ⬜ | |
 | T22 | `main.py` inference (WAV / MP3 / MP4 audio / microphone → top-5 phrases with confidence) + inference-time benchmark + unit tests + GitHub Actions CI | M1 | T15 | 🟡 `main.py`, `support/inference.py`, tests and CI ready; benchmark waits for a trained model | |
 | T23 | Connect the demo to `main.py` (top-5 phrases with a confidence chart, Whisper transcript) + final figures with `support/visualization.py` (confusion matrices, accuracy vs SNR, per-speaker chart) → `images/` | M4 | T21, T22, T30, T36, T40 | ⬜ | |

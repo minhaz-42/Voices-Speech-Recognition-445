@@ -90,6 +90,13 @@ def main(out: Path) -> dict:
             too_long_raises = False
         except ValueError:
             too_long_raises = True
+    # Noise test with the saved wav2vec 2.0 model of fold1.
+    from support.noise_test import run_noise_test
+
+    with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+        noise_summary, _ = run_noise_test("w2v2_3ep_noise", "fsc", ["fold1"], cfg, device="cpu", snrs=[10])
+    report["noise_test"] = {"rows": len(noise_summary), "snrs": sorted(noise_summary["snr_db"]),
+                            "n": int(noise_summary["n"].iloc[0])}
     report["inference"] = {
         "is_wav2vec2": isinstance(rec, Wav2Vec2Recognizer), "labels": rec.labels,
         "top_ids": sorted(r["phrase_id"] for r in top), "score_sum": sum(r["score"] for r in top),
