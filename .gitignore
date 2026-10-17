@@ -21,8 +21,8 @@ venv/
 !samples/**
 data/raw/*
 data/processed/*
-!data/raw/.gitkeep
-!data/processed/.gitkeep
+!data/raw/README.md
+!data/processed/README.md
 
 # Models, checkpoints, LoRA adapters, caches
 checkpoints/
@@ -36,4 +36,4 @@ wandb/
 
 # Generated outputs (committed copies of final figures live in images/)
 outputs/*
-!outputs/.gitkeep
+!outputs/README.md
