@@ -128,5 +128,6 @@ Small result tables (CSV/JSON under 1 MB) go in `results/` and **are** committed
 - Run scripts in `support/` and `tools/` as modules from the repo root: `python -m support.audio clip.wav`, not `python support/audio.py`.
 - Print settings: `python -m support.config`
 - Pre-process one clip: `python -m support.audio clip.wav [--out clip_16k.wav] [--no-pad]`
+- Whisper on clips: `python -m support.whisper_asr clip.wav [...]`; on a clip list: `python -m support.whisper_asr --list clips.csv --out <folder>` (columns `utt_id, path, phrase_id[, speaker_id]`)
 - Review a member's branch (M1): `git fetch origin && git diff --stat main...origin/dev_mahir`
 - *(Add new commands here when a task creates them.)*

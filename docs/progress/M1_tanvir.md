@@ -15,7 +15,7 @@ The task board and handoff log for M1 are in [STATUS.md](../STATUS.md). This fil
 | ID | Task | Depends on | Status |
 |---|---|---|---|
 | T00, T01 | Plan, repository, environment, config, audio pre-processing | — | ✅ |
-| T29 | Whisper pipeline code `support/whisper_asr.py` | T01, T03 | ⬜ |
+| T29 | Whisper pipeline code `support/whisper_asr.py` | T01, T03 | ✅ 2026-10-17 |
 | T04 | 👤 Pilot session S01 | T02 (M2) | ⬜ |
 | T08 | Processed audio, manifest, splits, leakage tests | T07 (M2) | ⬜ |
 | T11 | Features, shared classical runner and evaluation; Random Forest | T08, T10 (M3) | ⬜ |
@@ -34,7 +34,8 @@ Plain-language summary for the weekly project update, newest week first. Only fi
 
 ### Week of 2026-10-17
 - Added a fourth pipeline to the project: **Whisper**, a general-purpose speech-to-text model, used without training. Its transcript is matched to the nearest of our 50 phrases, so it can be compared with the trained models, and it adds a new research question (RQ5) and hypothesis (H5) about Bangladeshi names and places.
-- Brought two new members into the team (Mahir, Shafil) and split the project into independent tasks with clear file ownership. Every member now works on their own branch, and I review and merge their work.
+- Built the Whisper pipeline (`support/whisper_asr.py`). It transcribes a recording, normalises the text (numbers, times, phone numbers), finds the nearest of our 50 phrases and measures word and character error rate. 18 unit tests. A first end-to-end check on synthetic text-to-speech clips worked, and it already misspells local names such as Mohakhali and Sylhet, which is exactly what H5 will test on our real recordings.
+- Brought two new members into the team (Mahir, Shafil) and split the project into independent tasks with clear file ownership. Every member now works on their own branch, by hand or with any AI assistant, using task cards that say exactly what to build; I review and merge their work.
 
 ### Week of 2026-10-01
 - Wrote the project plan, the data-collection protocol, the consent form, the 50-phrase list and the task board, and published the repository.

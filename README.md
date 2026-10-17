@@ -213,6 +213,7 @@ Run every command from the repository root. Scripts in `support/` and `tools/` a
 | `python -m unittest discover -s tests -v` | Run the unit tests | ✅ ready |
 | `python -m support.config` | Print the settings and resolved paths | ✅ ready |
 | `python -m support.audio clip.wav [--out clip_16k.wav]` | Load and pre-process one clip (mono, 16 kHz, trimmed, normalised, padded to 6 s) | ✅ ready |
+| `python -m support.whisper_asr clip.wav` | Transcribe a clip with Whisper (zero-shot) and show the 5 nearest phrases | ✅ ready |
 | `python -m tools.recorder --speaker S03` | Record one speaker session | Week 1 |
 | `python -m support.classical --model svm --split folds` | Train and evaluate a traditional model | Week 3 |
 | `python -m support.train_wav2vec2 --epochs 15 --noise white --split folds` | Fine-tune wav2vec 2.0 | Week 4 |

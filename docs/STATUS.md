@@ -4,7 +4,7 @@
 > **Legend:** ⬜ to do · 🟡 in progress · ✅ done and merged · ⛔ blocked · 👤 needs people (recording, consent, video)
 
 **Current phase:** Weeks 1–2: recorder and pilot (M2), plus start-now work for every member
-**Next up:** M2 · Rabbi: T02 → T04 · M3 · Mahir: T10, T33, T37 · M4 · Shafil: T35, T36, T38, T39 · M1 · Tanvir: T29 (Whisper pipeline) and merging
+**Next up:** M2 · Rabbi: T02 → T04 · M3 · Mahir: T10, T33, T37 · M4 · Shafil: T35, T36, T38, T39 · M1 · Tanvir: merging; T04 pilot once T02 lands
 **Last updated:** 2026-10-17 by Tanvir Ahmed (M1)
 
 ## 👥 Team
@@ -46,7 +46,7 @@ Each of these has a task card: `docs/tasks/<ID>.md`.
 | T36 | Demo skeleton `app.py` (Gradio): microphone or upload → shared pre-processing → waveform and spectrogram from T35 + the 50-phrase list, with a clearly marked "model not connected yet" area (no fake predictions) → the app runs locally | M4 | T35 | ⬜ | |
 | T38 | Literature notes `docs/literature/self_supervised_speech.md`: 6–8 papers on self-supervised speech models (wav2vec 2.0, HuBERT, WavLM, XLS-R) and spoken-command benchmarks; same format as T37 → feeds report section 2 | M4 | — | ⬜ | |
 | T39 | Planning poster v2 (`poster/poster.html` → `images/poster.png`): team of four and the four-stage pipeline from `docs/PROJECT_PLAN.md`, no results → the poster renders and the README shows it | M4 | — | ⬜ | |
-| T29 | Whisper pipeline `support/whisper_asr.py`: zero-shot transcription (`--model small`), Whisper's English text normaliser, nearest-phrase matching (word-level edit distance), WER / CER, predictions in the shared format + tests; smoke test on a few self-recorded phrases → tests pass | M1 | T01, T03 | ⬜ | |
+| T29 | Whisper pipeline `support/whisper_asr.py`: zero-shot transcription (`--model small`), Whisper's English text normaliser, nearest-phrase matching (word-level edit distance), WER / CER, predictions in the shared format + tests; smoke test on a few self-recorded phrases → tests pass | M1 | T01, T03 | ✅ | Tanvir · 2026-10-17 |
 
 ### Week 1: Setup, phrase list and recording tool
 
@@ -114,6 +114,14 @@ Each recorder recruits their own volunteers, collects consent, records the noisy
 | T28 | 👤 Final checklist (every number matches `results/`), tag `v1.0`, submit | all | T25, T26, T27 | ⬜ | |
 
 ## 📝 Handoff Log (newest first)
+
+### 2026-10-17 · Tanvir Ahmed (M1) · T29
+
+- **Done:** `support/whisper_asr.py`. Whisper's English normaliser on both sides, with neighbouring digit groups joined, leading zeros dropped and `6.30` read as a time, so spoken and written numbers, times and phone numbers compare equal. Also WER / CER per clip and per corpus, nearest-phrase matching (WER, ties by CER) with a demo-only rejection threshold, a batched `WhisperTranscriber` (CUDA > MPS > CPU), and `run_clip_list` writing `predictions.csv` (`utt_id, speaker_id, label, pred, transcript, wer, cer, match_wer, rejected`) + `metrics.json`. New `whisper` section in `configs/config.yaml`. 18 offline tests (no model download); all 61 tests pass.
+- **Smoke test (not a result):** 16 clips of 8 phrases spoken by two macOS text-to-speech voices (Indian and British English), kept outside the repo. `openai/whisper-small` ran on MPS and matched every clip to the right phrase, while misspelling local names (Mohakhali, Sylhet, Sreemangal). That is what H5 tests on real recordings.
+- **Files:** `support/whisper_asr.py`, `tests/test_whisper_asr.py`, `configs/config.yaml`, `AGENTS.md`, `README.md`, `docs/STATUS.md`, `docs/progress/M1_tanvir.md`.
+- **Notes:** T11's `support/evaluate.py` should read the same `utt_id, speaker_id, label, pred` columns. T30 adds `--split`. The first run downloads the model (~1 GB) into the Hugging Face cache.
+- **Next:** M1 has no other unblocked task until T02 → T04; merge member branches as they come in.
 
 ### 2026-10-17 · Tanvir Ahmed (M1) · T00 (any assistant or by hand)
 

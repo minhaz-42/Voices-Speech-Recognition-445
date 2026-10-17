@@ -21,3 +21,10 @@ audio:
   trim_margin_s: 0.10     # silence kept before and after the speech, so soft onsets are not cut
   peak_dbfs: -1.0         # peak level after normalisation
   max_duration_s: 6.0     # clips are padded to this length and never truncated
+
+whisper:
+  model: openai/whisper-small
+  language: en
+  batch_size: 8
+  top_k: 5
+  reject_wer: 0.5         # demo only: best phrase further than this -> "not one of the 50 phrases"
