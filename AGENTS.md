@@ -139,6 +139,7 @@ Small result tables (CSV/JSON under 1 MB) go in `results/` and **are** committed
 - Traditional model: `python -m support.classical --dataset fsc --model random_forest [--split all|folds|random|foldN]`
 - wav2vec 2.0: `python -m support.train_wav2vec2 --dataset fsc --epochs 15 --noise white [--split …] [--limit 40]`; baseline: `--untrained`; Colab: `notebooks/train_wav2vec2.ipynb`
 - Whisper on the splits: `python -m support.whisper_asr --dataset l2arctic --split all`
+- Figures of a member folder (seen vs unseen, training curves, noise, per speaker, confidence, speed, Whisper errors): `python -m support.figures --folder M1_tanvir`
 - Rebuild a run's metrics: `python -m support.evaluate --dataset fsc --run random_forest` · noise test: `python -m support.noise_test --run w2v2_15ep_noise --dataset fsc`
 - Inference: `python main.py --audio clip.wav --model outputs/models/<run>/<dataset>/<split>[.joblib]` (also `--video`, `--mic 4`, `--asr whisper`, `--benchmark 50`)
 - On macOS, never use PyTorch (wav2vec 2.0, Whisper) and XGBoost in the same Python process: their OpenMP libraries clash (crash or hang). The scripts above keep them apart; tests that need PyTorch run in a child process.

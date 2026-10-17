@@ -9,7 +9,7 @@ On this page: [My tasks](#my-tasks) · [Faculty update](#faculty-update) · [Tas
 | **Role** | Data pipeline and splits, shared training / evaluation code, Whisper pipeline, noise tests, inference, integration; reviews and merges every member's branch |
 | **Models** | Random Forest (traditional) · wav2vec 2.0 fine-tuned for 15 epochs with and without white noise · Whisper zero-shot |
 | **Branch** | `main` |
-| **Owns** | `main.py`, `support/config.py`, `support/audio.py`, `support/dataset.py`, `support/features.py`, `support/classical.py`, `support/evaluate.py`, `support/train_wav2vec2.py`, `support/noise.py`, `support/noise_test.py`, `support/device.py`, `support/inference.py`, `support/whisper_asr.py`, `support/make_splits.py`, `configs/`, `notebooks/`, `requirements.txt`, `.github/`, `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `README.md`, `docs/STATUS.md`, `docs/PROJECT_PLAN.md`, `docs/team/`, `results/M1_tanvir/` (every run of mine: `random_forest`, `w2v2_15ep_noise`, `w2v2_15ep`, `whisper_small`, plus `noise/`, the benchmark and `figures/`) |
+| **Owns** | `main.py`, `support/config.py`, `support/audio.py`, `support/dataset.py`, `support/features.py`, `support/classical.py`, `support/evaluate.py`, `support/train_wav2vec2.py`, `support/noise.py`, `support/noise_test.py`, `support/device.py`, `support/inference.py`, `support/whisper_asr.py`, `support/make_splits.py`, `support/figures.py`, `configs/`, `notebooks/`, `requirements.txt`, `.github/`, `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `README.md`, `docs/STATUS.md`, `docs/PROJECT_PLAN.md`, `docs/team/`, `results/M1_tanvir/` (every run of mine: `random_forest`, `w2v2_15ep_noise`, `w2v2_15ep`, `whisper_small`, plus `noise/`, the benchmark and `figures/`) |
 | **Report** | Abstract, sections 1, 2 (with Mahir's and Shafil's literature notes), 4 and 8; final integration |
 
 The task board and handoff log for M1 are in [STATUS.md](../STATUS.md). This page holds Tanvir's tasks, faculty update and task cards.
@@ -26,13 +26,14 @@ The task board and handoff log for M1 are in [STATUS.md](../STATUS.md). This pag
 | T42 | Selection script; TenVoices-FSC selected (1,000 clips) | — | ✅ 2026-10-17 |
 | T43 | QC script; TenVoices-FSC 997 / 1,000 pass | — | ✅ 2026-10-17 |
 | T08 | Processed copies, splits, leakage tests (TenVoices-FSC) | — | ✅ 2026-10-17 |
-| T11 | Features, shared runner, evaluation ✅; Random Forest run | — | 🟡 |
-| T30 | Whisper on the test clips (FSC now, L2 in T47) | — | 🟡 |
+| T11 | Features, shared runner, evaluation ✅; Random Forest on FSC and L2 ✅ | — | ✅ 2026-10-17 |
+| T30 | Whisper on the test clips of FSC and L2 ✅ | — | ✅ 2026-10-17 |
 | T15 | Training script + Colab ✅; wav2vec 2.0 15 epochs + noise on FSC ✅ | — | ✅ FSC |
 | T19 | wav2vec 2.0 15 epochs without noise on FSC ✅ | — | ✅ FSC |
 | T21 | Noise tests on FSC ✅; H3 verdict in T24 | T15, T19 | ✅ FSC |
 | T22 | Inference + CI ✅; benchmark ✅ | T15 | ✅ |
 | T48 | All my results in one folder, `results/M1_tanvir/` | — | ✅ 2026-10-17 |
+| T49 | Figures beyond confusion matrices (`support/figures.py`) → `results/M1_tanvir/figures/` | T48 | ✅ 2026-10-17 |
 | T47 | TenVoices-L2: free copy of L2-ARCTIC (no form), select, QC, splits ✅; Random Forest ✅; Whisper, wav2vec 2.0 and the members' models on L2; H5 | — | 🟡 data ✅ |
 | T24 | Final aggregation on all merged results, reproducibility, feature freeze | all | ⬜ |
 | T25 | Final report and README | T24 | ⬜ |
@@ -43,6 +44,7 @@ The task board and handoff log for M1 are in [STATUS.md](../STATUS.md). This pag
 Plain-language summary for the weekly project update, newest week first. Only finished work; numbers only from `results/`.
 
 ### Week of 2026-10-17
+- Put all my results in one folder (`results/M1_tanvir/`) and drew **seven new kinds of figures** from them with one command (`python -m support.figures --folder M1_tanvir`): seen vs unseen speakers, fine-tuning curves, accuracy vs noise level, accuracy per speaker, how confident the models are (and how accuracy rises when uncertain answers are rejected), speed vs accuracy, and Whisper's errors per first language. They show, for example, that both speakers of fold 1 are the hardest for the noise-trained model (71% and 70%), and that Whisper's word error rate is 4.0% for Hindi but 16.8% for Vietnamese speakers while it still picks the right sentence. Gallery: `results/M1_tanvir/README.md`.
 - Trained our main model: **wav2vec 2.0 fine-tuned for 15 epochs**, with and without white-noise augmentation, on both evaluation protocols. On speakers it never heard it recognises 88.5% (with noise training) and 92.8% (without) of the 50 commands, against 20.9% for Random Forest. In heavy noise (5 dB) the noise-trained model still gets 74.5% right, the other only 30.7%. It needs 38 ms per clip on a laptop GPU, fast enough for live use.
 - Prepared the second dataset, **TenVoices-L2**, without waiting for the publisher's form: a free copy of L2-ARCTIC, checked against the official prompt list. It has 10 non-native speakers (one woman and one man each with Hindi, Mandarin, Spanish, Korean and Vietnamese as first language) × 50 sentences = 500 clips, all passing QC. Each speaker-independent fold tests an accent the model never heard in training.
 - Prepared the main dataset by code: selected **TenVoices-FSC** (10 speakers, 5 female and 5 male, × 50 commands × 2 takes = 1,000 clips) with a deterministic selection script, checked every clip (997 of 1,000 pass; 3 flagged for slight clipping), and made the random split and the 5 speaker-independent folds with automatic leakage checks.

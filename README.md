@@ -125,6 +125,11 @@ Measured so far on **TenVoices-FSC** (1,000 clips). Every number comes from the 
   Training with white noise keeps the model usable in heavy noise (74.5% vs 30.7% at 5 dB) but costs 4.3 points on clean audio. H3 allows at most 2, so its strict criterion would fail; the official verdict comes from the hypothesis tests in T24. The MFCC model falls to chance level as soon as noise is added.
 * **Speed** (`results/M1_tanvir/benchmark_fsc.csv`, one clip incl. pre-processing, MacBook): wav2vec 2.0 38.2 ms on the Apple GPU and 74.9 ms on the CPU (378 MB); Random Forest 13.7 ms (76 MB). Both are fast enough for live use.
 * Confusion matrices: [results/M1_tanvir/figures/confusion/](results/M1_tanvir/figures/confusion/) (Tanvir's runs), `images/confusion/` (the other members' runs).
+* **More figures** (Tanvir's runs, all drawn from the result files by `python -m support.figures --folder M1_tanvir`; gallery with explanations: [results/M1_tanvir/README.md](results/M1_tanvir/README.md)): seen vs unseen speakers, fine-tuning curves, noise robustness, accuracy per speaker, confidence, speed vs accuracy, Whisper's errors.
+
+  <img src="results/M1_tanvir/figures/seen_vs_unseen.png" alt="Accuracy on seen vs unseen speakers" width="850">
+
+  <img src="results/M1_tanvir/figures/noise_robustness_fsc.png" alt="Accuracy vs noise level" width="850">
 
 Measured so far on **TenVoices-L2** (500 clips, 10 non-native speakers; every fold tests a first language never heard in training). Numbers from `results/M1_tanvir/<run>/l2arctic/summary.json`.
 

@@ -42,6 +42,7 @@ data/raw/<dataset>/ ──(support/select_subsets.py, support/qc_report.py)─�
 | [`inference.py`](inference.py) | Recognisers for saved models (traditional, wav2vec 2.0, Whisper): raw audio in, top-k phrases out; video and microphone input | T22 · M1 | [`test_inference.py`](../tests/test_inference.py) |
 | [`../main.py`](../main.py) | Command-line inference with a benchmark option | T22 · M1 | [`test_inference.py`](../tests/test_inference.py) |
 | [`noise_test.py`](noise_test.py) | Accuracy of a saved run with identical white noise at 20 / 10 / 5 dB for every model | T21 · M1 | [`test_noise_test.py`](../tests/test_noise_test.py) |
+| [`figures.py`](figures.py) | Figures for a member folder: seen vs unseen speakers, fine-tuning curves, noise robustness, accuracy per speaker, confidence, speed vs accuracy, Whisper errors | T49 · M1 | [`test_figures.py`](../tests/test_figures.py) |
 
 Modules for later tasks appear here as they are merged; [docs/STATUS.md](../docs/STATUS.md) lists every task with its files.
 

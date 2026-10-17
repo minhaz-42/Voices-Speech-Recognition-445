@@ -87,6 +87,7 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 | T21 | Noise tests → `results/M1_tanvir/noise/` ✅ (unseen speakers at 10 / 5 dB: with noise training 0.821 / 0.745, without 0.655 / 0.307; clean 0.885 vs 0.928); H3 decided in T24 | T15, T19 | ✅ FSC | Tanvir · 2026-10-17 |
 | T22 | `main.py`, inference, CI ✅; benchmark → `results/M1_tanvir/benchmark_fsc.csv` ✅ (wav2vec 2.0: 38.2 ms per clip on MPS, 74.9 ms on CPU) | T15 | ✅ | Tanvir · 2026-10-17 |
 | T48 | **One results folder for M1:** every run of Tanvir's (`random_forest`, `w2v2_15ep_noise`, `w2v2_15ep`, `whisper_small`), the noise tests, the benchmark and the confusion matrices → `results/M1_tanvir/` (`result_folders` in the config; `support.evaluate.run_dir` / `list_runs` find it) | — | ✅ | Tanvir · 2026-10-17 |
+| T49 | **Figures beyond confusion matrices:** `support/figures.py` draws, from the result files only, seen vs unseen speakers, fine-tuning curves, noise robustness, accuracy per speaker, confidence (right vs wrong, rejecting uncertain answers), speed vs accuracy and Whisper's errors → `results/M1_tanvir/figures/` (gallery: `results/M1_tanvir/README.md`) | T48 | ✅ | Tanvir · 2026-10-17 |
 | T47 | **TenVoices-L2:** data from a free copy of L2-ARCTIC (no form) ✅: 10 speakers × 50 sentences = 500 clips, QC 500 / 500, splits (each fold holds out one first language); Random Forest ✅; Whisper ✅ (WER 0.100 vs 0.039 on FSC); next: the wav2vec 2.0 runs and every merged model on L2; H5 | — | 🟡 data ✅ | Tanvir · 2026-10-17 (data) |
 
 ### At the end (needs everyone's merged work)
@@ -117,6 +118,14 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 | T02, T04–T07, T31, T32 | Recorder, pilot, recording sessions, recording QC | We use published datasets (2026-10-17) |
 
 ## 📝 Handoff Log (newest first)
+
+### 2026-10-17 · Tanvir Ahmed (M1) · T49 (new figures)
+
+- **Done:** `python -m support.figures --folder M1_tanvir` draws 9 figures (7 kinds) into `results/M1_tanvir/figures/`, only from the files in `results/M1_tanvir/` and the fold lists: seen vs unseen speakers (dumbbell, each fold as a dot), fine-tuning curves (both 15-epoch runs, mean and range of the folds, kept epoch), noise robustness (unseen and seen speakers, range of the folds), accuracy per speaker (FSC, L2), confidence of right vs wrong answers with an accuracy-vs-rejection curve (FSC, L2), speed vs accuracy, and Whisper's error rates per first language, speaker and clip. A figure whose inputs are missing is skipped, so the same command works when the L2 wav2vec 2.0 runs arrive.
+- **Seen in the figures (numbers from the result files):** both fold-1 speakers are the hardest for the noise-trained wav2vec 2.0 (71% and 70%; fold 1 0.705, the other folds 0.89–0.96); the kept epoch is late (12–15 for the noise run), so validation accuracy was still rising; wav2vec 2.0's wrong answers get lower scores than its right ones.
+- **Also:** T11 and T30 marked ✅ on the M1 page (they were already ✅ here). The runs of `M1_tanvir` are listed in the order RF, 15 ep, 15 ep + noise, Whisper, which fixes one colour per run across all figures.
+- **Not overlapping:** Shafil's T23 figures command (every run of every member) is unchanged; these figures are for M1's own experiments.
+- **Tests:** 146 pass (`tests/test_figures.py` is new).
 
 ### 2026-10-17 · Tanvir Ahmed (M1) · T48 (M1's results in one folder)
 
