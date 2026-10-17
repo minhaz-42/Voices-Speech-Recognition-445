@@ -1,0 +1,101 @@
+utt_id,speaker_id,l1,label,pred,transcript,wer,cer,match_wer,rejected
+l2_ASI_arctic_a0008,ASI,Hindi,arctic_a0008,arctic_a0008,"GAD, your letter came just in time.",0.0,0.0,0.0,False
+l2_ASI_arctic_a0009,ASI,Hindi,arctic_a0009,arctic_a0009,He turned sharply and faced Gregson across the table.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0010,ASI,Hindi,arctic_a0010,arctic_a0010,I am playing a single hand in what looks like a losing game.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0011,ASI,Hindi,arctic_a0011,arctic_a0011,"If I ever needed a fighter in my life, I need one now.",0.0,0.0,0.0,False
+l2_ASI_arctic_a0015,ASI,Hindi,arctic_a0015,arctic_a0015,It's the Aurora Borealis.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0021,ASI,Hindi,arctic_a0021,arctic_a0021,It fairly clouded me into recognizing it.,0.1429,0.0882,0.1429,False
+l2_ASI_arctic_a0025,ASI,Hindi,arctic_a0025,arctic_a0025,I was about to do this when cooler judgement prevailed.,0.1,0.0227,0.1,False
+l2_ASI_arctic_a0028,ASI,Hindi,arctic_a0028,arctic_a0028,"robbery, bribery, fraud.",0.0,0.0,0.0,False
+l2_ASI_arctic_a0033,ASI,Hindi,arctic_a0033,arctic_a0033,He unfolded a long typewritten letter and handed it to Gregson.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0042,ASI,Hindi,arctic_a0042,arctic_a0042,How could he explain his possession of the sketch?,0.0,0.0,0.0,False
+l2_ASI_arctic_a0044,ASI,Hindi,arctic_a0044,arctic_a0044,Her own betrayal of herself was like tonic to Philip.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0048,ASI,Hindi,arctic_a0048,arctic_a0048,He looked at the anchor chif more closely.,0.2857,0.1389,0.2857,False
+l2_ASI_arctic_a0056,ASI,Hindi,arctic_a0056,arctic_a0056,Piercer's little eyes were fixed on him surely.,0.2222,0.15,0.2222,False
+l2_ASI_arctic_a0057,ASI,Hindi,arctic_a0057,arctic_a0057,"I have no idea, replied Philip.",0.0,0.0,0.0,False
+l2_ASI_arctic_a0058,ASI,Hindi,arctic_a0058,arctic_a0058,I came for information more out of curiosity than anything else.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0059,ASI,Hindi,arctic_a0059,arctic_a0059,His immaculate appearance was gone.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0061,ASI,Hindi,arctic_a0061,arctic_a0061,Philip snatched at the letter which Gregson held out to him.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0062,ASI,Hindi,arctic_a0062,arctic_a0062,The men stared into each other's face.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0063,ASI,Hindi,arctic_a0063,arctic_a0063,"Yes, it was a man who asked a stranger.",0.0,0.0,0.0,False
+l2_ASI_arctic_a0069,ASI,Hindi,arctic_a0069,arctic_a0069,It was his intention to return to Elin and her father.,0.0909,0.0667,0.0909,False
+l2_ASI_arctic_a0070,ASI,Hindi,arctic_a0070,arctic_a0070,He would first hunt up Gregson and begin his work there.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0071,ASI,Hindi,arctic_a0071,arctic_a0071,What was the object of your little sensation?,0.0,0.0,0.0,False
+l2_ASI_arctic_a0075,ASI,Hindi,arctic_a0075,arctic_a0075,"There has been a change, she interrupted him.",0.0,0.0,0.0,False
+l2_ASI_arctic_a0077,ASI,Hindi,arctic_a0077,arctic_a0077,"It is a fire, partly she said.",0.1429,0.125,0.1429,False
+l2_ASI_arctic_a0079,ASI,Hindi,arctic_a0079,arctic_a0079,It was a large canoeing.,0.2,0.1875,0.2,False
+l2_ASI_arctic_a0082,ASI,Hindi,arctic_a0082,arctic_a0082,His face was screaming with blood.,0.1667,0.0357,0.1667,False
+l2_ASI_arctic_a0083,ASI,Hindi,arctic_a0083,arctic_a0083,A shadow was creeping over Peer's eyes.,0.125,0.0882,0.125,False
+l2_ASI_arctic_a0086,ASI,Hindi,arctic_a0086,arctic_a0086,Death had come with terrible suddenness.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0090,ASI,Hindi,arctic_a0090,arctic_a0090,The singing voice approached rapidly.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0093,ASI,Hindi,arctic_a0093,arctic_a0093,"For a full minute, he crouched and listened.",0.0,0.0,0.0,False
+l2_ASI_arctic_a0095,ASI,Hindi,arctic_a0095,arctic_a0095,A big canvas tent was the first thing to come within his vision.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0101,ASI,Hindi,arctic_a0101,arctic_a0101,You. You would not keep the truth from me.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0102,ASI,Hindi,arctic_a0102,arctic_a0102,He will follow us soon.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0103,ASI,Hindi,arctic_a0103,arctic_a0103,But there came no promise from the bow of the canoe.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0104,ASI,Hindi,arctic_a0104,arctic_a0104,She was sleeping under his protection as sweetly as a child.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0107,ASI,Hindi,arctic_a0107,arctic_a0107,If you only could know how I thank you.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0109,ASI,Hindi,arctic_a0109,arctic_a0109,Do you know that you are shaking my confidence in you?,0.0,0.0,0.0,False
+l2_ASI_arctic_a0110,ASI,Hindi,arctic_a0110,arctic_a0110,Much replied Jane as tearsly.,0.4,0.1538,0.4,False
+l2_ASI_arctic_a0113,ASI,Hindi,arctic_a0113,arctic_a0113,I suppose you picked that lingo up among the Indians.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0115,ASI,Hindi,arctic_a0115,arctic_a0115,He had no excuse for the feelings which were aroused in him.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0117,ASI,Hindi,arctic_a0117,arctic_a0117,she added with genuine sympathy in her face and voice.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0118,ASI,Hindi,arctic_a0118,arctic_a0118,Puri obeys me when we are together.,0.1429,0.1333,0.1429,False
+l2_ASI_arctic_a0122,ASI,Hindi,arctic_a0122,arctic_a0122,Two years ago I gave up civilization for this.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0123,ASI,Hindi,arctic_a0123,arctic_a0123,She had died from cold and starvation.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0124,ASI,Hindi,arctic_a0124,arctic_a0124,It was Gene singing softly over Beyond The Rocks.,0.1111,0.0714,0.1111,False
+l2_ASI_arctic_a0129,ASI,Hindi,arctic_a0129,arctic_a0129,Her face was against his breast.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0130,ASI,Hindi,arctic_a0130,arctic_a0130,She was his now forever.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0141,ASI,Hindi,arctic_a0141,arctic_a0141,It seems like a strange pointing of the hand of God.,0.0,0.0,0.0,False
+l2_ASI_arctic_a0144,ASI,Hindi,arctic_a0144,arctic_a0144,But there was something even more straddling than this resemblance.,0.1,0.0536,0.1,False
+l2_ASI_arctic_a0150,ASI,Hindi,arctic_a0150,arctic_a0150,"Goodbye, Pierre. He shouted.",0.0,0.0,0.0,False
+l2_TNI_arctic_a0008,TNI,Hindi,arctic_a0008,arctic_a0008,"Gad, your letter came in just in time.",0.1429,0.0741,0.1429,False
+l2_TNI_arctic_a0009,TNI,Hindi,arctic_a0009,arctic_a0009,He turned sharply and faced Gregson across the table.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0010,TNI,Hindi,arctic_a0010,arctic_a0010,I am playing a single hand in what looks like a losing game.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0011,TNI,Hindi,arctic_a0011,arctic_a0011,"If I ever needed a fighter in my life, I need one now.",0.0,0.0,0.0,False
+l2_TNI_arctic_a0015,TNI,Hindi,arctic_a0015,arctic_a0015,"It's the aura, borealis.",0.2,0.0952,0.2,False
+l2_TNI_arctic_a0021,TNI,Hindi,arctic_a0021,arctic_a0021,It fairly clubbed me into recognising it.,0.1429,0.0294,0.1429,False
+l2_TNI_arctic_a0025,TNI,Hindi,arctic_a0025,arctic_a0025,I was about to do this when cooler judgement prevailed.,0.1,0.0227,0.1,False
+l2_TNI_arctic_a0028,TNI,Hindi,arctic_a0028,arctic_a0028,"robbery, bribery, fraud.",0.0,0.0,0.0,False
+l2_TNI_arctic_a0033,TNI,Hindi,arctic_a0033,arctic_a0033,He unfolded a long typewritten letter and handed it to Gretchen.,0.0909,0.0769,0.0909,False
+l2_TNI_arctic_a0042,TNI,Hindi,arctic_a0042,arctic_a0042,How could he explain his possession of the sketch?,0.0,0.0,0.0,False
+l2_TNI_arctic_a0044,TNI,Hindi,arctic_a0044,arctic_a0044,her own betrayal of herself was like tonic to Philip.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0048,TNI,Hindi,arctic_a0048,arctic_a0048,He looked at the handkerchief more closely.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0056,TNI,Hindi,arctic_a0056,arctic_a0056,Peer's little eyes were fixed on him strudely.,0.2222,0.175,0.2222,False
+l2_TNI_arctic_a0057,TNI,Hindi,arctic_a0057,arctic_a0057,"I have no idea,"" replied Philip.",0.0,0.0,0.0,False
+l2_TNI_arctic_a0058,TNI,Hindi,arctic_a0058,arctic_a0058,I came for information more out of curiosity than anything else.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0059,TNI,Hindi,arctic_a0059,arctic_a0059,His immaculate appearance was gone.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0061,TNI,Hindi,arctic_a0061,arctic_a0061,Philip snatched at the letter which Gretchen held out to him.,0.0909,0.0816,0.0909,False
+l2_TNI_arctic_a0062,TNI,Hindi,arctic_a0062,arctic_a0062,The men stared into each other's face.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0063,TNI,Hindi,arctic_a0063,arctic_a0063,"Yes, it was a man who asked a stranger.",0.0,0.0,0.0,False
+l2_TNI_arctic_a0069,TNI,Hindi,arctic_a0069,arctic_a0069,It was his intention to return to Ireland and her father.,0.0909,0.1111,0.0909,False
+l2_TNI_arctic_a0070,TNI,Hindi,arctic_a0070,arctic_a0070,He would first hunt up Gregson and begin his work there.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0071,TNI,Hindi,arctic_a0071,arctic_a0071,What was the object of your little sensation?,0.0,0.0,0.0,False
+l2_TNI_arctic_a0075,TNI,Hindi,arctic_a0075,arctic_a0075,"There has been a change, she interrupted him.",0.0,0.0,0.0,False
+l2_TNI_arctic_a0077,TNI,Hindi,arctic_a0077,arctic_a0077,"It is the fire, partly, she said.",0.0,0.0,0.0,False
+l2_TNI_arctic_a0079,TNI,Hindi,arctic_a0079,arctic_a0079,It was a large canal.,0.2,0.125,0.2,False
+l2_TNI_arctic_a0082,TNI,Hindi,arctic_a0082,arctic_a0082,His face was streaming with blood.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0083,TNI,Hindi,arctic_a0083,arctic_a0083,A shadow was creeping over Pire's eyes.,0.125,0.0588,0.125,False
+l2_TNI_arctic_a0086,TNI,Hindi,arctic_a0086,arctic_a0086,Death had come with terrible suddenness.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0090,TNI,Hindi,arctic_a0090,arctic_a0090,The singing voice approached rapidly.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0093,TNI,Hindi,arctic_a0093,arctic_a0093,For a full minute he crouched and listened.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0095,TNI,Hindi,arctic_a0095,arctic_a0095,A big canvas tent was the first thing to come within his vision.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0101,TNI,Hindi,arctic_a0101,arctic_a0101,You. You would not keep the truth from me.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0102,TNI,Hindi,arctic_a0102,arctic_a0102,He will follow us soon.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0103,TNI,Hindi,arctic_a0103,arctic_a0103,but there came no promise from the bow of the canoe.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0104,TNI,Hindi,arctic_a0104,arctic_a0104,She was sleeping under his protection as sweetly as a child.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0107,TNI,Hindi,arctic_a0107,arctic_a0107,If you only could know how I thank you.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0109,TNI,Hindi,arctic_a0109,arctic_a0109,Do you know that you are shaking my confidence in you?,0.0,0.0,0.0,False
+l2_TNI_arctic_a0110,TNI,Hindi,arctic_a0110,arctic_a0110,Much replied gene as closely.,0.4,0.2308,0.4,False
+l2_TNI_arctic_a0113,TNI,Hindi,arctic_a0113,arctic_a0113,I suppose you pick that lingo up among the Indians.,0.1,0.0465,0.1,False
+l2_TNI_arctic_a0115,TNI,Hindi,arctic_a0115,arctic_a0115,He had no excuse for the feelings which were aroused in him.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0117,TNI,Hindi,arctic_a0117,arctic_a0117,she added with genuine sympathy in her face and voice.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0118,TNI,Hindi,arctic_a0118,arctic_a0118,Pire obeys me when we are together.,0.1429,0.0667,0.1429,False
+l2_TNI_arctic_a0122,TNI,Hindi,arctic_a0122,arctic_a0122,"Two years ago, I gave up civilization for this.",0.0,0.0,0.0,False
+l2_TNI_arctic_a0123,TNI,Hindi,arctic_a0123,arctic_a0123,She had died from cold and starvation.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0124,TNI,Hindi,arctic_a0124,arctic_a0124,It was Jane singing softly over Beyond The Rocks.,0.1111,0.0476,0.1111,False
+l2_TNI_arctic_a0129,TNI,Hindi,arctic_a0129,arctic_a0129,Her face was against his breast.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0130,TNI,Hindi,arctic_a0130,arctic_a0130,She was his now forever.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0141,TNI,Hindi,arctic_a0141,arctic_a0141,It seems like a strange pointing of the hand of God.,0.0,0.0,0.0,False
+l2_TNI_arctic_a0144,TNI,Hindi,arctic_a0144,arctic_a0144,but there was something even more startling than his resemblance.,0.1,0.0179,0.1,False
+l2_TNI_arctic_a0150,TNI,Hindi,arctic_a0150,arctic_a0150,"Goodbye, Pyre, he shouted.",0.25,0.1364,0.25,False

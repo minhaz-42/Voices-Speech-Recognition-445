@@ -1,0 +1,101 @@
+utt_id,speaker_id,l1,label,pred,transcript,wer,cer,match_wer,rejected
+l2_BWC_arctic_a0008,BWC,Mandarin,arctic_a0008,arctic_a0008,"God, your letter came just in time.",0.1429,0.037,0.1429,False
+l2_BWC_arctic_a0009,BWC,Mandarin,arctic_a0009,arctic_a0009,He turned sharply and face direction across the table.,0.2222,0.0909,0.2222,False
+l2_BWC_arctic_a0010,BWC,Mandarin,arctic_a0010,arctic_a0010,I'm playing a single hand in what looks like a lost game.,0.0769,0.0638,0.0769,False
+l2_BWC_arctic_a0011,BWC,Mandarin,arctic_a0011,arctic_a0011,"If I ever needed a fighter in my life, I need one now.",0.0,0.0,0.0,False
+l2_BWC_arctic_a0015,BWC,Mandarin,arctic_a0015,arctic_a0015,is a rural playlist.,0.8,0.619,0.8,True
+l2_BWC_arctic_a0021,BWC,Mandarin,arctic_a0021,arctic_a0021,it fairly reclubbed me into recognizing it.,0.1429,0.0588,0.1429,False
+l2_BWC_arctic_a0025,BWC,Mandarin,arctic_a0025,arctic_a0025,I was about to do this when cooler jagman previewed.,0.2,0.1591,0.2,False
+l2_BWC_arctic_a0028,BWC,Mandarin,arctic_a0028,arctic_a0028,robbery bribery fraud,0.0,0.0,0.0,False
+l2_BWC_arctic_a0033,BWC,Mandarin,arctic_a0033,arctic_a0033,He afforded a long-tap writing letter and handed it to Gregson.,0.2727,0.1538,0.2727,False
+l2_BWC_arctic_a0042,BWC,Mandarin,arctic_a0042,arctic_a0042,How would she explain his procession of the sketch?,0.3333,0.122,0.3333,False
+l2_BWC_arctic_a0044,BWC,Mandarin,arctic_a0044,arctic_a0044,her own betrayal of herself was like tonic to Philip.,0.0,0.0,0.0,False
+l2_BWC_arctic_a0048,BWC,Mandarin,arctic_a0048,arctic_a0048,He looked at the hunker shift more closely.,0.2857,0.1389,0.2857,False
+l2_BWC_arctic_a0056,BWC,Mandarin,arctic_a0056,arctic_a0056,Fear's little eyes were fixed on his shoulder.,0.3333,0.225,0.3333,False
+l2_BWC_arctic_a0057,BWC,Mandarin,arctic_a0057,arctic_a0057,"I had no idea,"" replied Philip.",0.1667,0.0833,0.1667,False
+l2_BWC_arctic_a0058,BWC,Mandarin,arctic_a0058,arctic_a0058,I came for information more out of curiosity than anything else.,0.0,0.0,0.0,False
+l2_BWC_arctic_a0059,BWC,Mandarin,arctic_a0059,arctic_a0059,his immaculate appearance was gone.,0.0,0.0,0.0,False
+l2_BWC_arctic_a0061,BWC,Mandarin,arctic_a0061,arctic_a0061,Philip snatched at a little wish Gregson hand out him.,0.4545,0.2449,0.4545,False
+l2_BWC_arctic_a0062,BWC,Mandarin,arctic_a0062,arctic_a0062,The man started into each other's face.,0.25,0.0645,0.25,False
+l2_BWC_arctic_a0063,BWC,Mandarin,arctic_a0063,arctic_a0063,"Yes, it was a man who asked a stranger.",0.0,0.0,0.0,False
+l2_BWC_arctic_a0069,BWC,Mandarin,arctic_a0069,arctic_a0069,It was his intention to return to Alan and his father.,0.1818,0.1333,0.1818,False
+l2_BWC_arctic_a0070,BWC,Mandarin,arctic_a0070,arctic_a0070,He will first hand up Grayson and begin his work there.,0.2727,0.1628,0.2727,False
+l2_BWC_arctic_a0071,BWC,Mandarin,arctic_a0071,arctic_a0071,What was the object of your little sensation?,0.0,0.0,0.0,False
+l2_BWC_arctic_a0075,BWC,Mandarin,arctic_a0075,arctic_a0075,There has been a change. She interrupted him.,0.0,0.0,0.0,False
+l2_BWC_arctic_a0077,BWC,Mandarin,arctic_a0077,arctic_a0077,"It is the fire party, she said.",0.1429,0.0417,0.1429,False
+l2_BWC_arctic_a0079,BWC,Mandarin,arctic_a0079,arctic_a0079,It was a large canal.,0.2,0.125,0.2,False
+l2_BWC_arctic_a0082,BWC,Mandarin,arctic_a0082,arctic_a0082,His face was steaming with blood.,0.1667,0.0357,0.1667,False
+l2_BWC_arctic_a0083,BWC,Mandarin,arctic_a0083,arctic_a0083,A shadow was creeping over PSI's.,0.25,0.2647,0.25,False
+l2_BWC_arctic_a0086,BWC,Mandarin,arctic_a0086,arctic_a0086,Death had come with terrible suddenness.,0.0,0.0,0.0,False
+l2_BWC_arctic_a0090,BWC,Mandarin,arctic_a0090,arctic_a0090,the scene wise approached rapidly.,0.4,0.25,0.4,False
+l2_BWC_arctic_a0093,BWC,Mandarin,arctic_a0093,arctic_a0093,"For a full minute, he crouched and listened.",0.0,0.0,0.0,False
+l2_BWC_arctic_a0095,BWC,Mandarin,arctic_a0095,arctic_a0095,"A big canvas, Tan was the first thing to come within his vision.",0.0769,0.0408,0.0769,False
+l2_BWC_arctic_a0101,BWC,Mandarin,arctic_a0101,arctic_a0101,You will now keep the truth from me.,0.3333,0.2188,0.3333,False
+l2_BWC_arctic_a0102,BWC,Mandarin,arctic_a0102,arctic_a0102,He will follow us soon.,0.0,0.0,0.0,False
+l2_BWC_arctic_a0103,BWC,Mandarin,arctic_a0103,arctic_a0103,But there came no promise from the bow of the canal.,0.0909,0.0488,0.0909,False
+l2_BWC_arctic_a0104,BWC,Mandarin,arctic_a0104,arctic_a0104,she was sleeping under his protection as sweetly as a child.,0.0,0.0,0.0,False
+l2_BWC_arctic_a0107,BWC,Mandarin,arctic_a0107,arctic_a0107,If you only could know how I thank you.,0.0,0.0,0.0,False
+l2_BWC_arctic_a0109,BWC,Mandarin,arctic_a0109,arctic_a0109,Do you know that you are shaking my confidence in you?,0.0,0.0,0.0,False
+l2_BWC_arctic_a0110,BWC,Mandarin,arctic_a0110,arctic_a0110,March replied Jenny as tassly.,0.6,0.2692,0.6,True
+l2_BWC_arctic_a0113,BWC,Mandarin,arctic_a0113,arctic_a0113,I suppose you picked that lingo up among the Indians.,0.0,0.0,0.0,False
+l2_BWC_arctic_a0115,BWC,Mandarin,arctic_a0115,arctic_a0115,he had no excuse for the feeling which were aroused in him.,0.0833,0.0208,0.0833,False
+l2_BWC_arctic_a0117,BWC,Mandarin,arctic_a0117,arctic_a0117,she added with genius sympathy in her face and voice.,0.1,0.0682,0.1,False
+l2_BWC_arctic_a0118,BWC,Mandarin,arctic_a0118,arctic_a0118,PR obeys me when we are together.,0.1429,0.1333,0.1429,False
+l2_BWC_arctic_a0122,BWC,Mandarin,arctic_a0122,arctic_a0122,"Two years ago, I gave up civilism for this.",0.1111,0.1714,0.1111,False
+l2_BWC_arctic_a0123,BWC,Mandarin,arctic_a0123,arctic_a0123,She had died from cold and starvation.,0.0,0.0,0.0,False
+l2_BWC_arctic_a0124,BWC,Mandarin,arctic_a0124,arctic_a0124,It was Johnny singing softly over beyond the rocks.,0.1111,0.0714,0.1111,False
+l2_BWC_arctic_a0129,BWC,Mandarin,arctic_a0129,arctic_a0129,Her face was against his breast.,0.0,0.0,0.0,False
+l2_BWC_arctic_a0130,BWC,Mandarin,arctic_a0130,arctic_a0130,She was his now forever.,0.0,0.0,0.0,False
+l2_BWC_arctic_a0141,BWC,Mandarin,arctic_a0141,arctic_a0141,It seems like a strange pointing of the hand of God.,0.0,0.0,0.0,False
+l2_BWC_arctic_a0144,BWC,Mandarin,arctic_a0144,arctic_a0144,but there was something even more starring than his resemblance.,0.2,0.0536,0.2,False
+l2_BWC_arctic_a0150,BWC,Mandarin,arctic_a0150,arctic_a0150,"Goodbye PR, he shot it.",0.75,0.3182,0.75,True
+l2_LXC_arctic_a0008,LXC,Mandarin,arctic_a0008,arctic_a0008,"God, your letter came just in time.",0.1429,0.037,0.1429,False
+l2_LXC_arctic_a0009,LXC,Mandarin,arctic_a0009,arctic_a0009,He turns sharply and faces the grass on the table.,0.5556,0.2727,0.5556,True
+l2_LXC_arctic_a0010,LXC,Mandarin,arctic_a0010,arctic_a0010,I'm playing a single hand in world-look class losing game.,0.3077,0.1915,0.3077,False
+l2_LXC_arctic_a0011,LXC,Mandarin,arctic_a0011,arctic_a0011,"If I ever needed a fighter in my life, I need one now.",0.0,0.0,0.0,False
+l2_LXC_arctic_a0015,LXC,Mandarin,arctic_a0015,arctic_a0015,It's the Aurora Bollywood Alice.,0.4,0.4286,0.4,False
+l2_LXC_arctic_a0021,LXC,Mandarin,arctic_a0021,arctic_a0021,it fairly clapped me into recognizing it.,0.1429,0.0882,0.1429,False
+l2_LXC_arctic_a0025,LXC,Mandarin,arctic_a0025,arctic_a0025,I was about to do this when cooler judgment prevailed.,0.0,0.0,0.0,False
+l2_LXC_arctic_a0028,LXC,Mandarin,arctic_a0028,arctic_a0028,robbery bribery fraud,0.0,0.0,0.0,False
+l2_LXC_arctic_a0033,LXC,Mandarin,arctic_a0033,arctic_a0033,He unfolded a long tapwritten letter and handed it to Gregson.,0.0909,0.0385,0.0909,False
+l2_LXC_arctic_a0042,LXC,Mandarin,arctic_a0042,arctic_a0042,How could he explain his possession of the sketch?,0.0,0.0,0.0,False
+l2_LXC_arctic_a0044,LXC,Mandarin,arctic_a0044,arctic_a0044,her old betrayal of herself was like tonic to Philly.,0.2,0.093,0.2,False
+l2_LXC_arctic_a0048,LXC,Mandarin,arctic_a0048,arctic_a0048,He looked at her hand kerchief more closely.,0.4286,0.0556,0.4286,False
+l2_LXC_arctic_a0056,LXC,Mandarin,arctic_a0056,arctic_a0056,"Pierce's little eyes were fixed on him, should they?",0.3333,0.2,0.3333,False
+l2_LXC_arctic_a0057,LXC,Mandarin,arctic_a0057,arctic_a0057,I have no idea replied fully.,0.1667,0.2083,0.1667,False
+l2_LXC_arctic_a0058,LXC,Mandarin,arctic_a0058,arctic_a0058,I came for information more out of curiosity than anything else.,0.0,0.0,0.0,False
+l2_LXC_arctic_a0059,LXC,Mandarin,arctic_a0059,arctic_a0059,His immaculate appearance was gone.,0.0,0.0,0.0,False
+l2_LXC_arctic_a0061,LXC,Mandarin,arctic_a0061,arctic_a0061,Philip snatched at a letter which Gregson held out to him.,0.0909,0.0612,0.0909,False
+l2_LXC_arctic_a0062,LXC,Mandarin,arctic_a0062,arctic_a0062,the man still into each other's face.,0.25,0.1613,0.25,False
+l2_LXC_arctic_a0063,LXC,Mandarin,arctic_a0063,arctic_a0063,"Yes, it was the man who asked a stranger.",0.1111,0.1034,0.1111,False
+l2_LXC_arctic_a0069,LXC,Mandarin,arctic_a0069,arctic_a0069,It was his intention to return to Eileen and her father.,0.0,0.0,0.0,False
+l2_LXC_arctic_a0070,LXC,Mandarin,arctic_a0070,arctic_a0070,He would first hunt up Gregson and began his work there.,0.0909,0.0233,0.0909,False
+l2_LXC_arctic_a0071,LXC,Mandarin,arctic_a0071,arctic_a0071,What was the object of your little sensation?,0.0,0.0,0.0,False
+l2_LXC_arctic_a0075,LXC,Mandarin,arctic_a0075,arctic_a0075,there has been a change she interrupted him.,0.0,0.0,0.0,False
+l2_LXC_arctic_a0077,LXC,Mandarin,arctic_a0077,arctic_a0077,It is the file partly she said.,0.1429,0.0417,0.1429,False
+l2_LXC_arctic_a0079,LXC,Mandarin,arctic_a0079,arctic_a0079,It was a large canoe.,0.0,0.0,0.0,False
+l2_LXC_arctic_a0082,LXC,Mandarin,arctic_a0082,arctic_a0082,His face was streaming with blood.,0.0,0.0,0.0,False
+l2_LXC_arctic_a0083,LXC,Mandarin,arctic_a0083,arctic_a0083,A shadow was creeping over Peer's eyes.,0.125,0.0882,0.125,False
+l2_LXC_arctic_a0086,LXC,Mandarin,arctic_a0086,arctic_a0086,Death had come with terrible sadness.,0.1667,0.1176,0.1667,False
+l2_LXC_arctic_a0090,LXC,Mandarin,arctic_a0090,arctic_a0090,The singing voice approached rapidly.,0.0,0.0,0.0,False
+l2_LXC_arctic_a0093,LXC,Mandarin,arctic_a0093,arctic_a0093,For a 4 minute he crouched and listened.,0.125,0.1143,0.125,False
+l2_LXC_arctic_a0095,LXC,Mandarin,arctic_a0095,arctic_a0095,A big canvas tent was the first scene to come within his vision.,0.0769,0.0816,0.0769,False
+l2_LXC_arctic_a0101,LXC,Mandarin,arctic_a0101,arctic_a0101,You would not keep a choice from me.,0.3333,0.3438,0.3333,False
+l2_LXC_arctic_a0102,LXC,Mandarin,arctic_a0102,arctic_a0102,He will follow us too.,0.2,0.1111,0.2,False
+l2_LXC_arctic_a0103,LXC,Mandarin,arctic_a0103,arctic_a0103,but there came no promiss formable of the canoe.,0.3636,0.1951,0.3636,False
+l2_LXC_arctic_a0104,LXC,Mandarin,arctic_a0104,arctic_a0104,She was sleeping under his protection as sweetly as a child.,0.0,0.0,0.0,False
+l2_LXC_arctic_a0107,LXC,Mandarin,arctic_a0107,arctic_a0107,if you only could know how I thank you.,0.0,0.0,0.0,False
+l2_LXC_arctic_a0109,LXC,Mandarin,arctic_a0109,arctic_a0109,Do know that you are shaking my confidence in you.,0.0909,0.0698,0.0909,False
+l2_LXC_arctic_a0110,LXC,Mandarin,arctic_a0110,arctic_a0110,March replied to Dream as Tesla.,0.8,0.4615,0.8,True
+l2_LXC_arctic_a0113,LXC,Mandarin,arctic_a0113,arctic_a0113,I suppose you pick that lingo app among Indians.,0.3,0.1628,0.3,False
+l2_LXC_arctic_a0115,LXC,Mandarin,arctic_a0115,arctic_a0115,He had no excuse for the feelings which were aroused in him.,0.0,0.0,0.0,False
+l2_LXC_arctic_a0117,LXC,Mandarin,arctic_a0117,arctic_a0117,She added with genuine sympathy in her face and voice.,0.0,0.0,0.0,False
+l2_LXC_arctic_a0118,LXC,Mandarin,arctic_a0118,arctic_a0118,Peer obeys me when we are together.,0.1429,0.1,0.1429,False
+l2_LXC_arctic_a0122,LXC,Mandarin,arctic_a0122,arctic_a0122,"Two years ago, I gave up civilization for this.",0.0,0.0,0.0,False
+l2_LXC_arctic_a0123,LXC,Mandarin,arctic_a0123,arctic_a0123,She had died from cold and starvation.,0.0,0.0,0.0,False
+l2_LXC_arctic_a0124,LXC,Mandarin,arctic_a0124,arctic_a0124,It was dream seeing softly over beyond the rocks.,0.2222,0.1905,0.2222,False
+l2_LXC_arctic_a0129,LXC,Mandarin,arctic_a0129,arctic_a0129,Her face was against his breast.,0.0,0.0,0.0,False
+l2_LXC_arctic_a0130,LXC,Mandarin,arctic_a0130,arctic_a0130,She was his now forever.,0.0,0.0,0.0,False
+l2_LXC_arctic_a0141,LXC,Mandarin,arctic_a0141,arctic_a0141,It seems like a strange pointing of the hand of God.,0.0,0.0,0.0,False
+l2_LXC_arctic_a0144,LXC,Mandarin,arctic_a0144,arctic_a0144,but there was something even more starting than this resemblance.,0.1,0.0179,0.1,False
+l2_LXC_arctic_a0150,LXC,Mandarin,arctic_a0150,arctic_a0150,"Goodbye, Pierre, he's shouting.",0.5,0.2273,0.5,False

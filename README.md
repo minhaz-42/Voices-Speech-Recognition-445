@@ -113,7 +113,17 @@ Measured so far on **TenVoices-FSC** (1,000 clips). Every number comes from `res
 
 * **Random Forest** drops from 31.0% to 20.9% when the test speakers were never heard in training: MFCC statistics depend heavily on the speaker.
 * **Whisper** recognises the commands almost perfectly without any training; its word error rate on the unseen-speaker folds is 3.9%.
-* Confusion matrices: [images/confusion/](images/confusion/). TenVoices-L2 results follow after task T47.
+* Confusion matrices: [images/confusion/](images/confusion/).
+
+Measured so far on **TenVoices-L2** (500 clips, 10 non-native speakers; every fold tests a first language never heard in training). Numbers from `results/<run>/l2arctic/summary.json`.
+
+| Model | Owner | Accuracy, unseen speakers | Macro F1, unseen | Accuracy, random split | Macro F1, random |
+| :--- | :--- | :---: | :---: | :---: | :---: |
+| **Random Forest** | Tanvir | **17.0%** | 0.149 | **9.0%** | 0.070 |
+| **Whisper small, zero-shot + phrase matching** | Tanvir | **99.6%** | 0.996 | **100%** | 1.000 |
+
+* **Random Forest** scores *lower* on seen speakers here: each speaker reads each sentence once, so the speaker's voice pulls the MFCC model towards that speaker's other sentences.
+* **Whisper** still finds the right sentence, but makes more transcription errors on non-native speech: word error rate 10.0% on TenVoices-L2 vs 3.9% on TenVoices-FSC; per first language from 4.0% (Hindi) to 16.8% (Vietnamese) (`results/whisper_small/l2arctic/wer_per_l1.csv`). Hypothesis H5 is tested formally in T24.
 
 ---
 

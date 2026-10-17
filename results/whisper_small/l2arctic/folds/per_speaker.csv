@@ -1,0 +1,11 @@
+speaker_id,n,correct,accuracy
+ASI,50,50,1.0
+BWC,50,50,1.0
+EBVS,50,50,1.0
+HJK,50,50,1.0
+HQTV,50,49,0.98
+LXC,50,50,1.0
+NJS,50,49,0.98
+PNV,50,50,1.0
+TNI,50,50,1.0
+YKWK,50,50,1.0

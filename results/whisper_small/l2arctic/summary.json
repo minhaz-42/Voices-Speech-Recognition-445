@@ -1,0 +1,102 @@
+{
+  "run": "whisper_small",
+  "dataset": "l2arctic",
+  "random": {
+    "n": 100,
+    "accuracy": 1.0,
+    "macro_f1": 1.0,
+    "weighted_f1": 1.0,
+    "n_speakers": 10
+  },
+  "folds": {
+    "pooled": {
+      "n": 500,
+      "accuracy": 0.996,
+      "macro_f1": 0.9960765550239234,
+      "weighted_f1": 0.9960765550239234
+    },
+    "per_fold": {
+      "fold1": {
+        "n": 100,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "weighted_f1": 1.0
+      },
+      "fold2": {
+        "n": 100,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "weighted_f1": 1.0
+      },
+      "fold3": {
+        "n": 100,
+        "accuracy": 0.99,
+        "macro_f1": 0.9893333333333334,
+        "weighted_f1": 0.9893333333333334
+      },
+      "fold4": {
+        "n": 100,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "weighted_f1": 1.0
+      },
+      "fold5": {
+        "n": 100,
+        "accuracy": 0.99,
+        "macro_f1": 0.9893333333333334,
+        "weighted_f1": 0.9893333333333334
+      }
+    },
+    "mean": {
+      "accuracy": 0.9960000000000001,
+      "macro_f1": 0.9957333333333335,
+      "weighted_f1": 0.9957333333333335
+    },
+    "std": {
+      "accuracy": 0.005477225575051666,
+      "macro_f1": 0.005842373946721736,
+      "weighted_f1": 0.005842373946721736
+    },
+    "folds_run": [
+      "fold1",
+      "fold2",
+      "fold3",
+      "fold4",
+      "fold5"
+    ]
+  },
+  "model": "openai/whisper-small",
+  "zero_shot": true,
+  "reject_wer": 0.5,
+  "error_rates": {
+    "random": {
+      "wer": 0.08571428571428572,
+      "cer": 0.04852203011712214
+    },
+    "fold1": {
+      "wer": 0.04047619047619048,
+      "cer": 0.024539877300613498
+    },
+    "fold2": {
+      "wer": 0.13690476190476192,
+      "cer": 0.0822643614054657
+    },
+    "fold3": {
+      "wer": 0.11190476190476191,
+      "cer": 0.06413831567205801
+    },
+    "fold4": {
+      "wer": 0.04404761904761905,
+      "cer": 0.026770775237032907
+    },
+    "fold5": {
+      "wer": 0.16785714285714284,
+      "cer": 0.10624651422197434
+    }
+  },
+  "n_transcribed": 500,
+  "error_rates_pooled_folds": {
+    "wer": 0.10023809523809524,
+    "cer": 0.06079196876742889
+  }
+}

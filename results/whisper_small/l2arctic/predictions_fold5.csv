@@ -1,0 +1,101 @@
+utt_id,speaker_id,l1,label,pred,transcript,wer,cer,match_wer,rejected
+l2_HQTV_arctic_a0008,HQTV,Vietnamese,arctic_a0008,arctic_a0008,"Yes, your letter came just in time.",0.1429,0.1111,0.1429,False
+l2_HQTV_arctic_a0009,HQTV,Vietnamese,arctic_a0009,arctic_a0009,He turns sharply and fades aggression across the table.,0.3333,0.1818,0.3333,False
+l2_HQTV_arctic_a0010,HQTV,Vietnamese,arctic_a0010,arctic_a0010,I'm playing a single hand in what looks like a losing game.,0.0,0.0,0.0,False
+l2_HQTV_arctic_a0011,HQTV,Vietnamese,arctic_a0011,arctic_a0011,"If I ever needed a fighter in my life, I need one now.",0.0,0.0,0.0,False
+l2_HQTV_arctic_a0015,HQTV,Vietnamese,arctic_a0015,arctic_a0015,Is it already boring?,0.8,0.6667,0.8,True
+l2_HQTV_arctic_a0021,HQTV,Vietnamese,arctic_a0021,arctic_a0021,if fairly club me into recognizing it.,0.2857,0.1176,0.2857,False
+l2_HQTV_arctic_a0025,HQTV,Vietnamese,arctic_a0025,arctic_a0025,I was about to do this when cool adjustment revised.,0.3,0.1591,0.3,False
+l2_HQTV_arctic_a0028,HQTV,Vietnamese,arctic_a0028,arctic_a0028,"Rubbery, bribery, fraud.",0.3333,0.0526,0.3333,False
+l2_HQTV_arctic_a0033,HQTV,Vietnamese,arctic_a0033,arctic_a0033,He unfolded a long typewritten letter and handed it to Christian.,0.0909,0.1346,0.0909,False
+l2_HQTV_arctic_a0042,HQTV,Vietnamese,arctic_a0042,arctic_a0042,How could he explain his procession of the sketch?,0.1111,0.0732,0.1111,False
+l2_HQTV_arctic_a0044,HQTV,Vietnamese,arctic_a0044,arctic_a0044,home betrayal of herself was like tonic to Philip.,0.2,0.093,0.2,False
+l2_HQTV_arctic_a0048,HQTV,Vietnamese,arctic_a0048,arctic_a0048,He looked at the handkerchief more closely.,0.0,0.0,0.0,False
+l2_HQTV_arctic_a0056,HQTV,Vietnamese,arctic_a0056,arctic_a0056,Prose leader eyes will fix on him shortly.,0.6667,0.5,0.6667,True
+l2_HQTV_arctic_a0057,HQTV,Vietnamese,arctic_a0057,arctic_a0057,I have no idea replies.,0.3333,0.2917,0.3333,False
+l2_HQTV_arctic_a0058,HQTV,Vietnamese,arctic_a0058,arctic_a0058,I can find information more out of curiosity than anything else.,0.1818,0.0943,0.1818,False
+l2_HQTV_arctic_a0059,HQTV,Vietnamese,arctic_a0059,arctic_a0059,His immaculate appearance was gone.,0.0,0.0,0.0,False
+l2_HQTV_arctic_a0061,HQTV,Vietnamese,arctic_a0061,arctic_a0061,Phyllis snatched at the letter which Cressen held out to him.,0.1818,0.1224,0.1818,False
+l2_HQTV_arctic_a0062,HQTV,Vietnamese,arctic_a0062,arctic_a0062,the man stay into each other face.,0.375,0.1935,0.375,False
+l2_HQTV_arctic_a0063,HQTV,Vietnamese,arctic_a0063,arctic_a0063,"Yes, it was a man who acts stronger.",0.3333,0.2069,0.3333,False
+l2_HQTV_arctic_a0069,HQTV,Vietnamese,arctic_a0069,arctic_a0069,It was his intention to return to Elan and her father.,0.0909,0.0667,0.0909,False
+l2_HQTV_arctic_a0070,HQTV,Vietnamese,arctic_a0070,arctic_a0070,I would first hunt up Crescent and begin his work there.,0.1818,0.1628,0.1818,False
+l2_HQTV_arctic_a0071,HQTV,Vietnamese,arctic_a0071,arctic_a0071,What were objects of your little sensation?,0.375,0.1351,0.375,False
+l2_HQTV_arctic_a0075,HQTV,Vietnamese,arctic_a0075,arctic_a0075,There has been a chance he interrupted him.,0.25,0.0556,0.25,False
+l2_HQTV_arctic_a0077,HQTV,Vietnamese,arctic_a0077,arctic_a0077,Is it the fight? Probably she said.,0.5714,0.4167,0.5714,True
+l2_HQTV_arctic_a0079,HQTV,Vietnamese,arctic_a0079,arctic_a0077,It's what a large kind of...,0.8,0.5,0.7143,True
+l2_HQTV_arctic_a0082,HQTV,Vietnamese,arctic_a0082,arctic_a0082,if I was trembling with blood.,0.5,0.3214,0.5,False
+l2_HQTV_arctic_a0083,HQTV,Vietnamese,arctic_a0083,arctic_a0083,A shadow will creep in over a pair of eyes.,0.75,0.3235,0.75,True
+l2_HQTV_arctic_a0086,HQTV,Vietnamese,arctic_a0086,arctic_a0086,Death had come with a terrible suddenness.,0.1667,0.0294,0.1667,False
+l2_HQTV_arctic_a0090,HQTV,Vietnamese,arctic_a0090,arctic_a0090,"The Singin' Void approach, probably.",0.8,0.2812,0.8,True
+l2_HQTV_arctic_a0093,HQTV,Vietnamese,arctic_a0093,arctic_a0093,"For the full minutes, he crouched and listened.",0.25,0.1143,0.25,False
+l2_HQTV_arctic_a0095,HQTV,Vietnamese,arctic_a0095,arctic_a0095,A big converse tent was the first thing to come within his vision.,0.0769,0.0816,0.0769,False
+l2_HQTV_arctic_a0101,HQTV,Vietnamese,arctic_a0101,arctic_a0101,You would not keep the trust from me.,0.2222,0.1562,0.2222,False
+l2_HQTV_arctic_a0102,HQTV,Vietnamese,arctic_a0102,arctic_a0102,He will follow us soon.,0.0,0.0,0.0,False
+l2_HQTV_arctic_a0103,HQTV,Vietnamese,arctic_a0103,arctic_a0103,but there came no promise from the bow of the canoe.,0.0,0.0,0.0,False
+l2_HQTV_arctic_a0104,HQTV,Vietnamese,arctic_a0104,arctic_a0104,she was sleeping under his protection as a child.,0.1818,0.1837,0.1818,False
+l2_HQTV_arctic_a0107,HQTV,Vietnamese,arctic_a0107,arctic_a0107,If you only could know how I thank you.,0.0,0.0,0.0,False
+l2_HQTV_arctic_a0109,HQTV,Vietnamese,arctic_a0109,arctic_a0109,Do you know that you are shaking my confidence in you?,0.0,0.0,0.0,False
+l2_HQTV_arctic_a0110,HQTV,Vietnamese,arctic_a0110,arctic_a0110,Much reply-journ as... ...teasly.,0.6,0.3462,0.6,True
+l2_HQTV_arctic_a0113,HQTV,Vietnamese,arctic_a0113,arctic_a0113,I suppose you pick that lingo up among the Indians.,0.1,0.0465,0.1,False
+l2_HQTV_arctic_a0115,HQTV,Vietnamese,arctic_a0115,arctic_a0115,He has no skill for the feelings which goar rose in him.,0.3333,0.2917,0.3333,False
+l2_HQTV_arctic_a0117,HQTV,Vietnamese,arctic_a0117,arctic_a0117,"She adds a genuine, simple thai in her facing voice.",0.6,0.3182,0.6,True
+l2_HQTV_arctic_a0118,HQTV,Vietnamese,arctic_a0118,arctic_a0118,peer-based me when we are together.,0.2857,0.2333,0.2857,False
+l2_HQTV_arctic_a0122,HQTV,Vietnamese,arctic_a0122,arctic_a0122,Two years ago I gave up on the civilization for this.,0.2222,0.1429,0.2222,False
+l2_HQTV_arctic_a0123,HQTV,Vietnamese,arctic_a0123,arctic_a0123,She had died from corn starvation.,0.2857,0.129,0.2857,False
+l2_HQTV_arctic_a0124,HQTV,Vietnamese,arctic_a0124,arctic_a0124,is Huo Chenyi singing softly over and beyond the rock.,0.5556,0.3095,0.5556,True
+l2_HQTV_arctic_a0129,HQTV,Vietnamese,arctic_a0129,arctic_a0129,Her face was against his breast.,0.0,0.0,0.0,False
+l2_HQTV_arctic_a0130,HQTV,Vietnamese,arctic_a0130,arctic_a0130,She will his now forever.,0.2,0.1579,0.2,False
+l2_HQTV_arctic_a0141,HQTV,Vietnamese,arctic_a0141,arctic_a0141,It seemed like a strange pointing of the hand of the God.,0.1818,0.122,0.1818,False
+l2_HQTV_arctic_a0144,HQTV,Vietnamese,arctic_a0144,arctic_a0144,but there was something even more sluggish than this resemblance.,0.1,0.125,0.1,False
+l2_HQTV_arctic_a0150,HQTV,Vietnamese,arctic_a0150,arctic_a0150,"Goodbye, Pierre. He solved it.",0.5,0.2273,0.5,False
+l2_PNV_arctic_a0008,PNV,Vietnamese,arctic_a0008,arctic_a0008,Gadge your letter came just in time.,0.1429,0.0741,0.1429,False
+l2_PNV_arctic_a0009,PNV,Vietnamese,arctic_a0009,arctic_a0009,"He turns sharply and fades, gets in across the table.",0.4444,0.1591,0.4444,False
+l2_PNV_arctic_a0010,PNV,Vietnamese,arctic_a0010,arctic_a0010,I'm playing a single hand in what looks like a losing game.,0.0,0.0,0.0,False
+l2_PNV_arctic_a0011,PNV,Vietnamese,arctic_a0011,arctic_a0011,"If I ever needed a fighter in my life, I need one now.",0.0,0.0,0.0,False
+l2_PNV_arctic_a0015,PNV,Vietnamese,arctic_a0015,arctic_a0015,is the Aurora Boiles.,0.4,0.2857,0.4,False
+l2_PNV_arctic_a0021,PNV,Vietnamese,arctic_a0021,arctic_a0021,It fairly clapped me into recognizing it.,0.1429,0.0882,0.1429,False
+l2_PNV_arctic_a0025,PNV,Vietnamese,arctic_a0025,arctic_a0025,I was about to do this when cooler judgment revealed.,0.1,0.0682,0.1,False
+l2_PNV_arctic_a0028,PNV,Vietnamese,arctic_a0028,arctic_a0028,"Properly, bribery, fraud.",0.3333,0.2105,0.3333,False
+l2_PNV_arctic_a0033,PNV,Vietnamese,arctic_a0033,arctic_a0033,He unfolded a long Thai-Britain letter and handed it to Gresson.,0.2727,0.1346,0.2727,False
+l2_PNV_arctic_a0042,PNV,Vietnamese,arctic_a0042,arctic_a0042,How could he explain his possession of the sketch?,0.0,0.0,0.0,False
+l2_PNV_arctic_a0044,PNV,Vietnamese,arctic_a0044,arctic_a0044,her own betrayal of herself was like tonic to Philip.,0.0,0.0,0.0,False
+l2_PNV_arctic_a0048,PNV,Vietnamese,arctic_a0048,arctic_a0048,He looked at the handkerchief more closely.,0.0,0.0,0.0,False
+l2_PNV_arctic_a0056,PNV,Vietnamese,arctic_a0056,arctic_a0056,"Pieces, little eyes, will fix down him scruly.",0.6667,0.325,0.6667,True
+l2_PNV_arctic_a0057,PNV,Vietnamese,arctic_a0057,arctic_a0057,"I have no idea,"" replied Philip.",0.0,0.0,0.0,False
+l2_PNV_arctic_a0058,PNV,Vietnamese,arctic_a0058,arctic_a0058,I came for information more out of curiosity than anything else.,0.0,0.0,0.0,False
+l2_PNV_arctic_a0059,PNV,Vietnamese,arctic_a0059,arctic_a0059,his immaculate appearance was gone.,0.0,0.0,0.0,False
+l2_PNV_arctic_a0061,PNV,Vietnamese,arctic_a0061,arctic_a0061,Philip snatched at the letter which Crescent held out to him.,0.0909,0.102,0.0909,False
+l2_PNV_arctic_a0062,PNV,Vietnamese,arctic_a0062,arctic_a0062,The man stared into each other's face.,0.125,0.0323,0.125,False
+l2_PNV_arctic_a0063,PNV,Vietnamese,arctic_a0063,arctic_a0063,"Yes, it was a man who asked a stranger.",0.0,0.0,0.0,False
+l2_PNV_arctic_a0069,PNV,Vietnamese,arctic_a0069,arctic_a0069,It was his intention to return to Eileen and her father.,0.0,0.0,0.0,False
+l2_PNV_arctic_a0070,PNV,Vietnamese,arctic_a0070,arctic_a0070,He would first hunt up Gretchen and begin his work there.,0.0909,0.093,0.0909,False
+l2_PNV_arctic_a0071,PNV,Vietnamese,arctic_a0071,arctic_a0071,What was the object of your little sensation?,0.0,0.0,0.0,False
+l2_PNV_arctic_a0075,PNV,Vietnamese,arctic_a0075,arctic_a0075,"There has been a change, she interrupted him.",0.0,0.0,0.0,False
+l2_PNV_arctic_a0077,PNV,Vietnamese,arctic_a0077,arctic_a0077,"It is the fire, partly, she said.",0.0,0.0,0.0,False
+l2_PNV_arctic_a0079,PNV,Vietnamese,arctic_a0079,arctic_a0079,It was a large canoe.,0.0,0.0,0.0,False
+l2_PNV_arctic_a0082,PNV,Vietnamese,arctic_a0082,arctic_a0082,His face was streaming with blood.,0.0,0.0,0.0,False
+l2_PNV_arctic_a0083,PNV,Vietnamese,arctic_a0083,arctic_a0083,a shadow was creeping over Pease Eyes.,0.25,0.1471,0.25,False
+l2_PNV_arctic_a0086,PNV,Vietnamese,arctic_a0086,arctic_a0086,Death had come with terrible certainness.,0.1667,0.1765,0.1667,False
+l2_PNV_arctic_a0090,PNV,Vietnamese,arctic_a0090,arctic_a0090,the singing voice abroad rapidly.,0.2,0.1562,0.2,False
+l2_PNV_arctic_a0093,PNV,Vietnamese,arctic_a0093,arctic_a0093,"For a full minute, he is crowd and listen.",0.375,0.2286,0.375,False
+l2_PNV_arctic_a0095,PNV,Vietnamese,arctic_a0095,arctic_a0095,A big canvas tent was the first thing to come within his vision.,0.0,0.0,0.0,False
+l2_PNV_arctic_a0101,PNV,Vietnamese,arctic_a0101,arctic_a0101,you would not keep the truth from me.,0.1111,0.0938,0.1111,False
+l2_PNV_arctic_a0102,PNV,Vietnamese,arctic_a0102,arctic_a0102,He will follow us soon.,0.0,0.0,0.0,False
+l2_PNV_arctic_a0103,PNV,Vietnamese,arctic_a0103,arctic_a0103,But there came no promise from the bow of the canoe.,0.0,0.0,0.0,False
+l2_PNV_arctic_a0104,PNV,Vietnamese,arctic_a0104,arctic_a0104,She was living under his protection as sweetly as a child.,0.0909,0.0816,0.0909,False
+l2_PNV_arctic_a0107,PNV,Vietnamese,arctic_a0107,arctic_a0107,if you only could know how I thank you.,0.0,0.0,0.0,False
+l2_PNV_arctic_a0109,PNV,Vietnamese,arctic_a0109,arctic_a0109,Do you know that you are shaking my confidence in you?,0.0,0.0,0.0,False
+l2_PNV_arctic_a0110,PNV,Vietnamese,arctic_a0110,arctic_a0110,much reply gene as closely.,0.6,0.3462,0.6,True
+l2_PNV_arctic_a0113,PNV,Vietnamese,arctic_a0113,arctic_a0113,I suppose you picked that lingo up among the Indians.,0.0,0.0,0.0,False
+l2_PNV_arctic_a0115,PNV,Vietnamese,arctic_a0115,arctic_a0115,He had no excuse for the feelings which were aroused in him.,0.0,0.0,0.0,False
+l2_PNV_arctic_a0117,PNV,Vietnamese,arctic_a0117,arctic_a0117,She added with genuine sympathy in her face and voice.,0.0,0.0,0.0,False
+l2_PNV_arctic_a0118,PNV,Vietnamese,arctic_a0118,arctic_a0118,Peace obeys me when we are together.,0.1429,0.1,0.1429,False
+l2_PNV_arctic_a0122,PNV,Vietnamese,arctic_a0122,arctic_a0122,"Two years ago, I gave up civilization for this.",0.0,0.0,0.0,False
+l2_PNV_arctic_a0123,PNV,Vietnamese,arctic_a0123,arctic_a0123,She had died from cold and starvation.,0.0,0.0,0.0,False
+l2_PNV_arctic_a0124,PNV,Vietnamese,arctic_a0124,arctic_a0124,It was Jin singing softly over Beyond The Rocks.,0.1111,0.0952,0.1111,False
+l2_PNV_arctic_a0129,PNV,Vietnamese,arctic_a0129,arctic_a0129,Her face was against his breast.,0.0,0.0,0.0,False
+l2_PNV_arctic_a0130,PNV,Vietnamese,arctic_a0130,arctic_a0130,She was his now forever.,0.0,0.0,0.0,False
+l2_PNV_arctic_a0141,PNV,Vietnamese,arctic_a0141,arctic_a0141,It seems like a strange pointing of the hand of God.,0.0,0.0,0.0,False
+l2_PNV_arctic_a0144,PNV,Vietnamese,arctic_a0144,arctic_a0144,but there was something even more startling than this resemblance.,0.0,0.0,0.0,False
+l2_PNV_arctic_a0150,PNV,Vietnamese,arctic_a0150,arctic_a0150,"Goodbye, here he shouted.",0.25,0.1364,0.25,False
