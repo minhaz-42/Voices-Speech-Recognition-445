@@ -33,7 +33,7 @@
 - **Why two datasets.** TenVoices-FSC holds short spoken commands such as "turn on the lights", "lights on" and "turn up the heat in the kitchen". Many commands share most of their words, and different wordings of the same request are different classes, so recognising them requires the actual words, not just the voice. TenVoices-L2 holds longer read sentences from non-native speakers with different first languages, including Hindi, the accent in that corpus closest to Bangladeshi English. A method that only works on one of them is not convincing.
 - The system can also **transcribe** free speech. Whisper turns a recording into text without any training on our data, and the closest of the 50 phrases becomes its prediction. Its word error rate shows how a general-purpose recogniser copes with non-native accents.
 - **Effectiveness** must hold for **speakers the system has never heard**. Every model is also scored on a random split, so the gap between seen and unseen speakers is visible.
-- **Check with the instructor** that selecting the 10 speakers from published data satisfies "gather a dataset" (see **❓ Decisions to Confirm**).
+- **Confirmed by the instructor (17 Oct 2026):** the brief needs the data, not our own recordings, so published datasets are acceptable.
 
 ---
 
@@ -338,7 +338,6 @@ The tasks for each week, with owners and dependencies, are in [STATUS.md](STATUS
 
 | Risk | Likelihood | Impact | Mitigation | Owner |
 |---|---|---|---|---|
-| The instructor expects self-recorded data | Medium | High | Ask in week 1; the selection script, QC and datasheet document how we gathered the 10-speaker sets | M1 |
 | Fluent Speech Commands access link no longer works | Medium | High | Use a public mirror and check it against the official CSV files (30,043 clips, 97 speakers) before use | M2 |
 | L2-ARCTIC download email is slow | Low | Medium | Request access on day 1; one member downloads and shares the original archive in the private team Drive (the licence allows non-commercial sharing) | M2 |
 | Licence limits | Low | High | Non-commercial academic use only; the audio and modified copies are never published; only speaker and file IDs, the script and checksums are | M2 |
@@ -369,7 +368,7 @@ The tasks for each week, with owners and dependencies, are in [STATUS.md](STATUS
 ## ❓ Decisions to Confirm
 
 1. Course code, section, group number, instructor and deadlines. Update the README table and the roadmap if needed.
-2. **The instructor accepts 10-speaker subsets of published datasets for "gather a dataset"** (asked in week 1).
+2. ✅ Published datasets are acceptable; we do not have to record the data ourselves (instructor, 17 Oct 2026).
 3. Report template: the instructor's format, otherwise a two-column paper format.
 
 ---

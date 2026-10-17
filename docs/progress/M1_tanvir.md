@@ -17,7 +17,7 @@ The task board and handoff log for M1 are in [STATUS.md](../STATUS.md). This fil
 | T00, T01 | Plan, repository, environment, config, audio pre-processing | — | ✅ |
 | T29 | Whisper pipeline code `support/whisper_asr.py` | T01, T03 | ✅ 2026-10-17 |
 | T00 | Switch to two published datasets (plan v3.0, DATASETS.md, board, cards) | — | ✅ 2026-10-17 |
-| — | 👤 Ask the instructor whether published-data subsets satisfy "gather a dataset" | — | ⬜ |
+| — | 👤 Ask the instructor whether published-data subsets satisfy "gather a dataset" (yes: data needed, not our own recordings) | — | ✅ 2026-10-17 |
 | T08 | Processed audio, manifest, splits per dataset, leakage tests | T43 (M2) | ⬜ |
 | T11 | Features, shared classical runner and evaluation; Random Forest | T08, T10 (M3) | ⬜ |
 | T15 | Shared wav2vec 2.0 training script; 15 epochs + noise | T08, T11 | ⬜ |
@@ -34,7 +34,7 @@ The task board and handoff log for M1 are in [STATUS.md](../STATUS.md). This fil
 Plain-language summary for the weekly project update, newest week first. Only finished work; numbers only from `results/`.
 
 ### Week of 2026-10-17
-- Changed how we get our data: instead of recording volunteers, we build two 10-speaker datasets from published corpora with a fixed selection script. **TenVoices-FSC** (from Fluent Speech Commands) has 50 spoken smart-home commands such as "turn on the lights" or "turn up the heat in the kitchen", two takes each. **TenVoices-L2** (from L2-ARCTIC) has 50 sentences read by non-native English speakers, including all four Hindi speakers, the accent in that corpus closest to ours. I checked both papers and licences and wrote the dataset guide (`docs/DATASETS.md`) and the new plan (v3.0): every model is now tested on both datasets.
+- Changed how we get our data: instead of recording volunteers, we build two 10-speaker datasets from published corpora with a fixed selection script. **TenVoices-FSC** (from Fluent Speech Commands) has 50 spoken smart-home commands such as "turn on the lights" or "turn up the heat in the kitchen", two takes each. **TenVoices-L2** (from L2-ARCTIC) has 50 sentences read by non-native English speakers, including all four Hindi speakers, the accent in that corpus closest to ours. I checked both papers and licences and wrote the dataset guide (`docs/DATASETS.md`) and the new plan (v3.0): every model is now tested on both datasets. The instructor confirmed that published datasets meet the brief.
 - Added a fourth pipeline to the project: **Whisper**, a general-purpose speech-to-text model, used without training. Its transcript is matched to the nearest of our 50 phrases, so it can be compared with the trained models, and it adds a new research question (RQ5) and hypothesis (H5), now about non-native speech.
 - Built the Whisper pipeline (`support/whisper_asr.py`). It transcribes a recording, normalises the text (numbers, times, phone numbers), finds the nearest of our 50 phrases and measures word and character error rate. 18 unit tests. A first end-to-end check on synthetic text-to-speech clips worked; it matched every clip to the right phrase but misspelled local place names, the kind of gap H5 now tests on non-native speech.
 - Brought two new members into the team (Mahir, Shafil) and split the project into independent tasks with clear file ownership. Every member now works on their own branch, by hand or with any AI assistant, using task cards that say exactly what to build; I review and merge their work.

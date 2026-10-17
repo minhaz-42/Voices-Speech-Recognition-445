@@ -121,6 +121,12 @@ Every run from here on covers **both datasets**: results go to `results/<run>/fs
 
 ## 📝 Handoff Log (newest first)
 
+### 2026-10-17 · Tanvir Ahmed (M1) · T00 (instructor confirmation)
+
+- **Decision:** the instructor confirmed that the brief needs the data, not our own recordings: published datasets are acceptable. The two-dataset plan stands as it is.
+- **Files:** `docs/PROJECT_PLAN.md` (open decision closed, risk removed), `docs/STATUS.md`, `docs/progress/M1_tanvir.md`.
+- **Blockers:** none.
+
 ### 2026-10-17 · Tanvir Ahmed (M1) · T41 (Fluent Speech Commands)
 
 - **Done (by M1, at the lead's decision, to unblock the data work):** downloaded **Fluent Speech Commands** into `data/raw/fsc/` and checked it against the paper: 23,132 / 3,118 / 3,793 clips, 77 / 10 / 10 speakers, 30,043 WAV files all present, 248 phrasings, 31 intents, speaker demographics included. Source, reasons and SHA-256 are in `data/SOURCES.md`. The official route is a Google Group that needs a Google account. The old direct link is dead, and the Zenodo and `superb_demo` copies in DATASETS.md §1 are not the original archive (repackaged / a tiny demo subset), so that section should be updated (M2).
