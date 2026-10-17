@@ -16,6 +16,8 @@ The task board and handoff log for M1 are in [STATUS.md](../STATUS.md). This pag
 
 ## My tasks
 
+**Schedule (decided 2026-10-17):** today the running FSC jobs finish and are pushed: T15 and T19 (wav2vec 2.0 with and without noise), T21 (noise tests), T22 (benchmark). After next week's project update: the remaining TenVoices-L2 runs (T47), merging members' branches, T24 (final aggregation), T25 (report) and T28 (submission).
+
 | ID | Task | Depends on | Status |
 |---|---|---|---|
 | T00, T01 | Plan, repository, environment, config, audio pre-processing | — | ✅ |

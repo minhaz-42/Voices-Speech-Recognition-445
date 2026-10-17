@@ -6,7 +6,7 @@
 **Nobody waits for anyone.** Every member task below depends only on work that is already merged (shared code ✅, TenVoices-FSC subsets and splits ✅) or on the member's own earlier tasks. Work that needs everyone's results is split: members write and test the code; the lead runs it once on all merged results at the end (T24). TenVoices-L2 is prepared and run by the lead (T47).
 
 **Current phase:** every member can start all of their tasks now, on TenVoices-FSC.
-**Next up:** M2 · Rabbi: T12, T16, T44, T09 · M3 · Mahir: T10, T33, T37, T13, T17, T45 · M4 · Shafil: T35, T38, T39, T14, T18, T46 · M1 · Tanvir: wav2vec 2.0 runs (T15, T19, running), Whisper and the other L2 runs (T47). Both datasets are ready; nothing is waiting for a form any more.
+**Next up:** M2 · Rabbi: T12, T16, T44, T09 · M3 · Mahir: T10, T33, T37, T13, T17, T45 · M4 · Shafil: T35, T38, T39, T14, T18, T46 · M1 · Tanvir: **today** only the running FSC jobs finish and get pushed (T15, T19, T21, T22). **After next week's project update:** the wav2vec 2.0 and members' runs on TenVoices-L2 (T47), merging members' branches, final aggregation (T24), report (T25), submission (T28).
 **Last updated:** 2026-10-17 by Tanvir Ahmed (M1)
 
 ## 👥 Team
