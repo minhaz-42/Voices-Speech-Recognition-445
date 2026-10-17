@@ -118,6 +118,10 @@ The results will be filled in after the experiments in Weeks 3–5. **Nothing be
 | **Wav2Vec2 (Fine-Tuned) 3 epochs** | TBD | TBD | TBD | TBD | Short fine-tuning |
 | **Wav2Vec2 (Fine-Tuned) 8 epochs + noise** | TBD | TBD | TBD | TBD | Medium fine-tuning with augmentation |
 | **Wav2Vec2 (Fine-Tuned) 15 epochs + noise** | TBD | TBD | TBD | TBD | Full fine-tuning with augmentation |
+| **Wav2Vec2 (Fine-Tuned) 15 epochs, no noise** | TBD | TBD | TBD | TBD | Ablation for noise augmentation (H3) |
+| **WavLM Base+ 15 epochs + noise** | TBD | TBD | TBD | TBD | Exploratory: another self-supervised model |
+| **HuBERT Base 15 epochs + noise** | TBD | TBD | TBD | TBD | Exploratory: another self-supervised model |
+| **Linear probe (frozen wav2vec 2.0 + logistic regression)** | TBD | TBD | TBD | TBD | Exploratory: pre-trained features without fine-tuning |
 | **Whisper small (zero-shot) + phrase matching** | TBD | TBD | TBD | TBD | General-purpose speech-to-text, no training |
 
 Accuracy per dataset and split; macro and weighted F1 will be in `results/all_results.csv`.
@@ -173,7 +177,7 @@ Voices-Speech-Recognition-445/
 |   |-- evaluate.py           one evaluation script for every model
 |   |-- metrics.py, stats.py, results_table.py, error_analysis.py
 |   `-- visualization.py      spectrograms, MFCCs and result charts
-|-- tools/                    select_subsets.py, qc_report.py, make_splits.py
+|-- tools/                    select_subsets.py, qc_report.py, make_splits.py (data preparation)
 |-- notebooks/                Colab notebook for fine-tuning
 |-- tests/
 |-- data/                     subset and phrase lists, sources, splits (audio is gitignored)
@@ -223,13 +227,14 @@ Run every command from the repository root. Scripts in `support/` and `tools/` a
 | `python -m support.config` | Print the settings and resolved paths | ✅ ready |
 | `python -m support.audio clip.wav [--out clip_16k.wav]` | Load and pre-process one clip (mono, 16 kHz, trimmed, normalised, padded to 6 s) | ✅ ready |
 | `python -m support.whisper_asr clip.wav` | Transcribe a clip with Whisper (zero-shot) and show the 5 nearest phrases | ✅ ready |
-| `python -m tools.select_subsets --dataset all` | Build the two 10-speaker subsets from the downloaded datasets | Week 2 |
-| `python -m support.dataset --dataset fsc --build` | Processed 16 kHz copies + manifest of a subset | ✅ code ready (subsets, T42) |
-| `python -m tools.make_splits --dataset fsc` | Random 80/20 split + 5 speaker-independent folds, leakage-checked | ✅ code ready (subsets, T42) |
-| `python -m support.classical --dataset fsc --model svm --split all` | Train and evaluate a traditional model (also `random_forest`, `xgboost`, `knn`) | ✅ code ready (splits, T08) |
-| `python -m support.train_wav2vec2 --dataset fsc --epochs 15 --noise white` | Fine-tune wav2vec 2.0 on every split (`--untrained` for the baseline); Colab: `notebooks/train_wav2vec2.ipynb` | ✅ code ready (splits, T08) |
+| `python -m tools.select_subsets --dataset fsc` | Select a 10-speaker subset from the downloaded dataset (rules in `docs/DATASETS.md`) | ✅ ready (FSC done) |
+| `python -m tools.qc_report --dataset fsc` | Quality report of a subset | ✅ ready (FSC done) |
+| `python -m support.dataset --dataset fsc --build` | Processed 16 kHz copies + manifest of a subset (checks every clip's SHA-256) | ✅ ready |
+| `python -m tools.make_splits --dataset fsc` | Random 80/20 split + 5 speaker-independent folds, leakage-checked | ✅ ready (FSC done) |
+| `python -m support.classical --dataset fsc --model svm --split all` | Train and evaluate a traditional model (also `random_forest`, `xgboost`, `knn`) | ✅ ready |
+| `python -m support.train_wav2vec2 --dataset fsc --epochs 15 --noise white` | Fine-tune wav2vec 2.0 on every split (`--untrained` for the baseline); Colab: `notebooks/train_wav2vec2.ipynb` | ✅ ready |
 | `python -m support.evaluate --dataset fsc --run w2v2_15ep_noise` | Rebuild a run's metrics, reports and confusion matrices from its predictions | ✅ code ready |
-| `python -m support.whisper_asr --dataset l2arctic --split all` | Zero-shot Whisper on the same test clips: transcripts, WER per speaker and first language | ✅ code ready (splits, T08) |
+| `python -m support.whisper_asr --dataset l2arctic --split all` | Zero-shot Whisper on the same test clips: transcripts, WER per speaker and first language | ✅ ready |
 | `python -m support.noise_test --run w2v2_15ep_noise --dataset fsc` | Accuracy with white noise at 20 / 10 / 5 dB on the test clips | ✅ code ready (trained models) |
 | `python main.py --audio clip.wav --model <saved model>` | Top-5 phrases for an audio file (also `--video`, `--mic`, `--asr whisper`, `--benchmark N`) | ✅ code ready (trained model) |
 | `python app.py` | Live microphone demo (Gradio) | Week 5 |

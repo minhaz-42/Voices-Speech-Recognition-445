@@ -15,19 +15,20 @@ The task board and handoff log for M1 are in [STATUS.md](../STATUS.md). This fil
 | ID | Task | Depends on | Status |
 |---|---|---|---|
 | T00, T01 | Plan, repository, environment, config, audio pre-processing | — | ✅ |
-| T29 | Whisper pipeline code `support/whisper_asr.py` | T01, T03 | ✅ 2026-10-17 |
-| T00 | Switch to two published datasets (plan v3.0, DATASETS.md, board, cards) | — | ✅ 2026-10-17 |
-| — | 👤 Ask the instructor whether published-data subsets satisfy "gather a dataset" (yes: data needed, not our own recordings) | — | ✅ 2026-10-17 |
-| T41 | Download Fluent Speech Commands and check it against the paper (L2-ARCTIC needs the form) | — | 🟡 FSC ✅ 2026-10-17 |
-| T08 | Processed audio, manifest, splits per dataset, leakage tests | T43 (M2) | 🟡 code + tests ✅; run waits for T43 |
-| T11 | Features, shared classical runner and evaluation; Random Forest | T08, T10 (M3) | 🟡 code + tests ✅; RF run waits for T08, T10 |
-| T15 | Shared wav2vec 2.0 training script; 15 epochs + noise | T08, T11 | 🟡 script, tests, Colab notebook ✅; runs wait for T08 |
-| T19 | 15 epochs without noise (H3 ablation) | T15 | ⬜ |
-| T22 | `main.py` inference, benchmark, CI | T15 | 🟡 code, tests, CI ✅; benchmark waits for a trained model |
-| T30 | Whisper runs on all splits, H5, transcript mode | T08, T11, T22, T29 | 🟡 code + tests ✅; runs wait for T08 |
-| T21 | Noise tests, H3 | T15, T19 | 🟡 code + tests ✅; runs wait for the models |
-| T24 | Reproducibility check, feature freeze | T21–T23, T30, T34, T40 | ⬜ |
-| T25 | Final report and README | T24, T37, T38 | ⬜ |
+| T29 | Whisper pipeline code | — | ✅ 2026-10-17 |
+| T41 | Fluent Speech Commands downloaded and checked against the paper | — | ✅ 2026-10-17 |
+| T42 | Selection script; TenVoices-FSC selected (1,000 clips) | — | ✅ 2026-10-17 |
+| T43 | QC script; TenVoices-FSC 997 / 1,000 pass | — | ✅ 2026-10-17 |
+| T08 | Processed copies, splits, leakage tests (TenVoices-FSC) | — | ✅ 2026-10-17 |
+| T11 | Features, shared runner, evaluation ✅; Random Forest run | — | 🟡 |
+| T30 | Whisper on the test clips (FSC now, L2 in T47) | — | 🟡 |
+| T15 | Training script + Colab ✅; wav2vec 2.0 15 epochs + noise run | — | 🟡 |
+| T19 | wav2vec 2.0 15 epochs without noise | — | ⬜ |
+| T21 | Noise tests, H3 | T15, T19 | 🟡 code ✅ |
+| T22 | Inference + CI ✅; benchmark | T15 | 🟡 |
+| T47 | TenVoices-L2: 👤 request access (form), select, QC, splits, run every model on L2, H5 | — | ⬜ |
+| T24 | Final aggregation on all merged results, reproducibility, feature freeze | all | ⬜ |
+| T25 | Final report and README | T24 | ⬜ |
 | — | Review and merge every member's branch | — | ongoing |
 
 ## Faculty update
@@ -35,6 +36,8 @@ The task board and handoff log for M1 are in [STATUS.md](../STATUS.md). This fil
 Plain-language summary for the weekly project update, newest week first. Only finished work; numbers only from `results/`.
 
 ### Week of 2026-10-17
+- Prepared the main dataset by code: selected **TenVoices-FSC** (10 speakers, 5 female and 5 male, × 50 commands × 2 takes = 1,000 clips) with a deterministic selection script, checked every clip (997 of 1,000 pass; 3 flagged for slight clipping), and made the random split and the 5 speaker-independent folds with automatic leakage checks.
+- Re-organised the team plan so that **no member waits for another**: every member can run their models today, and each member now also owns an extra model (WavLM, HuBERT, a linear probe on frozen wav2vec 2.0) to compare against our main approach. All analysis decisions were fixed in the plan before any model was trained.
 - Downloaded **Fluent Speech Commands** and checked it against its paper: 30,043 recordings from 97 speakers, with the train / validation / test lists matching the paper exactly (23,132 / 3,118 / 3,793 clips). Its source and checksum are recorded in `data/SOURCES.md`.
 - Built the complete training and evaluation pipeline, so every model can run the moment the two subsets are selected: processed audio and speaker-independent splits with automatic leakage checks (`support/dataset.py`, `tools/make_splits.py`); MFCC features and one shared runner for Random Forest, XGBoost, k-NN and SVM (`support/features.py`, `support/classical.py`); wav2vec 2.0 fine-tuning with white-noise augmentation and a Colab notebook (`support/train_wav2vec2.py`); Whisper on the same test clips with error rates per speaker and first language; one shared evaluation for every model (`support/evaluate.py`); noise tests at 20 / 10 / 5 dB (`support/noise_test.py`); and an inference tool for audio, video or the microphone (`main.py`). All of it is covered by 125 unit tests on synthetic audio, and a GitHub Actions workflow is set up to run them on every push.
 - Checked that real wav2vec 2.0 trains on real Fluent Speech Commands audio on a laptop GPU, and found and fixed a macOS crash that happens when PyTorch and XGBoost share one process.

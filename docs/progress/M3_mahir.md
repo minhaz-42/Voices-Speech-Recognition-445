@@ -2,13 +2,17 @@
 
 | | |
 |---|---|
-| **Role** | Evaluation: analysis plan, statistics, results tables, error analysis |
-| **Models** | k-NN (traditional) · wav2vec 2.0 fine-tuned for 3 epochs |
+| **Role** | Evaluation code: analysis plan, statistics, results table, hypothesis tests, error analysis |
+| **Models** | k-NN (traditional) · wav2vec 2.0 3 epochs · **HuBERT Base** 15 epochs + white noise |
 | **Branch** | `dev_mahir` (Tanvir merges it into `main`) |
-| **Owns** | `support/metrics.py`, `support/stats.py`, `support/results_table.py`, `support/error_analysis.py`, `docs/ANALYSIS_PLAN.md`, `docs/literature/classical_and_evaluation.md`, `results/knn/`, `results/w2v2_3ep/`, `results/all_results.csv`, `results/hypotheses.csv`, `results/errors/` |
+| **Owns** | `support/metrics.py`, `support/stats.py`, `support/results_table.py`, `support/error_analysis.py`, `support/hypotheses.py`, `docs/ANALYSIS_PLAN.md`, `docs/literature/classical_and_evaluation.md`, `results/knn/`, `results/w2v2_3ep/`, `results/hubert_15ep_noise/`, `results/all_results.csv`, `results/hypotheses.csv`, `results/errors/` |
 | **Report** | Sections 5 (experiments and results) and 6 (discussion) |
 
 Only Mahir (or Mahir's assistant) edits this file. Full task text and dependencies: [STATUS.md](../STATUS.md).
+
+## Note from Tanvir (2026-10-17, evening): nothing to wait for
+
+Every one of your tasks below depends only on work that is already merged or on your own earlier tasks. Data preparation (download, selection, QC, splits) is done and merged for TenVoices-FSC, so you can run your models today: [docs/tasks/RUNS.md](../tasks/RUNS.md) shows how. Work that needs everyone's results is split: you write and test the code, and Tanvir runs it on all results at the end.
 
 ## First-time setup
 
@@ -22,19 +26,18 @@ Only Mahir (or Mahir's assistant) edits this file. Full task text and dependenci
 
 | ID | Task | Depends on | Status | Done · date |
 |---|---|---|---|---|
-| T03 | Metrics module `support/metrics.py` (done by Tanvir before you joined; you own it now) | T01 | ✅ | Tanvir · 2026-10-04 |
-| T10 | Analysis plan `docs/ANALYSIS_PLAN.md` (H1–H5, splits, metrics, tests) | T03 | ⬜ | |
-| T33 | Statistics module `support/stats.py` (bootstrap CI, McNemar, Wilcoxon, Mann–Whitney) + tests | T03 | ⬜ | |
-| T37 | Literature notes: MFCC, classical classifiers, speaker-independent evaluation | — | ⬜ | |
-| T13 | k-NN results on both datasets → `results/knn/` | T11 | ⬜ | |
-| T20 | Results table `support/results_table.py` | T11, T33 | ⬜ | |
-| T17 | wav2vec 2.0, 3 epochs → `results/w2v2_3ep/` | T15 | ⬜ | |
-| T40 | Final results, hypotheses H1, H2, H4 | all runs, T20 | ⬜ | |
-| T34 | Error analysis `support/error_analysis.py` | T40 | ⬜ | |
+| T03 | Metrics module `support/metrics.py` (done by Tanvir before you joined; you own it now) | — | ✅ | Tanvir · 2026-10-04 |
+| T10 | Analysis plan `docs/ANALYSIS_PLAN.md`, consistent with the frozen decisions ([card](../tasks/T10.md)) | — | ⬜ | |
+| T33 | Statistics module `support/stats.py` ([card](../tasks/T33.md)) | — | ⬜ | |
+| T37 | Literature notes ([card](../tasks/T37.md)) | — | ⬜ | |
+| T13 | k-NN → `results/knn/fsc/` ([card](../tasks/T13.md)) | — | ⬜ | |
+| T17 | wav2vec 2.0, 3 epochs → `results/w2v2_3ep/fsc/` ([card](../tasks/T17.md)) | — | ⬜ | |
+| T45 | HuBERT Base, 15 epochs + white noise → `results/hubert_15ep_noise/fsc/` ([card](../tasks/T45.md)) | — | ⬜ | |
+| T20 | Results table `support/results_table.py` ([card](../tasks/T20.md)) | T33 | ⬜ | |
+| T34 | Error analysis `support/error_analysis.py` on your runs ([card](../tasks/T34.md)) | T13 | ⬜ | |
+| T40 | Hypothesis tests `support/hypotheses.py` ([card](../tasks/T40.md)) | T10, T20, T33 | ⬜ | |
 
-**Note from Tanvir (2026-10-17):** we no longer record our own speakers, so your recording and listen-check tasks (T31, T07) are cancelled. TenVoices is now two 10-speaker subsets of published datasets, TenVoices-FSC and TenVoices-L2 ([DATASETS.md](../DATASETS.md)); every run and the analysis plan cover both. H5 is redrafted and T33 gains a Mann–Whitney test; the cards T10 and T33 are updated.
-
-**This week (from 2026-10-17):** T10, T33 and T37 need no audio and no one else's work. For the faculty update you can then show how every model will be judged (the analysis plan and hypotheses), the statistics module with its tests, and what the literature says about classical speech classifiers.
+**Start with:** T33, T13 (minutes on a laptop) and T10. Run T17 and T45 on Colab. Your code is tested on synthetic results and on your own runs; Tanvir runs it on everyone's results at the end, so nothing you do waits for anyone.
 
 ## Faculty update
 

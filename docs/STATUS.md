@@ -1,20 +1,22 @@
 # 📋 TenVoices: Status Board
 
-> **Source of truth for what is merged into `main`.** Only M1 edits this file; members record their progress in `docs/progress/<slot>_<name>.md` and M1 copies it here when merging (rules in [AGENTS.md](../AGENTS.md)). Every task that can start has a card in [docs/tasks/](tasks/).
-> **Legend:** ⬜ to do · 🟡 in progress · ✅ done and merged · ⛔ blocked · ✖ cancelled · 👤 needs people (dataset access, video)
+> **Source of truth for what is merged into `main`.** Only M1 edits this file; members record their progress in `docs/progress/<slot>_<name>.md` and M1 copies it here when merging (rules in [AGENTS.md](../AGENTS.md)). Every task has a card in [docs/tasks/](tasks/).
+> **Legend:** ⬜ to do · 🟡 in progress · ✅ done and merged · ✖ cancelled · 👤 needs a person (dataset access, listening, video)
 
-**Current phase:** Weeks 1–2: dataset access and subset selection (M2), plus start-now work for every member. **Since 2026-10-17 we use two published datasets instead of recording our own** (see [DATASETS.md](DATASETS.md)).
-**Next up:** M2 · Rabbi: T42 on Fluent Speech Commands (downloaded, `data/raw/fsc/`), then T43; someone fills in the L2-ARCTIC form (T41) · M3 · Mahir: T10, T33, T37 · M4 · Shafil: T35, T36, T38, T39 · M1 · Tanvir: all pipeline code is ready; runs start when T43 (subsets) and T10 (analysis plan) are merged
+**Nobody waits for anyone.** Every member task below depends only on work that is already merged (shared code ✅, TenVoices-FSC subsets and splits ✅) or on the member's own earlier tasks. Work that needs everyone's results is split: members write and test the code; the lead runs it once on all merged results at the end (T24). TenVoices-L2 is prepared and run by the lead (T47).
+
+**Current phase:** every member can start all of their tasks now, on TenVoices-FSC.
+**Next up:** M2 · Rabbi: T12, T16, T44, T09 · M3 · Mahir: T10, T33, T37, T13, T17, T45 · M4 · Shafil: T35, T38, T39, T14, T18, T46 · M1 · Tanvir: T11 (Random Forest), T30, T15 / T19 runs, 👤 L2-ARCTIC form (T47)
 **Last updated:** 2026-10-17 by Tanvir Ahmed (M1)
 
 ## 👥 Team
 
-| Slot | Member | Branch | Traditional model | Deep-learning run | Main workstream |
+| Slot | Member | Branch | Traditional model | Deep-learning runs | Main workstream |
 |---|---|---|---|---|---|
-| M1 | Tanvir Ahmed (lead, merges) | `main` | Random Forest | 15 epochs + white noise, 15 epochs without noise, Whisper zero-shot | Data pipeline and splits, shared training / evaluation code, Whisper pipeline, noise tests, inference, integration |
-| M2 | Md. Shahriar Rakib Rabbi | `dev_rabbi` | XGBoost | 8 epochs + white noise | Datasets: access, subset selection, QC, datasheet and subset release |
-| M3 | Mahir Ahmed | `dev_mahir` | k-NN | 3 epochs | Evaluation: analysis plan, statistics, results tables, error analysis |
-| M4 | Shafil Ahmed | `dev_shafil` | SVM | Untrained baseline | Visualisation, demo app, poster, slides, video |
+| M1 | Tanvir Ahmed (lead, merges) | `main` | Random Forest | wav2vec 2.0 15 epochs with and without noise, Whisper zero-shot | Data preparation, shared code, Whisper, noise tests, inference, TenVoices-L2, final aggregation |
+| M2 | Md. Shahriar Rakib Rabbi | `dev_rabbi` | XGBoost | wav2vec 2.0 8 epochs + noise, **WavLM Base+** 15 epochs + noise | Datasheet, listen-check, dataset statistics, subset release |
+| M3 | Mahir Ahmed | `dev_mahir` | k-NN | wav2vec 2.0 3 epochs, **HuBERT Base** 15 epochs + noise | Analysis plan, statistics, results table, hypothesis tests, error analysis |
+| M4 | Shafil Ahmed | `dev_shafil` | SVM | Untrained baseline, **linear probe** on frozen wav2vec 2.0 | Visualisation, demo app, poster, slides, video |
 
 ## 💬 How to work
 
@@ -23,6 +25,7 @@ Use whatever you have: Claude Code, another AI assistant, or no assistant at all
 **Members (M2–M4)**
 - **With an assistant that works in the repository** (Claude Code, Codex, Cursor, Copilot, Gemini CLI, …): say *"I'm Mahir (M3). What is completed? Then complete my next tasks."* It follows [AGENTS.md](../AGENTS.md), works on your branch and, when you say *"Wrap up and push"*, updates your progress file and faculty update, commits, pushes and opens a pull request.
 - **With a chat assistant (ChatGPT, Gemini, …) or by hand:** follow [CONTRIBUTING.md](../CONTRIBUTING.md). It has the git commands, a ready-made prompt, and the list of files to give the assistant for each task card.
+- **Running a model:** [docs/tasks/RUNS.md](tasks/RUNS.md) shows how to get the audio and run any model on TenVoices-FSC, locally or on Colab.
 - Either way, tell Tanvir which tasks are ready to merge.
 
 **Lead (M1)**
@@ -33,93 +36,96 @@ A task is ✅ here once it is merged. Finished work that is not merged yet shows
 
 ## 🗂️ Task Board
 
-### Start now: independent work (no audio needed)
+Runs are done when their results for TenVoices-FSC (random split + 5 folds) are in `results/<run>/fsc/`. The same command for TenVoices-L2 is run by M1 in T47.
 
-Each of these has a task card: `docs/tasks/<ID>.md`.
+### M2 · Rabbi
 
-| ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
-|---|---|---|---|---|---|
-| T41 | 👤 Get both datasets ([DATASETS.md](DATASETS.md) §1): Fluent Speech Commands (official link, or a public copy checked against the paper's counts) into `data/raw/fsc/` and L2-ARCTIC v5.0 (download form) into `data/raw/l2arctic/`; original archives in the team Drive; `data/SOURCES.md` with URL, version, date, licence, SHA-256 and file counts → counts match the papers | M2 | — | 🟡 FSC ✅, L2-ARCTIC needs the form | FSC: Tanvir · 2026-10-17 |
-| T10 | `docs/ANALYSIS_PLAN.md`: hypotheses H1–H5 with pass criteria, both splits, metrics, statistical tests and leakage rules, written from `docs/PROJECT_PLAN.md` → M1 approves it at merge and it is **frozen** before any main experiment | M3 | T03 | ⬜ | |
-| T33 | `support/stats.py`: 95% bootstrap confidence interval for accuracy, McNemar's test for two models on the same clips, Wilcoxon signed-rank test over per-speaker accuracies + tests against textbook or hand-computed cases → tests pass | M3 | T03 | ⬜ | |
-| T37 | Literature notes `docs/literature/classical_and_evaluation.md`: 6–8 papers on MFCC features, k-NN / SVM / tree models for speech, and speaker-independent evaluation; each with a checked DOI or arXiv link, what they did and what we take from it → feeds report section 2 | M3 | — | ⬜ | |
-| T35 | `support/visualization.py`: waveform, spectrogram, log-mel and MFCC plots of one clip, a before / after pre-processing figure, and chart helpers (model-comparison bars, accuracy vs SNR, per-speaker bars) + tests on synthetic data; example figures of your own voice in `images/` → tests pass | M4 | T01 | ⬜ | |
-| T36 | Demo skeleton `app.py` (Gradio): microphone or upload → shared pre-processing → waveform and spectrogram from T35 + the phrase list, with a clearly marked "model not connected yet" area (no fake predictions) → the app runs locally | M4 | T35 | ⬜ | |
-| T38 | Literature notes `docs/literature/self_supervised_speech.md`: 6–8 papers on self-supervised speech models (wav2vec 2.0, HuBERT, WavLM, XLS-R) and spoken-command benchmarks; same format as T37 → feeds report section 2 | M4 | — | ⬜ | |
-| T39 | Planning poster v2 (`poster/poster.html` → `images/poster.png`): team of four, the two datasets and the four-stage pipeline from `docs/PROJECT_PLAN.md`, no results → the poster renders and the README shows it | M4 | — | ⬜ | |
-| T29 | Whisper pipeline `support/whisper_asr.py`: zero-shot transcription (`--model small`), Whisper's English text normaliser, nearest-phrase matching (word-level edit distance), WER / CER, predictions in the shared format + tests; smoke test on a few self-recorded phrases → tests pass | M1 | T01, T03 | ✅ | Tanvir · 2026-10-17 |
+| ID | Task (→ done when) | Depends on | Status | Done by · date |
+|---|---|---|---|---|
+| T12 | **XGBoost** with the shared runner → `results/xgboost/fsc/` | — | ⬜ | |
+| T16 | **wav2vec 2.0, 8 epochs + white noise** → `results/w2v2_8ep_noise/fsc/` | — | ⬜ | |
+| T44 | **WavLM Base+, 15 epochs + white noise** (same script, `--model microsoft/wavlm-base-plus`) → `results/wavlm_15ep_noise/fsc/` | — | ⬜ | |
+| T09 | Datasheet `data/README.md` for TenVoices-FSC (sources, selection, QC, statistics, licences) + dataset statistics figure + 👤 listen-check of the 100 marked clips → `data/listen_check_fsc.csv` | — | ⬜ | |
+| T26 | Subset release: subset and phrase lists, selection and QC scripts, datasheet, checksums (no audio) as a GitHub Release draft | T09 | ⬜ | |
 
-### Week 1: Setup and shared code
+### M3 · Mahir
 
-| ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
-|---|---|---|---|---|---|
-| T00 | Project plan, README, poster, phrase list, `CLAUDE.md`, this board → committed. Revised 2026-10-17: two published datasets instead of recording | M1 | — | ✅ | Tanvir · 2026-10-01 |
-| T01 | Publish the GitHub repo and add collaborators; pin `requirements.txt`; `configs/config.yaml` + `support/config.py`; `support/audio.py` (load, mono, 16 kHz, trim silence, peak-normalise, pad to 6 s) + tests → tests pass and a sample WAV loads | M1 | T00 | ✅ | Tanvir · 2026-10-04 |
-| T03 | `support/metrics.py`: accuracy, macro / weighted F1, classification report, confusion-matrix plot, per-speaker accuracy + tests → hand-computed cases pass | M3 | T01 | ✅ | Tanvir · 2026-10-04 |
+| ID | Task (→ done when) | Depends on | Status | Done by · date |
+|---|---|---|---|---|
+| T10 | `docs/ANALYSIS_PLAN.md`: the full analysis, consistent with the *Frozen analysis decisions* in PROJECT_PLAN.md (it no longer gates any run) | — | ⬜ | |
+| T33 | `support/stats.py`: bootstrap CI, McNemar, Wilcoxon, Mann–Whitney + hand-computed tests | — | ⬜ | |
+| T37 | Literature notes: MFCC, classical classifiers, speaker-independent evaluation | — | ⬜ | |
+| T13 | **k-NN** with the shared runner → `results/knn/fsc/` | — | ⬜ | |
+| T17 | **wav2vec 2.0, 3 epochs** (no noise) → `results/w2v2_3ep/fsc/` | — | ⬜ | |
+| T45 | **HuBERT Base, 15 epochs + white noise** (same script, `--model facebook/hubert-base-ls960`) → `results/hubert_15ep_noise/fsc/` | — | ⬜ | |
+| T20 | `support/results_table.py`: every run in `results/` → `results/all_results.csv` + table image; seen vs unseen speakers, per speaker, bootstrap CIs; tested on synthetic and your own runs | T33 | ⬜ | |
+| T34 | `support/error_analysis.py`: most-confused phrase pairs, accuracy per phrase category and speaker, for any run; write-up for your own runs → `results/errors/` | T13 | ⬜ | |
+| T40 | `support/hypotheses.py`: H1–H5 exactly as frozen, from whatever runs exist → `results/hypotheses.csv`; tested on synthetic results (M1 runs it on all results in T24) | T10, T20, T33 | ⬜ | |
 
-### Week 2: Subsets, quality control and splits
+### M4 · Shafil
 
-| ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
-|---|---|---|---|---|---|
-| T42 | `tools/select_subsets.py`: the selection rules of [DATASETS.md](DATASETS.md) §2 (seed 42) → `data/subsets/fsc.csv`, `data/subsets/l2arctic.csv`, `data/prompts/fsc_phrases.csv`, `data/prompts/l2arctic_sentences.csv`; `support/phrases.py` loads the new lists; tests on synthetic metadata → lists committed and a rerun gives identical files | M2 | T41 | ⬜ | |
-| T43 | `tools/qc_report.py` on both subsets (format, duration, clipping, silence, SNR, 10% listen-check); failed clips replaced by rerunning the selection → ≥ 97% of clips pass, `data/subsets/qc_<dataset>.csv` | M2 | T42 | ⬜ | |
-| T08 | Processed 16 kHz copies + manifest (label, speaker, take, dataset, SHA-256); `support/dataset.py` (`--dataset fsc` or `l2arctic`); `tools/make_splits.py` → per dataset a random 80/20 split + 5 speaker-independent folds in `data/splits/<dataset>/` (TenVoices-L2: the two test speakers of a fold share a first language); leakage tests → tests pass; tag `data-v1` | M1 | T43 | 🟡 code + tests ready; run waits for T43 | |
-| T09 | Dataset statistics figure + datasheet `data/README.md` for both subsets (sources, selection, QC, statistics, licences) | M2 | T08 | ⬜ | |
+| ID | Task (→ done when) | Depends on | Status | Done by · date |
+|---|---|---|---|---|
+| T35 | `support/visualization.py` + tests + example figures | — | ⬜ | |
+| T36 | Demo skeleton `app.py` (Gradio) | T35 | ⬜ | |
+| T38 | Literature notes: self-supervised speech models | — | ⬜ | |
+| T39 | Planning poster v2 | — | ⬜ | |
+| T14 | **SVM** with the shared runner → `results/svm/fsc/` | — | ⬜ | |
+| T18 | **Untrained wav2vec 2.0 baseline** (`--untrained`) → `results/w2v2_untrained/fsc/` | — | ⬜ | |
+| T46 | **Linear probe:** `support/embeddings.py` (frozen wav2vec 2.0, mean-pooled) + logistic regression with the shared runner → `results/w2v2_probe/fsc/` | — | ⬜ | |
+| T23 | Demo connected to `support.inference` with your SVM model (top-5 + confidence chart); `python -m support.visualization --results` draws the figures of every run in `results/` | T14, T35, T36 | ⬜ | |
+| T27 | Results poster, slides and 👤 1-minute demo video, with numbers and figures generated from `results/` (regenerated by one command in T28) | T23 | ⬜ | |
 
-### Week 3: Traditional machine learning
+### M1 · Tanvir
 
-Every run from here on covers **both datasets**: results go to `results/<run>/fsc/` and `results/<run>/l2arctic/`.
+| ID | Task (→ done when) | Depends on | Status | Done by · date |
+|---|---|---|---|---|
+| T11 | Features, shared runner and evaluation ✅; **Random Forest** → `results/random_forest/fsc/` | — | 🟡 code ✅ | |
+| T30 | **Whisper zero-shot** on the test clips → `results/whisper_small/fsc/`; WER per speaker | — | 🟡 code ✅ | |
+| T15 | Training script + Colab notebook ✅; **wav2vec 2.0, 15 epochs + white noise** → `results/w2v2_15ep_noise/fsc/` (models to Drive) | — | 🟡 code ✅ | |
+| T19 | **wav2vec 2.0, 15 epochs without noise** (H3 ablation) → `results/w2v2_15ep/fsc/` | — | ⬜ | |
+| T21 | Noise tests at 20 / 10 / 5 dB for T15 and T19 (and every merged run) → `results/noise/`; H3 | T15, T19 | 🟡 code ✅ | |
+| T22 | `main.py`, inference, CI ✅; inference-time benchmark with the T15 model | T15 | 🟡 code ✅ | |
+| T47 | **TenVoices-L2:** 👤 request L2-ARCTIC (form), download, select, QC, splits; run every merged model's command on L2; Whisper per first language; H5 | — | ⬜ | |
 
-| ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
-|---|---|---|---|---|---|
-| T11 | `support/features.py` (MFCC 13 + Δ + ΔΔ, mean & std) + shared runner `support/classical.py` (scaler + model, both splits, validation tuning, saves report / predictions / confusion matrix) + shared `support/evaluate.py`; **Random Forest** results → `results/random_forest/` | M1 | T03, T08, T10 | 🟡 code + tests ready; Random Forest run waits for T08 and T10 | |
-| T12 | **XGBoost** results with the shared runner → `results/xgboost/` | M2 | T11 | ⬜ | |
-| T13 | **k-NN** results with the shared runner → `results/knn/` | M3 | T11 | ⬜ | |
-| T14 | **SVM** results with the shared runner → `results/svm/` | M4 | T11 | ⬜ | |
-| T20 | `support/results_table.py`: every run in `results/` → `results/all_results.csv` + `images/all_results_table.png`, seen vs unseen speakers, per-speaker table, bootstrap CIs from T33; works with whichever runs exist → table built from the merged runs | M3 | T11, T33 | ⬜ | |
-
-### Week 4: wav2vec 2.0 and Whisper
-
-| ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
-|---|---|---|---|---|---|
-| T15 | Shared training script `support/train_wav2vec2.py` (`--epochs`, `--noise`, `--split`; validation-based model selection; fp16 on GPU) + Colab notebook; run **15 epochs + white noise** on the random split and all 5 folds → `results/w2v2_15ep_noise/` (models to Drive) | M1 | T08, T11 | 🟡 script, tests and Colab notebook ready; runs wait for T08 | |
-| T16 | Run **8 epochs + white noise** with the shared script → `results/w2v2_8ep_noise/` | M2 | T15 | ⬜ | |
-| T17 | Run **3 epochs** (no noise) with the shared script → `results/w2v2_3ep/` | M3 | T15 | ⬜ | |
-| T18 | **Untrained baseline** with the shared evaluation script → `results/w2v2_untrained/` | M4 | T15 | ⬜ | |
-| T19 | Run **15 epochs without noise** (ablation for H3) → `results/w2v2_15ep/` | M1 | T15 | ⬜ | |
-| T30 | Run Whisper on the test clips of the random split and all 5 folds of both datasets → `results/whisper_small/`; WER / CER per speaker, dataset and first language; test H5; `--asr whisper` transcript mode in `main.py`; move the old phrase list used by `tests/test_whisper_asr.py` into a test fixture | M1 | T08, T11, T22, T29 | 🟡 split runner, WER per speaker / first language, `main.py --asr whisper` and test fixture ready; runs wait for T08 | |
-
-### Week 5: Results, analysis and demo
+### At the end (needs everyone's merged work)
 
 | ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
 |---|---|---|---|---|---|
-| T40 | Final results once every run is merged: regenerate T20's tables and test H1, H2, H4 with `support/stats.py` → `results/hypotheses.csv` | M3 | T12, T13, T14, T15, T16, T17, T18, T19, T20 | ⬜ | |
-| T21 | Noise tests: white noise at 20 / 10 / 5 dB on the test clips, for the 15-epoch runs with and without noise and every other merged run; test H3 → `results/noise/` | M1 | T15, T19 | 🟡 noise-test runner and tests ready; runs wait for the T15 / T19 models | |
-| T34 | `support/error_analysis.py`: most-confused phrase pairs, accuracy per category and per speaker for any run; write-up for the best traditional and the best wav2vec 2.0 model → `results/errors/` | M3 | T40 | ⬜ | |
-| T22 | `main.py` inference (WAV / MP3 / MP4 audio / microphone → top-5 phrases with confidence) + inference-time benchmark + unit tests + GitHub Actions CI | M1 | T15 | 🟡 `main.py`, `support/inference.py`, tests and CI ready; benchmark waits for a trained model | |
-| T23 | Connect the demo to `main.py` (top-5 phrases with a confidence chart, Whisper transcript) + final figures with `support/visualization.py` (confusion matrices, accuracy vs SNR, per-speaker chart) → `images/` | M4 | T21, T22, T30, T36, T40 | ⬜ | |
-| T24 | Clean-environment reproducibility check → **feature freeze** | M1 | T21, T22, T23, T30, T34, T40 | ⬜ | |
+| T24 | Run T20 (results table), T40 (hypotheses), T34 (errors) and T23's figure command on all merged results; clean-environment reproducibility check → **feature freeze** | M1 | all runs, T20, T23, T34, T40, T47 | ⬜ | |
+| T25 | Final report (paper format, ~8 pages) and README with real results, using the T37 / T38 literature notes | M1 | T24 | ⬜ | |
+| T28 | 👤 Final checklist (every number matches `results/`), regenerate poster and slides (T27 command), tag `v1.0`, submit | all | T25, T26, T27 | ⬜ | |
 
-### Week 6: Delivery
+### ✅ Done
 
-| ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
-|---|---|---|---|---|---|
-| T25 | Final report (paper format, ~8 pages) integration + final README with real results | M1 | T24, T37, T38 | ⬜ | |
-| T26 | Subset release as a GitHub Release: subset and phrase lists, selection script, QC reports, datasheet and checksums. No audio: the datasets' licences do not allow re-publishing it | M2 | T24 | ⬜ | |
-| T27 | Results poster, slides, 👤 1-minute demo video | M4 | T24 | ⬜ | |
-| T28 | 👤 Final checklist (every number matches `results/`), tag `v1.0`, submit | all | T25, T26, T27 | ⬜ | |
+| ID | Task | Owner | Done by · date |
+|---|---|---|---|
+| T00 | Project plan, README, poster, phrase list, guides, board; revised for two published datasets; analysis decisions frozen | M1 | Tanvir · 2026-10-01 … 2026-10-17 |
+| T01 | Repository, pinned environment, config, audio pre-processing + tests | M1 | Tanvir · 2026-10-04 |
+| T03 | `support/metrics.py` + tests | M3 slot | Tanvir · 2026-10-04 |
+| T29 | Whisper pipeline code + tests | M1 | Tanvir · 2026-10-17 |
+| T41 | Fluent Speech Commands downloaded and checked against the paper (`data/SOURCES.md`); L2-ARCTIC moved to T47 | M1 | Tanvir · 2026-10-17 |
+| T42 | `tools/select_subsets.py`; **TenVoices-FSC** selected: 10 speakers (5 F, 5 M) × 50 phrases × 2 takes = 1,000 clips | M1 | Tanvir · 2026-10-17 |
+| T43 | `tools/qc_report.py`; TenVoices-FSC: 997 / 1,000 clips pass, 3 flagged for clipping | M1 | Tanvir · 2026-10-17 |
+| T08 | Processed copies, manifest, random split + 5 speaker-independent folds of TenVoices-FSC, leakage tests | M1 | Tanvir · 2026-10-17 |
 
-### ✖ Cancelled on 2026-10-17 (we no longer record our own speakers)
+### ✖ Cancelled
 
-| ID | Was | Replaced by |
+| ID | Was | Why |
 |---|---|---|
-| T02 | Recorder tool (M2; the phrase-catalogue loader `support/phrases.py` was finished and stays) | T41, T42 |
-| T04 | 👤 Pilot sessions S01, S02 | — |
-| T05 | QC report on the pilot, protocol v1 | T43 |
-| T06, T31, T32 | 👤 Recording volunteers (M2, M3, M4) | T42 |
-| T07 | QC and listen-checks of all sessions | T43 |
+| T02, T04–T07, T31, T32 | Recorder, pilot, recording sessions, recording QC | We use published datasets (2026-10-17) |
 
 ## 📝 Handoff Log (newest first)
+
+### 2026-10-17 · Tanvir Ahmed (M1) · T00 (no member waits for another), T42, T43, T08
+
+- **Why:** members' tasks waited for each other (data selection by M2, the analysis plan by M3, everyone's runs for the results table and figures). Now every member task depends only on merged work or on the member's own tasks.
+- **Data preparation done by M1 and merged:** **TenVoices-FSC** selected by `tools/select_subsets.py` (10 speakers, 5 F and 5 M, × 50 phrases × 2 takes = **1,000 clips**, 24 min of speech; 29,980 of 30,043 source clips eligible), QC by `tools/qc_report.py` (**997 / 1,000 pass**, 3 flagged for clipping), and the random split (720 / 80 / 200) plus 5 speaker-independent folds in `data/splits/fsc/`. Members get the audio themselves ([docs/tasks/RUNS.md](tasks/RUNS.md)); `support/dataset.py --build` checks every clip's SHA-256. TenVoices-L2 moves to M1 (T47, needs the form 👤).
+- **Analysis decisions frozen** in `docs/PROJECT_PLAN.md` before any model was trained (pooled folds, which runs H1–H4 compare, the H5 test, no multiple-comparison correction, bootstrap settings), so T10 no longer gates any run.
+- **New independent model per member (exploratory, E10):** WavLM Base+ (M2, T44), HuBERT Base (M3, T45), linear probe on frozen wav2vec 2.0 (M4, T46). The shared code supports them already (`--model …`; `--features w2v2 --model logreg`).
+- **Aggregation split:** M3 writes and tests the results table (T20), error analysis (T34) and hypothesis tests (T40); M4 writes the figures command and connects the demo to their own SVM (T23); M1 runs them on all merged results at the end (T24).
+- **Board:** reorganised by member. New task cards: RUNS.md, T09, T12–T14, T16–T18, T20, T23, T26, T27, T34, T40, T44–T46; T41 and T42 cards removed (done).
+- **Next:** M1 runs Random Forest (T11) and Whisper (T30) on FSC, then the wav2vec 2.0 runs (T15, T19). Members can start every task on their page now.
 
 ### 2026-10-17 · Tanvir Ahmed (M1) · T08, T11, T15, T21, T22, T30 (code)
 

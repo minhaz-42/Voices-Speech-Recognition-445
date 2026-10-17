@@ -3,12 +3,16 @@
 | | |
 |---|---|
 | **Role** | Visualisation, demo app, poster, slides, video |
-| **Models** | SVM (traditional) · untrained wav2vec 2.0 baseline |
+| **Models** | SVM (traditional) · untrained wav2vec 2.0 baseline · **linear probe** on frozen wav2vec 2.0 |
 | **Branch** | `dev_shafil` (Tanvir merges it into `main`) |
-| **Owns** | `support/visualization.py`, `app.py`, `poster/`, `images/poster.png`, slides and video in `others/`, `docs/literature/self_supervised_speech.md`, `results/svm/`, `results/w2v2_untrained/` |
+| **Owns** | `support/visualization.py`, `support/embeddings.py`, `app.py`, `poster/`, `images/poster.png`, slides and video in `others/`, `docs/literature/self_supervised_speech.md`, `results/svm/`, `results/w2v2_untrained/`, `results/w2v2_probe/` |
 | **Report** | Section 7 (demo system) |
 
 Only Shafil (or Shafil's assistant) edits this file. Full task text and dependencies: [STATUS.md](../STATUS.md).
+
+## Note from Tanvir (2026-10-17, evening): nothing to wait for
+
+Every one of your tasks below depends only on work that is already merged or on your own earlier tasks. Data preparation (download, selection, QC, splits) is done and merged for TenVoices-FSC, so you can run your models today: [docs/tasks/RUNS.md](../tasks/RUNS.md) shows how. Work that needs everyone's results is split: you write and test the code, and Tanvir runs it on all results at the end.
 
 ## First-time setup
 
@@ -22,18 +26,17 @@ Only Shafil (or Shafil's assistant) edits this file. Full task text and dependen
 
 | ID | Task | Depends on | Status | Done · date |
 |---|---|---|---|---|
-| T35 | Visualisation module `support/visualization.py` + tests + example figures of your voice | T01 | ⬜ | |
-| T36 | Demo skeleton `app.py` (Gradio, no model yet) | T35 | ⬜ | |
-| T38 | Literature notes: self-supervised speech models, spoken-command benchmarks | — | ⬜ | |
-| T39 | Planning poster v2: team of four, the two datasets, four-stage pipeline | — | ⬜ | |
-| T14 | SVM results on both datasets → `results/svm/` | T11 | ⬜ | |
-| T18 | Untrained wav2vec 2.0 baseline → `results/w2v2_untrained/` | T15 | ⬜ | |
-| T23 | Demo connected to `main.py` + final figures | T21, T22, T30, T36, T40 | ⬜ | |
-| T27 | Results poster, slides, 👤 1-minute demo video | T24 | ⬜ | |
+| T35 | Visualisation module + tests + example figures ([card](../tasks/T35.md)) | — | ⬜ | |
+| T36 | Demo skeleton `app.py` ([card](../tasks/T36.md)) | T35 | ⬜ | |
+| T38 | Literature notes ([card](../tasks/T38.md)) | — | ⬜ | |
+| T39 | Planning poster v2 ([card](../tasks/T39.md)) | — | ⬜ | |
+| T14 | SVM → `results/svm/fsc/` ([card](../tasks/T14.md)) | — | ⬜ | |
+| T18 | Untrained wav2vec 2.0 baseline → `results/w2v2_untrained/fsc/` ([card](../tasks/T18.md)) | — | ⬜ | |
+| T46 | Linear probe: `support/embeddings.py` + logistic regression → `results/w2v2_probe/fsc/` ([card](../tasks/T46.md)) | — | ⬜ | |
+| T23 | Demo recognising with your SVM + figures command ([card](../tasks/T23.md)) | T14, T35, T36 | ⬜ | |
+| T27 | Results poster, slides, 👤 demo video ([card](../tasks/T27.md)) | T23 | ⬜ | |
 
-**Note from Tanvir (2026-10-17):** we no longer record our own speakers, so your recording and listen-check tasks (T32, T07) are cancelled. TenVoices is now two 10-speaker subsets of published datasets, TenVoices-FSC (spoken commands) and TenVoices-L2 (non-native read speech) ([DATASETS.md](../DATASETS.md)). The demo (T36) will recognise the 50 TenVoices-FSC commands, and the poster (T39) must show the two datasets; both cards are updated.
-
-**This week (from 2026-10-17):** T35, T36, T38 and T39 need no audio and no one else's work. For the faculty update you can then show spectrograms and MFCCs of real speech (what the models actually "see"), the first version of the demo app, a literature summary and the updated poster.
+**Start with:** T14 (minutes on a laptop), T35 and T18. Your demo uses your own SVM model, so nothing you do waits for anyone.
 
 ## Faculty update
 

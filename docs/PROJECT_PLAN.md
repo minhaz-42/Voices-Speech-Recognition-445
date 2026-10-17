@@ -53,7 +53,7 @@
 - **RQ5** How does a general-purpose speech-to-text model (Whisper, zero-shot) compare with models trained on each dataset, and how much do non-native accents hurt it?
 - **RQ6** Do the answers to RQ1–RQ5 hold on both datasets?
 
-**Hypotheses.** These are frozen in `docs/ANALYSIS_PLAN.md` before the main experiments (task T10) and reported whether or not they hold. H1–H4 are tested on each dataset separately.
+**Hypotheses.** Frozen on 2026-10-17, before any model was trained (exact decisions: *Frozen analysis decisions* in the Evaluation Protocol). They are reported whether or not they hold. H1–H4 are tested on each dataset separately; `docs/ANALYSIS_PLAN.md` (T10) documents the analysis in full and cannot change these decisions.
 
 | ID | Hypothesis | Pass criterion |
 |---|---|---|
@@ -61,7 +61,7 @@
 | H2 | Traditional models depend more on knowing the speaker | The accuracy drop from random split to unseen speakers is larger for the best MFCC model than for wav2vec 2.0 |
 | H3 | White-noise augmentation improves robustness | Higher accuracy at 10 dB and 5 dB SNR than the same run without noise, with ≤ 2 points loss on clean audio |
 | H4 | Longer fine-tuning has diminishing returns | The gain from 8 → 15 epochs is smaller than from 3 → 8 epochs |
-| H5 | A general-purpose speech-to-text model struggles more with non-native speech | Whisper's per-speaker word error rate is higher on TenVoices-L2 than on TenVoices-FSC (Mann–Whitney U test over the 10 + 10 speakers, p < 0.05). Draft wording: T10 fixes it before any run. |
+| H5 | A general-purpose speech-to-text model struggles more with non-native speech | Whisper's per-speaker word error rate is higher on TenVoices-L2 than on TenVoices-FSC (one-sided Mann–Whitney U test over the 10 + 10 speakers, p < 0.05) |
 
 H5 compares different texts (long sentences vs short commands) as well as different speakers. The analysis also reports Whisper's WER per first language within TenVoices-L2, where the texts are identical, and the discussion names the text difference as a limitation.
 
@@ -79,8 +79,8 @@ H5 compares different texts (long sentences vs short commands) as well as differ
   - Accuracy / macro F1 / weighted F1 with confusion matrices
   - `results/all_results.csv`
   - `main.py` inference, README, report, slides, demo video, poster
-- **Should:** Whisper zero-shot speech-to-text with phrase matching and word error rate per speaker and first language, white-noise SNR tests, a 15-epoch run without noise (to isolate the effect of noise), per-speaker and per-accent analysis, significance tests, Gradio demo, GitHub Actions unit tests.
-- **Could:** the full Fluent Speech Commands corpus (97 speakers) with its official speaker-independent splits, other self-supervised models (WavLM-base-plus, XLS-R 300M), fine-tuning Whisper, a Hugging Face Space demo.
+- **Should:** two other self-supervised models fine-tuned with the same script (WavLM Base+, HuBERT Base) and a linear probe on frozen wav2vec 2.0 features (exploratory comparisons), Whisper zero-shot speech-to-text with phrase matching and word error rate per speaker and first language, white-noise SNR tests, a 15-epoch run without noise (to isolate the effect of noise), per-speaker and per-accent analysis, significance tests, Gradio demo, GitHub Actions unit tests.
+- **Could:** the full Fluent Speech Commands corpus (97 speakers) with its official speaker-independent splits, XLS-R 300M, fine-tuning Whisper, a Hugging Face Space demo.
 - **Won't (this semester):** recording our own speakers, open-vocabulary transcription as the main task, training a model from scratch.
 
 ---
@@ -146,6 +146,16 @@ Every model is trained and tested separately on each dataset (`--dataset fsc` or
 | Model selection | Best epoch chosen on **validation data**, never on the test set |
 | Hardware | Google Colab GPU (T4) or Apple Silicon (MPS); one shared script for every run |
 
+### Exploratory: Other Self-Supervised Models and a Linear Probe
+
+Each runs with the shared code and the same splits, so it is one more row in every table. They are compared with fine-tuned wav2vec 2.0 descriptively (McNemar p-values marked *exploratory*); no hypothesis depends on them.
+
+| Model | How | Question |
+|---|---|---|
+| WavLM Base+ (`microsoft/wavlm-base-plus`) | `support/train_wav2vec2.py --model … --epochs 15 --noise white` | Does a newer pre-training objective help? |
+| HuBERT Base (`facebook/hubert-base-ls960`) | same script and settings | Does a different pre-training target help? |
+| Linear probe | frozen wav2vec 2.0 features, mean-pooled, + logistic regression (`support/classical.py --features w2v2`) | How much of the gain comes from the pre-trained features alone, without fine-tuning? |
+
 ### 4. Open-Vocabulary Pipeline: Whisper (Zero-Shot)
 
 | Setting | Plan |
@@ -180,6 +190,7 @@ Every experiment runs on both datasets unless the setup says otherwise.
 | E7 | Is it practical? | Inference time per clip on laptop CPU vs GPU; model size | ms per clip, MB | M1 | 5 | Should |
 | E8 | How good is general-purpose speech-to-text without training? | Whisper small, zero-shot, + phrase matching on the test clips of both splits | Accuracy, F1, WER, CER per speaker and dataset | M1 | 4 | Should |
 | E9 | Do accents matter? | TenVoices-L2 only: accuracy and Whisper WER per first language; folds 3–5 hold out a whole first language | Per-L1 accuracy and WER | M3 | 5 | Should |
+| E10 | Do other self-supervised models or frozen features do as well? | WavLM Base+ (M2), HuBERT Base (M3), 15 epochs + noise; linear probe on frozen wav2vec 2.0 (M4); compared with wav2vec 2.0 15 epochs + noise | Same; McNemar (exploratory) | M2–M4 | 4 | Should |
 
 ---
 
@@ -209,6 +220,21 @@ Applied to each dataset separately.
   - Noise-augmented copies are made from training clips only.
   - Model selection never sees the test set.
 
+**Frozen analysis decisions (2026-10-17, M1, before any model was trained).** These fix every choice a hypothesis test depends on, so runs never wait for the analysis plan (T10), which documents them in full:
+
+| Decision | Frozen as |
+|---|---|
+| Headline numbers for the folds | Predictions of all 5 folds pooled (every clip tested once); mean ± standard deviation over folds reported alongside |
+| "Fine-tuned wav2vec 2.0" in H1, H2 | `w2v2_15ep_noise` |
+| "Best traditional model" in H1, H2 | The MFCC model with the highest pooled-fold accuracy on that dataset |
+| H1 test | Exact two-sided McNemar on the pooled-fold predictions, α = 0.05, plus the ≥ 20-point accuracy difference |
+| H2 measure | Accuracy drop = random-split accuracy − pooled-fold accuracy; compared directly (with 95% bootstrap intervals reported) |
+| H3 comparison | `w2v2_15ep_noise` vs `w2v2_15ep` on the pooled-fold test clips at 10 dB and 5 dB (identical noise per clip, `support/noise_test.py`) and clean |
+| H4 runs | `w2v2_3ep`, `w2v2_8ep_noise`, `w2v2_15ep_noise`, pooled-fold accuracy (the 3-epoch run has no noise; named as a limitation) |
+| H5 test | One-sided Mann–Whitney U, alternative: per-speaker WER on TenVoices-L2 > TenVoices-FSC, exact, α = 0.05; per-speaker WER = corpus WER over that speaker's clips |
+| Multiple comparisons | One primary test per hypothesis and dataset at α = 0.05, no correction; all other p-values (per-speaker Wilcoxon, exploratory model comparisons) are labelled exploratory |
+| Bootstrap | 10,000 resamples of clips, percentile 95% interval, seed 42 |
+
 ---
 
 ## ✅ Quality Rules
@@ -227,23 +253,25 @@ Applied to each dataset separately.
 
 ## 👥 Team, Roles and File Ownership
 
-Each member owns one traditional model, one deep-learning run, a main workstream and a set of files. The lead keeps the shared, most complex parts (data pipeline, training and evaluation code, the Whisper pipeline, noise tests, inference) and merges everyone's work.
+Each member owns one traditional model, one or two deep-learning runs, a main workstream and a set of files. The lead keeps the shared, most complex parts (data preparation, training and evaluation code, the Whisper pipeline, noise tests, inference) and merges everyone's work.
+
+**Nobody waits for anyone.** Every member task depends only on work that is already merged (the shared code and the TenVoices-FSC subsets and splits, merged on 2026-10-17) or on the member's own earlier tasks. Work that needs everyone's results (the combined results table, the hypothesis tests, the final figures) is split in two: the member writes and tests the code on synthetic or partial results, and the lead runs it once on all merged results at the end (T24). TenVoices-L2 is prepared and run by the lead (T47), so no member waits for it either.
 
 | Slot | Member | Traditional model | Deep-learning run | Main workstream |
 |---|---|---|---|---|
-| **M1** (lead) | Tanvir Ahmed | Random Forest | 15 epochs + white noise, 15 epochs without noise, Whisper zero-shot | Data pipeline and splits, shared training and evaluation code, Whisper pipeline, noise tests, inference, integration and merging |
-| **M2** | Md. Shahriar Rakib Rabbi | XGBoost | 8 epochs + white noise | Datasets: access, subset selection, QC, datasheet and subset release |
-| **M3** | Mahir Ahmed | k-NN | 3 epochs (no noise) | Evaluation: analysis plan, statistics, results tables, error and accent analysis |
-| **M4** | Shafil Ahmed | SVM | Untrained baseline | Visualisation, demo app, poster, slides, video |
+| **M1** (lead) | Tanvir Ahmed | Random Forest | wav2vec 2.0 15 epochs with and without noise, Whisper zero-shot | Data preparation (both datasets), shared training and evaluation code, Whisper pipeline, noise tests, inference, TenVoices-L2 runs, final aggregation and merging |
+| **M2** | Md. Shahriar Rakib Rabbi | XGBoost | wav2vec 2.0 8 epochs + noise; **WavLM Base+** 15 epochs + noise | Datasheet, listen-check, dataset statistics, subset release |
+| **M3** | Mahir Ahmed | k-NN | wav2vec 2.0 3 epochs; **HuBERT Base** 15 epochs + noise | Evaluation code: analysis plan, statistics, results table, hypothesis tests, error analysis |
+| **M4** | Shafil Ahmed | SVM | Untrained baseline; **linear probe** on frozen wav2vec 2.0 | Visualisation, demo app, poster, slides, video |
 
 **File ownership.** A member edits only their own files, so branches never conflict when they are merged. Changes needed in someone else's file go to that owner (for M1: under *Requests for the lead* in the member's progress file).
 
 | Slot | Owns |
 |---|---|
-| **M1** | `main.py`, `support/config.py`, `support/audio.py`, `support/dataset.py`, `support/features.py`, `support/classical.py`, `support/evaluate.py`, `support/train_wav2vec2.py`, `support/noise.py`, `support/whisper_asr.py`, `tools/make_splits.py`, `configs/`, `notebooks/`, `requirements.txt`, `.github/`, `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `README.md`, `docs/STATUS.md`, `docs/PROJECT_PLAN.md`, `docs/tasks/`; runs `random_forest`, `w2v2_15ep_noise`, `w2v2_15ep`, `whisper_small`, `noise` |
-| **M2** | `tools/select_subsets.py`, `tools/qc_report.py`, `support/phrases.py`, `data/prompts/`, `data/subsets/`, `data/metadata/`, `data/SOURCES.md`, `data/README.md` (datasheet), `docs/DATASETS.md`; runs `xgboost`, `w2v2_8ep_noise` |
-| **M3** | `support/metrics.py`, `support/stats.py`, `support/results_table.py`, `support/error_analysis.py`, `docs/ANALYSIS_PLAN.md`, `docs/literature/classical_and_evaluation.md`; runs `knn`, `w2v2_3ep`; `results/all_results.csv`, `results/hypotheses.csv`, `results/errors/` |
-| **M4** | `support/visualization.py`, `app.py`, `poster/`, `images/poster.png`, slides and video in `others/`, `docs/literature/self_supervised_speech.md`; runs `svm`, `w2v2_untrained` |
+| **M1** | `main.py`, `support/config.py`, `support/audio.py`, `support/dataset.py`, `support/features.py`, `support/classical.py`, `support/evaluate.py`, `support/train_wav2vec2.py`, `support/noise.py`, `support/noise_test.py`, `support/device.py`, `support/inference.py`, `support/whisper_asr.py`, `tools/select_subsets.py`, `tools/qc_report.py`, `tools/make_splits.py`, `data/subsets/`, `data/prompts/`, `data/splits/`, `data/SOURCES.md`, `configs/`, `notebooks/`, `requirements.txt`, `.github/`, `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `README.md`, `docs/STATUS.md`, `docs/PROJECT_PLAN.md`, `docs/tasks/`; runs `random_forest`, `w2v2_15ep_noise`, `w2v2_15ep`, `whisper_small`, `noise` |
+| **M2** | `support/phrases.py`, `data/README.md` (datasheet), `data/metadata/`, `data/listen_check_<dataset>.csv`, `docs/DATASETS.md`; runs `xgboost`, `w2v2_8ep_noise`, `wavlm_15ep_noise` |
+| **M3** | `support/metrics.py`, `support/stats.py`, `support/results_table.py`, `support/error_analysis.py`, `support/hypotheses.py`, `docs/ANALYSIS_PLAN.md`, `docs/literature/classical_and_evaluation.md`; runs `knn`, `w2v2_3ep`, `hubert_15ep_noise`; `results/all_results.csv`, `results/hypotheses.csv`, `results/errors/` |
+| **M4** | `support/visualization.py`, `app.py`, `poster/`, `images/poster.png`, slides and video in `others/`, `docs/literature/self_supervised_speech.md`, `support/embeddings.py`; runs `svm`, `w2v2_untrained`, `w2v2_probe` |
 | **Everyone** | Their own tests (`tests/test_<module>.py`), their run folders `results/<run>/`, their figures in `images/`, and their progress file `docs/progress/<slot>_<name>.md` |
 
 Every model run goes through the shared scripts with its own settings, and saves its results in `results/<run-name>/<dataset>/`.

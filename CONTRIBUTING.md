@@ -38,6 +38,8 @@ Then read:
 - your progress file: your tasks and their status,
 - the task card `docs/tasks/<ID>.md` of your next task.
 
+To run a model, [docs/tasks/RUNS.md](docs/tasks/RUNS.md) shows how to get the audio and run it, locally or on Colab.
+
 Take your next task whose dependencies are ✅ (merged into `main`, or your own task that you already finished). Mark it 🟡 in your progress file.
 
 ## 3. Do the task

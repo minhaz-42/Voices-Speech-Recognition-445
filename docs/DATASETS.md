@@ -1,7 +1,7 @@
 # TenVoices: Datasets
 
-> **Version 1 · 17 Oct 2026.** Replaces the recording protocol: we no longer record our own speakers. Owner: **M2**; reviewed by **M1**.
-> Tasks: T41 (access and download), T42 (subset selection), T43 (QC), T08 (splits, M1), T09 (datasheet). Design and hypotheses: [PROJECT_PLAN.md](PROJECT_PLAN.md).
+> **Version 1.1 · 17 Oct 2026.** Replaces the recording protocol: we no longer record our own speakers. Owner: **M2**; reviewed by **M1**.
+> Tasks (all M1, so no member waits for data): T41 (download), T42 (selection), T43 (QC), T08 (splits); TenVoices-L2 in T47. M2: T09 (datasheet, listen-check, statistics). **TenVoices-FSC is ready:** subsets, QC and splits are merged, and the source is recorded in [data/SOURCES.md](../data/SOURCES.md). Design and hypotheses: [PROJECT_PLAN.md](PROJECT_PLAN.md).
 
 TenVoices is two 10-speaker subsets of published datasets, selected by script:
 
@@ -19,7 +19,7 @@ TenVoices is two 10-speaker subsets of published datasets, selected by script:
 
 **Fluent Speech Commands**
 1. Open the official page, read the licence and follow *Access the dataset here*.
-2. If that link no longer works, use a public copy, for example the [Zenodo record 14722453](https://zenodo.org/records/14722453) or the [Hugging Face `superb_demo` zip](https://huggingface.co/datasets/anton-l/superb_demo/blob/main/data/fluent_speech_commands_dataset.zip). Accept it only if its split CSV files list **23,132 / 3,118 / 3,793** clips and **77 / 10 / 10** speakers, as in the paper's Table 1. Write down which copy you used.
+2. Without a Google account, use the copy the team used, listed with its SHA-256 in [data/SOURCES.md](../data/SOURCES.md) (`fluent.tar.gz`, 1.55 GB). Any copy is acceptable only if its split CSV files list **23,132 / 3,118 / 3,793** clips and **77 / 10 / 10** speakers, as in the paper's Table 1. (The Zenodo WebDataset record and the `superb_demo` repository are *not* the original archive.)
 3. Extract it into `data/raw/fsc/`, keeping the archive's own folders (`fluent_speech_commands_dataset/wavs/…`, `…/data/*.csv`, including the speaker demographics file).
 
 **L2-ARCTIC**
@@ -74,11 +74,11 @@ TenVoices is two 10-speaker subsets of published datasets, selected by script:
 | Clipping | Peak below −0.5 dBFS | Flag |
 | Silence | Leading and trailing silence under 2 s each | Flag |
 | Noise floor | Estimated SNR ≥ 15 dB | Flag |
-| Label | A human listens to a random 10% of each subset (seed 42) and confirms the words match the text | Replace |
+| Label | A person listens to the 10% of clips marked `listen_check = yes` in the QC file (seed 42) and confirms the words match the text (T09, M2) | Flag |
 
-- **Replace** means: exclude the clip and rerun the selection, so the rules above stay the only way clips get in. The QC report lists every replacement.
-- **Flag** means: keep the clip and report it in the datasheet; real-world audio is not perfect.
-- **Target:** at least 97% of clips pass every check before the splits are made (T08).
+- **Replace** means: exclude the clip and rerun the selection, so the rules above stay the only way clips get in. The selection already applies the format and duration rules, so in practice nothing is replaced.
+- **Flag** means: keep the clip and report it in the datasheet; real-world audio is not perfect. The listen-check is a flag too, so it never holds up the splits: a mismatch is reported in the datasheet as label noise.
+- **Target:** at least 97% of clips pass every automatic check before the splits are made (T08). TenVoices-FSC: 997 of 1,000 pass; 3 are flagged for clipping (`data/subsets/qc_fsc_summary.json`).
 
 ## 4. What is shared and what is not
 
