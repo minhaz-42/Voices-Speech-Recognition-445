@@ -24,17 +24,17 @@ Only Mahir (or Mahir's assistant) edits this file. Full task text and dependenci
 |---|---|---|---|---|
 | T03 | Metrics module `support/metrics.py` (done by Tanvir before you joined; you own it now) | T01 | ✅ | Tanvir · 2026-10-04 |
 | T10 | Analysis plan `docs/ANALYSIS_PLAN.md` (H1–H5, splits, metrics, tests) | T03 | ⬜ | |
-| T33 | Statistics module `support/stats.py` (bootstrap CI, McNemar, Wilcoxon) + tests | T03 | ⬜ | |
+| T33 | Statistics module `support/stats.py` (bootstrap CI, McNemar, Wilcoxon, Mann–Whitney) + tests | T03 | ⬜ | |
 | T37 | Literature notes: MFCC, classical classifiers, speaker-independent evaluation | — | ⬜ | |
-| T31 | 👤 Record S03 (self) and volunteers S07–S08 | T05 | ⬜ | |
-| T07 | 👤 Listen-check S04, S09–S10 (part of M2's QC task) | T32 | ⬜ | |
-| T13 | k-NN results → `results/knn/` | T11 | ⬜ | |
+| T13 | k-NN results on both datasets → `results/knn/` | T11 | ⬜ | |
 | T20 | Results table `support/results_table.py` | T11, T33 | ⬜ | |
 | T17 | wav2vec 2.0, 3 epochs → `results/w2v2_3ep/` | T15 | ⬜ | |
 | T40 | Final results, hypotheses H1, H2, H4 | all runs, T20 | ⬜ | |
 | T34 | Error analysis `support/error_analysis.py` | T40 | ⬜ | |
 
-**This week (from 2026-10-17):** T10, T33 and T37 need no recordings and no one else's work. For the faculty update you can then show how every model will be judged (the analysis plan and hypotheses), the statistics module with its tests, and what the literature says about classical speech classifiers.
+**Note from Tanvir (2026-10-17):** we no longer record our own speakers, so your recording and listen-check tasks (T31, T07) are cancelled. TenVoices is now two 10-speaker subsets of published datasets, TenVoices-FSC and TenVoices-L2 ([DATASETS.md](../DATASETS.md)); every run and the analysis plan cover both. H5 is redrafted and T33 gains a Mann–Whitney test; the cards T10 and T33 are updated.
+
+**This week (from 2026-10-17):** T10, T33 and T37 need no audio and no one else's work. For the faculty update you can then show how every model will be judged (the analysis plan and hypotheses), the statistics module with its tests, and what the literature says about classical speech classifiers.
 
 ## Faculty update
 

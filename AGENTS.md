@@ -7,7 +7,7 @@ Rules for everyone working on the **TenVoices** repository: team members working
 
 ## Project
 
-TenVoices is a university project (North South University). We build a **speech recognition system** that recognises which of **50 phrases** was spoken, and evaluate it on **TenVoices**, a dataset we record ourselves: 10 speakers × 50 phrases × 3 repetitions, plus 10 noisy takes each (~1,600 clips).
+TenVoices is a university project (North South University). We build a **speech recognition system** that recognises which of **50 phrases** was spoken, and evaluate it on **TenVoices**: two 10-speaker subsets of published datasets, selected by script. **TenVoices-FSC** (main, from Fluent Speech Commands): 10 speakers × 50 spoken commands × 2 takes. **TenVoices-L2** (accents, from L2-ARCTIC): 10 non-native speakers × 50 read sentences. We do **not** record our own speakers; sources, licences and selection rules are in `docs/DATASETS.md`.
 
 We compare four stages:
 1. Traditional ML: MFCC features + k-NN / SVM / Random Forest / XGBoost.
@@ -15,7 +15,7 @@ We compare four stages:
 3. Our approach: wav2vec 2.0 fine-tuned for 3 / 8 / 15 epochs with white-noise augmentation.
 4. Open-vocabulary pipeline: Whisper speech-to-text, zero-shot; the transcript is matched to the nearest phrase.
 
-Every model is reported on a random 80/20 split and with speaker-independent 5-fold cross-validation (the headline). Metrics: accuracy, macro F1, weighted F1 and confusion matrices, plus word error rate for Whisper.
+Every model is reported on both datasets, on a random 80/20 split and with speaker-independent 5-fold cross-validation (the headline). Metrics: accuracy, macro F1, weighted F1 and confusion matrices, plus word error rate for Whisper.
 
 Repository: https://github.com/minhaz-42/Voices-Speech-Recognition-445
 
@@ -25,7 +25,7 @@ Repository: https://github.com/minhaz-42/Voices-Speech-Recognition-445
 | `docs/progress/<slot>_<name>.md` | Each member's own task status, handoff log and **faculty update** (only that member edits it) |
 | `docs/tasks/<ID>.md` | Task cards: what to build, which files, which existing functions to use, tests, *done when* |
 | `docs/PROJECT_PLAN.md` | Design, evaluation protocol, roles, **file ownership**, risks |
-| `docs/DATA_COLLECTION_PROTOCOL.md` | Recording rules, file naming, metadata, QC |
+| `docs/DATASETS.md` | Dataset sources, licences, download, subset selection rules, QC |
 | `README.md` | Public overview |
 
 ## Team
@@ -33,7 +33,7 @@ Repository: https://github.com/minhaz-42/Voices-Speech-Recognition-445
 | Slot | Member | git user.name | GitHub | Branch | Progress file | Workstream |
 |---|---|---|---|---|---|---|
 | M1 | Tanvir Ahmed (lead, merges) | minhaz | minhaz-42 | `main` | `docs/progress/M1_tanvir.md` | Data pipeline and splits, shared training / evaluation code, **Whisper pipeline**, noise tests, inference, integration · Random Forest · wav2vec 2.0 15 epochs (+ noise, and without) |
-| M2 | Md. Shahriar Rakib Rabbi | Md. Shahriar Rakib Rabbi | ShahriarRakibRabbi | `dev_rabbi` | `docs/progress/M2_rabbi.md` | Recorder, QC, dataset curation and release · XGBoost · wav2vec 2.0 8 epochs + noise |
+| M2 | Md. Shahriar Rakib Rabbi | Md. Shahriar Rakib Rabbi | ShahriarRakibRabbi | `dev_rabbi` | `docs/progress/M2_rabbi.md` | Datasets: access, subset selection, QC, datasheet and subset release · XGBoost · wav2vec 2.0 8 epochs + noise |
 | M3 | Mahir Ahmed | *(add)* | *(add)* | `dev_mahir` | `docs/progress/M3_mahir.md` | Evaluation: analysis plan, statistics, results tables, error analysis · k-NN · wav2vec 2.0 3 epochs |
 | M4 | Shafil Ahmed | *(add)* | Shafil10 | `dev_shafil` | `docs/progress/M4_shafil.md` | Visualisation, demo app, poster, slides, video · SVM · untrained baseline |
 
@@ -65,10 +65,11 @@ Repository: https://github.com/minhaz-42/Voices-Speech-Recognition-445
   - A member edits only the files their slot owns, their own tests (`tests/test_<their module>.py`), their own run folders in `results/`, their own figures in `images/`, and their own progress file.
   - Only M1 edits `docs/STATUS.md`, `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `README.md`, `docs/PROJECT_PLAN.md`, `docs/tasks/`, `requirements.txt`, `configs/config.yaml` and the M1-owned modules.
   - If a member needs a change in a file they don't own (a new package, a config key, a fix in shared code), write it under **Requests for the lead** in their progress file and keep working with CLI options or function arguments meanwhile.
-- 👤 tasks need people (recording speakers, consent, filming the demo video). Prepare everything (scripts, sheets, checklists), ask the member to do it, and wait for them to confirm.
+- 👤 tasks need people (requesting dataset access, filming the demo video). Prepare everything (scripts, sheets, checklists), ask the member to do it, and wait for them to confirm.
 - **Never invent data or numbers.** Results stay TBD until measured; every reported number must come from a file in `results/`.
 - **Never invent references.** Every paper in a literature note has a DOI or arXiv link that was opened and checked.
-- Audio is not in git. Raw recordings live in the team's private Google Drive folder `TenVoices/raw` (link in the team chat). If a task needs audio that is missing locally, tell the member which Drive folder to download into which local path (e.g. `data/raw/S03/`), then wait.
+- Audio is not in git. The original dataset archives live in the team's private Google Drive folder `TenVoices/raw` (link in the team chat). If a task needs audio that is missing locally, tell the member which Drive folder to download and extract into which local path (`data/raw/fsc/` or `data/raw/l2arctic/`), then wait.
+- The datasets' licences are non-commercial (Fluent Speech Commands also no-derivatives): never publish their audio or processed copies anywhere, including Hugging Face or a GitHub Release.
 - Code rules:
   - Python 3.11, settings in `configs/config.yaml`, relative paths, CLI arguments.
   - Docstrings; `unittest` tests in `tests/`.
@@ -116,7 +117,7 @@ Repository: https://github.com/minhaz-42/Voices-Speech-Recognition-445
 ## Never commit
 
 - Audio (`*.wav`, `*.flac`, `*.mp3`, …), model weights or checkpoints
-- Signed consent forms, volunteer names, phone numbers or Drive links
+- Personal data or Drive links
 - Large generated files in `outputs/`
 
 Small result tables (CSV/JSON under 1 MB) go in `results/` and **are** committed, so others can continue from them. Figures go in `images/`.

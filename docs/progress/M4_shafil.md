@@ -25,15 +25,15 @@ Only Shafil (or Shafil's assistant) edits this file. Full task text and dependen
 | T35 | Visualisation module `support/visualization.py` + tests + example figures of your voice | T01 | ⬜ | |
 | T36 | Demo skeleton `app.py` (Gradio, no model yet) | T35 | ⬜ | |
 | T38 | Literature notes: self-supervised speech models, spoken-command benchmarks | — | ⬜ | |
-| T39 | Planning poster v2: team of four, four-stage pipeline | — | ⬜ | |
-| T32 | 👤 Record S04 (self) and volunteers S09–S10 | T05 | ⬜ | |
-| T07 | 👤 Listen-check S02, S05–S06 (part of M2's QC task) | T04, T06 | ⬜ | |
-| T14 | SVM results → `results/svm/` | T11 | ⬜ | |
+| T39 | Planning poster v2: team of four, the two datasets, four-stage pipeline | — | ⬜ | |
+| T14 | SVM results on both datasets → `results/svm/` | T11 | ⬜ | |
 | T18 | Untrained wav2vec 2.0 baseline → `results/w2v2_untrained/` | T15 | ⬜ | |
 | T23 | Demo connected to `main.py` + final figures | T21, T22, T30, T36, T40 | ⬜ | |
 | T27 | Results poster, slides, 👤 1-minute demo video | T24 | ⬜ | |
 
-**This week (from 2026-10-17):** T35, T36, T38 and T39 need no recordings and no one else's work. For the faculty update you can then show spectrograms and MFCCs of real speech (what the models actually "see"), the first version of the demo app, a literature summary and the updated poster.
+**Note from Tanvir (2026-10-17):** we no longer record our own speakers, so your recording and listen-check tasks (T32, T07) are cancelled. TenVoices is now two 10-speaker subsets of published datasets, TenVoices-FSC (spoken commands) and TenVoices-L2 (non-native read speech) ([DATASETS.md](../DATASETS.md)). The demo (T36) will recognise the 50 TenVoices-FSC commands, and the poster (T39) must show the two datasets; both cards are updated.
+
+**This week (from 2026-10-17):** T35, T36, T38 and T39 need no audio and no one else's work. For the faculty update you can then show spectrograms and MFCCs of real speech (what the models actually "see"), the first version of the demo app, a literature summary and the updated poster.
 
 ## Faculty update
 

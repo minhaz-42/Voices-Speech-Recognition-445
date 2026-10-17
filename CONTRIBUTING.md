@@ -110,7 +110,7 @@ git push origin dev_mahir                    # first push: git push -u origin de
 ```
 
 - One task per commit, message `T<ID>: <summary>`.
-- Never commit audio, model files, consent forms or personal data.
+- Never commit audio (including the datasets' clips), model files or personal data.
 
 ## 7. Ask for a merge
 

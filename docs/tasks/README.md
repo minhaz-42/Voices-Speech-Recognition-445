@@ -4,7 +4,8 @@ One card per task: what to build, which files you create, which existing functio
 
 | Card | Task | Owner |
 |---|---|---|
-| [T02](T02.md) | Recorder tool | M2 · Rabbi |
+| [T41](T41.md) | Get both datasets | M2 · Rabbi |
+| [T42](T42.md) | Subset selection script | M2 · Rabbi |
 | [T10](T10.md) | Analysis plan | M3 · Mahir |
 | [T33](T33.md) | Statistics module | M3 · Mahir |
 | [T37](T37.md) | Literature notes: classical speech classifiers and evaluation | M3 · Mahir |

@@ -14,6 +14,27 @@ paths:
   images: images
   outputs: outputs
 
+# The two TenVoices subsets (docs/DATASETS.md). Runs choose one with --dataset fsc|l2arctic.
+datasets:
+  fsc:
+    name: TenVoices-FSC
+    source: Fluent Speech Commands
+    raw: data/raw/fsc                          # extracted original archive (gitignored)
+    phrases: data/prompts/fsc_phrases.csv      # written by tools/select_subsets.py (T42)
+    subset: data/subsets/fsc.csv
+    speakers_per_gender: 5
+    n_phrases: 50
+    takes: 2
+  l2arctic:
+    name: TenVoices-L2
+    source: L2-ARCTIC v5.0
+    raw: data/raw/l2arctic
+    phrases: data/prompts/l2arctic_sentences.csv
+    subset: data/subsets/l2arctic.csv
+    speakers: [ASI, RRBI, SVBI, TNI, ABA, SKA, BWC, LXC, EBVS, NJS]   # Hindi ×4, Arabic, Mandarin, Spanish
+    n_phrases: 50
+    takes: 1
+
 audio:
   sample_rate: 16000      # Hz, input rate of wav2vec 2.0 and the MFCC features
   mono: true
