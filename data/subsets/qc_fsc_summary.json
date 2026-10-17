@@ -1,0 +1,22 @@
+{
+  "dataset": "fsc",
+  "n": 1000,
+  "pass": 997,
+  "flag": 3,
+  "replace": 0,
+  "pass_rate": 0.997,
+  "flags": {
+    "clipping": 3
+  },
+  "listen_check_clips": 100,
+  "limits": {
+    "min_s": 0.5,
+    "max_s": 6.0,
+    "clip_dbfs": -0.5,
+    "silence_s": 2.0,
+    "snr_db": 15.0,
+    "listen_share": 0.1
+  },
+  "snr_db_median": 70.2,
+  "peak_dbfs_max": -0.25
+}
