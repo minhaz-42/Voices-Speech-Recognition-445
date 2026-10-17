@@ -155,6 +155,8 @@ Tasks, owners, dependencies and progress: [docs/STATUS.md](docs/STATUS.md).
 ---
 
 ## 📁 Repository Structure (planned)
+The code that exists today, module by module, is listed in [support/README.md](support/README.md). Folders that only contain a README are placeholders for later tasks.
+
 ```text
 Voices-Speech-Recognition-445/
 |-- AGENTS.md                 project rules for every member and AI assistant
@@ -163,7 +165,7 @@ Voices-Speech-Recognition-445/
 |-- app.py                    Gradio live demo
 |-- requirements.txt
 |-- configs/                  config.yaml (paths, sample rate, training settings)
-|-- support/
+|-- support/                  shared code; README.md lists every module
 |   |-- config.py, audio.py, phrases.py, dataset.py, features.py   data pipeline
 |   |-- classical.py          k-NN / SVM / Random Forest / XGBoost runner
 |   |-- train_wav2vec2.py     fine-tuning (--epochs, --noise, --split)

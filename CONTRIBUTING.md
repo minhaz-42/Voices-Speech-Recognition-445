@@ -110,13 +110,14 @@ git push origin dev_mahir                    # first push: git push -u origin de
 ```
 
 - One task per commit, message `T<ID>: <summary>`.
+- **Push at the end of every session, even if the task is not finished**: commit it as `T33: work in progress`. Tanvir can then see your code at any time, and nothing is lost if your laptop is.
 - Never commit audio (including the datasets' clips), model files or personal data.
 
 ## 7. Ask for a merge
 
-Open `https://github.com/minhaz-42/Voices-Speech-Recognition-445/compare/main...dev_mahir`, click **Create pull request**, give it a title like `M3 · Mahir: T10, T33`, and paste your handoff entry as the description. If you use the GitHub CLI: `gh pr create --base main --head dev_mahir`.
+Open the pull request after your **first** push, so Tanvir can follow your work: go to `https://github.com/minhaz-42/Voices-Speech-Recognition-445/compare/main...dev_mahir`, give it a title like `M3 · Mahir: T10, T33`, paste your handoff entry as the description, and choose **Create draft pull request** while the task is unfinished. Later pushes update it automatically. With the GitHub CLI: `gh pr create --draft --base main --head dev_mahir`.
 
-Then tell Tanvir which tasks are ready. Once they are merged, step 2 of your next session brings them in.
+When the task is done, click **Ready for review** (or `gh pr ready`) and tell Tanvir which tasks are ready. Once they are merged, step 2 of your next session brings them in.
 
 ## Troubleshooting
 

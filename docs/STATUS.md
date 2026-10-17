@@ -121,6 +121,12 @@ Every run from here on covers **both datasets**: results go to `results/<run>/fs
 
 ## 📝 Handoff Log (newest first)
 
+### 2026-10-17 · Tanvir Ahmed (M1) · T00 (all code visible)
+
+- **Done:** the empty placeholder folders (`results/`, `notebooks/`, `others/`, `outputs/`, `data/raw/`, `data/processed/`, `data/splits/`) now have a README instead of `.gitkeep`, saying what goes there and which task fills it. They match the two-dataset layout. `support/README.md` is a code map of every module on `main` (task, owner, tests) and explains how to see unmerged code. New rule in `AGENTS.md` and `CONTRIBUTING.md`: members push their branch at the end of **every** session, unfinished work included (`T33: work in progress`), and open the pull request as a **draft** from the first push, so M1 can read all code before merging. M1 merges only pull requests marked ready.
+- **Files:** `AGENTS.md`, `CONTRIBUTING.md`, `README.md`, `support/README.md`, the placeholder READMEs, `.gitignore`, `docs/STATUS.md`.
+- **Blockers:** none.
+
 ### 2026-10-17 · Tanvir Ahmed (M1) · T00 (two published datasets)
 
 - **Decision:** we no longer record our own speakers. TenVoices is now two 10-speaker subsets of published datasets, selected by script: **TenVoices-FSC** (main; Fluent Speech Commands, 10 speakers × 50 spoken commands × 2 takes, up to 1,000 clips, CC BY-NC-ND 4.0) and **TenVoices-L2** (accents; L2-ARCTIC v5.0, the 4 Hindi speakers plus a female and a male each from Arabic, Mandarin and Spanish × 50 shared sentences, 500 clips, CC BY-NC 4.0). Both papers and licences were checked on their official pages.

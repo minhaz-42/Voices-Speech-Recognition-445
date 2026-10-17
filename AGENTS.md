@@ -86,8 +86,8 @@ Repository: https://github.com/minhaz-42/Voices-Speech-Recognition-445
    - task status (✅ + date for finished tasks),
    - a new **Handoff log** entry at the top: tasks done and ready to merge, files changed, key results, next steps, blockers,
    - the **Faculty update** for the current week: 3–5 plain-language bullets on what the member built or did, which files, and what it shows. Only finished work; numbers only from `results/`.
-3. Commit only the files you changed: one task per commit, message `T33: <summary>`, with the member's own git identity.
-4. `git push origin <branch>`. If no pull request from this branch is open, open one into `main` with `gh pr create --base main --head <branch>`, titled like `M3 · Mahir: T10, T33`, with the handoff entry as the body. Otherwise the push updates the open one. If `gh` is not available, give the member this link instead: `https://github.com/minhaz-42/Voices-Speech-Recognition-445/compare/main...<branch>`.
+3. Commit only the files you changed: one task per commit, message `T33: <summary>`, with the member's own git identity. **Unfinished work is committed and pushed too**, as `T33: work in progress`, so Tanvir can always see the latest code; nothing stays only on a laptop.
+4. `git push origin <branch>`. If no pull request from this branch is open, open one into `main` with `gh pr create --base main --head <branch>`, titled like `M3 · Mahir: T10, T33`, with the handoff entry as the body; add `--draft` while a task in it is unfinished, and run `gh pr ready` once all its tasks are done. Otherwise the push updates the open one. If `gh` is not available, give the member this link instead: `https://github.com/minhaz-42/Voices-Speech-Recognition-445/compare/main...<branch>`.
 5. Tell the member, in one line, what to tell Tanvir (e.g. *"dev_mahir: T10 and T33 are ready to merge"*).
 
 ### M1 (lead), on `main`
@@ -99,6 +99,8 @@ Repository: https://github.com/minhaz-42/Voices-Speech-Recognition-445
 5. Tell the member, in one line, what to tell the next person.
 
 ### Merging a member's branch (M1, when told it is ready)
+
+Only merge a branch whose pull request is ready (not a draft) and whose tasks are ✅ in the progress file; draft pull requests are there so M1 can read work in progress.
 
 1. `git fetch origin`, then review `git diff main...origin/<branch>`:
    - only files the member owns (plus their tests, results, figures and progress file) changed,
