@@ -39,7 +39,7 @@ Each of these has a task card: `docs/tasks/<ID>.md`.
 
 | ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
 |---|---|---|---|---|---|
-| T41 | 👤 Get both datasets ([DATASETS.md](DATASETS.md) §1): Fluent Speech Commands (official link, or a public copy checked against the paper's counts) into `data/raw/fsc/` and L2-ARCTIC v5.0 (download form) into `data/raw/l2arctic/`; original archives in the team Drive; `data/SOURCES.md` with URL, version, date, licence, SHA-256 and file counts → counts match the papers | M2 | — | ⬜ | |
+| T41 | 👤 Get both datasets ([DATASETS.md](DATASETS.md) §1): Fluent Speech Commands (official link, or a public copy checked against the paper's counts) into `data/raw/fsc/` and L2-ARCTIC v5.0 (download form) into `data/raw/l2arctic/`; original archives in the team Drive; `data/SOURCES.md` with URL, version, date, licence, SHA-256 and file counts → counts match the papers | M2 | — | 🟡 FSC ✅, L2-ARCTIC needs the form | FSC: Tanvir · 2026-10-17 |
 | T10 | `docs/ANALYSIS_PLAN.md`: hypotheses H1–H5 with pass criteria, both splits, metrics, statistical tests and leakage rules, written from `docs/PROJECT_PLAN.md` → M1 approves it at merge and it is **frozen** before any main experiment | M3 | T03 | ⬜ | |
 | T33 | `support/stats.py`: 95% bootstrap confidence interval for accuracy, McNemar's test for two models on the same clips, Wilcoxon signed-rank test over per-speaker accuracies + tests against textbook or hand-computed cases → tests pass | M3 | T03 | ⬜ | |
 | T37 | Literature notes `docs/literature/classical_and_evaluation.md`: 6–8 papers on MFCC features, k-NN / SVM / tree models for speech, and speaker-independent evaluation; each with a checked DOI or arXiv link, what they did and what we take from it → feeds report section 2 | M3 | — | ⬜ | |
@@ -120,6 +120,12 @@ Every run from here on covers **both datasets**: results go to `results/<run>/fs
 | T07 | QC and listen-checks of all sessions | T43 |
 
 ## 📝 Handoff Log (newest first)
+
+### 2026-10-17 · Tanvir Ahmed (M1) · T41 (Fluent Speech Commands)
+
+- **Done (by M1, at the lead's decision, to unblock the data work):** downloaded **Fluent Speech Commands** into `data/raw/fsc/` and checked it against the paper: 23,132 / 3,118 / 3,793 clips, 77 / 10 / 10 speakers, 30,043 WAV files all present, 248 phrasings, 31 intents, speaker demographics included. Source, reasons and SHA-256 are in `data/SOURCES.md`. The official route is a Google Group that needs a Google account. The old direct link is dead, and the Zenodo and `superb_demo` copies in DATASETS.md §1 are not the original archive (repackaged / a tiny demo subset), so that section should be updated (M2).
+- **Still open in T41:** **L2-ARCTIC** needs the publisher's form (name, email, affiliation; the link arrives by email) 👤. Both archives still need to go to the team Drive (`TenVoices/raw/`).
+- **Next:** Rabbi can start **T42** on the FSC half now (`data/raw/fsc/` locally, or the archive from Drive once uploaded).
 
 ### 2026-10-17 · Tanvir Ahmed (M1) · T00 (all code visible)
 
