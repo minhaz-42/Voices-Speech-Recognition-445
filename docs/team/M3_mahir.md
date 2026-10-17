@@ -24,7 +24,8 @@ Every one of your tasks below depends only on work that is already merged or on 
 2. `git clone https://github.com/minhaz-42/Voices-Speech-Recognition-445.git`, then `cd Voices-Speech-Recognition-445`.
 3. `python3.11 -m venv venv && source venv/bin/activate && pip install -r requirements.txt`.
 4. Set your own identity: `git config user.name "<your name>"` and `git config user.email "<your GitHub email>"`.
-5. Work by hand or with any AI assistant; [CONTRIBUTING.md](../CONTRIBUTING.md) has the steps and a ready-made prompt, and each task has a card in [docs/team/](./). With an assistant that works in the repository (Claude Code, Codex, Cursor, …), just say: *"I'm Mahir (M3). What is completed? Then complete my next tasks."*
+5. **Create your branch** (it is not on GitHub yet): `git checkout -b dev_mahir origin/main`, then `git push -u origin dev_mahir`.
+6. Work by hand or with any AI assistant; [CONTRIBUTING.md](../CONTRIBUTING.md) has the steps and a ready-made prompt, and the card for each of your tasks is in **Task cards** at the end of this page. Before running a model, get the audio and build the processed copies once: [docs/RUNS.md](../RUNS.md), steps 1–2. With an assistant that works in the repository (Claude Code, Codex, Cursor, …), just say: *"I'm Mahir (M3). What is completed? Then complete my next tasks."*
 
 ## My tasks
 

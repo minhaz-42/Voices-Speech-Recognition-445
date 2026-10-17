@@ -14,22 +14,30 @@ On this page: [My tasks](#my-tasks) · [Faculty update](#faculty-update) · [Tas
 
 **Who edits what:** Rabbi (or Rabbi's assistant) edits *My tasks*, *Faculty update*, *Requests for the lead* and *Handoff log*. Tanvir writes the notes and the *Task cards* section at the end. Dependencies and merge status: [STATUS.md](../STATUS.md).
 
-## Note from Tanvir (2026-10-17, evening): nothing to wait for
+## Start here (from Tanvir, 2026-10-17)
 
-Every one of your tasks below depends only on work that is already merged or on your own earlier tasks. Data preparation (download, selection, QC, splits) is done and merged for TenVoices-FSC, so you can run your models today: [docs/RUNS.md](../RUNS.md) shows how. Work that needs everyone's results is split: you write and test the code, and Tanvir runs it on all results at the end.
+**What changed since you last worked:** we no longer record our own speakers. TenVoices is now two 10-speaker subsets of published datasets ([docs/DATASETS.md](../DATASETS.md), which you own). The recorder you started (T02) was cancelled; your `support/phrases.py` and its tests are kept and count as done. Tanvir has already downloaded, selected, checked and split **TenVoices-FSC**, so everything your tasks need is on `main` and **nothing you do waits for anyone**. Your tasks are in **My tasks** below, and the exact card for each one is in **Task cards** at the end of this page.
 
-## Note from Tanvir (2026-10-17, afternoon): no more recording
+### First-time setup (once)
 
-- We no longer record our own speakers. TenVoices is now two 10-speaker subsets of published datasets: **TenVoices-FSC** from Fluent Speech Commands and **TenVoices-L2** from L2-ARCTIC. Everything about them is in [docs/DATASETS.md](../DATASETS.md), which you own from now on.
-- **Cancelled:** the recorder (T02), the pilot (T04), protocol QC (T05), recording volunteers (T06) and session QC (T07). Your `support/phrases.py` and its tests stay; T42 extends them for the new phrase lists.
-- *(Superseded the same evening: T41–T43, the dataset download, selection and QC, were done by Tanvir so that nobody waits for data. Your tasks are in **My tasks** below.)*
-- I removed the recording protocol and consent form and rewrote `data/README.md` as a placeholder for the new plan; they were planning files with no work of yours in them.
+1. Accept the GitHub collaborator invite for `ShahriarRakibRabbi` (ask Tanvir if you have none).
+2. `git clone https://github.com/minhaz-42/Voices-Speech-Recognition-445.git`, then `cd Voices-Speech-Recognition-445`. If you already have a clone: `git checkout main && git pull origin main`.
+3. `python3.11 -m venv venv && source venv/bin/activate && pip install -r requirements.txt`, then `python -m unittest discover -s tests -v` (everything must pass).
+4. Set your identity: `git config user.name "Md. Shahriar Rakib Rabbi"` and `git config user.email "<your GitHub email>"`.
+5. **Create your branch** (it is not on GitHub yet): `git checkout -b dev_rabbi origin/main`, then `git push -u origin dev_rabbi`.
+6. Get the audio and build the processed copies: [docs/RUNS.md](../RUNS.md), steps 1–2.
 
-## What changed on 2026-10-17 (morning)
+### Every session
 
-- You now work on the branch `dev_rabbi` instead of `main`; Tanvir merges it. Work by hand or with any AI assistant: [CONTRIBUTING.md](../CONTRIBUTING.md) has the steps, and each task has a card in [docs/team/](./). With an assistant that works in the repository, just say *"I'm Rabbi (M2). What is completed? Then complete my next tasks."*
-- `docs/STATUS.md` is edited only by Tanvir. Your task status, handoff notes and faculty update go in this file.
-- *(The recorder and recording plans from that morning were cancelled the same afternoon; see the note above.)*
+`git fetch origin && git checkout dev_rabbi && git pull origin dev_rabbi && git merge origin/main`, then do your next task from its card. At the end: run the tests, update this page (*My tasks*, *Faculty update*, *Handoff log*), commit, push `dev_rabbi` and open (or update) a pull request. Exact commands: [CONTRIBUTING.md](../CONTRIBUTING.md). With an AI assistant that works in the repository, just say *"I'm Rabbi (M2). What is completed? Then complete my next tasks."*
+
+### Your order of work
+
+1. **T12 XGBoost** (laptop, minutes): `python -m support.classical --model xgboost --dataset fsc`
+2. **T09 datasheet, statistics and 👤 listen-check** of the 100 marked clips
+3. **T16 wav2vec 2.0, 8 epochs + noise** (Colab GPU)
+4. **T44 WavLM Base+, 15 epochs + noise** (Colab GPU)
+5. **T26 subset release** (after T09)
 
 ## My tasks
 
