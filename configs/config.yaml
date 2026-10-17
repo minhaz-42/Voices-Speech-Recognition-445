@@ -74,6 +74,8 @@ classical:
   svm:
     C: [1, 10, 100]
     gamma: [scale, 0.01]
+  logreg:                 # linear probe on frozen embeddings (T46)
+    C: [0.01, 0.1, 1, 10]
 
 # wav2vec 2.0 fine-tuning (support/train_wav2vec2.py, T15-T19). Runs choose --epochs and --noise.
 wav2vec2:

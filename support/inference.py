@@ -67,6 +67,8 @@ class ClassicalRecognizer(Recognizer):
 
         super().__init__(audio_cfg)
         bundle = joblib.load(path)
+        if bundle.get("feature_kind", "mfcc") != "mfcc":
+            raise ValueError(f"{path} uses '{bundle['feature_kind']}' features; inference supports MFCC models")
         self.model, self.labels, self.feature_cfg = bundle["model"], list(bundle["labels"]), bundle["features"]
         self.path = Path(path)
 

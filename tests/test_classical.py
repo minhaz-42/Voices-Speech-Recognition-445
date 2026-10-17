@@ -23,6 +23,7 @@ SMALL_GRIDS = {
     "xgboost": {"n_estimators": [30], "max_depth": [2]},
     "knn": {"n_neighbors": [1, 3]},
     "svm": {"C": [1, 10], "gamma": ["scale"]},
+    "logreg": {"C": [1.0]},
 }
 
 
@@ -79,6 +80,28 @@ class TestClassicalRunner(unittest.TestCase):
                 mock.patch.dict(sys.modules, {"torch": types.ModuleType("torch")}):
             with self.assertRaisesRegex(RuntimeError, "own"):
                 classical.make_model("xgboost", {})
+
+    def test_cached_features_and_logistic_regression(self):
+        """A linear probe reads features of another extractor from outputs/features/<dataset>_<kind>.npz."""
+        from support.dataset import load_manifest
+
+        manifest = load_manifest("fsc", self.cfg)
+        rng = np.random.default_rng(0)
+        centres = {f"P{i:02d}": rng.normal(size=16) for i in range(1, 6)}
+        feats = np.stack([centres[l] + 0.1 * rng.normal(size=16) for l in manifest["label"]]).astype(np.float32)
+        path = self.root / "outputs" / "features" / "fsc_emb.npz"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        np.savez_compressed(path, utt_ids=np.array(manifest["utt_id"], dtype=str), features=feats)
+        with contextlib.redirect_stdout(io.StringIO()):
+            summary = classical.run("logreg", "fsc", ["random", "fold1"], self.cfg, features="emb", run_name="probe")
+        self.assertEqual(summary["run"], "probe")
+        self.assertEqual(summary["feature_kind"], "emb")
+        self.assertGreater(summary["random"]["accuracy"], 0.9)
+        self.assertTrue((self.root / "outputs" / "models" / "probe" / "fsc" / "fold1.joblib").exists())
+        with self.assertRaises(FileNotFoundError):
+            classical.load_cached_features("fsc", "nothing", ["x"], self.cfg)
+        with self.assertRaises(ValueError):
+            classical.load_cached_features("fsc", "emb", ["not_a_clip"], self.cfg)
 
     def test_split_argument(self):
         self.assertEqual(classical.parse_splits("all")[0], "random")
