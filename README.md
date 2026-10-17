@@ -105,7 +105,7 @@ Measured so far on **TenVoices-FSC** (1,000 clips). Every number comes from `res
 | **wav2vec 2.0, 3 epochs** | Mahir | TBD | TBD | TBD | TBD | Short fine-tuning |
 | **wav2vec 2.0, 8 epochs + noise** | Rabbi | TBD | TBD | TBD | TBD | Medium fine-tuning with augmentation |
 | **wav2vec 2.0, 15 epochs + noise** | Tanvir | **88.5%** | 0.881 | **100.0%** | 1.000 | Full fine-tuning with augmentation |
-| **wav2vec 2.0, 15 epochs, no noise** | Tanvir | TBD | TBD | TBD | TBD | Effect of noise augmentation (H3) |
+| **wav2vec 2.0, 15 epochs, no noise** | Tanvir | **92.8%** | 0.927 | **85.5%** | 0.824 | Effect of noise augmentation (H3) |
 | **WavLM Base+, 15 epochs + noise** | Rabbi | TBD | TBD | TBD | TBD | Another self-supervised model |
 | **HuBERT Base, 15 epochs + noise** | Mahir | TBD | TBD | TBD | TBD | Another self-supervised model |
 | **Linear probe (frozen wav2vec 2.0)** | Shafil | TBD | TBD | TBD | TBD | Pre-trained features without fine-tuning |
@@ -114,6 +114,16 @@ Measured so far on **TenVoices-FSC** (1,000 clips). Every number comes from `res
 * **Random Forest** drops from 31.0% to 20.9% when the test speakers were never heard in training: MFCC statistics depend heavily on the speaker.
 * **Whisper** recognises the commands almost perfectly without any training; its word error rate on the unseen-speaker folds is 3.9%.
 * **Fine-tuned wav2vec 2.0** (15 epochs + noise, trained on 7 speakers per fold) reaches 88.5% on unseen speakers (fold mean 88.5% ± 10.4), 67.6 points above Random Forest.
+* **Noise robustness** (unseen speakers, white noise added to the test clips, `results/noise/`):
+
+  | Model | Clean | 20 dB | 10 dB | 5 dB |
+  | :--- | :---: | :---: | :---: | :---: |
+  | wav2vec 2.0, 15 epochs + noise | 88.5% | 86.8% | 82.1% | 74.5% |
+  | wav2vec 2.0, 15 epochs, no noise | 92.8% | 92.1% | 65.5% | 30.7% |
+  | Random Forest | 20.9% | 4.9% | 2.3% | 2.2% |
+
+  Training with white noise keeps the model usable in heavy noise (74.5% vs 30.7% at 5 dB) but costs 4.3 points on clean audio. H3 allows at most 2, so its strict criterion would fail; the official verdict comes from the hypothesis tests in T24. The MFCC model falls to chance level as soon as noise is added.
+* **Speed** (`results/benchmark_fsc.csv`, one clip incl. pre-processing, MacBook): wav2vec 2.0 38.2 ms on the Apple GPU and 74.9 ms on the CPU (378 MB); Random Forest 13.7 ms (76 MB). Both are fast enough for live use.
 * Confusion matrices: [images/confusion/](images/confusion/).
 
 Measured so far on **TenVoices-L2** (500 clips, 10 non-native speakers; every fold tests a first language never heard in training). Numbers from `results/<run>/l2arctic/summary.json`.

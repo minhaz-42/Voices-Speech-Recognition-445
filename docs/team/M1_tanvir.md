@@ -29,9 +29,9 @@ The task board and handoff log for M1 are in [STATUS.md](../STATUS.md). This pag
 | T11 | Features, shared runner, evaluation ✅; Random Forest run | — | 🟡 |
 | T30 | Whisper on the test clips (FSC now, L2 in T47) | — | 🟡 |
 | T15 | Training script + Colab ✅; wav2vec 2.0 15 epochs + noise on FSC ✅ | — | ✅ FSC |
-| T19 | wav2vec 2.0 15 epochs without noise | — | ⬜ |
-| T21 | Noise tests, H3 | T15, T19 | 🟡 code ✅ |
-| T22 | Inference + CI ✅; benchmark | T15 | 🟡 |
+| T19 | wav2vec 2.0 15 epochs without noise on FSC ✅ | — | ✅ FSC |
+| T21 | Noise tests on FSC ✅; H3 verdict in T24 | T15, T19 | ✅ FSC |
+| T22 | Inference + CI ✅; benchmark ✅ | T15 | ✅ |
 | T47 | TenVoices-L2: free copy of L2-ARCTIC (no form), select, QC, splits ✅; Random Forest ✅; Whisper, wav2vec 2.0 and the members' models on L2; H5 | — | 🟡 data ✅ |
 | T24 | Final aggregation on all merged results, reproducibility, feature freeze | all | ⬜ |
 | T25 | Final report and README | T24 | ⬜ |
@@ -42,6 +42,7 @@ The task board and handoff log for M1 are in [STATUS.md](../STATUS.md). This pag
 Plain-language summary for the weekly project update, newest week first. Only finished work; numbers only from `results/`.
 
 ### Week of 2026-10-17
+- Trained our main model: **wav2vec 2.0 fine-tuned for 15 epochs**, with and without white-noise augmentation, on both evaluation protocols. On speakers it never heard it recognises 88.5% (with noise training) and 92.8% (without) of the 50 commands, against 20.9% for Random Forest. In heavy noise (5 dB) the noise-trained model still gets 74.5% right, the other only 30.7%. It needs 38 ms per clip on a laptop GPU, fast enough for live use.
 - Prepared the second dataset, **TenVoices-L2**, without waiting for the publisher's form: a free copy of L2-ARCTIC, checked against the official prompt list. It has 10 non-native speakers (one woman and one man each with Hindi, Mandarin, Spanish, Korean and Vietnamese as first language) × 50 sentences = 500 clips, all passing QC. Each speaker-independent fold tests an accent the model never heard in training.
 - Prepared the main dataset by code: selected **TenVoices-FSC** (10 speakers, 5 female and 5 male, × 50 commands × 2 takes = 1,000 clips) with a deterministic selection script, checked every clip (997 of 1,000 pass; 3 flagged for slight clipping), and made the random split and the 5 speaker-independent folds with automatic leakage checks.
 - Re-organised the team plan so that **no member waits for another**: every member can run their models today, and each member now also owns an extra model (WavLM, HuBERT, a linear probe on frozen wav2vec 2.0) to compare against our main approach. All analysis decisions were fixed in the plan before any model was trained.

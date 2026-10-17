@@ -83,9 +83,9 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 | T11 | Features, shared runner and evaluation ✅; **Random Forest** → `results/random_forest/fsc/` ✅ (FSC: random split 0.310, unseen speakers 0.209) | — | ✅ | Tanvir · 2026-10-17 |
 | T30 | **Whisper zero-shot** → `results/whisper_small/{fsc,l2arctic}/` ✅: FSC unseen speakers 0.987, WER 0.039; L2 unseen speakers 0.996, WER 0.100 (per first language 0.040–0.168) | — | ✅ | Tanvir · 2026-10-17 |
 | T15 | Training script + Colab notebook ✅; **wav2vec 2.0, 15 epochs + white noise** → `results/w2v2_15ep_noise/fsc/` ✅ (unseen speakers 0.885, random split 1.000); models in `outputs/models/` (to Drive) | — | ✅ FSC | Tanvir · 2026-10-17 |
-| T19 | **wav2vec 2.0, 15 epochs without noise** (H3 ablation) → `results/w2v2_15ep/fsc/` | — | ⬜ | |
-| T21 | Noise tests at 20 / 10 / 5 dB for T15 and T19 (and every merged run) → `results/noise/`; H3 | T15, T19 | 🟡 code ✅ | |
-| T22 | `main.py`, inference, CI ✅; inference-time benchmark with the T15 model | T15 | 🟡 code ✅ | |
+| T19 | **wav2vec 2.0, 15 epochs without noise** → `results/w2v2_15ep/fsc/` ✅ (unseen speakers 0.928, random split 0.855) | — | ✅ FSC | Tanvir · 2026-10-17 |
+| T21 | Noise tests → `results/noise/` ✅ (unseen speakers at 10 / 5 dB: with noise training 0.821 / 0.745, without 0.655 / 0.307; clean 0.885 vs 0.928); H3 decided in T24 | T15, T19 | ✅ FSC | Tanvir · 2026-10-17 |
+| T22 | `main.py`, inference, CI ✅; benchmark → `results/benchmark_fsc.csv` ✅ (wav2vec 2.0: 38.2 ms per clip on MPS, 74.9 ms on CPU) | T15 | ✅ | Tanvir · 2026-10-17 |
 | T47 | **TenVoices-L2:** data from a free copy of L2-ARCTIC (no form) ✅: 10 speakers × 50 sentences = 500 clips, QC 500 / 500, splits (each fold holds out one first language); Random Forest ✅; Whisper ✅ (WER 0.100 vs 0.039 on FSC); next: the wav2vec 2.0 runs and every merged model on L2; H5 | — | 🟡 data ✅ | Tanvir · 2026-10-17 (data) |
 
 ### At the end (needs everyone's merged work)
@@ -116,6 +116,14 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 | T02, T04–T07, T31, T32 | Recorder, pilot, recording sessions, recording QC | We use published datasets (2026-10-17) |
 
 ## 📝 Handoff Log (newest first)
+
+### 2026-10-17 · Tanvir Ahmed (M1) · T19, T21, T22 (all M1 work planned for today is done)
+
+- **T19** wav2vec 2.0, 15 epochs, no noise: unseen speakers 0.928, random split 0.855 (`results/w2v2_15ep/fsc/summary.json`).
+- **T21** noise tests (same white noise per clip for every model, `results/noise/`): with noise augmentation the model keeps 0.821 / 0.745 at 10 / 5 dB vs 0.655 / 0.307 without, but loses 4.3 points on clean audio (H3 allows 2); the official H3 verdict comes from T40's code in T24. Random Forest falls to chance at 20 dB.
+- **T22** benchmark (`results/benchmark_fsc.csv`): wav2vec 2.0 38.2 ms per clip on MPS / 74.9 ms on CPU, 378 MB; Random Forest 13.7 ms, 76 MB.
+- **Models:** `outputs/models/w2v2_15ep_noise/` and `w2v2_15ep/` (2.1 GB each, gitignored) on Tanvir's Mac; upload to the Drive (`TenVoices/models/`) so the demo (T23) can use them.
+- **Next (after next week's project update):** wav2vec 2.0 and members' runs on TenVoices-L2 (T47), merges, T24, T25, T28.
 
 ### 2026-10-17 · Tanvir Ahmed (M1) · T47 (TenVoices-L2 without the form)
 
