@@ -14,7 +14,7 @@
 | **Dataset** | **TenVoices v1**, recorded by us with consent: 10 speakers × 50 phrases × 3 repetitions + 10 real-noise takes each ≈ **1,600 clips (~1 hour)** |
 | **Methods** | Traditional ML (MFCC + k-NN / SVM / Random Forest / XGBoost) vs an untrained wav2vec 2.0 baseline vs **fine-tuned wav2vec 2.0** (3 / 8 / 15 epochs, white-noise augmentation), plus **Whisper** used zero-shot as an open-vocabulary recogniser (speech-to-text, then the nearest phrase) |
 | **Evaluation** | Accuracy, macro F1, weighted F1, confusion matrices. Reported on a random 80/20 split (seen speakers) **and** with speaker-independent 5-fold cross-validation (unseen speakers, the headline). |
-| **Team** | Tanvir Ahmed (lead) and Md. Shahriar Rakib Rabbi, plus 2 open member slots. Each slot owns one traditional model and one deep-learning run. Work is handed over through Claude Code (`CLAUDE.md`, `docs/STATUS.md`). |
+| **Team** | Four members: Tanvir Ahmed (lead), Md. Shahriar Rakib Rabbi, Mahir Ahmed and Shafil Ahmed. Each owns one traditional model, one deep-learning run, a workstream and a set of files, and works on their own branch; the lead reviews and merges. |
 | **Timeline** | 6 weeks, planned week by week |
 | **Deliverables** | Open GitHub repo, dataset release + datasheet, inference script + demo app, results tables and confusion matrices, report, slides, demo video, poster |
 
@@ -171,7 +171,7 @@ flowchart LR
 | E2 | What is chance level? | Untrained wav2vec 2.0 | Same | M4 | 4 | Must |
 | E3 | How much does fine-tuning help? | wav2vec 2.0: 3 epochs (M3), 8 epochs + noise (M2), 15 epochs + noise (M1), on both splits | Same + learning curves | M1–M3 | 4 | Must |
 | E4 | Seen vs unseen speakers | Random split vs speaker-independent CV for every model; per-speaker accuracy | Accuracy drop, per-speaker table | M3 | 5 | Must |
-| E5 | Noise robustness | White noise at 20 / 10 / 5 dB on clean test clips + real noisy takes; 15 epochs with vs without noise | Accuracy vs SNR | M3 (15-epoch no-noise run: M1) | 5 | Should |
+| E5 | Noise robustness | White noise at 20 / 10 / 5 dB on clean test clips + real noisy takes; 15 epochs with vs without noise | Accuracy vs SNR | M1 | 5 | Should |
 | E6 | Where are the errors? | Most-confused phrase pairs (e.g. on/off), accuracy per category | Confusion analysis | M3 | 5 | Must |
 | E7 | Is it practical? | Inference time per clip on laptop CPU vs GPU; model size | ms per clip, MB | M1 | 5 | Should |
 | E8 | How good is general-purpose speech-to-text without training? | Whisper small, zero-shot, + phrase matching on the test clips of both splits; WER per category and speaker | Accuracy, F1, WER, CER | M1 | 4 | Should |
@@ -220,53 +220,71 @@ flowchart LR
 
 ## 👥 Team, Roles and File Ownership
 
-Member names are listed in `CLAUDE.md`, `README.md` and `docs/STATUS.md`. The rest of the docs refer to **slots** (M1–M4), so a member who joins later can take a slot without other edits. Right now **Tanvir Ahmed** holds M1, M3 and M4, and **Md. Shahriar Rakib Rabbi** holds M2.
+Each member owns one traditional model, one deep-learning run, a main workstream and a set of files. The lead keeps the shared, most complex parts (data pipeline, training and evaluation code, the Whisper pipeline, noise tests, inference) and merges everyone's work.
 
-Each slot owns one traditional model and one deep-learning run, plus a main workstream:
-
-| Slot | Traditional model | Deep-learning run | Main workstream | Owns (planned files) |
+| Slot | Member | Traditional model | Deep-learning run | Main workstream |
 |---|---|---|---|---|
-| **M1** (lead) | Random Forest | 15 epochs + white noise (and 15 epochs without noise) | Data pipeline, shared training and evaluation code, inference, integration | `main.py`, `support/config.py`, `support/audio.py`, `support/dataset.py`, `support/features.py`, `support/classical.py`, `support/train_wav2vec2.py`, `support/evaluate.py`, `tools/make_splits.py`, `configs/`, `notebooks/` |
-| **M2** | XGBoost | 8 epochs + white noise | Dataset collection and curation, dataset release | `tools/recorder.py`, `tools/qc_report.py`, `data/` metadata and datasheet |
-| **M3** *(open slot)* | k-NN | 3 epochs (no noise) | Evaluation: results tables, statistics, noise tests, error analysis | `support/metrics.py`, `support/stats.py`, `support/results_table.py`, `docs/ANALYSIS_PLAN.md` |
-| **M4** *(open slot)* | SVM | Untrained baseline | Demo app, figures, poster, slides, video | `app.py`, `support/visualization.py`, `poster/`, `images/`, slides and video in `others/` |
+| **M1** (lead) | Tanvir Ahmed | Random Forest | 15 epochs + white noise, 15 epochs without noise, Whisper zero-shot | Data pipeline and splits, shared training and evaluation code, Whisper pipeline, noise tests, inference, integration and merging |
+| **M2** | Md. Shahriar Rakib Rabbi | XGBoost | 8 epochs + white noise | Recorder, QC, dataset curation and release |
+| **M3** | Mahir Ahmed | k-NN | 3 epochs (no noise) | Evaluation: analysis plan, statistics, results tables, error analysis |
+| **M4** | Shafil Ahmed | SVM | Untrained baseline | Visualisation, demo app, poster, slides, video |
+
+**File ownership.** A member edits only their own files, so branches never conflict when they are merged. Changes needed in someone else's file go to that owner (for M1: under *Requests for the lead* in the member's progress file).
+
+| Slot | Owns |
+|---|---|
+| **M1** | `main.py`, `support/config.py`, `support/audio.py`, `support/dataset.py`, `support/features.py`, `support/classical.py`, `support/evaluate.py`, `support/train_wav2vec2.py`, `support/noise.py`, `support/whisper_asr.py`, `tools/make_splits.py`, `configs/`, `notebooks/`, `requirements.txt`, `.github/`, `CLAUDE.md`, `README.md`, `docs/STATUS.md`, `docs/PROJECT_PLAN.md`; runs `random_forest`, `w2v2_15ep_noise`, `w2v2_15ep`, `whisper_small`, `noise` |
+| **M2** | `tools/recorder.py`, `tools/qc_report.py`, `support/phrases.py`, `data/prompts/`, `data/metadata/`, `data/README.md` (datasheet), `docs/DATA_COLLECTION_PROTOCOL.md`, `docs/consent_form.md`; runs `xgboost`, `w2v2_8ep_noise` |
+| **M3** | `support/metrics.py`, `support/stats.py`, `support/results_table.py`, `support/error_analysis.py`, `docs/ANALYSIS_PLAN.md`, `docs/literature/classical_and_evaluation.md`; runs `knn`, `w2v2_3ep`; `results/all_results.csv`, `results/hypotheses.csv`, `results/errors/` |
+| **M4** | `support/visualization.py`, `app.py`, `poster/`, `images/poster.png`, slides and video in `others/`, `docs/literature/self_supervised_speech.md`; runs `svm`, `w2v2_untrained` |
+| **Everyone** | Their own tests (`tests/test_<module>.py`), their run folders `results/<run>/`, their figures in `images/`, and their progress file `docs/progress/<slot>_<name>.md` |
 
 Every model run goes through the shared scripts with its own settings, and saves its results in `results/<run-name>/`.
 
 **Speakers and cross-checks**
 
-| Slot | Records | Cross-checks the recordings of |
+| Slot | Records | Listen-checks the recordings of |
 |---|---|---|
-| M1 | S01 (self) + volunteers S03–S06 | S02, S07–S10 |
-| M2 | S02 (self) + volunteers S07–S10 | S01, S03–S06 |
+| M1 | S01 (self) | — |
+| M2 | S02 (self) + volunteers S05–S06 | S01, S03, S07–S08 |
+| M3 | S03 (self) + volunteers S07–S08 | S04, S09–S10 |
+| M4 | S04 (self) + volunteers S09–S10 | S02, S05–S06 |
 
 - Each recruiting member also names one backup volunteer.
-- A member who joins later can record themselves in place of a volunteer.
 - Recruit so the full set of 10 reaches the 5F/5M target; gender is always self-reported on the consent form.
 
 ---
 
-## 🔀 Team Workflow (relay with Claude Code)
+## 🔀 Team Workflow (branch per member)
 
-Members work one after another, each through Claude Code. The repository tells Claude everything it needs:
+Every member works through Claude Code on their own branch, so nobody waits for anyone else's session:
 
-- **`CLAUDE.md`** is loaded automatically by Claude Code. It holds the project summary, the team slots and the session rules.
-- **`docs/STATUS.md`** is the task board (owner, dependencies, status) plus a handoff log.
+- **`CLAUDE.md`** is loaded automatically by Claude Code. It holds the project summary, the team, the session rules and the merge routine.
+- **`docs/STATUS.md`** is the task board (owner, dependencies, status) and merge log. Only the lead edits it.
+- **`docs/progress/<slot>_<name>.md`** is each member's own page: task status, handoff log, requests for the lead and a plain-language **faculty update** for the weekly project meeting.
 
-A typical relay:
-1. **Member A** pulls, asks Claude *"What is completed?"*, then *"Complete my next tasks."*
-2. **Claude** only starts tasks whose dependencies are ✅. At the end of the session it runs the tests, updates `docs/STATUS.md`, commits and pushes.
-3. **Member B** pulls and asks the same question. If the work B depends on is done, Claude completes B's tasks. If not, Claude says which task is still blocking.
+| Member | Branch |
+|---|---|
+| M1 Tanvir (lead) | `main` |
+| M2 Rabbi | `dev_rabbi` |
+| M3 Mahir | `dev_mahir` |
+| M4 Shafil | `dev_shafil` |
+
+A typical week:
+1. A **member** opens Claude Code and says who they are. Claude switches to their branch, merges in the latest `main` and reports what is done and what is next.
+2. *"Complete my next tasks."* Claude only starts tasks whose dependencies are ✅ (merged, or finished earlier by the same member).
+3. *"Wrap up and push."* Claude runs the tests, updates the progress file and faculty update, commits, pushes the branch and opens a pull request.
+4. The **lead** reviews the branch, merges it into `main` and marks the tasks ✅ on the board. Everyone else picks the work up at the start of their next session.
 
 Rules:
-- **Branching:** work directly on `main`; pull before starting and before pushing.
-- **Commits:** one task per commit, message `T07: <summary>`, with the member's own git identity.
-- **Data:** audio is shared through the private team Drive, never through git. Small result files go in `results/` and are committed so the next member can continue. Trained models go to Drive or Hugging Face, never git.
+- **Branching:** members never commit to `main` and never rebase or force-push their branch; the lead merges.
+- **Commits:** one task per commit, message `T07: <summary>`, with the member's own git identity and no AI tool named as author or co-author.
+- **Data:** audio is shared through the private team Drive, never through git. Small result files go in `results/` and are committed so others can continue. Trained models go to Drive or Hugging Face, never git.
 - **Definition of done:**
   - The task's *done when* condition is met and the tests pass.
   - Code is config-driven, uses relative paths and has docstrings.
   - No audio, models or personal data committed.
-  - `docs/STATUS.md` is updated.
+  - The member's progress file is updated, including the faculty update.
 
 ---
 
@@ -294,7 +312,7 @@ The tasks for each week (T01–T28), with owners and dependencies, are in [STATU
 | Section | Owner |
 |---|---|
 | Abstract, 1. Introduction | M1 |
-| 2. Related work (speech recognition with MFCC and classical ML, self-supervised speech models) | M1 |
+| 2. Related work (speech recognition with MFCC and classical ML, self-supervised speech models, general-purpose speech-to-text) | M1, from M3's and M4's literature notes |
 | 3. The TenVoices dataset (collection, statistics, ethics) | M2 |
 | 4. Methodology (traditional ML, baseline, fine-tuning) | M1 (+ M2 for XGBoost and data) |
 | 5. Experiments and results | M3 |
@@ -331,8 +349,8 @@ The tasks for each week (T01–T28), with owners and dependencies, are in [STATU
 | Traditional models score near chance on unseen speakers | Medium | Low | Expected, and a finding in itself; the random split shows the contrast | M3 |
 | Confusable phrases (on/off) hurt accuracy | High | Low | That is intended; analysed in E6 rather than avoided | M3 |
 | Data leakage between train and test | Low | High | Split rules + unit tests | M1, M3 |
-| A member is unavailable and a handoff stalls | Medium | Medium | Every task is written up in STATUS.md, so the lead (or a new member) can take it over; small tasks, frequent pushes | M1 |
-| Merge conflicts | Low | Medium | Sequential relay; pull before working; one task per commit | All |
+| A member is unavailable and a handoff stalls | Medium | Medium | Every task is written up in STATUS.md and the member's progress file, so the lead (or another member) can take it over; small tasks, frequent pushes | M1 |
+| Merge conflicts | Low | Medium | One branch per member, strict file ownership, per-speaker metadata files, per-member progress files; only the lead edits the shared docs and merges | M1 |
 | Scope creep | Medium | Medium | MoSCoW list; feature freeze at the end of Week 5 | All |
 | Real deadlines differ from this plan | Medium | Medium | Stretch or compress the weeks; the order of work stays valid | All |
 
@@ -352,11 +370,10 @@ The tasks for each week (T01–T28), with owners and dependencies, are in [STATU
 
 ## ❓ Decisions to Confirm at Kick-off
 
-1. Names for the open member slots (M3, M4) if new members join. Update the team tables in `CLAUDE.md`, `README.md` and `docs/STATUS.md`.
-2. Course code, section, group number, instructor and deadlines. Update the README table and the roadmap if needed.
-3. Language: English read with a Bangladeshi accent (**recommended**), Bangla, or both.
-4. Public dataset release for consenting speakers (**recommended: yes**).
-5. Report template: the instructor's format, otherwise a two-column paper format.
+1. Course code, section, group number, instructor and deadlines. Update the README table and the roadmap if needed.
+2. Language: English read with a Bangladeshi accent (**recommended**), Bangla, or both.
+3. Public dataset release for consenting speakers (**recommended: yes**).
+4. Report template: the instructor's format, otherwise a two-column paper format.
 
 ---
 

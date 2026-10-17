@@ -156,19 +156,21 @@ Voices-Speech-Recognition-445/
 |-- requirements.txt
 |-- configs/                  config.yaml (paths, sample rate, training settings)
 |-- support/
-|   |-- config.py, audio.py, dataset.py, features.py      data pipeline
+|   |-- config.py, audio.py, phrases.py, dataset.py, features.py   data pipeline
 |   |-- classical.py          k-NN / SVM / Random Forest / XGBoost runner
 |   |-- train_wav2vec2.py     fine-tuning (--epochs, --noise, --split)
 |   |-- whisper_asr.py        zero-shot Whisper speech-to-text + phrase matching
 |   |-- evaluate.py           one evaluation script for every model
-|   |-- metrics.py, stats.py, results_table.py
-|   `-- visualization.py      confusion matrices and charts
+|   |-- metrics.py, stats.py, results_table.py, error_analysis.py
+|   `-- visualization.py      spectrograms, MFCCs and result charts
 |-- tools/                    recorder.py, qc_report.py, make_splits.py
 |-- notebooks/                Colab notebook for fine-tuning
 |-- tests/
 |-- data/                     phrase list, metadata, splits (audio is gitignored)
 |-- results/                  per-model reports and all_results.csv
 |-- docs/                     STATUS.md, PROJECT_PLAN.md, protocol, consent form
+|   |-- progress/             one page per member: tasks, handoff log, faculty update
+|   `-- literature/           literature notes for the report
 |-- poster/poster.html        poster source
 |-- images/                   poster, results table, confusion matrices
 |-- outputs/                  large generated files (gitignored)
@@ -234,23 +236,22 @@ Run every command from the repository root. Scripts in `support/` and `tools/` a
 
 ---
 
-## 🔄 Team Workflow (Claude Code)
-Every member works through Claude Code, one after another:
-1. **Pull** the latest `main` and open Claude Code in the repository.
-2. **Ask:** *"I'm M2. What is completed?"* Claude reads [CLAUDE.md](CLAUDE.md) and the task board in [docs/STATUS.md](docs/STATUS.md).
-3. **Continue:** *"Complete my next tasks."* Claude only starts tasks whose dependencies are done.
-4. **Wrap up:** *"Wrap up and push."* Claude runs the tests, updates the task board and handoff log, commits and pushes.
-5. The next member pulls and repeats.
+## 🔄 Team Workflow
+Every member works on their **own branch** and owns a fixed set of files, so nobody waits for anyone else:
+1. Open Claude Code in the repository and say who you are: *"I'm Mahir. What is completed?"* It switches to your branch (`dev_rabbi`, `dev_mahir`, `dev_shafil`) and brings in everything merged so far.
+2. **Continue:** *"Complete my next tasks."* Only tasks whose dependencies are done are started.
+3. **Wrap up:** *"Wrap up and push."* The tests run, your progress file and faculty update in [docs/progress/](docs/progress/) are updated, and your branch is pushed with a pull request.
+4. The team lead reviews and merges each branch into `main` and updates the task board in [docs/STATUS.md](docs/STATUS.md).
+
+Session rules are in [CLAUDE.md](CLAUDE.md); file ownership is in [docs/PROJECT_PLAN.md](docs/PROJECT_PLAN.md).
 
 ---
 
 ## 👥 Contributors
-* **Tanvir Ahmed** - *team lead (Member 1): data pipeline and shared code, Random Forest, wav2vec 2.0 fine-tuning (15 epochs), inference*
-* **Md. Shahriar Rakib Rabbi** - *Member 2: dataset collection and curation, XGBoost, wav2vec 2.0 fine-tuning (8 epochs)*
-* **Tanvir Ahmed** - *Member 3: evaluation and results tables, k-NN, wav2vec 2.0 fine-tuning (3 epochs)*
-* **Tanvir Ahmed** - *Member 4: demo app, figures and poster, SVM, untrained baseline*
-
-Member 3 and Member 4 are open slots for members who join later; Tanvir Ahmed covers them for now.
+* **Tanvir Ahmed** - *team lead (Member 1): data pipeline and splits, shared training and evaluation code, Whisper pipeline, noise tests, inference, integration; Random Forest, wav2vec 2.0 fine-tuning (15 epochs)*
+* **Md. Shahriar Rakib Rabbi** - *Member 2: recorder, quality control, dataset curation and release; XGBoost, wav2vec 2.0 fine-tuning (8 epochs)*
+* **Mahir Ahmed** - *Member 3: evaluation (analysis plan, statistics, results tables, error analysis); k-NN, wav2vec 2.0 fine-tuning (3 epochs)*
+* **Shafil Ahmed** - *Member 4: visualisation, demo app, poster, slides and video; SVM, untrained baseline*
 
 ---
 

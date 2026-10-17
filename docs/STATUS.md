@@ -1,92 +1,125 @@
 # 📋 TenVoices: Status Board
 
-> **Source of truth for progress.** Claude reads this file at the start of every session and updates it at the end (rules in [CLAUDE.md](../CLAUDE.md)).
-> **Legend:** ⬜ to do · 🟡 in progress · ✅ done · ⛔ blocked · 👤 needs people (recording, consent, video)
+> **Source of truth for what is merged into `main`.** Only M1 edits this file; members record their progress in `docs/progress/<slot>_<name>.md` and M1 copies it here when merging (rules in [CLAUDE.md](../CLAUDE.md)).
+> **Legend:** ⬜ to do · 🟡 in progress · ✅ done and merged · ⛔ blocked · 👤 needs people (recording, consent, video)
 
-**Current phase:** Week 1: setup, phrase list and recording tool
-**Next up:** T02 recorder (M2 · Rabbi); phrase-catalog validation is complete, recorder implementation remains. M1, M3 and M4 wait for T02 → T04 (pilot sessions)
+**Current phase:** Weeks 1–2: recorder and pilot (M2), plus start-now work for every member
+**Next up:** M2 · Rabbi: T02 → T04 · M3 · Mahir: T10, T33, T37 · M4 · Shafil: T35, T36, T38, T39 · M1 · Tanvir: T29 (Whisper pipeline) and merging
 **Last updated:** 2026-10-17 by Tanvir Ahmed (M1)
 
 ## 👥 Team
 
-| Slot | Member                     | Traditional model | Deep-learning run       | Main workstream                                                        |
-| ---- | -------------------------- | ----------------- | ----------------------- | ---------------------------------------------------------------------- |
-| M1   | Tanvir Ahmed (lead)        | Random Forest     | 15 epochs + white noise | Data pipeline, shared training/evaluation code, inference, integration |
-| M2   | Md. Shahriar Rakib Rabbi   | XGBoost           | 8 epochs + white noise  | Dataset collection and curation, dataset release                       |
-| M3   | Tanvir Ahmed _(open slot)_ | k-NN              | 3 epochs                | Evaluation: results tables, statistics, noise tests, error analysis    |
-| M4   | Tanvir Ahmed _(open slot)_ | SVM               | Untrained baseline      | Demo app, figures, poster, slides, video                               |
+| Slot | Member | Branch | Traditional model | Deep-learning run | Main workstream |
+|---|---|---|---|---|---|
+| M1 | Tanvir Ahmed (lead, merges) | `main` | Random Forest | 15 epochs + white noise, 15 epochs without noise, Whisper zero-shot | Data pipeline and splits, shared training / evaluation code, Whisper pipeline, noise tests, inference, integration |
+| M2 | Md. Shahriar Rakib Rabbi | `dev_rabbi` | XGBoost | 8 epochs + white noise | Recorder, QC, dataset curation and release |
+| M3 | Mahir Ahmed | `dev_mahir` | k-NN | 3 epochs | Evaluation: analysis plan, statistics, results tables, error analysis |
+| M4 | Shafil Ahmed | `dev_shafil` | SVM | Untrained baseline | Visualisation, demo app, poster, slides, video |
 
 ## 💬 How to work with Claude
 
-1. Pull, open Claude Code in the repo and say who you are: _"I'm M2. What is completed?"_
-2. Then say: _"Complete my next tasks."_ Claude checks the dependencies below and only starts tasks that are unblocked.
-3. When you're done for the session, say: _"Wrap up and push."_ Claude updates this board and the handoff log, commits and pushes.
-4. Tell the next member to pull.
+**Members (M2–M4)**
+1. Open Claude Code in the repo and say who you are: *"I'm Mahir. What is completed?"* Claude switches to your branch and brings in everything merged so far.
+2. Say: *"Complete my next tasks."* Claude only starts tasks whose dependencies are ✅.
+3. When you're done for the session: *"Wrap up and push."* Claude runs the tests, updates your progress file (including your **faculty update**), commits, pushes your branch and opens a pull request.
+4. Tell Tanvir which tasks are ready to merge.
+
+**Lead (M1)**
+1. Your own tasks work the same way, directly on `main`.
+2. When a member's branch is ready: *"Merge dev_mahir."* Claude reviews it, merges it, updates this board and pushes.
+
+A task is ✅ here once it is merged. Finished work that is not merged yet shows ✅ in the member's progress file, and counts as done for that member's own next tasks.
 
 ## 🗂️ Task Board
 
+### Start now: independent work (no recordings needed)
+
+| ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
+|---|---|---|---|---|---|
+| T10 | `docs/ANALYSIS_PLAN.md`: hypotheses H1–H5 with pass criteria, both splits, metrics, statistical tests and leakage rules, written from `docs/PROJECT_PLAN.md` → M1 approves it at merge and it is **frozen** before any main experiment | M3 | T03 | ⬜ | |
+| T33 | `support/stats.py`: 95% bootstrap confidence interval for accuracy, McNemar's test for two models on the same clips, Wilcoxon signed-rank test over per-speaker accuracies + tests against textbook or hand-computed cases → tests pass | M3 | T03 | ⬜ | |
+| T37 | Literature notes `docs/literature/classical_and_evaluation.md`: 6–8 papers on MFCC features, k-NN / SVM / tree models for speech, and speaker-independent evaluation; each with a checked DOI or arXiv link, what they did and what we take from it → feeds report section 2 | M3 | — | ⬜ | |
+| T35 | `support/visualization.py`: waveform, spectrogram, log-mel and MFCC plots of one clip, a before / after pre-processing figure, and chart helpers (model-comparison bars, accuracy vs SNR, per-speaker bars) + tests on synthetic data; example figures of your own voice in `images/` → tests pass | M4 | T01 | ⬜ | |
+| T36 | Demo skeleton `app.py` (Gradio): microphone or upload → shared pre-processing → waveform and spectrogram from T35 + the 50-phrase list, with a clearly marked "model not connected yet" area (no fake predictions) → the app runs locally | M4 | T35 | ⬜ | |
+| T38 | Literature notes `docs/literature/self_supervised_speech.md`: 6–8 papers on self-supervised speech models (wav2vec 2.0, HuBERT, WavLM, XLS-R) and spoken-command benchmarks; same format as T37 → feeds report section 2 | M4 | — | ⬜ | |
+| T39 | Planning poster v2 (`poster/poster.html` → `images/poster.png`): team of four and the four-stage pipeline from `docs/PROJECT_PLAN.md`, no results → the poster renders and the README shows it | M4 | — | ⬜ | |
+| T29 | Whisper pipeline `support/whisper_asr.py`: zero-shot transcription (`--model small`), Whisper's English text normaliser, nearest-phrase matching (word-level edit distance), WER / CER, predictions in the shared format + tests; smoke test on a few self-recorded phrases → tests pass | M1 | T01, T03 | ⬜ | |
+
 ### Week 1: Setup, phrase list and recording tool
 
-| ID  | Task (→ done when)                                                                                                                                                                                                                                                                                              | Owner   | Depends on | Status | Done by · date      |
-| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ---------- | ------ | ------------------- |
-| T00 | Project plan, README, poster, protocol, consent form, phrase list, `CLAUDE.md`, this board → committed                                                                                                                                                                                                          | M1      | —          | ✅     | Tanvir · 2026-10-01 |
-| T01 | Publish the GitHub repo ✅ and add Rabbi as collaborator (⛔ invite pending: needs Rabbi's GitHub username); pin `requirements.txt`; `configs/config.yaml` + `support/config.py`; `support/audio.py` (load, mono, 16 kHz, trim silence, peak-normalise, pad to 6 s) + tests → tests pass and a sample WAV loads | M1      | T00        | ✅     | Tanvir · 2026-10-04 |
-| T02 | Recorder tool `tools/recorder.py` (Gradio): 3 shuffled rounds of `data/prompts/phrases.csv` + the noisy block; file naming; one `utterances.csv` row per clip; printable phrase sheets → a test session saves correct files                                                                                     | M2      | T01        | 🟡     |                     |
-| T03 | `support/metrics.py`: accuracy, macro / weighted F1, classification report, confusion-matrix plot, per-speaker accuracy + tests → hand-computed cases pass                                                                                                                                                      | M3      | T01        | ✅     | Tanvir · 2026-10-04 |
-| T04 | 👤 Pilot sessions S01 (Tanvir) and S02 (Rabbi): consent signed, files backed up to Drive → 2 × 160 clips                                                                                                                                                                                                        | M1 + M2 | T02        | ⬜     |                     |
-| T05 | `tools/qc_report.py` (completeness, duration, clipping, silence, misread flags) run on the pilot; fix the issues found → protocol v1 frozen                                                                                                                                                                     | M2      | T04        | ⬜     |                     |
+| ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
+|---|---|---|---|---|---|
+| T00 | Project plan, README, poster, protocol, consent form, phrase list, `CLAUDE.md`, this board → committed | M1 | — | ✅ | Tanvir · 2026-10-01 |
+| T01 | Publish the GitHub repo and add collaborators; pin `requirements.txt`; `configs/config.yaml` + `support/config.py`; `support/audio.py` (load, mono, 16 kHz, trim silence, peak-normalise, pad to 6 s) + tests → tests pass and a sample WAV loads | M1 | T00 | ✅ | Tanvir · 2026-10-04 |
+| T02 | Recorder tool `tools/recorder.py` (Gradio): 3 shuffled rounds of `data/prompts/phrases.csv` + the noisy block; file naming; metadata written **one file per speaker** (`data/metadata/utterances/<SPK>.csv`, `data/metadata/speakers/<SPK>.csv`) so members recording on different branches never conflict; printable phrase sheets → a test session saves correct files | M2 | T01 | 🟡 | |
+| T03 | `support/metrics.py`: accuracy, macro / weighted F1, classification report, confusion-matrix plot, per-speaker accuracy + tests → hand-computed cases pass | M3 | T01 | ✅ | Tanvir · 2026-10-04 |
+| T04 | 👤 Pilot sessions S01 (Tanvir) and S02 (Rabbi): consent signed, files backed up to Drive → 2 × 160 clips | M1 + M2 | T02 | ⬜ | |
+| T05 | `tools/qc_report.py` (completeness, duration, clipping, silence, misread flags) run on the pilot; fix the issues found → protocol v1 frozen | M2 | T04 | ⬜ | |
 
 ### Week 2: Dataset collection
 
-| ID  | Task (→ done when)                                                                                                                                                                                                                         | Owner     | Depends on | Status | Done by · date |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- | ---------- | ------ | -------------- |
-| T06 | 👤 Record volunteers S03–S06 (recruited by M1) and S07–S10 (recruited by M2), including noisy takes; target 5F/5M overall → 10/10 speakers                                                                                                 | M1 + M2   | T05        | ⬜     |                |
-| T07 | QC all sessions; listen-check (M1 checks M2's speakers, M2 checks M1's); re-record misreads → ≥ 97% of clips pass                                                                                                                          | M2 (+ M1) | T06        | ⬜     |                |
-| T08 | Processed 16 kHz copies + manifest (label, speaker, rep, condition, SHA-256); `support/dataset.py`; `tools/make_splits.py` → random 80/20 split + 5 speaker-independent folds in `data/splits/`; leakage tests → tests pass; tag `data-v1` | M1        | T07        | ⬜     |                |
-| T09 | Dataset statistics figure + datasheet `data/README.md`                                                                                                                                                                                     | M2        | T08        | ⬜     |                |
-| T10 | `docs/ANALYSIS_PLAN.md`: hypotheses H1–H5, splits, metrics, tests → **frozen** before any main experiment                                                                                                                                  | M3        | T03, T08   | ⬜     |                |
+Each recorder recruits their own volunteers, collects consent, records the noisy takes and backs the files up to Drive the same day. Recruit so the 10 speakers reach the 5F / 5M target (self-reported), and name one backup volunteer each.
+
+| ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
+|---|---|---|---|---|---|
+| T06 | 👤 Record volunteers **S05–S06** → 2 × 160 clips | M2 | T05 | ⬜ | |
+| T31 | 👤 Record **S03 (self)** and volunteers **S07–S08** → 3 × 160 clips | M3 | T05 | ⬜ | |
+| T32 | 👤 Record **S04 (self)** and volunteers **S09–S10** → 3 × 160 clips | M4 | T05 | ⬜ | |
+| T07 | QC all sessions with `tools/qc_report.py`; listen-checks: Rabbi → S01, S03, S07–S08 · Mahir → S04, S09–S10 · Shafil → S02, S05–S06; re-record misreads → ≥ 97% of clips pass | M2 (+ M3, M4 listen-checks) | T04, T06, T31, T32 | ⬜ | |
+| T08 | Processed 16 kHz copies + manifest (label, speaker, rep, condition, SHA-256); `support/dataset.py`; `tools/make_splits.py` → random 80/20 split + 5 speaker-independent folds in `data/splits/`; leakage tests → tests pass; tag `data-v1` | M1 | T07 | ⬜ | |
+| T09 | Dataset statistics figure + datasheet `data/README.md` | M2 | T08 | ⬜ | |
 
 ### Week 3: Traditional machine learning
 
-| ID  | Task (→ done when)                                                                                                                                                                                                                                                               | Owner | Depends on | Status | Done by · date |
-| --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- | ---------- | ------ | -------------- |
-| T11 | `support/features.py` (MFCC 13 + Δ + ΔΔ, mean & std) + shared runner `support/classical.py` (scaler + model, both splits, validation tuning, saves report / predictions / confusion matrix) + shared `support/evaluate.py`; **Random Forest** results → `results/random_forest/` | M1    | T03, T08   | ⬜     |                |
-| T12 | **XGBoost** results with the shared runner → `results/xgboost/`                                                                                                                                                                                                                  | M2    | T11        | ⬜     |                |
-| T13 | **k-NN** results with the shared runner → `results/knn/`                                                                                                                                                                                                                         | M3    | T11        | ⬜     |                |
-| T14 | **SVM** results with the shared runner → `results/svm/`                                                                                                                                                                                                                          | M4    | T11        | ⬜     |                |
+| ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
+|---|---|---|---|---|---|
+| T11 | `support/features.py` (MFCC 13 + Δ + ΔΔ, mean & std) + shared runner `support/classical.py` (scaler + model, both splits, validation tuning, saves report / predictions / confusion matrix) + shared `support/evaluate.py`; **Random Forest** results → `results/random_forest/` | M1 | T03, T08, T10 | ⬜ | |
+| T12 | **XGBoost** results with the shared runner → `results/xgboost/` | M2 | T11 | ⬜ | |
+| T13 | **k-NN** results with the shared runner → `results/knn/` | M3 | T11 | ⬜ | |
+| T14 | **SVM** results with the shared runner → `results/svm/` | M4 | T11 | ⬜ | |
+| T20 | `support/results_table.py`: every run in `results/` → `results/all_results.csv` + `images/all_results_table.png`, seen vs unseen speakers, per-speaker table, bootstrap CIs from T33; works with whichever runs exist → table built from the merged runs | M3 | T11, T33 | ⬜ | |
 
-### Week 4: wav2vec 2.0
+### Week 4: wav2vec 2.0 and Whisper
 
-| ID  | Task (→ done when)                                                                                                                                                                                                                                                        | Owner | Depends on | Status | Done by · date |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- | ---------- | ------ | -------------- |
-| T15 | Shared training script `support/train_wav2vec2.py` (`--epochs`, `--noise`, `--split`; validation-based model selection; fp16 on GPU) + Colab notebook; run **15 epochs + white noise** on the random split and all 5 folds → `results/w2v2_15ep_noise/` (models to Drive) | M1    | T08, T11   | ⬜     |                |
-| T16 | Run **8 epochs + white noise** with the shared script → `results/w2v2_8ep_noise/`                                                                                                                                                                                         | M2    | T15        | ⬜     |                |
-| T17 | Run **3 epochs** (no noise) with the shared script → `results/w2v2_3ep/`                                                                                                                                                                                                  | M3    | T15        | ⬜     |                |
-| T18 | **Untrained baseline** with the shared evaluation script → `results/w2v2_untrained/`                                                                                                                                                                                      | M4    | T15        | ⬜     |                |
-| T19 | Run **15 epochs without noise** (ablation for H3) → `results/w2v2_15ep/`                                                                                                                                                                                                  | M1    | T15        | ⬜     |                |
-| T29 | Whisper pipeline `support/whisper_asr.py`: zero-shot transcription (`--model small`), Whisper's English text normaliser, nearest-phrase matching (word-level edit distance), WER / CER, predictions in the shared format + tests; smoke test on a few self-recorded phrases → tests pass | M1 | T01, T03 | ⬜ | |
+| ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
+|---|---|---|---|---|---|
+| T15 | Shared training script `support/train_wav2vec2.py` (`--epochs`, `--noise`, `--split`; validation-based model selection; fp16 on GPU) + Colab notebook; run **15 epochs + white noise** on the random split and all 5 folds → `results/w2v2_15ep_noise/` (models to Drive) | M1 | T08, T11 | ⬜ | |
+| T16 | Run **8 epochs + white noise** with the shared script → `results/w2v2_8ep_noise/` | M2 | T15 | ⬜ | |
+| T17 | Run **3 epochs** (no noise) with the shared script → `results/w2v2_3ep/` | M3 | T15 | ⬜ | |
+| T18 | **Untrained baseline** with the shared evaluation script → `results/w2v2_untrained/` | M4 | T15 | ⬜ | |
+| T19 | Run **15 epochs without noise** (ablation for H3) → `results/w2v2_15ep/` | M1 | T15 | ⬜ | |
 | T30 | Run Whisper on the test clips of the random split and all 5 folds → `results/whisper_small/`; WER / CER per category and speaker; test H5; `--asr whisper` transcript mode in `main.py` | M1 | T08, T11, T22, T29 | ⬜ | |
 
 ### Week 5: Results, analysis and demo
 
-| ID  | Task (→ done when)                                                                                                                                                                               | Owner | Depends on                   | Status | Done by · date |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----- | ---------------------------- | ------ | -------------- |
-| T20 | `support/results_table.py` + `support/stats.py`: `results/all_results.csv`, `images/all_results_table.png`, seen vs unseen speakers, per-speaker table, McNemar + bootstrap CIs; test H1, H2, H4 | M3    | T12, T13, T14, T16, T17, T18 | ⬜     |                |
-| T21 | Noise tests (white noise at 20 / 10 / 5 dB + real noisy takes) for the best models; test H3; error analysis of the most-confused phrases → `results/noise/`, `results/errors/`                   | M3    | T19, T20                     | ⬜     |                |
-| T22 | `main.py` inference (WAV / MP3 / MP4 audio / microphone → top-5 phrases with confidence) + inference-time benchmark + unit tests + GitHub Actions CI                                             | M1    | T15                          | ⬜     |                |
-| T23 | Gradio demo `app.py` + final figures (confusion matrices, accuracy vs SNR, per-speaker chart) → `images/`                                                                                        | M4    | T20, T21, T22                | ⬜     |                |
-| T24 | Clean-environment reproducibility check → **feature freeze**                                                                                                                                     | M1    | T20, T21, T22, T23, T30          | ⬜     |                |
+| ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
+|---|---|---|---|---|---|
+| T40 | Final results once every run is merged: regenerate T20's tables and test H1, H2, H4 with `support/stats.py` → `results/hypotheses.csv` | M3 | T12, T13, T14, T15, T16, T17, T18, T19, T20 | ⬜ | |
+| T21 | Noise tests: white noise at 20 / 10 / 5 dB on the clean test clips + the real noisy takes, for the 15-epoch runs with and without noise and every other merged run; test H3 → `results/noise/` | M1 | T15, T19 | ⬜ | |
+| T34 | `support/error_analysis.py`: most-confused phrase pairs, accuracy per category and per speaker for any run; write-up for the best traditional and the best wav2vec 2.0 model → `results/errors/` | M3 | T40 | ⬜ | |
+| T22 | `main.py` inference (WAV / MP3 / MP4 audio / microphone → top-5 phrases with confidence) + inference-time benchmark + unit tests + GitHub Actions CI | M1 | T15 | ⬜ | |
+| T23 | Connect the demo to `main.py` (top-5 phrases with a confidence chart, Whisper transcript) + final figures with `support/visualization.py` (confusion matrices, accuracy vs SNR, per-speaker chart) → `images/` | M4 | T21, T22, T30, T36, T40 | ⬜ | |
+| T24 | Clean-environment reproducibility check → **feature freeze** | M1 | T21, T22, T23, T30, T34, T40 | ⬜ | |
 
 ### Week 6: Delivery
 
-| ID  | Task (→ done when)                                                                                    | Owner | Depends on    | Status | Done by · date |
-| --- | ----------------------------------------------------------------------------------------------------- | ----- | ------------- | ------ | -------------- |
-| T25 | Final report (paper format, ~8 pages) integration + final README with real results                    | M1    | T24           | ⬜     |                |
-| T26 | Dataset release (consenting speakers; FLAC, metadata, datasheet, checksums) as a GitHub Release asset | M2    | T24           | ⬜     |                |
-| T27 | Results poster, slides, 👤 1-minute demo video                                                        | M4    | T24           | ⬜     |                |
-| T28 | 👤 Final checklist (every number matches `results/`), tag `v1.0`, submit                              | all   | T25, T26, T27 | ⬜     |                |
+| ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
+|---|---|---|---|---|---|
+| T25 | Final report (paper format, ~8 pages) integration + final README with real results | M1 | T24, T37, T38 | ⬜ | |
+| T26 | Dataset release (consenting speakers; FLAC, metadata, datasheet, checksums) as a GitHub Release asset | M2 | T24 | ⬜ | |
+| T27 | Results poster, slides, 👤 1-minute demo video | M4 | T24 | ⬜ | |
+| T28 | 👤 Final checklist (every number matches `results/`), tag `v1.0`, submit | all | T25, T26, T27 | ⬜ | |
 
 ## 📝 Handoff Log (newest first)
+
+### 2026-10-17 · Tanvir Ahmed (M1) · T00 (team of four, branch per member)
+
+- **Done:** Mahir Ahmed takes **M3** (evaluation) and Shafil Ahmed takes **M4** (visualisation, demo, presentation). Every member now works on their own branch (`dev_rabbi`, `dev_mahir`, `dev_shafil`), edits only the files they own, and records progress and a plain-language **faculty update** in `docs/progress/<slot>_<name>.md`; M1 reviews, merges and keeps this board.
+- **Re-balanced tasks:** M1 keeps the complex shared work (splits, shared runners, training, Whisper, noise tests T21, inference). M3 gets statistics (T33), results tables (T20 → T40), error analysis (T34) and literature notes (T37). M4 gets the visualisation module (T35), demo skeleton (T36), literature notes (T38) and poster v2 (T39). Recording is split per member: M2 S05–S06 (T06), M3 S03 + S07–S08 (T31), M4 S04 + S09–S10 (T32); M1 records only S01.
+- **Start now (no recordings needed):** M3: T10, T33, T37 · M4: T35, T36, T38, T39 · M1: T29.
+- **T02 change for M2:** the recorder writes metadata one file per speaker, so recordings made on different branches merge cleanly.
+- **Files:** `CLAUDE.md`, `README.md`, `docs/STATUS.md`, `docs/PROJECT_PLAN.md`, `docs/DATA_COLLECTION_PROTOCOL.md`, `docs/templates/individual_update_report.md`, `docs/progress/` (new).
+- **Blockers:** Mahir needs a GitHub collaborator invite (username needed). Mahir's and Shafil's git user.name are still *(add)* in `CLAUDE.md`.
 
 ### 2026-10-17 · Tanvir Ahmed (M1) · T00 (Whisper pipeline)
 
@@ -119,7 +152,7 @@
     - Run scripts as modules from the repo root: `python -m support.audio clip.wav`, `python -m tools.recorder ...`. `tools/` is a package, so M2's recorder can `from support.audio import ...`.
     - Use `support.audio.preprocess` for microphone arrays (accepts int16) and `load_audio(path, pad=False)` when padding would distort the result (MFCC statistics).
 - **Next:** M2 starts T02 (recorder). M3 can start T03 (metrics).
-- **Blockers:** Rabbi's collaborator invite needs his GitHub username (Settings → Collaborators on the repo page).
+- **Blockers:** Rabbi's collaborator invite needs Rabbi's GitHub username (Settings → Collaborators on the repo page).
 
 ### 2026-10-01 · Tanvir Ahmed (M1) · T00 (revision)
 

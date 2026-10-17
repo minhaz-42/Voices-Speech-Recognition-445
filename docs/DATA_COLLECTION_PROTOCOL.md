@@ -7,7 +7,7 @@
 
 | | |
 |---|---|
-| Speakers | 10 (S01–S02 team members, S03–S10 volunteers or members who join later), plus 2 backups; target 5 female / 5 male, self-reported |
+| Speakers | 10 (S01–S04 team members, S05–S10 volunteers), plus backups named by each recruiter; target 5 female / 5 male, self-reported |
 | Phrases | 50 classes in 5 categories of 10: commands, numbers, everyday sentences, Bangladeshi names and places, phonetically rich sentences |
 | Clips per speaker | 160: 3 clean rounds × 50 phrases + 10 real-noise takes |
 | Total | ≈ 1,600 clips, about 1 hour of speech |
@@ -83,7 +83,7 @@ e.g.  data/raw/S07/S07_CMD02_r1_clean.wav
 
 ## 9. Metadata (CSV schemas)
 
-Templates are in [`data/metadata/`](../data/metadata/).
+Templates are in [`data/metadata/`](../data/metadata/). The recorder writes **one file per speaker**, `data/metadata/speakers/<SPK>.csv` and `data/metadata/utterances/<SPK>.csv`, because members record on their own branches and per-speaker files never conflict when merged. T08 combines them into the dataset manifest.
 
 | File | Columns |
 |---|---|
