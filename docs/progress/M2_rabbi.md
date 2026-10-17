@@ -8,11 +8,11 @@
 | **Owns** | `tools/recorder.py`, `tools/qc_report.py`, `support/phrases.py`, `data/prompts/`, `data/metadata/`, `data/README.md` (datasheet), `docs/DATA_COLLECTION_PROTOCOL.md`, `docs/consent_form.md`, `results/xgboost/`, `results/w2v2_8ep_noise/` |
 | **Report** | Section 3 (the TenVoices dataset) |
 
-Only Rabbi's Claude edits this file. Full task text and dependencies: [STATUS.md](../STATUS.md).
+Only Rabbi (or Rabbi's assistant) edits this file. Full task text and dependencies: [STATUS.md](../STATUS.md).
 
 ## What changed on 2026-10-17
 
-- You now work on the branch `dev_rabbi` instead of `main`; Tanvir merges it. Open Claude Code and say *"I'm Rabbi (M2). What is completed? Then complete my next tasks."*
+- You now work on the branch `dev_rabbi` instead of `main`; Tanvir merges it. Work by hand or with any AI assistant: [CONTRIBUTING.md](../../CONTRIBUTING.md) has the steps, and [docs/tasks/T02.md](../tasks/T02.md) is the card for the recorder. With an assistant that works in the repository, just say *"I'm Rabbi (M2). What is completed? Then complete my next tasks."*
 - `docs/STATUS.md` is edited only by Tanvir. Your task status, handoff notes and faculty update go in this file.
 - **T02:** the recorder writes metadata **one file per speaker** (`data/metadata/utterances/<SPK>.csv`, `data/metadata/speakers/<SPK>.csv`), because Mahir and Shafil now record speakers on their own branches too.
 - You recruit and record volunteers S05–S06; Mahir and Shafil record S03–S04 and S07–S10.
@@ -33,7 +33,7 @@ Only Rabbi's Claude edits this file. Full task text and dependencies: [STATUS.md
 
 ## Faculty update
 
-Plain-language summary for the weekly project update, newest week first. Claude adds to it at the end of every session: only finished work, and numbers only from `results/`.
+Plain-language summary for the weekly project update, newest week first. Add to it at the end of every session: only finished work, and numbers only from `results/`.
 
 ### Week of 2026-10-07
 - Wrote `support/phrases.py`, which loads and checks the 50-phrase catalogue (5 categories of 10, unique IDs, the 10 noisy-take phrases), with 6 unit tests.

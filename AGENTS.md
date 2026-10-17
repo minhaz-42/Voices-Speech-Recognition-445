@@ -1,0 +1,132 @@
+# AGENTS.md
+
+Rules for everyone working on the **TenVoices** repository: team members working by hand, and any AI coding assistant they use (Claude Code, Codex, Cursor, GitHub Copilot, Gemini, ChatGPT, …). Every member works on their **own branch**, and the lead (M1) merges the branches into `main`.
+
+- Step-by-step commands for people, and for chat assistants that cannot run commands: [CONTRIBUTING.md](CONTRIBUTING.md).
+- The exact specification of each task (files, functions, tests, *done when*): [docs/tasks/](docs/tasks/).
+
+## Project
+
+TenVoices is a university project (North South University). We build a **speech recognition system** that recognises which of **50 phrases** was spoken, and evaluate it on **TenVoices**, a dataset we record ourselves: 10 speakers × 50 phrases × 3 repetitions, plus 10 noisy takes each (~1,600 clips).
+
+We compare four stages:
+1. Traditional ML: MFCC features + k-NN / SVM / Random Forest / XGBoost.
+2. Baseline: wav2vec 2.0 with an untrained classification head.
+3. Our approach: wav2vec 2.0 fine-tuned for 3 / 8 / 15 epochs with white-noise augmentation.
+4. Open-vocabulary pipeline: Whisper speech-to-text, zero-shot; the transcript is matched to the nearest phrase.
+
+Every model is reported on a random 80/20 split and with speaker-independent 5-fold cross-validation (the headline). Metrics: accuracy, macro F1, weighted F1 and confusion matrices, plus word error rate for Whisper.
+
+Repository: https://github.com/minhaz-42/Voices-Speech-Recognition-445
+
+| File | Use |
+|---|---|
+| `docs/STATUS.md` | **Task board + merge log: the source of truth for what is merged** (only M1 edits it) |
+| `docs/progress/<slot>_<name>.md` | Each member's own task status, handoff log and **faculty update** (only that member edits it) |
+| `docs/tasks/<ID>.md` | Task cards: what to build, which files, which existing functions to use, tests, *done when* |
+| `docs/PROJECT_PLAN.md` | Design, evaluation protocol, roles, **file ownership**, risks |
+| `docs/DATA_COLLECTION_PROTOCOL.md` | Recording rules, file naming, metadata, QC |
+| `README.md` | Public overview |
+
+## Team
+
+| Slot | Member | git user.name | GitHub | Branch | Progress file | Workstream |
+|---|---|---|---|---|---|---|
+| M1 | Tanvir Ahmed (lead, merges) | minhaz | minhaz-42 | `main` | `docs/progress/M1_tanvir.md` | Data pipeline and splits, shared training / evaluation code, **Whisper pipeline**, noise tests, inference, integration · Random Forest · wav2vec 2.0 15 epochs (+ noise, and without) |
+| M2 | Md. Shahriar Rakib Rabbi | Md. Shahriar Rakib Rabbi | ShahriarRakibRabbi | `dev_rabbi` | `docs/progress/M2_rabbi.md` | Recorder, QC, dataset curation and release · XGBoost · wav2vec 2.0 8 epochs + noise |
+| M3 | Mahir Ahmed | *(add)* | *(add)* | `dev_mahir` | `docs/progress/M3_mahir.md` | Evaluation: analysis plan, statistics, results tables, error analysis · k-NN · wav2vec 2.0 3 epochs |
+| M4 | Shafil Ahmed | *(add)* | Shafil10 | `dev_shafil` | `docs/progress/M4_shafil.md` | Visualisation, demo app, poster, slides, video · SVM · untrained baseline |
+
+- With an assistant that can run commands, a member only has to say who they are (*"I'm Mahir, do my part"*); the assistant follows the steps below. Without one, the member follows [CONTRIBUTING.md](CONTRIBUTING.md). The result is the same either way.
+- When a git user.name or GitHub login marked *(add)* becomes known, M1 fills it in here.
+
+## Start of every session
+
+1. Run `git status`. If there are uncommitted changes, show them and ask what to do.
+2. Identify the member: use what they said, otherwise match `git config user.name` to the team table and confirm.
+3. Go to the member's branch and bring in everything already merged:
+   - **M1:** `git checkout main && git pull --rebase origin main`.
+   - **M2–M4:** `git fetch origin`, then `git checkout <branch>`. If the branch does not exist locally, use `git checkout -b <branch> origin/<branch>` when it is on GitHub, otherwise `git checkout -b <branch> origin/main`. Then `git pull origin <branch>` (when it is on GitHub) and `git merge origin/main`. Never rebase or force-push a branch that is on GitHub.
+4. Read `docs/STATUS.md`, the member's progress file and the task card of their next task.
+5. Report briefly:
+   - what is done and merged (who, when),
+   - what is in progress or blocked,
+   - this member's next tasks and whether their dependencies are ✅.
+6. When asked to continue or complete their part:
+   - Take their next task whose dependencies are all ✅, mark it 🟡 (members: in their progress file; M1: on the board), and do it as its task card says.
+   - A dependency is ✅ when the board on `main` says so, i.e. it is merged. A dependency owned by the **same member** also counts once their own progress file marks it ✅.
+   - Continue task by task.
+   - Never start a task whose dependencies are not ✅. Say which task and which member it is waiting for, and offer any unblocked task instead.
+
+## While working
+
+- Stay inside the task's scope and meet its *done when* condition. Follow the task card and `docs/PROJECT_PLAN.md`.
+- **File ownership** (table in `docs/PROJECT_PLAN.md`, section *Team, Roles and File Ownership*). This is what keeps every branch free of merge conflicts.
+  - A member edits only the files their slot owns, their own tests (`tests/test_<their module>.py`), their own run folders in `results/`, their own figures in `images/`, and their own progress file.
+  - Only M1 edits `docs/STATUS.md`, `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `README.md`, `docs/PROJECT_PLAN.md`, `docs/tasks/`, `requirements.txt`, `configs/config.yaml` and the M1-owned modules.
+  - If a member needs a change in a file they don't own (a new package, a config key, a fix in shared code), write it under **Requests for the lead** in their progress file and keep working with CLI options or function arguments meanwhile.
+- 👤 tasks need people (recording speakers, consent, filming the demo video). Prepare everything (scripts, sheets, checklists), ask the member to do it, and wait for them to confirm.
+- **Never invent data or numbers.** Results stay TBD until measured; every reported number must come from a file in `results/`.
+- **Never invent references.** Every paper in a literature note has a DOI or arXiv link that was opened and checked.
+- Audio is not in git. Raw recordings live in the team's private Google Drive folder `TenVoices/raw` (link in the team chat). If a task needs audio that is missing locally, tell the member which Drive folder to download into which local path (e.g. `data/raw/S03/`), then wait.
+- Code rules:
+  - Python 3.11, settings in `configs/config.yaml`, relative paths, CLI arguments.
+  - Docstrings; `unittest` tests in `tests/`.
+  - One shared module per function; no personal copies of scripts. A new run is a new set of CLI options (e.g. `--epochs 8 --noise white`), not a new script.
+- After the evaluation protocol is frozen (task T10), do not change folds, metrics or hypotheses without M1's approval and a note in `docs/STATUS.md`.
+- Don't mention other or earlier projects in any document.
+
+## End of every session (whenever files changed)
+
+### Members (M2–M4), on their own branch
+
+1. Run the tests: `python -m unittest discover -s tests -v`. Fix failures before committing.
+2. Update the progress file:
+   - task status (✅ + date for finished tasks),
+   - a new **Handoff log** entry at the top: tasks done and ready to merge, files changed, key results, next steps, blockers,
+   - the **Faculty update** for the current week: 3–5 plain-language bullets on what the member built or did, which files, and what it shows. Only finished work; numbers only from `results/`.
+3. Commit only the files you changed: one task per commit, message `T33: <summary>`, with the member's own git identity.
+4. `git push origin <branch>`. If no pull request from this branch is open, open one into `main` with `gh pr create --base main --head <branch>`, titled like `M3 · Mahir: T10, T33`, with the handoff entry as the body. Otherwise the push updates the open one. If `gh` is not available, give the member this link instead: `https://github.com/minhaz-42/Voices-Speech-Recognition-445/compare/main...<branch>`.
+5. Tell the member, in one line, what to tell Tanvir (e.g. *"dev_mahir: T10 and T33 are ready to merge"*).
+
+### M1 (lead), on `main`
+
+1. Run the tests.
+2. Update `docs/STATUS.md` (task status + *Done by · date*, **Current phase / Next up**, a new **Handoff Log** entry at the top) and the **Faculty update** in `docs/progress/M1_tanvir.md`.
+3. Commit only the files you changed: one task per commit, message `T29: <summary>`.
+4. `git pull --rebase origin main`, then `git push origin main`. Push after every finished task.
+5. Tell the member, in one line, what to tell the next person.
+
+### Merging a member's branch (M1, when told it is ready)
+
+1. `git fetch origin`, then review `git diff main...origin/<branch>`:
+   - only files the member owns (plus their tests, results, figures and progress file) changed,
+   - no audio, model weights, personal data or files over 1 MB,
+   - the progress file marks the tasks ✅.
+2. `git merge --no-ff --no-commit origin/<branch>`. If a file the member does not own changed, ask M1 before keeping it.
+3. Run the tests on the merged result. If they fail, `git merge --abort` and tell the member what to fix.
+4. Copy the member's finished tasks onto the board in `docs/STATUS.md` (✅, *Done by <name> · date*), update **Next up**, and add a Handoff Log entry *"Merged <branch>: T10, T33"*.
+5. `git add docs/STATUS.md`, `git commit -m "Merge <branch>: T10, T33"`, `git push origin main`. If a pull request is open for the branch, GitHub closes it as merged.
+
+## Authorship
+
+- Every commit uses the member's own git identity.
+- Never name an AI tool as an author, co-author or contributor: no `Co-Authored-By` trailer, no "Generated with …" line in commits or pull requests, and no AI tool's name in commit messages or pull-request titles. Remove such lines if a tool adds them.
+
+## Never commit
+
+- Audio (`*.wav`, `*.flac`, `*.mp3`, …), model weights or checkpoints
+- Signed consent forms, volunteer names, phone numbers or Drive links
+- Large generated files in `outputs/`
+
+Small result tables (CSV/JSON under 1 MB) go in `results/` and **are** committed, so others can continue from them. Figures go in `images/`.
+
+## Commands
+
+- Setup: `python3.11 -m venv venv && source venv/bin/activate && pip install -r requirements.txt`
+- Tests: `python -m unittest discover -s tests -v`
+- Run scripts in `support/` and `tools/` as modules from the repo root: `python -m support.audio clip.wav`, not `python support/audio.py`.
+- Print settings: `python -m support.config`
+- Pre-process one clip: `python -m support.audio clip.wav [--out clip_16k.wav] [--no-pad]`
+- Review a member's branch (M1): `git fetch origin && git diff --stat main...origin/dev_mahir`
+- *(Add new commands here when a task creates them.)*

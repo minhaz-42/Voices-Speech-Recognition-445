@@ -8,7 +8,7 @@
 | **Owns** | `support/visualization.py`, `app.py`, `poster/`, `images/poster.png`, slides and video in `others/`, `docs/literature/self_supervised_speech.md`, `results/svm/`, `results/w2v2_untrained/` |
 | **Report** | Section 7 (demo system) |
 
-Only Shafil's Claude edits this file. Full task text and dependencies: [STATUS.md](../STATUS.md).
+Only Shafil (or Shafil's assistant) edits this file. Full task text and dependencies: [STATUS.md](../STATUS.md).
 
 ## First-time setup
 
@@ -16,7 +16,7 @@ Only Shafil's Claude edits this file. Full task text and dependencies: [STATUS.m
 2. `git clone https://github.com/minhaz-42/Voices-Speech-Recognition-445.git`, then `cd Voices-Speech-Recognition-445`.
 3. `python3.11 -m venv venv && source venv/bin/activate && pip install -r requirements.txt`.
 4. Set your own identity: `git config user.name "<your name>"` and `git config user.email "<your GitHub email>"`.
-5. Open Claude Code in the folder and say: *"I'm Shafil (M4). What is completed? Then complete my next tasks."*
+5. Work by hand or with any AI assistant; [CONTRIBUTING.md](../../CONTRIBUTING.md) has the steps and a ready-made prompt, and each task has a card in [docs/tasks/](../tasks/). With an assistant that works in the repository (Claude Code, Codex, Cursor, …), just say: *"I'm Shafil (M4). What is completed? Then complete my next tasks."*
 
 ## My tasks
 
@@ -37,7 +37,7 @@ Only Shafil's Claude edits this file. Full task text and dependencies: [STATUS.m
 
 ## Faculty update
 
-Plain-language summary for the weekly project update, newest week first. Claude adds to it at the end of every session: only finished work, and numbers only from `results/`.
+Plain-language summary for the weekly project update, newest week first. Add to it at the end of every session: only finished work, and numbers only from `results/`.
 
 *(Nothing yet.)*
 

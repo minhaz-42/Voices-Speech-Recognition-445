@@ -8,7 +8,7 @@
 | **Owns** | `support/metrics.py`, `support/stats.py`, `support/results_table.py`, `support/error_analysis.py`, `docs/ANALYSIS_PLAN.md`, `docs/literature/classical_and_evaluation.md`, `results/knn/`, `results/w2v2_3ep/`, `results/all_results.csv`, `results/hypotheses.csv`, `results/errors/` |
 | **Report** | Sections 5 (experiments and results) and 6 (discussion) |
 
-Only Mahir's Claude edits this file. Full task text and dependencies: [STATUS.md](../STATUS.md).
+Only Mahir (or Mahir's assistant) edits this file. Full task text and dependencies: [STATUS.md](../STATUS.md).
 
 ## First-time setup
 
@@ -16,7 +16,7 @@ Only Mahir's Claude edits this file. Full task text and dependencies: [STATUS.md
 2. `git clone https://github.com/minhaz-42/Voices-Speech-Recognition-445.git`, then `cd Voices-Speech-Recognition-445`.
 3. `python3.11 -m venv venv && source venv/bin/activate && pip install -r requirements.txt`.
 4. Set your own identity: `git config user.name "<your name>"` and `git config user.email "<your GitHub email>"`.
-5. Open Claude Code in the folder and say: *"I'm Mahir (M3). What is completed? Then complete my next tasks."*
+5. Work by hand or with any AI assistant; [CONTRIBUTING.md](../../CONTRIBUTING.md) has the steps and a ready-made prompt, and each task has a card in [docs/tasks/](../tasks/). With an assistant that works in the repository (Claude Code, Codex, Cursor, …), just say: *"I'm Mahir (M3). What is completed? Then complete my next tasks."*
 
 ## My tasks
 
@@ -38,7 +38,7 @@ Only Mahir's Claude edits this file. Full task text and dependencies: [STATUS.md
 
 ## Faculty update
 
-Plain-language summary for the weekly project update, newest week first. Claude adds to it at the end of every session: only finished work, and numbers only from `results/`.
+Plain-language summary for the weekly project update, newest week first. Add to it at the end of every session: only finished work, and numbers only from `results/`.
 
 *(Nothing yet.)*
 

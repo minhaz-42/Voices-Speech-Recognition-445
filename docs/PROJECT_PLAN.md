@@ -233,7 +233,7 @@ Each member owns one traditional model, one deep-learning run, a main workstream
 
 | Slot | Owns |
 |---|---|
-| **M1** | `main.py`, `support/config.py`, `support/audio.py`, `support/dataset.py`, `support/features.py`, `support/classical.py`, `support/evaluate.py`, `support/train_wav2vec2.py`, `support/noise.py`, `support/whisper_asr.py`, `tools/make_splits.py`, `configs/`, `notebooks/`, `requirements.txt`, `.github/`, `CLAUDE.md`, `README.md`, `docs/STATUS.md`, `docs/PROJECT_PLAN.md`; runs `random_forest`, `w2v2_15ep_noise`, `w2v2_15ep`, `whisper_small`, `noise` |
+| **M1** | `main.py`, `support/config.py`, `support/audio.py`, `support/dataset.py`, `support/features.py`, `support/classical.py`, `support/evaluate.py`, `support/train_wav2vec2.py`, `support/noise.py`, `support/whisper_asr.py`, `tools/make_splits.py`, `configs/`, `notebooks/`, `requirements.txt`, `.github/`, `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `README.md`, `docs/STATUS.md`, `docs/PROJECT_PLAN.md`, `docs/tasks/`; runs `random_forest`, `w2v2_15ep_noise`, `w2v2_15ep`, `whisper_small`, `noise` |
 | **M2** | `tools/recorder.py`, `tools/qc_report.py`, `support/phrases.py`, `data/prompts/`, `data/metadata/`, `data/README.md` (datasheet), `docs/DATA_COLLECTION_PROTOCOL.md`, `docs/consent_form.md`; runs `xgboost`, `w2v2_8ep_noise` |
 | **M3** | `support/metrics.py`, `support/stats.py`, `support/results_table.py`, `support/error_analysis.py`, `docs/ANALYSIS_PLAN.md`, `docs/literature/classical_and_evaluation.md`; runs `knn`, `w2v2_3ep`; `results/all_results.csv`, `results/hypotheses.csv`, `results/errors/` |
 | **M4** | `support/visualization.py`, `app.py`, `poster/`, `images/poster.png`, slides and video in `others/`, `docs/literature/self_supervised_speech.md`; runs `svm`, `w2v2_untrained` |
@@ -257,9 +257,11 @@ Every model run goes through the shared scripts with its own settings, and saves
 
 ## 🔀 Team Workflow (branch per member)
 
-Every member works through Claude Code on their own branch, so nobody waits for anyone else's session:
+Every member works on their own branch, so nobody waits for anyone else. Members can work by hand or with any AI assistant (Claude Code, Codex, Cursor, Copilot, ChatGPT, Gemini, …):
 
-- **`CLAUDE.md`** is loaded automatically by Claude Code. It holds the project summary, the team, the session rules and the merge routine.
+- **`AGENTS.md`** holds the project summary, the team, the session rules and the merge routine. Many coding assistants read it automatically; `CLAUDE.md` imports it for Claude Code.
+- **`CONTRIBUTING.md`** gives the same steps as plain commands, with a ready-made prompt for chat assistants.
+- **`docs/tasks/<ID>.md`** is the card for each task: files to create, functions to use, tests, *done when*.
 - **`docs/STATUS.md`** is the task board (owner, dependencies, status) and merge log. Only the lead edits it.
 - **`docs/progress/<slot>_<name>.md`** is each member's own page: task status, handoff log, requests for the lead and a plain-language **faculty update** for the weekly project meeting.
 
@@ -271,9 +273,9 @@ Every member works through Claude Code on their own branch, so nobody waits for 
 | M4 Shafil | `dev_shafil` |
 
 A typical week:
-1. A **member** opens Claude Code and says who they are. Claude switches to their branch, merges in the latest `main` and reports what is done and what is next.
-2. *"Complete my next tasks."* Claude only starts tasks whose dependencies are ✅ (merged, or finished earlier by the same member).
-3. *"Wrap up and push."* Claude runs the tests, updates the progress file and faculty update, commits, pushes the branch and opens a pull request.
+1. A **member** switches to their branch, merges in the latest `main` and checks what is done and what is next (an assistant does this when told who the member is).
+2. They take their next task whose dependencies are ✅ (merged, or finished earlier by the same member) and follow its task card.
+3. They run the tests, update the progress file and faculty update, commit, push the branch and open a pull request.
 4. The **lead** reviews the branch, merges it into `main` and marks the tasks ✅ on the board. Everyone else picks the work up at the start of their next session.
 
 Rules:

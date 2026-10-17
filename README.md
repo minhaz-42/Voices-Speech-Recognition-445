@@ -150,7 +150,8 @@ Tasks, owners, dependencies and progress: [docs/STATUS.md](docs/STATUS.md).
 ## 📁 Repository Structure (planned)
 ```text
 Voices-Speech-Recognition-445/
-|-- CLAUDE.md                 instructions for Claude Code (read every session)
+|-- AGENTS.md                 project rules for every member and AI assistant
+|-- CONTRIBUTING.md           step-by-step workflow, by hand or with any assistant
 |-- main.py                   inference: audio / video / microphone -> phrase
 |-- app.py                    Gradio live demo
 |-- requirements.txt
@@ -170,6 +171,7 @@ Voices-Speech-Recognition-445/
 |-- results/                  per-model reports and all_results.csv
 |-- docs/                     STATUS.md, PROJECT_PLAN.md, protocol, consent form
 |   |-- progress/             one page per member: tasks, handoff log, faculty update
+|   |-- tasks/                task cards: what to build, files, tests, done when
 |   `-- literature/           literature notes for the report
 |-- poster/poster.html        poster source
 |-- images/                   poster, results table, confusion matrices
@@ -237,13 +239,13 @@ Run every command from the repository root. Scripts in `support/` and `tools/` a
 ---
 
 ## 🔄 Team Workflow
-Every member works on their **own branch** and owns a fixed set of files, so nobody waits for anyone else:
-1. Open Claude Code in the repository and say who you are: *"I'm Mahir. What is completed?"* It switches to your branch (`dev_rabbi`, `dev_mahir`, `dev_shafil`) and brings in everything merged so far.
-2. **Continue:** *"Complete my next tasks."* Only tasks whose dependencies are done are started.
-3. **Wrap up:** *"Wrap up and push."* The tests run, your progress file and faculty update in [docs/progress/](docs/progress/) are updated, and your branch is pushed with a pull request.
+Every member works on their **own branch** (`dev_rabbi`, `dev_mahir`, `dev_shafil`) and owns a fixed set of files, so nobody waits for anyone else. Members can work by hand or with any AI assistant:
+1. **Sync:** switch to your branch and merge in the latest `main`.
+2. **Do a task:** each task has a card in [docs/tasks/](docs/tasks/) with the files to create, the functions to use, the tests and the *done when* condition.
+3. **Wrap up:** run the tests, update your progress file and faculty update in [docs/progress/](docs/progress/), commit, push your branch and open a pull request.
 4. The team lead reviews and merges each branch into `main` and updates the task board in [docs/STATUS.md](docs/STATUS.md).
 
-Session rules are in [CLAUDE.md](CLAUDE.md); file ownership is in [docs/PROJECT_PLAN.md](docs/PROJECT_PLAN.md).
+Step-by-step commands and a ready-made prompt for chat assistants: [CONTRIBUTING.md](CONTRIBUTING.md). Rules for coding assistants: [AGENTS.md](AGENTS.md). File ownership: [docs/PROJECT_PLAN.md](docs/PROJECT_PLAN.md).
 
 ---
 

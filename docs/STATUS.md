@@ -1,6 +1,6 @@
 # 📋 TenVoices: Status Board
 
-> **Source of truth for what is merged into `main`.** Only M1 edits this file; members record their progress in `docs/progress/<slot>_<name>.md` and M1 copies it here when merging (rules in [CLAUDE.md](../CLAUDE.md)).
+> **Source of truth for what is merged into `main`.** Only M1 edits this file; members record their progress in `docs/progress/<slot>_<name>.md` and M1 copies it here when merging (rules in [AGENTS.md](../AGENTS.md)). Every task that can start has a card in [docs/tasks/](tasks/).
 > **Legend:** ⬜ to do · 🟡 in progress · ✅ done and merged · ⛔ blocked · 👤 needs people (recording, consent, video)
 
 **Current phase:** Weeks 1–2: recorder and pilot (M2), plus start-now work for every member
@@ -16,23 +16,26 @@
 | M3 | Mahir Ahmed | `dev_mahir` | k-NN | 3 epochs | Evaluation: analysis plan, statistics, results tables, error analysis |
 | M4 | Shafil Ahmed | `dev_shafil` | SVM | Untrained baseline | Visualisation, demo app, poster, slides, video |
 
-## 💬 How to work with Claude
+## 💬 How to work
+
+Use whatever you have: Claude Code, another AI assistant, or no assistant at all. The steps and the result are the same.
 
 **Members (M2–M4)**
-1. Open Claude Code in the repo and say who you are: *"I'm Mahir. What is completed?"* Claude switches to your branch and brings in everything merged so far.
-2. Say: *"Complete my next tasks."* Claude only starts tasks whose dependencies are ✅.
-3. When you're done for the session: *"Wrap up and push."* Claude runs the tests, updates your progress file (including your **faculty update**), commits, pushes your branch and opens a pull request.
-4. Tell Tanvir which tasks are ready to merge.
+- **With an assistant that works in the repository** (Claude Code, Codex, Cursor, Copilot, Gemini CLI, …): say *"I'm Mahir (M3). What is completed? Then complete my next tasks."* It follows [AGENTS.md](../AGENTS.md), works on your branch and, when you say *"Wrap up and push"*, updates your progress file and faculty update, commits, pushes and opens a pull request.
+- **With a chat assistant (ChatGPT, Gemini, …) or by hand:** follow [CONTRIBUTING.md](../CONTRIBUTING.md). It has the git commands, a ready-made prompt, and the list of files to give the assistant for each task card.
+- Either way, tell Tanvir which tasks are ready to merge.
 
 **Lead (M1)**
 1. Your own tasks work the same way, directly on `main`.
-2. When a member's branch is ready: *"Merge dev_mahir."* Claude reviews it, merges it, updates this board and pushes.
+2. When a member's branch is ready: *"Merge dev_mahir."* The merge routine is in [AGENTS.md](../AGENTS.md).
 
 A task is ✅ here once it is merged. Finished work that is not merged yet shows ✅ in the member's progress file, and counts as done for that member's own next tasks.
 
 ## 🗂️ Task Board
 
 ### Start now: independent work (no recordings needed)
+
+Each of these has a task card: `docs/tasks/<ID>.md`.
 
 | ID | Task (→ done when) | Owner | Depends on | Status | Done by · date |
 |---|---|---|---|---|---|
@@ -111,6 +114,13 @@ Each recorder recruits their own volunteers, collects consent, records the noisy
 | T28 | 👤 Final checklist (every number matches `results/`), tag `v1.0`, submit | all | T25, T26, T27 | ⬜ | |
 
 ## 📝 Handoff Log (newest first)
+
+### 2026-10-17 · Tanvir Ahmed (M1) · T00 (any assistant or by hand)
+
+- **Done:** members no longer need Claude. The rules moved to **`AGENTS.md`**, which many coding assistants read automatically; `CLAUDE.md` now only imports it. **`CONTRIBUTING.md`** gives the whole workflow as plain git commands, with a ready-made prompt for chat assistants. **Task cards** in `docs/tasks/` (T02, T10, T29, T33, T35–T39) say exactly which files to create, which existing functions to use, what to test and when a task is done, and list the files to paste into a chat assistant.
+- **Files:** `AGENTS.md` (new), `CLAUDE.md`, `CONTRIBUTING.md` (new), `docs/tasks/` (new), `docs/STATUS.md`, `docs/PROJECT_PLAN.md`, `README.md`, `docs/progress/`.
+- **Next:** members start their start-now tasks from the cards; M1 does T29.
+- **Blockers:** none.
 
 ### 2026-10-17 · Tanvir Ahmed (M1) · T00 (team of four, branch per member)
 
