@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from typing import Any, Sequence
 
 import joblib
@@ -34,7 +35,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 
 from support.config import load_config, resolve_path
-from support.dataset import SPLIT_NAMES, load_labels, load_split
+from support.dataset import load_labels, load_split, parse_splits
 from support.evaluate import save_run
 from support.features import cache_path, extract
 
@@ -46,6 +47,11 @@ def make_model(name: str, params: dict[str, Any], seed: int = 42) -> Pipeline:
     if name == "random_forest":
         clf = RandomForestClassifier(random_state=seed, n_jobs=-1, **params)
     elif name == "xgboost":
+        if sys.platform == "darwin" and "torch" in sys.modules:
+            # PyTorch and XGBoost bring separate OpenMP libraries on macOS; in one process
+            # XGBoost crashes (segmentation fault). Run traditional models in their own process.
+            raise RuntimeError("XGBoost cannot run in a process that has already loaded PyTorch on macOS; "
+                               "run python -m support.classical on its own")
         from xgboost import XGBClassifier
 
         clf = XGBClassifier(random_state=seed, n_jobs=-1, tree_method="hist", eval_metric="mlogloss", **params)
@@ -155,17 +161,6 @@ def run(name: str, dataset: str, splits: Sequence[str], cfg: dict[str, Any] | No
              "splits": {s: {k: v for k, v in d.items() if k != "grid"} for s, d in details.items()},
              "grids": {s: d["grid"] for s, d in details.items()}}
     return save_run(name, dataset, preds, classes, extra, cfg)
-
-
-def parse_splits(value: str) -> list[str]:
-    """``all`` → every split, ``folds`` → the 5 folds, otherwise one split name."""
-    if value == "all":
-        return list(SPLIT_NAMES)
-    if value == "folds":
-        return SPLIT_NAMES[1:]
-    if value not in SPLIT_NAMES:
-        raise argparse.ArgumentTypeError(f"--split must be all, folds or one of {SPLIT_NAMES}")
-    return [value]
 
 
 def main() -> None:

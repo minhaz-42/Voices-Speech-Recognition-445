@@ -3,9 +3,12 @@
 import contextlib
 import io
 import json
+import sys
 import tempfile
+import types
 import unittest
 from pathlib import Path
+from unittest import mock
 
 import joblib
 import numpy as np
@@ -70,6 +73,12 @@ class TestClassicalRunner(unittest.TestCase):
         bundle = joblib.load(self.root / "outputs" / "models" / "svm" / "fsc" / "random.joblib")
         self.assertEqual(sorted(bundle["labels"]), [f"P{i:02d}" for i in range(1, 6)])
         self.assertEqual(len(bundle["labels"]), len(bundle["model"].classes_))
+
+    def test_xgboost_refuses_to_share_a_process_with_torch_on_macos(self):
+        with mock.patch.object(classical.sys, "platform", "darwin"), \
+                mock.patch.dict(sys.modules, {"torch": types.ModuleType("torch")}):
+            with self.assertRaisesRegex(RuntimeError, "own"):
+                classical.make_model("xgboost", {})
 
     def test_split_argument(self):
         self.assertEqual(classical.parse_splits("all")[0], "random")

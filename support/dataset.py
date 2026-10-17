@@ -208,6 +208,17 @@ def load_split(dataset: str, split: str, cfg: dict[str, Any] | None = None) -> d
     return {part: joined[joined["part"] == part].drop(columns="part").reset_index(drop=True) for part in PARTS}
 
 
+def parse_splits(value: str) -> list[str]:
+    """``all`` → every split, ``folds`` → the 5 folds, otherwise one split name."""
+    if value == "all":
+        return list(SPLIT_NAMES)
+    if value == "folds":
+        return SPLIT_NAMES[1:]
+    if value not in SPLIT_NAMES:
+        raise argparse.ArgumentTypeError(f"--split must be all, folds or one of {SPLIT_NAMES}")
+    return [value]
+
+
 def read_processed(path: str | Path) -> np.ndarray:
     """Read a processed clip (already mono, 16 kHz, trimmed and normalised) as float32."""
     samples, _ = sf.read(str(_resolve(path)), dtype="float32", always_2d=False)

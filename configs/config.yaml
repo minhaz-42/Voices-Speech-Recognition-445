@@ -75,6 +75,25 @@ classical:
     C: [1, 10, 100]
     gamma: [scale, 0.01]
 
+# wav2vec 2.0 fine-tuning (support/train_wav2vec2.py, T15-T19). Runs choose --epochs and --noise.
+wav2vec2:
+  model: facebook/wav2vec2-base
+  learning_rate: 3.0e-5
+  batch_size: 4
+  grad_accum: 2           # effective batch size 8
+  warmup_ratio: 0.1
+  weight_decay: 0.0
+  freeze_feature_encoder: true   # keep the CNN feature encoder fixed, as usual for wav2vec 2.0 fine-tuning
+
+# White-noise augmentation of training clips (--noise white); never applied to validation or test
+augmentation:
+  p: 0.5                  # share of training clips that get noise
+  snr_db: [5, 30]         # "random amplitude": SNR drawn uniformly from this range
+
+# Noise tests on the test clips (T21)
+noise_test:
+  snr_db: [20, 10, 5]
+
 whisper:
   model: openai/whisper-small
   language: en

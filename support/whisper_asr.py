@@ -34,6 +34,7 @@ import pandas as pd
 
 from support.audio import load_audio
 from support.config import PROJECT_ROOT, load_config
+from support.device import pick_device
 from support.metrics import compute_metrics
 from support.phrases import Phrase, load_phrases
 
@@ -151,19 +152,6 @@ def match_phrase(transcript: str, phrases: Sequence[Phrase], reject_wer: float) 
 
 
 # ---------------------------------------------------------------- Whisper model
-
-def pick_device(device: str | None = None) -> str:
-    """``device`` if given, otherwise CUDA, then Apple MPS, then CPU."""
-    if device:
-        return device
-    import torch
-
-    if torch.cuda.is_available():
-        return "cuda"
-    if torch.backends.mps.is_available():
-        return "mps"
-    return "cpu"
-
 
 class WhisperTranscriber:
     """Batch English transcription with a Hugging Face Whisper checkpoint.
