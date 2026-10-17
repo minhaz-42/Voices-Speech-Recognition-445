@@ -3,12 +3,13 @@
 Every runner (traditional models, wav2vec 2.0, Whisper) hands its test predictions to
 :func:`save_run`, so all models are scored by the same code and stored the same way:
 
-``results/<run>/<dataset>/``
+``results/<run>/<dataset>/`` (or ``results/<folder>/<run>/<dataset>/`` for the runs a member
+keeps in one folder, see ``result_folders`` in the config)
     ``summary.json``          random split + speaker-independent folds (pooled, per fold, mean ± std)
     ``predictions_<split>.csv``  ``utt_id, speaker_id, label, pred`` (+ extra columns of the run)
     ``random/``, ``folds/``   ``metrics.json``, ``classification_report.csv``, ``per_speaker.csv``,
                               ``confusion_matrix.csv``
-``images/confusion/<run>_<dataset>_<random|folds>.png``
+``images/confusion/<run>_<dataset>_<random|folds>.png`` (or ``results/<folder>/figures/confusion/``)
 
 The folds' headline numbers pool the test predictions of all 5 folds: every clip is
 tested exactly once, so the pooled set covers the whole dataset.
@@ -92,10 +93,55 @@ def summarise_folds(fold_preds: dict[str, pd.DataFrame]) -> dict[str, Any]:
     }
 
 
-def run_dir(run: str, dataset: str, cfg: dict[str, Any] | None = None) -> Path:
-    """``results/<run>/<dataset>/``."""
+def result_folder(run: str, cfg: dict[str, Any] | None = None) -> str | None:
+    """The member folder a run is kept in (``result_folders`` in the config), or ``None``.
+
+    Raises:
+        ValueError: If the run is listed under more than one folder.
+    """
     cfg = cfg if cfg is not None else load_config()
-    return resolve_path(cfg, "results") / run / dataset
+    folders = [name for name, runs in (cfg.get("result_folders") or {}).items() if run in (runs or [])]
+    if len(folders) > 1:
+        raise ValueError(f"run {run!r} is listed in several result folders: {folders}")
+    return folders[0] if folders else None
+
+
+def results_root(run: str, cfg: dict[str, Any] | None = None) -> Path:
+    """``results/<folder>/`` for a run kept in a member folder, otherwise ``results/``.
+
+    The run folders and the noise tests (``noise/``) of the run are inside it.
+    """
+    cfg = cfg if cfg is not None else load_config()
+    folder = result_folder(run, cfg)
+    return resolve_path(cfg, "results") / folder if folder else resolve_path(cfg, "results")
+
+
+def figures_root(run: str, cfg: dict[str, Any] | None = None) -> Path:
+    """``results/<folder>/figures/`` for a run kept in a member folder, otherwise ``images/``."""
+    cfg = cfg if cfg is not None else load_config()
+    return results_root(run, cfg) / "figures" if result_folder(run, cfg) else resolve_path(cfg, "images")
+
+
+def run_dir(run: str, dataset: str, cfg: dict[str, Any] | None = None) -> Path:
+    """``results/<run>/<dataset>/``, or ``results/<folder>/<run>/<dataset>/`` (see :func:`results_root`)."""
+    return results_root(run, cfg) / run / dataset
+
+
+def list_runs(dataset: str | None = None, cfg: dict[str, Any] | None = None) -> pd.DataFrame:
+    """Every saved run under ``results/``, wherever it is kept.
+
+    Returns:
+        ``run, dataset, folder, path`` per ``summary.json`` found (``folder`` is empty for
+        runs kept in ``results/<run>/``), sorted by run and dataset.
+    """
+    cfg = cfg if cfg is not None else load_config()
+    rows = []
+    for path in sorted(resolve_path(cfg, "results").rglob("summary.json")):
+        run, ds = path.parent.parent.name, path.parent.name
+        if dataset is None or ds == dataset:
+            rows.append({"run": run, "dataset": ds, "folder": result_folder(run, cfg) or "", "path": path.parent})
+    return pd.DataFrame(rows, columns=["run", "dataset", "folder", "path"]).sort_values(["run", "dataset"],
+                                                                                         ignore_index=True)
 
 
 def save_run(run: str, dataset: str, split_preds: dict[str, pd.DataFrame], labels: Sequence[str] | None = None,
@@ -116,7 +162,7 @@ def save_run(run: str, dataset: str, split_preds: dict[str, pd.DataFrame], label
     cfg = cfg if cfg is not None else load_config()
     root = run_dir(run, dataset, cfg)
     root.mkdir(parents=True, exist_ok=True)
-    figures = resolve_path(cfg, "images") / "confusion"
+    figures = figures_root(run, cfg) / "confusion"
     summary: dict[str, Any] = {"run": run, "dataset": dataset}
 
     for name, df in split_preds.items():
@@ -151,7 +197,7 @@ def load_run_predictions(run: str, dataset: str, cfg: dict[str, Any] | None = No
 def main() -> None:
     """Rebuild a run's metrics, tables and figures from its saved predictions."""
     parser = argparse.ArgumentParser(description="Score a run from its saved predictions.")
-    parser.add_argument("--run", required=True, help="run folder in results/, e.g. random_forest")
+    parser.add_argument("--run", required=True, help="run name, e.g. random_forest")
     parser.add_argument("--dataset", required=True, help="fsc or l2arctic")
     parser.add_argument("--config", default=None, help="config file (default: configs/config.yaml)")
     args = parser.parse_args()

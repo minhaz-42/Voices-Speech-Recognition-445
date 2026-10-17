@@ -358,7 +358,7 @@ PyTorch must not share a process with XGBoost on macOS, so follow the existing p
 #### Build
 
 1. **Demo:** `python app.py [--model outputs/models/svm/fsc/random.joblib]` loads your SVM (T14) by default, and also accepts any saved model folder (e.g. a wav2vec 2.0 model from the Drive). The prediction panel shows the top-5 phrases (ID and text) with a confidence bar chart, replacing the "model not connected yet" box. Optionally, a "Whisper transcript" checkbox uses `WhisperRecognizer`.
-2. **Figures command:** `python -m support.visualization --results results --out images` draws, for every run it finds: model-comparison bars (random split vs unseen speakers, from `summary.json`), per-speaker bars (`folds/per_speaker.csv`), and accuracy vs SNR (`results/noise/*.csv`) when noise results exist. Confusion matrices are already drawn by the shared evaluation (`images/confusion/`).
+2. **Figures command:** `python -m support.visualization --results results --out images` draws, for every run it finds (`support.evaluate.list_runs()`; Tanvir's runs are in `results/M1_tanvir/`): model-comparison bars (random split vs unseen speakers, from `summary.json`), per-speaker bars (`folds/per_speaker.csv`), and accuracy vs SNR (every `noise/*.csv` under `results/`, so far `results/M1_tanvir/noise/`) when noise results exist. Confusion matrices are already drawn by the shared evaluation (`images/confusion/`, Tanvir's in `results/M1_tanvir/figures/confusion/`).
 3. Tests: `process_audio` with a small SVM model saved in a temporary folder (see `tests/test_inference.py`), and the figures command on fake results made with `support.evaluate.save_run`.
 
 #### Done when

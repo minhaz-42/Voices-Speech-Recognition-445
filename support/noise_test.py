@@ -13,6 +13,9 @@ Output (small, committed):
   and the pooled folds;
 - ``results/noise/<run>_<dataset>_predictions.csv``: every prediction (utt_id, split, SNR).
 
+A run kept in a member folder writes to ``results/<folder>/noise/`` instead
+(``result_folders`` in the config).
+
 Usage::
 
     python -m support.noise_test --run w2v2_15ep_noise --dataset fsc
@@ -30,7 +33,7 @@ import pandas as pd
 
 from support.config import load_config, resolve_path
 from support.dataset import load_split, parse_splits, read_processed
-from support.evaluate import FOLD_NAMES
+from support.evaluate import FOLD_NAMES, results_root
 from support.metrics import compute_metrics
 from support.noise import add_white_noise
 
@@ -57,7 +60,7 @@ def run_noise_test(run: str, dataset: str, splits: Sequence[str], cfg: dict[str,
     """Predict each split's test clips clean and at each SNR with that split's saved model.
 
     Returns:
-        ``(summary, predictions)``, also written to ``results/noise/``.
+        ``(summary, predictions)``, also written to ``results/noise/`` (or ``results/<folder>/noise/``).
     """
     from support.inference import load_recognizer
 
@@ -87,7 +90,7 @@ def run_noise_test(run: str, dataset: str, splits: Sequence[str], cfg: dict[str,
                                      "n": m["n"], "accuracy": m["accuracy"], "macro_f1": m["macro_f1"]})
     summary = pd.DataFrame(summary_rows)
 
-    out = resolve_path(cfg, "results") / "noise"
+    out = results_root(run, cfg) / "noise"
     out.mkdir(parents=True, exist_ok=True)
     summary.to_csv(out / f"{run}_{dataset}.csv", index=False)
     predictions.to_csv(out / f"{run}_{dataset}_predictions.csv", index=False)

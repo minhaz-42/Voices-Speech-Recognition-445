@@ -14,6 +14,12 @@ paths:
   images: images
   outputs: outputs
 
+# Runs kept together in one member's folder: results/<folder>/<run>/<dataset>/, with the
+# noise tests in results/<folder>/noise/ and the figures in results/<folder>/figures/.
+# Runs not listed here use results/<run>/<dataset>/ and images/confusion/.
+result_folders:
+  M1_tanvir: [random_forest, whisper_small, w2v2_15ep_noise, w2v2_15ep]
+
 # The two TenVoices subsets (docs/DATASETS.md). Runs choose one with --dataset fsc|l2arctic.
 datasets:
   fsc:

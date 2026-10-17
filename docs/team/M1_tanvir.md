@@ -9,7 +9,7 @@ On this page: [My tasks](#my-tasks) · [Faculty update](#faculty-update) · [Tas
 | **Role** | Data pipeline and splits, shared training / evaluation code, Whisper pipeline, noise tests, inference, integration; reviews and merges every member's branch |
 | **Models** | Random Forest (traditional) · wav2vec 2.0 fine-tuned for 15 epochs with and without white noise · Whisper zero-shot |
 | **Branch** | `main` |
-| **Owns** | `main.py`, `support/config.py`, `support/audio.py`, `support/dataset.py`, `support/features.py`, `support/classical.py`, `support/evaluate.py`, `support/train_wav2vec2.py`, `support/noise.py`, `support/noise_test.py`, `support/device.py`, `support/inference.py`, `support/whisper_asr.py`, `support/make_splits.py`, `configs/`, `notebooks/`, `requirements.txt`, `.github/`, `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `README.md`, `docs/STATUS.md`, `docs/PROJECT_PLAN.md`, `docs/team/`, `results/random_forest/`, `results/w2v2_15ep_noise/`, `results/w2v2_15ep/`, `results/whisper_small/`, `results/noise/` |
+| **Owns** | `main.py`, `support/config.py`, `support/audio.py`, `support/dataset.py`, `support/features.py`, `support/classical.py`, `support/evaluate.py`, `support/train_wav2vec2.py`, `support/noise.py`, `support/noise_test.py`, `support/device.py`, `support/inference.py`, `support/whisper_asr.py`, `support/make_splits.py`, `configs/`, `notebooks/`, `requirements.txt`, `.github/`, `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `README.md`, `docs/STATUS.md`, `docs/PROJECT_PLAN.md`, `docs/team/`, `results/M1_tanvir/` (every run of mine: `random_forest`, `w2v2_15ep_noise`, `w2v2_15ep`, `whisper_small`, plus `noise/`, the benchmark and `figures/`) |
 | **Report** | Abstract, sections 1, 2 (with Mahir's and Shafil's literature notes), 4 and 8; final integration |
 
 The task board and handoff log for M1 are in [STATUS.md](../STATUS.md). This page holds Tanvir's tasks, faculty update and task cards.
@@ -32,6 +32,7 @@ The task board and handoff log for M1 are in [STATUS.md](../STATUS.md). This pag
 | T19 | wav2vec 2.0 15 epochs without noise on FSC ✅ | — | ✅ FSC |
 | T21 | Noise tests on FSC ✅; H3 verdict in T24 | T15, T19 | ✅ FSC |
 | T22 | Inference + CI ✅; benchmark ✅ | T15 | ✅ |
+| T48 | All my results in one folder, `results/M1_tanvir/` | — | ✅ 2026-10-17 |
 | T47 | TenVoices-L2: free copy of L2-ARCTIC (no form), select, QC, splits ✅; Random Forest ✅; Whisper, wav2vec 2.0 and the members' models on L2; H5 | — | 🟡 data ✅ |
 | T24 | Final aggregation on all merged results, reproducibility, feature freeze | all | ⬜ |
 | T25 | Final report and README | T24 | ⬜ |

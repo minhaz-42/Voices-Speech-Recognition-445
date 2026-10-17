@@ -4,11 +4,11 @@ Each run is a set of CLI options, not a new script:
 
 | Run (task) | Options | Results |
 |---|---|---|
-| 15 epochs + white noise (T15) | ``--epochs 15 --noise white`` | ``results/w2v2_15ep_noise/`` |
+| 15 epochs + white noise (T15) | ``--epochs 15 --noise white`` | ``results/M1_tanvir/w2v2_15ep_noise/`` |
 | 8 epochs + white noise (T16) | ``--epochs 8 --noise white`` | ``results/w2v2_8ep_noise/`` |
 | 3 epochs (T17) | ``--epochs 3`` | ``results/w2v2_3ep/`` |
 | Untrained baseline (T18) | ``--untrained`` | ``results/w2v2_untrained/`` |
-| 15 epochs, no noise (T19) | ``--epochs 15`` | ``results/w2v2_15ep/`` |
+| 15 epochs, no noise (T19) | ``--epochs 15`` | ``results/M1_tanvir/w2v2_15ep/`` |
 | WavLM Base+ (T44) | ``--model microsoft/wavlm-base-plus --epochs 15 --noise white`` | ``results/wavlm_15ep_noise/`` |
 | HuBERT Base (T45) | ``--model facebook/hubert-base-ls960 --epochs 15 --noise white`` | ``results/hubert_15ep_noise/`` |
 

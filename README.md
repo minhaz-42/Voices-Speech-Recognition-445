@@ -93,7 +93,7 @@ Per dataset: random 80/20 split (stratified, seed 42) and 5 speaker-independent 
 ---
 
 ## 🏆 Results
-Measured so far on **TenVoices-FSC** (1,000 clips). Every number comes from `results/<run>/fsc/summary.json`; *TBD* means the run is not merged yet.
+Measured so far on **TenVoices-FSC** (1,000 clips). Every number comes from the run's `summary.json` (`results/<run>/fsc/`; Tanvir's runs are in [`results/M1_tanvir/`](results/M1_tanvir/)); *TBD* means the run is not merged yet.
 
 | Model | Owner | Accuracy, unseen speakers | Macro F1, unseen | Accuracy, random split | Macro F1, random | Purpose |
 | :--- | :--- | :---: | :---: | :---: | :---: | :--- |
@@ -114,7 +114,7 @@ Measured so far on **TenVoices-FSC** (1,000 clips). Every number comes from `res
 * **Random Forest** drops from 31.0% to 20.9% when the test speakers were never heard in training: MFCC statistics depend heavily on the speaker.
 * **Whisper** recognises the commands almost perfectly without any training; its word error rate on the unseen-speaker folds is 3.9%.
 * **Fine-tuned wav2vec 2.0** (15 epochs + noise, trained on 7 speakers per fold) reaches 88.5% on unseen speakers (fold mean 88.5% ± 10.4), 67.6 points above Random Forest.
-* **Noise robustness** (unseen speakers, white noise added to the test clips, `results/noise/`):
+* **Noise robustness** (unseen speakers, white noise added to the test clips, `results/M1_tanvir/noise/`):
 
   | Model | Clean | 20 dB | 10 dB | 5 dB |
   | :--- | :---: | :---: | :---: | :---: |
@@ -123,10 +123,10 @@ Measured so far on **TenVoices-FSC** (1,000 clips). Every number comes from `res
   | Random Forest | 20.9% | 4.9% | 2.3% | 2.2% |
 
   Training with white noise keeps the model usable in heavy noise (74.5% vs 30.7% at 5 dB) but costs 4.3 points on clean audio. H3 allows at most 2, so its strict criterion would fail; the official verdict comes from the hypothesis tests in T24. The MFCC model falls to chance level as soon as noise is added.
-* **Speed** (`results/benchmark_fsc.csv`, one clip incl. pre-processing, MacBook): wav2vec 2.0 38.2 ms on the Apple GPU and 74.9 ms on the CPU (378 MB); Random Forest 13.7 ms (76 MB). Both are fast enough for live use.
-* Confusion matrices: [images/confusion/](images/confusion/).
+* **Speed** (`results/M1_tanvir/benchmark_fsc.csv`, one clip incl. pre-processing, MacBook): wav2vec 2.0 38.2 ms on the Apple GPU and 74.9 ms on the CPU (378 MB); Random Forest 13.7 ms (76 MB). Both are fast enough for live use.
+* Confusion matrices: [results/M1_tanvir/figures/confusion/](results/M1_tanvir/figures/confusion/) (Tanvir's runs), `images/confusion/` (the other members' runs).
 
-Measured so far on **TenVoices-L2** (500 clips, 10 non-native speakers; every fold tests a first language never heard in training). Numbers from `results/<run>/l2arctic/summary.json`.
+Measured so far on **TenVoices-L2** (500 clips, 10 non-native speakers; every fold tests a first language never heard in training). Numbers from `results/M1_tanvir/<run>/l2arctic/summary.json`.
 
 | Model | Owner | Accuracy, unseen speakers | Macro F1, unseen | Accuracy, random split | Macro F1, random |
 | :--- | :--- | :---: | :---: | :---: | :---: |
@@ -134,7 +134,7 @@ Measured so far on **TenVoices-L2** (500 clips, 10 non-native speakers; every fo
 | **Whisper small, zero-shot + phrase matching** | Tanvir | **99.6%** | 0.996 | **100%** | 1.000 |
 
 * **Random Forest** scores *lower* on seen speakers here: each speaker reads each sentence once, so the speaker's voice pulls the MFCC model towards that speaker's other sentences.
-* **Whisper** still finds the right sentence, but makes more transcription errors on non-native speech: word error rate 10.0% on TenVoices-L2 vs 3.9% on TenVoices-FSC; per first language from 4.0% (Hindi) to 16.8% (Vietnamese) (`results/whisper_small/l2arctic/wer_per_l1.csv`). Hypothesis H5 is tested formally in T24.
+* **Whisper** still finds the right sentence, but makes more transcription errors on non-native speech: word error rate 10.0% on TenVoices-L2 vs 3.9% on TenVoices-FSC; per first language from 4.0% (Hindi) to 16.8% (Vietnamese) (`results/M1_tanvir/whisper_small/l2arctic/wer_per_l1.csv`). Hypothesis H5 is tested formally in T24.
 
 ---
 
@@ -151,6 +151,7 @@ Voices-Speech-Recognition-445/
 |-- notebooks/              Colab notebook for GPU training
 |-- data/                   subset lists, phrase lists, splits, sources (audio is not in git)
 |-- results/                one folder per model and dataset: metrics, predictions, reports
+|   `-- M1_tanvir/          Tanvir's runs, noise tests, benchmark and figures in one place
 |-- images/                 poster, confusion matrices, figures
 |-- others/                 poster source, report, slides, demo video
 `-- docs/

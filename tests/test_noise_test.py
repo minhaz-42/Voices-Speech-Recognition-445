@@ -4,6 +4,7 @@ The wav2vec 2.0 path is covered in tests/_wav2vec2_check.py.
 """
 
 import contextlib
+import copy
 import io
 import tempfile
 import unittest
@@ -70,6 +71,12 @@ class TestRunNoiseTest(unittest.TestCase):
         _, a = nt.run_noise_test("knn", "fsc", ["fold1"], self.cfg, snrs=[5])
         _, b = nt.run_noise_test("knn", "fsc", ["fold1"], self.cfg, snrs=[5])
         pd.testing.assert_frame_equal(a, b)
+
+    def test_member_folder(self):
+        cfg = copy.deepcopy(self.cfg)
+        cfg["result_folders"] = {"M9_test": ["knn"]}
+        nt.run_noise_test("knn", "fsc", ["fold1"], cfg, snrs=[10])
+        self.assertTrue((self.root / "results" / "M9_test" / "noise" / "knn_fsc_predictions.csv").exists())
 
     def test_missing_model_raises(self):
         with self.assertRaises(FileNotFoundError):

@@ -268,13 +268,13 @@ Each member owns one traditional model, one or two deep-learning runs, a main wo
 
 | Slot | Owns |
 |---|---|
-| **M1** | `main.py`, `support/config.py`, `support/audio.py`, `support/dataset.py`, `support/features.py`, `support/classical.py`, `support/evaluate.py`, `support/train_wav2vec2.py`, `support/noise.py`, `support/noise_test.py`, `support/device.py`, `support/inference.py`, `support/whisper_asr.py`, `support/select_subsets.py`, `support/qc_report.py`, `support/make_splits.py`, `data/subsets/`, `data/prompts/`, `data/splits/`, `data/SOURCES.md`, `configs/`, `notebooks/`, `requirements.txt`, `.github/`, `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `README.md`, `docs/STATUS.md`, `docs/PROJECT_PLAN.md`, `docs/team/`; runs `random_forest`, `w2v2_15ep_noise`, `w2v2_15ep`, `whisper_small`, `noise` |
+| **M1** | `main.py`, `support/config.py`, `support/audio.py`, `support/dataset.py`, `support/features.py`, `support/classical.py`, `support/evaluate.py`, `support/train_wav2vec2.py`, `support/noise.py`, `support/noise_test.py`, `support/device.py`, `support/inference.py`, `support/whisper_asr.py`, `support/select_subsets.py`, `support/qc_report.py`, `support/make_splits.py`, `data/subsets/`, `data/prompts/`, `data/splits/`, `data/SOURCES.md`, `configs/`, `notebooks/`, `requirements.txt`, `.github/`, `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `README.md`, `docs/STATUS.md`, `docs/PROJECT_PLAN.md`, `docs/team/`; runs `random_forest`, `w2v2_15ep_noise`, `w2v2_15ep`, `whisper_small` and the noise tests, all in `results/M1_tanvir/` |
 | **M2** | `support/phrases.py`, `data/README.md` (datasheet), `data/metadata/`, `data/listen_check_<dataset>.csv`, `docs/DATASETS.md`; runs `xgboost`, `w2v2_8ep_noise`, `wavlm_15ep_noise` |
 | **M3** | `support/metrics.py`, `support/stats.py`, `support/results_table.py`, `support/error_analysis.py`, `support/hypotheses.py`, `docs/ANALYSIS_PLAN.md`, `docs/literature/classical_and_evaluation.md`; runs `knn`, `w2v2_3ep`, `hubert_15ep_noise`; `results/all_results.csv`, `results/hypotheses.csv`, `results/errors/` |
 | **M4** | `support/visualization.py`, `app.py`, `others/poster.html`, `images/poster.png`, slides and video in `others/`, `docs/literature/self_supervised_speech.md`, `support/embeddings.py`; runs `svm`, `w2v2_untrained`, `w2v2_probe` |
 | **Everyone** | Their own tests (`tests/test_<module>.py`), their run folders `results/<run>/`, their figures in `images/`, and the status, faculty update, requests and handoff sections of their page `docs/team/<slot>_<name>.md` |
 
-Every model run goes through the shared scripts with its own settings, and saves its results in `results/<run-name>/<dataset>/`.
+Every model run goes through the shared scripts with its own settings, and saves its results in `results/<run-name>/<dataset>/`; M1's runs, noise tests, benchmark and figures are kept together in `results/M1_tanvir/` (`result_folders` in the config).
 
 ---
 

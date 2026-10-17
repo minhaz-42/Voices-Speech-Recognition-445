@@ -15,6 +15,7 @@ import numpy as np
 
 from support import classical
 from support.dataset import build_processed
+from support.evaluate import run_dir
 from tests._synthetic import make_config, make_subset, write_audio
 from support.make_splits import make_splits
 
@@ -59,7 +60,7 @@ class TestClassicalRunner(unittest.TestCase):
                 self.assertGreater(summary["random"]["accuracy"], 0.9)
                 self.assertGreater(summary["folds"]["pooled"]["accuracy"], 0.9)
                 self.assertEqual(summary["folds"]["folds_run"], ["fold1", "fold2"])
-                saved = json.loads((self.root / "results" / name / "fsc" / "summary.json").read_text())
+                saved = json.loads((run_dir(name, "fsc", self.cfg) / "summary.json").read_text())
                 self.assertIn("params", saved["splits"]["random"])
 
     def test_selection_never_uses_test_clips(self):

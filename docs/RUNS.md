@@ -36,7 +36,7 @@ This checks every one of the 1,000 selected clips against its SHA-256 in `data/s
 
 ## 4. What to commit
 
-- `results/<run>/fsc/` (CSV and JSON, small) and `images/confusion/<run>_fsc_*.png`.
+- `results/<run>/fsc/` (CSV and JSON, small) and `images/confusion/<run>_fsc_*.png`. (M1's runs go to `results/M1_tanvir/` instead, set under `result_folders` in the config; the scripts choose the folder.)
 - **Not** `outputs/` (features, models: gitignored). Upload trained wav2vec 2.0-family models to the Drive (`TenVoices/models/<run>/`), as the Colab notebook does.
 - On your page, the faculty update quotes the numbers from `results/<run>/fsc/summary.json` (`random.accuracy` and `folds.pooled.accuracy`), never from memory.
 

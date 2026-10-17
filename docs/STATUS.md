@@ -80,12 +80,13 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 
 | ID | Task (→ done when) | Depends on | Status | Done by · date |
 |---|---|---|---|---|
-| T11 | Features, shared runner and evaluation ✅; **Random Forest** → `results/random_forest/fsc/` ✅ (FSC: random split 0.310, unseen speakers 0.209) | — | ✅ | Tanvir · 2026-10-17 |
-| T30 | **Whisper zero-shot** → `results/whisper_small/{fsc,l2arctic}/` ✅: FSC unseen speakers 0.987, WER 0.039; L2 unseen speakers 0.996, WER 0.100 (per first language 0.040–0.168) | — | ✅ | Tanvir · 2026-10-17 |
-| T15 | Training script + Colab notebook ✅; **wav2vec 2.0, 15 epochs + white noise** → `results/w2v2_15ep_noise/fsc/` ✅ (unseen speakers 0.885, random split 1.000); models in `outputs/models/` (to Drive) | — | ✅ FSC | Tanvir · 2026-10-17 |
-| T19 | **wav2vec 2.0, 15 epochs without noise** → `results/w2v2_15ep/fsc/` ✅ (unseen speakers 0.928, random split 0.855) | — | ✅ FSC | Tanvir · 2026-10-17 |
-| T21 | Noise tests → `results/noise/` ✅ (unseen speakers at 10 / 5 dB: with noise training 0.821 / 0.745, without 0.655 / 0.307; clean 0.885 vs 0.928); H3 decided in T24 | T15, T19 | ✅ FSC | Tanvir · 2026-10-17 |
-| T22 | `main.py`, inference, CI ✅; benchmark → `results/benchmark_fsc.csv` ✅ (wav2vec 2.0: 38.2 ms per clip on MPS, 74.9 ms on CPU) | T15 | ✅ | Tanvir · 2026-10-17 |
+| T11 | Features, shared runner and evaluation ✅; **Random Forest** → `results/M1_tanvir/random_forest/fsc/` ✅ (FSC: random split 0.310, unseen speakers 0.209) | — | ✅ | Tanvir · 2026-10-17 |
+| T30 | **Whisper zero-shot** → `results/M1_tanvir/whisper_small/{fsc,l2arctic}/` ✅: FSC unseen speakers 0.987, WER 0.039; L2 unseen speakers 0.996, WER 0.100 (per first language 0.040–0.168) | — | ✅ | Tanvir · 2026-10-17 |
+| T15 | Training script + Colab notebook ✅; **wav2vec 2.0, 15 epochs + white noise** → `results/M1_tanvir/w2v2_15ep_noise/fsc/` ✅ (unseen speakers 0.885, random split 1.000); models in `outputs/models/` (to Drive) | — | ✅ FSC | Tanvir · 2026-10-17 |
+| T19 | **wav2vec 2.0, 15 epochs without noise** → `results/M1_tanvir/w2v2_15ep/fsc/` ✅ (unseen speakers 0.928, random split 0.855) | — | ✅ FSC | Tanvir · 2026-10-17 |
+| T21 | Noise tests → `results/M1_tanvir/noise/` ✅ (unseen speakers at 10 / 5 dB: with noise training 0.821 / 0.745, without 0.655 / 0.307; clean 0.885 vs 0.928); H3 decided in T24 | T15, T19 | ✅ FSC | Tanvir · 2026-10-17 |
+| T22 | `main.py`, inference, CI ✅; benchmark → `results/M1_tanvir/benchmark_fsc.csv` ✅ (wav2vec 2.0: 38.2 ms per clip on MPS, 74.9 ms on CPU) | T15 | ✅ | Tanvir · 2026-10-17 |
+| T48 | **One results folder for M1:** every run of Tanvir's (`random_forest`, `w2v2_15ep_noise`, `w2v2_15ep`, `whisper_small`), the noise tests, the benchmark and the confusion matrices → `results/M1_tanvir/` (`result_folders` in the config; `support.evaluate.run_dir` / `list_runs` find it) | — | ✅ | Tanvir · 2026-10-17 |
 | T47 | **TenVoices-L2:** data from a free copy of L2-ARCTIC (no form) ✅: 10 speakers × 50 sentences = 500 clips, QC 500 / 500, splits (each fold holds out one first language); Random Forest ✅; Whisper ✅ (WER 0.100 vs 0.039 on FSC); next: the wav2vec 2.0 runs and every merged model on L2; H5 | — | 🟡 data ✅ | Tanvir · 2026-10-17 (data) |
 
 ### At the end (needs everyone's merged work)
@@ -117,11 +118,18 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 
 ## 📝 Handoff Log (newest first)
 
+### 2026-10-17 · Tanvir Ahmed (M1) · T48 (M1's results in one folder)
+
+- **Done:** Tanvir's results no longer mix with the members' runs: `results/M1_tanvir/` holds the runs `random_forest/`, `w2v2_15ep_noise/`, `w2v2_15ep/`, `whisper_small/`, the noise tests (`noise/`), `benchmark_fsc.csv` and the confusion matrices (`figures/confusion/`). Files moved with `git mv`; no number changed.
+- **How:** `result_folders` in `configs/config.yaml` lists the runs kept in a member folder. `support/evaluate.py` gained `result_folder`, `results_root`, `figures_root` and `list_runs`; `run_dir`, `save_run` and `support/noise_test.py` use them, so re-running any of these runs writes to the same folder. The Colab notebook zips the run's real folder.
+- **Members:** nothing changes for their own runs (`results/<run>/<dataset>/`, `images/confusion/`). Mahir's T20 / T40 and Shafil's T23 cards now say to find runs with `support.evaluate.list_runs()` rather than building `results/<run>/` paths.
+- **Tests:** 138 pass (new: member-folder layout, a run listed twice, noise tests in the member folder).
+
 ### 2026-10-17 · Tanvir Ahmed (M1) · T19, T21, T22 (all M1 work planned for today is done)
 
-- **T19** wav2vec 2.0, 15 epochs, no noise: unseen speakers 0.928, random split 0.855 (`results/w2v2_15ep/fsc/summary.json`).
-- **T21** noise tests (same white noise per clip for every model, `results/noise/`): with noise augmentation the model keeps 0.821 / 0.745 at 10 / 5 dB vs 0.655 / 0.307 without, but loses 4.3 points on clean audio (H3 allows 2); the official H3 verdict comes from T40's code in T24. Random Forest falls to chance at 20 dB.
-- **T22** benchmark (`results/benchmark_fsc.csv`): wav2vec 2.0 38.2 ms per clip on MPS / 74.9 ms on CPU, 378 MB; Random Forest 13.7 ms, 76 MB.
+- **T19** wav2vec 2.0, 15 epochs, no noise: unseen speakers 0.928, random split 0.855 (`results/M1_tanvir/w2v2_15ep/fsc/summary.json`).
+- **T21** noise tests (same white noise per clip for every model, `results/M1_tanvir/noise/`): with noise augmentation the model keeps 0.821 / 0.745 at 10 / 5 dB vs 0.655 / 0.307 without, but loses 4.3 points on clean audio (H3 allows 2); the official H3 verdict comes from T40's code in T24. Random Forest falls to chance at 20 dB.
+- **T22** benchmark (`results/M1_tanvir/benchmark_fsc.csv`): wav2vec 2.0 38.2 ms per clip on MPS / 74.9 ms on CPU, 378 MB; Random Forest 13.7 ms, 76 MB.
 - **Models:** `outputs/models/w2v2_15ep_noise/` and `w2v2_15ep/` (2.1 GB each, gitignored) on Tanvir's Mac; upload to the Drive (`TenVoices/models/`) so the demo (T23) can use them.
 - **Next (after next week's project update):** wav2vec 2.0 and members' runs on TenVoices-L2 (T47), merges, T24, T25, T28.
 
@@ -130,7 +138,7 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 - **Done:** TenVoices-L2 now comes from a free Hugging Face copy of L2-ARCTIC (`NathanRoll/l2-arctic-dataset`: 15 of the 24 speakers × the same 150 prompts, original 44.1 kHz WAV). Its transcripts match the CMU ARCTIC prompt list (2,183 / 2,250 identical, the rest spelling variants or actual readings), and its speaker labels match the corpus table (`data/SOURCES.md`). `support/l2arctic_from_hf.py` unpacks it into the corpus layout, so the selection code is unchanged.
 - **Design change (before any L2 model was trained):** the copy lacks some planned speakers (it has one Arabic speaker and only one female Hindi speaker), so TenVoices-L2 is now one female and one male for each of **Hindi, Mandarin, Spanish, Korean, Vietnamese**: TNI/ASI, LXC/BWC, NJS/EBVS, HJK/YKWK, PNV/HQTV. **Every fold now holds out one whole first language** (before: 3 of 5). H5 is unchanged. Updated: `configs/config.yaml`, `docs/DATASETS.md` (M2's file; noted on Rabbi's page), `docs/PROJECT_PLAN.md`, `README.md`, the T10 card on Mahir's page.
 - **Data:** 500 clips (10 speakers × 50 sentences), 25.9 min of speech; QC 500 / 500 pass; random split 360 / 40 / 100 and 5 folds in `data/splits/l2arctic/`.
-- **Random Forest on L2:** random split 0.090, unseen speakers 0.170 ± 0.025 (`results/random_forest/l2arctic/summary.json`). Seen speakers score *lower* here: each L2 speaker reads each sentence once, so in the random split the speaker's voice pulls the MFCC model towards that speaker's other sentences (stable over 5 seeds: 0.08–0.11). Evidence for H2's "depends on the speaker".
+- **Random Forest on L2:** random split 0.090, unseen speakers 0.170 ± 0.025 (`results/M1_tanvir/random_forest/l2arctic/summary.json`). Seen speakers score *lower* here: each L2 speaker reads each sentence once, so in the random split the speaker's voice pulls the MFCC model towards that speaker's other sentences (stable over 5 seeds: 0.08–0.11). Evidence for H2's "depends on the speaker".
 - **Tests:** 135 pass (the synthetic L2 fixtures follow the new design; `tests/test_l2arctic_from_hf.py` is new).
 
 ### 2026-10-17 · Tanvir Ahmed (M1) · T00 (simpler layout, one page per member)

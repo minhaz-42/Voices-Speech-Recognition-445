@@ -81,7 +81,7 @@ Written by Tanvir: exactly what to build, which files, which functions to use, t
    - Random split: stratified 80/20 by phrase, seed 42; 10% of the training part for validation.
    - Speaker-independent CV: 5 folds, 2 test speakers (one female, one male), 1 validation speaker, 7 training speakers; every speaker tested exactly once. On TenVoices-L2 the two test speakers of a fold share a first language, so every fold holds out one language (fold 1 Hindi, 2 Mandarin, 3 Spanish, 4 Korean, 5 Vietnamese).
    - Whisper is zero-shot: scored on the same test clips, uses no training data.
-4. **Runs.** A table of every run with its folders in `results/`, one per dataset (`results/<run>/fsc/`, `results/<run>/l2arctic/`): `random_forest`, `xgboost`, `knn`, `svm`, `w2v2_untrained`, `w2v2_3ep`, `w2v2_8ep_noise`, `w2v2_15ep_noise`, `w2v2_15ep`, `whisper_small`.
+4. **Runs.** A table of every run with its folders in `results/`, one per dataset (`results/<run>/fsc/`, `results/<run>/l2arctic/`; Tanvir's runs are in `results/M1_tanvir/<run>/<dataset>/`): `random_forest`, `xgboost`, `knn`, `svm`, `w2v2_untrained`, `w2v2_3ep`, `w2v2_8ep_noise`, `w2v2_15ep_noise`, `w2v2_15ep`, `whisper_small`.
 5. **Metrics.** Accuracy (primary), macro F1, weighted F1, per-class F1, confusion matrix, per-speaker accuracy; on TenVoices-L2 also per first language; WER and CER for Whisper. For the 5 folds, say how results are combined: pool the predictions of all folds (each clip is tested once, so every clip of the dataset gets one test prediction) for the headline numbers, and also report mean ± standard deviation over folds.
 6. **Hypotheses H1–H5.** For each one: the exact comparison (which runs, which split, which dataset), the test (from `support/stats.py`, task T33) and the pass criterion, all as in the *Frozen analysis decisions* table (H5: one-sided Mann–Whitney U over per-speaker WER, L2 > FSC). Explain how the text difference between commands and sentences is handled in the discussion. Write every hypothesis so that anyone can decide *pass* or *fail* from the numbers without judgement.
 7. **Statistical tests.** Bootstrap 95% CI (10,000 resamples, seed 42), exact McNemar, Wilcoxon signed-rank over the 10 speakers (exploratory), one-sided Mann–Whitney U for H5, α = 0.05, one primary test per hypothesis and dataset without correction, as frozen; say why.
@@ -296,12 +296,12 @@ This is a GPU job: use Colab (`notebooks/train_wav2vec2.ipynb`, set the options 
 | **Goal** | One table with every model on both protocols, built from `results/` by code, so no number is ever copied by hand |
 | **Depends on** | T33 (your own) |
 | **You create** | `support/results_table.py`, `tests/test_results_table.py`, `results/all_results.csv`, `images/all_results_table.png` |
-| **Use, don't edit** | `support/evaluate.py` (`load_run_predictions`; the `summary.json` layout), your `support/stats.py` |
-| **Give your assistant** | `AGENTS.md`, this card, `support/evaluate.py`, your `support/stats.py`, one real `results/<run>/fsc/summary.json` |
+| **Use, don't edit** | `support/evaluate.py` (`list_runs`, `run_dir`, `load_run_predictions`; the `summary.json` layout), your `support/stats.py` |
+| **Give your assistant** | `AGENTS.md`, this card, `support/evaluate.py`, your `support/stats.py`, one real `summary.json` (e.g. `results/M1_tanvir/random_forest/fsc/summary.json`) |
 
 #### Build
 
-`python -m support.results_table [--dataset fsc]` reads every `results/<run>/<dataset>/summary.json` and the predictions next to it and writes:
+`python -m support.results_table [--dataset fsc]` reads every run's `summary.json` and the predictions next to it and writes (find the runs with `support.evaluate.list_runs()`: some are in `results/<run>/<dataset>/`, Tanvir's in `results/M1_tanvir/<run>/<dataset>/`):
 - `results/all_results.csv`: one row per run and dataset: random-split accuracy / macro F1 / weighted F1, pooled-fold accuracy / macro F1 / weighted F1, fold mean ± std, the drop from random split to unseen speakers, and 95% bootstrap intervals (your `stats.py`) for both accuracies;
 - `results/per_speaker_<dataset>.csv`: pooled-fold accuracy per speaker and run;
 - `images/all_results_table.png`: the table as an image.
@@ -350,7 +350,7 @@ It works with whatever runs exist (one or twenty). Tests: build fake runs in a t
 | **Goal** | Decide H1–H5 by code, exactly as frozen before the experiments, so the verdicts cannot be bent after seeing the results |
 | **Depends on** | T10, T20, T33 (your own) |
 | **You create** | `support/hypotheses.py`, `tests/test_hypotheses.py`, `results/hypotheses.csv` |
-| **Read, don't edit** | `docs/PROJECT_PLAN.md` (*Hypotheses* and *Frozen analysis decisions*), `support/noise_test.py` output layout (`results/noise/`), `support/whisper_asr.py` output (`wer_per_speaker.csv`) |
+| **Read, don't edit** | `docs/PROJECT_PLAN.md` (*Hypotheses* and *Frozen analysis decisions*), `support/noise_test.py` output layout (`noise/` inside the run's results root, `support.evaluate.results_root(run)`: `results/M1_tanvir/noise/` for the noise tests so far), `support/whisper_asr.py` output (`wer_per_speaker.csv`) |
 
 #### Build
 

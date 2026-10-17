@@ -14,7 +14,7 @@ all become 630, and a phone number compares equal whether spoken or written as d
 Usage::
 
     python -m support.whisper_asr clip.wav [more.wav ...]          # transcript + top-5 phrases
-    python -m support.whisper_asr --list clips.csv --out results/whisper_small/
+    python -m support.whisper_asr --list clips.csv --out outputs/whisper_clips/
     python -m support.whisper_asr --dataset fsc --split all     # T30: same test clips as every model
 
 ``clips.csv`` has the columns ``utt_id, path, phrase_id`` and optionally
@@ -350,7 +350,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Zero-shot Whisper speech-to-text matched to the 50 phrases.")
     parser.add_argument("audio", nargs="*", help="audio files to transcribe")
     parser.add_argument("--list", dest="list_csv", help="CSV of clips (utt_id, path, phrase_id[, speaker_id])")
-    parser.add_argument("--out", help="output folder for --list, e.g. results/whisper_small/")
+    parser.add_argument("--out", help="output folder for --list, e.g. outputs/whisper_clips/")
     parser.add_argument("--dataset", help="fsc or l2arctic: match against its phrase list; without files, "
                                           "score its splits (T30)")
     parser.add_argument("--split", default="all", help="with --dataset: all (default), folds, random or foldN")

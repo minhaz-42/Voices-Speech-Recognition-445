@@ -67,6 +67,33 @@ class TestSaveRun(unittest.TestCase):
             reloaded = ev.load_run_predictions("demo", "fsc", cfg)
             self.assertEqual(sorted(reloaded), ["fold1", "fold2", "random"])
 
+    def test_member_folder_keeps_runs_and_figures_together(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            cfg = copy.deepcopy(load_config())
+            cfg["paths"]["results"] = str(Path(tmp) / "results")
+            cfg["paths"]["images"] = str(Path(tmp) / "images")
+            cfg["result_folders"] = {"M9_test": ["demo"]}
+            ev.save_run("demo", "fsc", {"random": FOLD1, "fold1": FOLD1}, labels=["A", "B"], cfg=cfg)
+            ev.save_run("other", "l2arctic", {"fold2": FOLD2}, labels=["A", "B"], cfg=cfg)
+            member = Path(tmp) / "results" / "M9_test"
+            self.assertTrue((member / "demo" / "fsc" / "summary.json").exists())
+            self.assertTrue((member / "figures" / "confusion" / "demo_fsc_random.png").exists())
+            self.assertFalse((Path(tmp) / "results" / "demo").exists())
+            self.assertTrue((Path(tmp) / "images" / "confusion" / "other_l2arctic_folds.png").exists())
+            self.assertEqual(sorted(ev.load_run_predictions("demo", "fsc", cfg)), ["fold1", "random"])
+            runs = ev.list_runs(cfg=cfg)
+            self.assertEqual(list(zip(runs["run"], runs["dataset"], runs["folder"])),
+                             [("demo", "fsc", "M9_test"), ("other", "l2arctic", "")])
+            self.assertEqual(list(ev.list_runs("fsc", cfg)["run"]), ["demo"])
+
+    def test_run_in_two_folders_raises(self):
+        cfg = copy.deepcopy(load_config())
+        cfg["result_folders"] = {"M8_a": ["demo"], "M9_b": ["demo"]}
+        with self.assertRaises(ValueError):
+            ev.run_dir("demo", "fsc", cfg)
+        cfg["result_folders"] = None
+        self.assertEqual(ev.results_root("demo", cfg), ev.resolve_path(cfg, "results"))
+
 
 if __name__ == "__main__":
     unittest.main()

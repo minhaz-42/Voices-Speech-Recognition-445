@@ -181,7 +181,8 @@ def run(name: str, dataset: str, splits: Sequence[str], cfg: dict[str, Any] | No
     """Run a model on several splits and save the results with ``support.evaluate``.
 
     The results folder is ``results/<run_name>/`` (default: the model name for MFCC
-    features, ``<features>_<model>`` otherwise).
+    features, ``<features>_<model>`` otherwise), or ``results/<folder>/<run_name>/`` for a
+    run kept in a member folder (``result_folders`` in the config).
     """
     cfg = cfg if cfg is not None else load_config()
     run_name = run_name or (name if features == "mfcc" else f"{features}_{name}")
