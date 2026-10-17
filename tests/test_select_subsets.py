@@ -1,4 +1,4 @@
-"""Tests for tools/select_subsets.py on synthetic archives laid out like the real ones."""
+"""Tests for support/select_subsets.py on synthetic archives laid out like the real ones."""
 
 import copy
 import tempfile
@@ -10,7 +10,7 @@ import pandas as pd
 import soundfile as sf
 
 from support.config import load_config
-from tools import select_subsets as sel
+from support import select_subsets as sel
 
 
 def write_tone(path: Path, seconds: float, sr: int = 16000, channels: int = 1, lead: float = 0.2, peak: float = 0.3,

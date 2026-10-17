@@ -10,7 +10,7 @@ import soundfile as sf
 
 from support import dataset as ds
 from tests._synthetic import make_config, make_subset, write_audio
-from tools.make_splits import make_splits
+from support.make_splits import make_splits
 
 
 class TestSubsetLoading(unittest.TestCase):

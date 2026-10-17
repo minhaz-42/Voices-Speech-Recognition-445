@@ -2,8 +2,8 @@
 
 Rules for everyone working on the **TenVoices** repository: team members working by hand, and any AI coding assistant they use (Claude Code, Codex, Cursor, GitHub Copilot, Gemini, ChatGPT, …). Every member works on their **own branch**, and the lead (M1) merges the branches into `main`.
 
-- Step-by-step commands for people, and for chat assistants that cannot run commands: [CONTRIBUTING.md](CONTRIBUTING.md).
-- The exact specification of each task (files, functions, tests, *done when*): [docs/tasks/](docs/tasks/).
+- Step-by-step commands for people, and for chat assistants that cannot run commands: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md).
+- **Each member's work is on one page**, `docs/team/<slot>_<name>.md`: role, files, models, task status, faculty update, handoff log, and at the end the task cards (files, functions, tests, *done when*). Index: [docs/team/](docs/team/).
 
 ## Project
 
@@ -22,22 +22,23 @@ Repository: https://github.com/minhaz-42/Voices-Speech-Recognition-445
 | File | Use |
 |---|---|
 | `docs/STATUS.md` | **Task board + merge log: the source of truth for what is merged** (only M1 edits it) |
-| `docs/progress/<slot>_<name>.md` | Each member's own task status, handoff log and **faculty update** (only that member edits it) |
-| `docs/tasks/<ID>.md` | Task cards: what to build, which files, which existing functions to use, tests, *done when* |
+| `docs/team/<slot>_<name>.md` | **One page per member.** The member edits its status table, faculty update, requests and handoff log; M1 writes the *Task cards* section at the end (what to build, which files, which functions, tests, *done when*) |
 | `docs/PROJECT_PLAN.md` | Design, evaluation protocol, roles, **file ownership**, risks |
 | `docs/DATASETS.md` | Dataset sources, licences, download, subset selection rules, QC |
-| `README.md` | Public overview |
+| `docs/RUNS.md` | How to get the audio and run any model, locally or on Colab |
+| `docs/CONTRIBUTING.md` | The same workflow as plain git commands, for working by hand or with a chat assistant |
+| `README.md` | Public overview: results and who did what |
 
 ## Team
 
-| Slot | Member | git user.name | GitHub | Branch | Progress file | Workstream |
+| Slot | Member | git user.name | GitHub | Branch | Page | Workstream |
 |---|---|---|---|---|---|---|
-| M1 | Tanvir Ahmed (lead, merges) | minhaz | minhaz-42 | `main` | `docs/progress/M1_tanvir.md` | Data pipeline and splits, shared training / evaluation code, **Whisper pipeline**, noise tests, inference, integration · Random Forest · wav2vec 2.0 15 epochs (+ noise, and without) |
-| M2 | Md. Shahriar Rakib Rabbi | Md. Shahriar Rakib Rabbi | ShahriarRakibRabbi | `dev_rabbi` | `docs/progress/M2_rabbi.md` | Datasets: access, subset selection, QC, datasheet and subset release · XGBoost · wav2vec 2.0 8 epochs + noise |
-| M3 | Mahir Ahmed | *(add)* | *(add)* | `dev_mahir` | `docs/progress/M3_mahir.md` | Evaluation: analysis plan, statistics, results tables, error analysis · k-NN · wav2vec 2.0 3 epochs |
-| M4 | Shafil Ahmed | *(add)* | Shafil10 | `dev_shafil` | `docs/progress/M4_shafil.md` | Visualisation, demo app, poster, slides, video · SVM · untrained baseline |
+| M1 | Tanvir Ahmed (lead, merges) | minhaz | minhaz-42 | `main` | `docs/team/M1_tanvir.md` | Data preparation, shared code, **Whisper pipeline**, noise tests, inference, TenVoices-L2, final aggregation · Random Forest · wav2vec 2.0 15 epochs (+ noise, and without) |
+| M2 | Md. Shahriar Rakib Rabbi | Md. Shahriar Rakib Rabbi | ShahriarRakibRabbi | `dev_rabbi` | `docs/team/M2_rabbi.md` | Datasheet, listen-check, dataset statistics, subset release · XGBoost · wav2vec 2.0 8 epochs + noise · WavLM Base+ |
+| M3 | Mahir Ahmed | *(add)* | *(add)* | `dev_mahir` | `docs/team/M3_mahir.md` | Analysis plan, statistics, results table, hypothesis tests, error analysis · k-NN · wav2vec 2.0 3 epochs · HuBERT Base |
+| M4 | Shafil Ahmed | *(add)* | Shafil10 | `dev_shafil` | `docs/team/M4_shafil.md` | Visualisation, demo app, poster, slides, video · SVM · untrained baseline · linear probe |
 
-- With an assistant that can run commands, a member only has to say who they are (*"I'm Mahir, do my part"*); the assistant follows the steps below. Without one, the member follows [CONTRIBUTING.md](CONTRIBUTING.md). The result is the same either way.
+- With an assistant that can run commands, a member only has to say who they are (*"I'm Mahir, do my part"*); the assistant follows the steps below. Without one, the member follows [CONTRIBUTING.md](docs/CONTRIBUTING.md). The result is the same either way.
 - When a git user.name or GitHub login marked *(add)* becomes known, M1 fills it in here.
 
 ## Start of every session
@@ -47,14 +48,14 @@ Repository: https://github.com/minhaz-42/Voices-Speech-Recognition-445
 3. Go to the member's branch and bring in everything already merged:
    - **M1:** `git checkout main && git pull --rebase origin main`.
    - **M2–M4:** `git fetch origin`, then `git checkout <branch>`. If the branch does not exist locally, use `git checkout -b <branch> origin/<branch>` when it is on GitHub, otherwise `git checkout -b <branch> origin/main`. Then `git pull origin <branch>` (when it is on GitHub) and `git merge origin/main`. Never rebase or force-push a branch that is on GitHub.
-4. Read `docs/STATUS.md`, the member's progress file and the task card of their next task.
+4. Read `docs/STATUS.md` and the member's page `docs/team/<slot>_<name>.md` (their task cards are at the end of it).
 5. Report briefly:
    - what is done and merged (who, when),
    - what is in progress or blocked,
    - this member's next tasks and whether their dependencies are ✅.
 6. When asked to continue or complete their part:
-   - Take their next task whose dependencies are all ✅, mark it 🟡 (members: in their progress file; M1: on the board), and do it as its task card says.
-   - A dependency is ✅ when the board on `main` says so, i.e. it is merged. A dependency owned by the **same member** also counts once their own progress file marks it ✅.
+   - Take their next task whose dependencies are all ✅, mark it 🟡 (members: on their page; M1: on the board), and do it as its task card says.
+   - A dependency is ✅ when the board on `main` says so, i.e. it is merged. A dependency owned by the **same member** also counts once their own page marks it ✅.
    - Continue task by task.
    - Never start a task whose dependencies are not ✅. Say which task and which member it is waiting for, and offer any unblocked task instead.
 
@@ -62,9 +63,9 @@ Repository: https://github.com/minhaz-42/Voices-Speech-Recognition-445
 
 - Stay inside the task's scope and meet its *done when* condition. Follow the task card and `docs/PROJECT_PLAN.md`.
 - **File ownership** (table in `docs/PROJECT_PLAN.md`, section *Team, Roles and File Ownership*). This is what keeps every branch free of merge conflicts.
-  - A member edits only the files their slot owns, their own tests (`tests/test_<their module>.py`), their own run folders in `results/`, their own figures in `images/`, and their own progress file.
-  - Only M1 edits `docs/STATUS.md`, `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `README.md`, `docs/PROJECT_PLAN.md`, `docs/tasks/`, `requirements.txt`, `configs/config.yaml` and the M1-owned modules.
-  - If a member needs a change in a file they don't own (a new package, a config key, a fix in shared code), write it under **Requests for the lead** in their progress file and keep working with CLI options or function arguments meanwhile.
+  - A member edits only the files their slot owns, their own tests (`tests/test_<their module>.py`), their own run folders in `results/`, their own figures in `images/`, and the status, faculty update, requests and handoff sections of their own page in `docs/team/`.
+  - Only M1 edits `docs/STATUS.md`, `AGENTS.md`, `CLAUDE.md`, `docs/CONTRIBUTING.md`, `docs/RUNS.md`, `README.md`, `docs/PROJECT_PLAN.md`, the *Task cards* sections of the pages in `docs/team/`, `requirements.txt`, `configs/config.yaml` and the M1-owned modules.
+  - If a member needs a change in a file they don't own (a new package, a config key, a fix in shared code), write it under **Requests for the lead** on their page and keep working with CLI options or function arguments meanwhile.
 - 👤 tasks need people (requesting dataset access, filming the demo video). Prepare everything (scripts, sheets, checklists), ask the member to do it, and wait for them to confirm.
 - **Never invent data or numbers.** Results stay TBD until measured; every reported number must come from a file in `results/`.
 - **Never invent references.** Every paper in a literature note has a DOI or arXiv link that was opened and checked.
@@ -82,7 +83,7 @@ Repository: https://github.com/minhaz-42/Voices-Speech-Recognition-445
 ### Members (M2–M4), on their own branch
 
 1. Run the tests: `python -m unittest discover -s tests -v`. Fix failures before committing.
-2. Update the progress file:
+2. Update the member's page (`docs/team/<slot>_<name>.md`):
    - task status (✅ + date for finished tasks),
    - a new **Handoff log** entry at the top: tasks done and ready to merge, files changed, key results, next steps, blockers,
    - the **Faculty update** for the current week: 3–5 plain-language bullets on what the member built or did, which files, and what it shows. Only finished work; numbers only from `results/`.
@@ -93,19 +94,19 @@ Repository: https://github.com/minhaz-42/Voices-Speech-Recognition-445
 ### M1 (lead), on `main`
 
 1. Run the tests.
-2. Update `docs/STATUS.md` (task status + *Done by · date*, **Current phase / Next up**, a new **Handoff Log** entry at the top) and the **Faculty update** in `docs/progress/M1_tanvir.md`.
+2. Update `docs/STATUS.md` (task status + *Done by · date*, **Current phase / Next up**, a new **Handoff Log** entry at the top) and the **Faculty update** in `docs/team/M1_tanvir.md`.
 3. Commit only the files you changed: one task per commit, message `T29: <summary>`.
 4. `git pull --rebase origin main`, then `git push origin main`. Push after every finished task.
 5. Tell the member, in one line, what to tell the next person.
 
 ### Merging a member's branch (M1, when told it is ready)
 
-Only merge a branch whose pull request is ready (not a draft) and whose tasks are ✅ in the progress file; draft pull requests are there so M1 can read work in progress.
+Only merge a branch whose pull request is ready (not a draft) and whose tasks are ✅ on the member's page; draft pull requests are there so M1 can read work in progress.
 
 1. `git fetch origin`, then review `git diff main...origin/<branch>`:
-   - only files the member owns (plus their tests, results, figures and progress file) changed,
+   - only files the member owns (plus their tests, results, figures and page) changed,
    - no audio, model weights, personal data or files over 1 MB,
-   - the progress file marks the tasks ✅.
+   - the member's page marks the tasks ✅.
 2. `git merge --no-ff --no-commit origin/<branch>`. If a file the member does not own changed, ask M1 before keeping it.
 3. Run the tests on the merged result. If they fail, `git merge --abort` and tell the member what to fix.
 4. Copy the member's finished tasks onto the board in `docs/STATUS.md` (✅, *Done by <name> · date*), update **Next up**, and add a Handoff Log entry *"Merged <branch>: T10, T33"*.
@@ -128,12 +129,12 @@ Small result tables (CSV/JSON under 1 MB) go in `results/` and **are** committed
 
 - Setup: `python3.11 -m venv venv && source venv/bin/activate && pip install -r requirements.txt`
 - Tests: `python -m unittest discover -s tests -v`
-- Run scripts in `support/` and `tools/` as modules from the repo root: `python -m support.audio clip.wav`, not `python support/audio.py`.
+- Run scripts in `support/` as modules from the repo root: `python -m support.audio clip.wav`, not `python support/audio.py`.
 - Print settings: `python -m support.config`
 - Pre-process one clip: `python -m support.audio clip.wav [--out clip_16k.wav] [--no-pad]`
 - Whisper on clips: `python -m support.whisper_asr clip.wav [...]`; on a clip list: `python -m support.whisper_asr --list clips.csv --out <folder>` (columns `utt_id, path, phrase_id[, speaker_id]`)
-- Run any model on TenVoices-FSC (get the audio, build, run, commit): [docs/tasks/RUNS.md](docs/tasks/RUNS.md)
-- Data preparation (M1): `python -m tools.select_subsets --dataset fsc` → `python -m tools.qc_report --dataset fsc` → `python -m support.dataset --dataset fsc --build` → `python -m tools.make_splits --dataset fsc`
+- Run any model on TenVoices-FSC (get the audio, build, run, commit): [docs/RUNS.md](docs/RUNS.md)
+- Data preparation (M1): `python -m support.select_subsets --dataset fsc` → `python -m support.qc_report --dataset fsc` → `python -m support.dataset --dataset fsc --build` → `python -m support.make_splits --dataset fsc`
 - Other self-supervised models: `python -m support.train_wav2vec2 --dataset fsc --model microsoft/wavlm-base-plus --epochs 15 --noise white` (run name from the model) · linear probe: `python -m support.classical --model logreg --features w2v2 --run w2v2_probe --dataset fsc`
 - Traditional model: `python -m support.classical --dataset fsc --model random_forest [--split all|folds|random|foldN]`
 - wav2vec 2.0: `python -m support.train_wav2vec2 --dataset fsc --epochs 15 --noise white [--split …] [--limit 40]`; baseline: `--untrained`; Colab: `notebooks/train_wav2vec2.ipynb`

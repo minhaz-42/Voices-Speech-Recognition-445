@@ -17,7 +17,7 @@ speakers of every fold. Every split is checked for leakage before it is written.
 
 Usage::
 
-    python -m tools.make_splits --dataset fsc
+    python -m support.make_splits --dataset fsc
 """
 
 from __future__ import annotations

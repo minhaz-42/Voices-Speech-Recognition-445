@@ -7,7 +7,7 @@ Data flow (docs/DATASETS.md):
    SHA-256, applies the shared pre-processing (mono, 16 kHz, trimmed, peak-normalised,
    not padded) and writes ``data/processed/<dataset>/<utt_id>.wav`` plus
    ``manifest.csv`` (gitignored: the licences forbid re-publishing audio).
-3. ``tools/make_splits.py`` writes ``data/splits/<dataset>/{random,fold1..fold5}.csv``
+3. ``support/make_splits.py`` writes ``data/splits/<dataset>/{random,fold1..fold5}.csv``
    (committed).
 4. :func:`load_split` joins a split with the manifest, so every model trains and
    tests on exactly the same clips.
@@ -78,7 +78,7 @@ def load_subset(dataset: str, cfg: dict[str, Any] | None = None) -> pd.DataFrame
     """
     path = _resolve(dataset_config(dataset, cfg)["subset"])
     if not path.exists():
-        raise FileNotFoundError(f"{path} does not exist yet: run tools/select_subsets.py (task T42)")
+        raise FileNotFoundError(f"{path} does not exist yet: run support/select_subsets.py (task T42)")
     subset = pd.read_csv(path, dtype=str, keep_default_na=False)
     missing = [c for c in SUBSET_COLUMNS if c not in subset.columns]
     if missing:
@@ -95,7 +95,7 @@ def load_labels(dataset: str, cfg: dict[str, Any] | None = None) -> pd.DataFrame
     """The dataset's phrase list (``phrase_id, category, text``), in file order."""
     path = _resolve(dataset_config(dataset, cfg)["phrases"])
     if not path.exists():
-        raise FileNotFoundError(f"{path} does not exist yet: run tools/select_subsets.py (task T42)")
+        raise FileNotFoundError(f"{path} does not exist yet: run support/select_subsets.py (task T42)")
     labels = pd.read_csv(path, dtype=str, keep_default_na=False)
     missing = {"phrase_id", "text"} - set(labels.columns)
     if missing:
@@ -198,7 +198,7 @@ def load_split(dataset: str, split: str, cfg: dict[str, Any] | None = None) -> d
     """
     path = split_path(dataset, split, cfg)
     if not path.exists():
-        raise FileNotFoundError(f"{path} does not exist: run python -m tools.make_splits --dataset {dataset}")
+        raise FileNotFoundError(f"{path} does not exist: run python -m support.make_splits --dataset {dataset}")
     parts = pd.read_csv(path, dtype=str, keep_default_na=False)
     manifest = load_manifest(dataset, cfg)
     joined = parts[["utt_id", "part"]].merge(manifest, on="utt_id", how="left", validate="one_to_one")

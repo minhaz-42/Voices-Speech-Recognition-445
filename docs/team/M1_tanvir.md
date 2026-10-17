@@ -1,14 +1,18 @@
-# M1 · Tanvir Ahmed (lead): Progress
+# M1 · Tanvir Ahmed (lead)
+
+**In short:** Prepares the data, writes the shared code (pre-processing, splits, training, evaluation, Whisper, inference), merges everyone's work and runs Random Forest, wav2vec 2.0 for 15 epochs (with and without noise) and Whisper.
+
+On this page: [My tasks](#my-tasks) · [Faculty update](#faculty-update) · [Task cards](#task-cards) · back to the [team index](README.md) or the [task board](../STATUS.md)
 
 | | |
 |---|---|
 | **Role** | Data pipeline and splits, shared training / evaluation code, Whisper pipeline, noise tests, inference, integration; reviews and merges every member's branch |
 | **Models** | Random Forest (traditional) · wav2vec 2.0 fine-tuned for 15 epochs with and without white noise · Whisper zero-shot |
 | **Branch** | `main` |
-| **Owns** | `main.py`, `support/config.py`, `support/audio.py`, `support/dataset.py`, `support/features.py`, `support/classical.py`, `support/evaluate.py`, `support/train_wav2vec2.py`, `support/noise.py`, `support/noise_test.py`, `support/device.py`, `support/inference.py`, `support/whisper_asr.py`, `tools/make_splits.py`, `configs/`, `notebooks/`, `requirements.txt`, `.github/`, `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `README.md`, `docs/STATUS.md`, `docs/PROJECT_PLAN.md`, `docs/tasks/`, `results/random_forest/`, `results/w2v2_15ep_noise/`, `results/w2v2_15ep/`, `results/whisper_small/`, `results/noise/` |
+| **Owns** | `main.py`, `support/config.py`, `support/audio.py`, `support/dataset.py`, `support/features.py`, `support/classical.py`, `support/evaluate.py`, `support/train_wav2vec2.py`, `support/noise.py`, `support/noise_test.py`, `support/device.py`, `support/inference.py`, `support/whisper_asr.py`, `support/make_splits.py`, `configs/`, `notebooks/`, `requirements.txt`, `.github/`, `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `README.md`, `docs/STATUS.md`, `docs/PROJECT_PLAN.md`, `docs/team/`, `results/random_forest/`, `results/w2v2_15ep_noise/`, `results/w2v2_15ep/`, `results/whisper_small/`, `results/noise/` |
 | **Report** | Abstract, sections 1, 2 (with Mahir's and Shafil's literature notes), 4 and 8; final integration |
 
-The task board and handoff log for M1 are in [STATUS.md](../STATUS.md). This file holds the faculty update.
+The task board and handoff log for M1 are in [STATUS.md](../STATUS.md). This page holds Tanvir's tasks, faculty update and task cards.
 
 ## My tasks
 
@@ -39,7 +43,7 @@ Plain-language summary for the weekly project update, newest week first. Only fi
 - Prepared the main dataset by code: selected **TenVoices-FSC** (10 speakers, 5 female and 5 male, × 50 commands × 2 takes = 1,000 clips) with a deterministic selection script, checked every clip (997 of 1,000 pass; 3 flagged for slight clipping), and made the random split and the 5 speaker-independent folds with automatic leakage checks.
 - Re-organised the team plan so that **no member waits for another**: every member can run their models today, and each member now also owns an extra model (WavLM, HuBERT, a linear probe on frozen wav2vec 2.0) to compare against our main approach. All analysis decisions were fixed in the plan before any model was trained.
 - Downloaded **Fluent Speech Commands** and checked it against its paper: 30,043 recordings from 97 speakers, with the train / validation / test lists matching the paper exactly (23,132 / 3,118 / 3,793 clips). Its source and checksum are recorded in `data/SOURCES.md`.
-- Built the complete training and evaluation pipeline, so every model can run the moment the two subsets are selected: processed audio and speaker-independent splits with automatic leakage checks (`support/dataset.py`, `tools/make_splits.py`); MFCC features and one shared runner for Random Forest, XGBoost, k-NN and SVM (`support/features.py`, `support/classical.py`); wav2vec 2.0 fine-tuning with white-noise augmentation and a Colab notebook (`support/train_wav2vec2.py`); Whisper on the same test clips with error rates per speaker and first language; one shared evaluation for every model (`support/evaluate.py`); noise tests at 20 / 10 / 5 dB (`support/noise_test.py`); and an inference tool for audio, video or the microphone (`main.py`). All of it is covered by 125 unit tests on synthetic audio, and a GitHub Actions workflow is set up to run them on every push.
+- Built the complete training and evaluation pipeline, so every model can run the moment the two subsets are selected: processed audio and speaker-independent splits with automatic leakage checks (`support/dataset.py`, `support/make_splits.py`); MFCC features and one shared runner for Random Forest, XGBoost, k-NN and SVM (`support/features.py`, `support/classical.py`); wav2vec 2.0 fine-tuning with white-noise augmentation and a Colab notebook (`support/train_wav2vec2.py`); Whisper on the same test clips with error rates per speaker and first language; one shared evaluation for every model (`support/evaluate.py`); noise tests at 20 / 10 / 5 dB (`support/noise_test.py`); and an inference tool for audio, video or the microphone (`main.py`). All of it is covered by 125 unit tests on synthetic audio, and a GitHub Actions workflow is set up to run them on every push.
 - Checked that real wav2vec 2.0 trains on real Fluent Speech Commands audio on a laptop GPU, and found and fixed a macOS crash that happens when PyTorch and XGBoost share one process.
 - Changed how we get our data: instead of recording volunteers, we build two 10-speaker datasets from published corpora with a fixed selection script. **TenVoices-FSC** (from Fluent Speech Commands) has 50 spoken smart-home commands such as "turn on the lights" or "turn up the heat in the kitchen", two takes each. **TenVoices-L2** (from L2-ARCTIC) has 50 sentences read by non-native English speakers, including all four Hindi speakers, the accent in that corpus closest to ours. I checked both papers and licences and wrote the dataset guide (`docs/DATASETS.md`) and the new plan (v3.0): every model is now tested on both datasets. The instructor confirmed that published datasets meet the brief.
 - Added a fourth pipeline to the project: **Whisper**, a general-purpose speech-to-text model, used without training. Its transcript is matched to the nearest of our 50 phrases, so it can be compared with the trained models, and it adds a new research question (RQ5) and hypothesis (H5), now about non-native speech.
@@ -51,3 +55,35 @@ Plain-language summary for the weekly project update, newest week first. Only fi
 - Built the shared audio pre-processing (`support/audio.py`). Any recording becomes mono 16 kHz audio with the silence trimmed, normalised to −1 dBFS and padded to 6 s, and speech is never cut. 23 unit tests.
 - Built the shared evaluation metrics (`support/metrics.py`): accuracy, macro and weighted F1, confusion matrices and per-speaker accuracy, with 14 tests checked against a hand-worked example.
 - Pinned the software environment (Python 3.11) so every member runs the same versions.
+
+## Task cards
+
+Written by Tanvir: exactly what to build, which files, which functions to use, the tests and when the task is done.
+
+<a id="t29"></a>
+### T29 · Whisper pipeline (M1 · Tanvir)
+
+| | |
+|---|---|
+| **Goal** | The fourth pipeline: general-purpose speech-to-text (Whisper) used zero-shot, with the transcript matched to the nearest of the 50 phrases, so it can be scored like every other model and also by word error rate |
+| **Depends on** | T01 ✅, T03 ✅ |
+| **You create** | `support/whisper_asr.py`, `tests/test_whisper_asr.py`, a `whisper` section in `configs/config.yaml` |
+| **Use** | `support/audio.py` (`load_audio(path, pad=False)`), `support/phrases.py` (`load_phrases`), `support/metrics.py` (`compute_metrics`), `transformers` (`WhisperProcessor`, `WhisperForConditionalGeneration`, `EnglishTextNormalizer`) |
+
+#### Build
+
+1. **Text normalisation** `normalize_text(text)`: Whisper's English text normaliser (case, punctuation, spelled-out numbers → digits), applied to transcripts and to the 50 phrase texts alike.
+2. **Error rates** `edit_distance(ref, hyp)` over token lists; `wer(ref, hyp)` (words) and `cer(ref, hyp)` (characters, spaces ignored), both on normalised text; corpus-level WER / CER = total edits / total reference length.
+3. **Phrase matching** `rank_phrases(transcript, phrases, top_k=5)`: every phrase scored by WER against the transcript (ties broken by CER), best first; `match_phrase(...)` returns the best phrase plus a `rejected` flag when its WER is above `whisper.reject_wer` (only used to show "not one of the 50 phrases" in the demo; accuracy always uses the best phrase).
+4. **Transcriber** `WhisperTranscriber(model_name, device, batch_size)`: loads the model once (CUDA > MPS > CPU, fp16 on CUDA), English transcription, batches of 16 kHz arrays.
+5. **Batch run** `run_clip_list(list_csv, out_dir, transcriber)`: reads `utt_id, path, phrase_id[, speaker_id]`, writes `predictions.csv` (`utt_id, speaker_id, label, pred, transcript, wer, cer, match_wer, rejected`) and `metrics.json` (`compute_metrics` + corpus WER / CER). T11's shared evaluation reads the same `utt_id, speaker_id, label, pred` columns, and T30 adds `--split`.
+6. **CLI:** `python -m support.whisper_asr clip.wav [...]` prints the transcript and the top-5 phrases; `--list clips.csv --out results/<run>/` runs a batch.
+
+#### Tests (offline, no model download)
+
+Hand-computed edit distances and WER / CER; normalisation makes "five hundred and fifty" match "550"; real phrase matching on the 50 phrases (exact, misheard names, a substituted word, a sentence that is not a phrase → rejected); the batch run with a fake transcriber writes the expected CSV and metrics.
+
+#### Done when
+
+- Tests pass; a smoke test on a few spoken phrases transcribes and matches them.
+

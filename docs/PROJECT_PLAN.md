@@ -25,7 +25,7 @@
 | Requirement in the brief | What we deliver | How it can be checked |
 |---|---|---|
 | "Create a speech recognition system" | A recogniser that tells which of 50 phrases was spoken, with an inference script (`main.py`) and a live demo (`app.py`) for the 50 spoken commands | Run the demo and say a command |
-| "Gather a dataset … from 10 speakers uttering diverse phrases or sentences" | We **gather** each dataset by selecting 10 speakers (5 female, 5 male) and 50 phrases or sentences from a published corpus with a fixed, scripted rule, then check every clip and write a datasheet | `data/subsets/`, `tools/select_subsets.py`, `data/README.md` |
+| "Gather a dataset … from 10 speakers uttering diverse phrases or sentences" | We **gather** each dataset by selecting 10 speakers (5 female, 5 male) and 50 phrases or sentences from a published corpus with a fixed, scripted rule, then check every clip and write a datasheet | `data/subsets/`, `support/select_subsets.py`, `data/README.md` |
 | "Showcase the effectiveness of your method using this dataset" | A comparison of traditional ML, an untrained baseline, fine-tuned wav2vec 2.0 and zero-shot Whisper, on seen and unseen speakers, in clean and noisy audio, on both datasets | `results/all_results.csv`, confusion matrices, statistics |
 
 **Interpretation**
@@ -100,7 +100,7 @@ Sources, licences, download steps, folder layout and the exact selection and QC 
 | Clips | up to **1,000** (the datasheet reports the exact number) | **500** |
 | Licence | CC BY-NC-ND 4.0, academic research only | CC BY-NC 4.0 |
 
-- **Selection is code, not hand-picking:** `tools/select_subsets.py` (task T42) applies the rules in DATASETS.md with seed 42 and writes the subset lists to `data/subsets/`, so anyone with the source data gets the same clips.
+- **Selection is code, not hand-picking:** `support/select_subsets.py` (task T42) applies the rules in DATASETS.md with seed 42 and writes the subset lists to `data/subsets/`, so anyone with the source data gets the same clips.
 - **Every clip is checked** (task T43): readable, 0.5–6 s after trimming, no clipping. A clip that fails is replaced by the next eligible one under the same rule.
 - **Hindi speakers.** L2-ARCTIC has no Bangla-L1 speakers; its four Hindi-L1 speakers are the closest accent to Bangladeshi English in the corpus, so all four are included.
 
@@ -264,15 +264,15 @@ Each member owns one traditional model, one or two deep-learning runs, a main wo
 | **M3** | Mahir Ahmed | k-NN | wav2vec 2.0 3 epochs; **HuBERT Base** 15 epochs + noise | Evaluation code: analysis plan, statistics, results table, hypothesis tests, error analysis |
 | **M4** | Shafil Ahmed | SVM | Untrained baseline; **linear probe** on frozen wav2vec 2.0 | Visualisation, demo app, poster, slides, video |
 
-**File ownership.** A member edits only their own files, so branches never conflict when they are merged. Changes needed in someone else's file go to that owner (for M1: under *Requests for the lead* in the member's progress file).
+**File ownership.** A member edits only their own files, so branches never conflict when they are merged. Changes needed in someone else's file go to that owner (for M1: under *Requests for the lead* on the member's page).
 
 | Slot | Owns |
 |---|---|
-| **M1** | `main.py`, `support/config.py`, `support/audio.py`, `support/dataset.py`, `support/features.py`, `support/classical.py`, `support/evaluate.py`, `support/train_wav2vec2.py`, `support/noise.py`, `support/noise_test.py`, `support/device.py`, `support/inference.py`, `support/whisper_asr.py`, `tools/select_subsets.py`, `tools/qc_report.py`, `tools/make_splits.py`, `data/subsets/`, `data/prompts/`, `data/splits/`, `data/SOURCES.md`, `configs/`, `notebooks/`, `requirements.txt`, `.github/`, `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `README.md`, `docs/STATUS.md`, `docs/PROJECT_PLAN.md`, `docs/tasks/`; runs `random_forest`, `w2v2_15ep_noise`, `w2v2_15ep`, `whisper_small`, `noise` |
+| **M1** | `main.py`, `support/config.py`, `support/audio.py`, `support/dataset.py`, `support/features.py`, `support/classical.py`, `support/evaluate.py`, `support/train_wav2vec2.py`, `support/noise.py`, `support/noise_test.py`, `support/device.py`, `support/inference.py`, `support/whisper_asr.py`, `support/select_subsets.py`, `support/qc_report.py`, `support/make_splits.py`, `data/subsets/`, `data/prompts/`, `data/splits/`, `data/SOURCES.md`, `configs/`, `notebooks/`, `requirements.txt`, `.github/`, `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `README.md`, `docs/STATUS.md`, `docs/PROJECT_PLAN.md`, `docs/team/`; runs `random_forest`, `w2v2_15ep_noise`, `w2v2_15ep`, `whisper_small`, `noise` |
 | **M2** | `support/phrases.py`, `data/README.md` (datasheet), `data/metadata/`, `data/listen_check_<dataset>.csv`, `docs/DATASETS.md`; runs `xgboost`, `w2v2_8ep_noise`, `wavlm_15ep_noise` |
 | **M3** | `support/metrics.py`, `support/stats.py`, `support/results_table.py`, `support/error_analysis.py`, `support/hypotheses.py`, `docs/ANALYSIS_PLAN.md`, `docs/literature/classical_and_evaluation.md`; runs `knn`, `w2v2_3ep`, `hubert_15ep_noise`; `results/all_results.csv`, `results/hypotheses.csv`, `results/errors/` |
-| **M4** | `support/visualization.py`, `app.py`, `poster/`, `images/poster.png`, slides and video in `others/`, `docs/literature/self_supervised_speech.md`, `support/embeddings.py`; runs `svm`, `w2v2_untrained`, `w2v2_probe` |
-| **Everyone** | Their own tests (`tests/test_<module>.py`), their run folders `results/<run>/`, their figures in `images/`, and their progress file `docs/progress/<slot>_<name>.md` |
+| **M4** | `support/visualization.py`, `app.py`, `others/poster.html`, `images/poster.png`, slides and video in `others/`, `docs/literature/self_supervised_speech.md`, `support/embeddings.py`; runs `svm`, `w2v2_untrained`, `w2v2_probe` |
+| **Everyone** | Their own tests (`tests/test_<module>.py`), their run folders `results/<run>/`, their figures in `images/`, and the status, faculty update, requests and handoff sections of their page `docs/team/<slot>_<name>.md` |
 
 Every model run goes through the shared scripts with its own settings, and saves its results in `results/<run-name>/<dataset>/`.
 
@@ -283,10 +283,9 @@ Every model run goes through the shared scripts with its own settings, and saves
 Every member works on their own branch, so nobody waits for anyone else. Members can work by hand or with any AI assistant (Claude Code, Codex, Cursor, Copilot, ChatGPT, Gemini, …):
 
 - **`AGENTS.md`** holds the project summary, the team, the session rules and the merge routine. Many coding assistants read it automatically; `CLAUDE.md` imports it for Claude Code.
-- **`CONTRIBUTING.md`** gives the same steps as plain commands, with a ready-made prompt for chat assistants.
-- **`docs/tasks/<ID>.md`** is the card for each task: files to create, functions to use, tests, *done when*.
+- **`docs/CONTRIBUTING.md`** gives the same steps as plain commands, with a ready-made prompt for chat assistants. **`docs/RUNS.md`** shows how to run any model.
+- **`docs/team/<slot>_<name>.md`** is each member's page: role, files, models, task status, faculty update, handoff log, and at the end the card for each of their tasks (files to create, functions to use, tests, *done when*).
 - **`docs/STATUS.md`** is the task board (owner, dependencies, status) and merge log. Only the lead edits it.
-- **`docs/progress/<slot>_<name>.md`** is each member's own page: task status, handoff log, requests for the lead and a plain-language **faculty update** for the weekly project meeting.
 
 | Member | Branch |
 |---|---|
@@ -298,7 +297,7 @@ Every member works on their own branch, so nobody waits for anyone else. Members
 A typical week:
 1. A **member** switches to their branch, merges in the latest `main` and checks what is done and what is next (an assistant does this when told who the member is).
 2. They take their next task whose dependencies are ✅ (merged, or finished earlier by the same member) and follow its task card.
-3. They run the tests, update the progress file and faculty update, commit, push the branch and open a pull request.
+3. They run the tests, update their page and faculty update, commit, push the branch and open a pull request.
 4. The **lead** reviews the branch, merges it into `main` and marks the tasks ✅ on the board. Everyone else picks the work up at the start of their next session.
 
 Rules:
@@ -309,7 +308,7 @@ Rules:
   - The task's *done when* condition is met and the tests pass.
   - Code is config-driven, uses relative paths and has docstrings.
   - No audio, models or personal data committed.
-  - The member's progress file is updated, including the faculty update.
+  - The member's page is updated, including the faculty update.
 
 ---
 
@@ -345,7 +344,7 @@ The tasks for each week, with owners and dependencies, are in [STATUS.md](STATUS
 | 7. Demo system | M4 |
 | 8. Conclusion and future work | M1 |
 
-- **Individual update report** (if the course requires it): 2 pages, weekly-log format (template: [templates/individual_update_report.md](templates/individual_update_report.md)), written from the member's progress file.
+- **Individual update report** (if the course requires it): 2 pages, weekly-log format (template: [team/individual_report_template.md](team/individual_report_template.md)), written from the member's page.
 - **Slides, results poster and 1-minute demo video:** M4.
 - **README** with final results, figures and a working how-to-run: M1.
 
@@ -374,8 +373,8 @@ The tasks for each week, with owners and dependencies, are in [STATUS.md](STATUS
 | Traditional models score near chance on unseen speakers | Medium | Low | Expected, and a finding in itself; the random split shows the contrast | M3 |
 | Similar commands (different wordings of one request) hurt accuracy | High | Low | That is intended; analysed in E6 rather than avoided | M3 |
 | Data leakage between train and test | Low | High | Split rules + unit tests | M1, M3 |
-| A member is unavailable and a handoff stalls | Medium | Medium | Every task is written up on the board and in the member's progress file, so the lead (or another member) can take it over; small tasks, frequent pushes | M1 |
-| Merge conflicts | Low | Medium | One branch per member, strict file ownership, per-member progress files; only the lead edits the shared docs and merges | M1 |
+| A member is unavailable and a handoff stalls | Medium | Medium | Every task is written up on the board and on the member's page, so the lead (or another member) can take it over; small tasks, frequent pushes | M1 |
+| Merge conflicts | Low | Medium | One branch per member, strict file ownership, per-member pages; only the lead edits the shared docs and merges | M1 |
 | Scope creep | Medium | Medium | MoSCoW list; feature freeze at the end of Week 5 | All |
 | Real deadlines differ from this plan | Medium | Medium | Stretch or compress the weeks; the order of work stays valid | All |
 

@@ -20,7 +20,7 @@ datasets:
     name: TenVoices-FSC
     source: Fluent Speech Commands
     raw: data/raw/fsc                          # extracted original archive (gitignored)
-    phrases: data/prompts/fsc_phrases.csv      # written by tools/select_subsets.py (T42)
+    phrases: data/prompts/fsc_phrases.csv      # written by support/select_subsets.py (T42)
     subset: data/subsets/fsc.csv
     speakers_per_gender: 5
     n_phrases: 50
@@ -36,7 +36,7 @@ datasets:
     takes: 1
     fold_by_l1: true      # the two test speakers of a fold share a first language; folds follow the order above
 
-# Random split and speaker-independent folds (tools/make_splits.py, T08)
+# Random split and speaker-independent folds (support/make_splits.py, T08)
 splits:
   test_size: 0.2          # random split: share of clips for testing (stratified by phrase)
   val_size: 0.1           # share of the training part held out for validation

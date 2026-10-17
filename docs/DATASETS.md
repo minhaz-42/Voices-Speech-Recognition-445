@@ -33,7 +33,7 @@ TenVoices is two 10-speaker subsets of published datasets, selected by script:
 
 ## 2. Subset selection (task T42)
 
-`tools/select_subsets.py` applies these rules with seed 42. Running it twice on the same source data gives the same files.
+`support/select_subsets.py` applies these rules with seed 42. Running it twice on the same source data gives the same files.
 
 **Common rules**
 - A clip is **eligible** when it is readable and is 0.5–6 s long after `support.audio` pre-processing without padding (silence trimmed).
@@ -65,7 +65,7 @@ TenVoices is two 10-speaker subsets of published datasets, selected by script:
 
 ## 3. Quality control (task T43)
 
-`tools/qc_report.py` checks every selected clip and writes `data/subsets/qc_<dataset>.csv` plus a short summary.
+`support/qc_report.py` checks every selected clip and writes `data/subsets/qc_<dataset>.csv` plus a short summary.
 
 | Check | Rule | On failure |
 |---|---|---|
@@ -86,7 +86,7 @@ TenVoices is two 10-speaker subsets of published datasets, selected by script:
 |---|---|
 | Subset lists, phrase lists, QC reports, `data/SOURCES.md`, the datasheet, the selection script, checksums, all results | The source audio and any processed copy of it |
 
-Anyone who wants to reproduce TenVoices downloads the two datasets from their publishers and runs `tools/select_subsets.py`.
+Anyone who wants to reproduce TenVoices downloads the two datasets from their publishers and runs `support/select_subsets.py`.
 
 ## 5. How to cite
 

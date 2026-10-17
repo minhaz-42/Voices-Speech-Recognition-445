@@ -17,7 +17,7 @@ from support import noise_test as nt
 from support.dataset import build_processed
 from support.noise import measured_snr_db
 from tests._synthetic import make_config, make_subset, write_audio
-from tools.make_splits import make_splits
+from support.make_splits import make_splits
 
 
 class TestNoisyClip(unittest.TestCase):

@@ -1,16 +1,16 @@
 # support/: the shared code
 
-All project code lives in this folder, plus `tools/` (command-line tools), `main.py` (inference), `tests/` (unit tests) and `configs/config.yaml` (every setting). Folders such as `results/` and `others/` only hold a README until the task that fills them is done.
+All project code lives in this folder, plus `main.py` (inference), `tests/` (unit tests) and `configs/config.yaml` (every setting). Folders such as `results/` and `others/` only hold a README until the task that fills them is done.
 
 Run modules from the repository root: `python -m support.<module>`. Run all tests with `python -m unittest discover -s tests -v`.
 
 ## How the pieces fit
 
 ```text
-data/raw/<dataset>/ ──(T42 select_subsets)──► data/subsets/<dataset>.csv
+data/raw/<dataset>/ ──(support/select_subsets.py, support/qc_report.py)──► data/subsets/<dataset>.csv
         │
         ▼  support/dataset.py --build            processed 16 kHz clips + manifest
-        ▼  tools/make_splits.py                  random split + 5 speaker-independent folds
+        ▼  support/make_splits.py                  random split + 5 speaker-independent folds
         ├─► support/classical.py   (features.py)  RF / XGBoost / k-NN / SVM
         ├─► support/train_wav2vec2.py (noise.py)  wav2vec 2.0, untrained or fine-tuned
         └─► support/whisper_asr.py               zero-shot Whisper + WER
@@ -27,8 +27,10 @@ data/raw/<dataset>/ ──(T42 select_subsets)──► data/subsets/<dataset>.c
 | [`audio.py`](audio.py) | Shared pre-processing: mono, 16 kHz, silence trimmed, peak at −1 dBFS, padded to 6 s and never cut | T01 · M1 | [`test_audio.py`](../tests/test_audio.py) |
 | [`metrics.py`](metrics.py) | Accuracy, macro / weighted F1, per-class report, confusion matrix, accuracy per speaker or group | T03 · M3 | [`test_metrics.py`](../tests/test_metrics.py) |
 | [`phrases.py`](phrases.py) | Loads and validates a phrase list (extended in T42 for the two datasets' lists) | M2 | [`test_phrases.py`](../tests/test_phrases.py) |
+| [`select_subsets.py`](select_subsets.py) | Picks the 10 speakers and 50 classes of a subset from the downloaded dataset by fixed rules (seed 42); writes the subset and phrase lists | T42 · M1 | [`test_select_subsets.py`](../tests/test_select_subsets.py) |
+| [`qc_report.py`](qc_report.py) | Quality check of every selected clip (format, length, clipping, silence, noise floor) and the listen-check sample | T43 · M1 | [`test_qc_report.py`](../tests/test_qc_report.py) |
 | [`dataset.py`](dataset.py) | Reads a subset list, builds the processed copies and manifest (with SHA-256 checks), serves the train / val / test clips of a split | T08 · M1 | [`test_dataset.py`](../tests/test_dataset.py) |
-| [`../tools/make_splits.py`](../tools/make_splits.py) | Random 80/20 split and 5 speaker-independent folds (1 F + 1 M test speakers; same first language on TenVoices-L2), checked for leakage | T08 · M1 | [`test_make_splits.py`](../tests/test_make_splits.py) |
+| [`make_splits.py`](make_splits.py) | Random 80/20 split and 5 speaker-independent folds (1 F + 1 M test speakers; same first language on TenVoices-L2), checked for leakage | T08 · M1 | [`test_make_splits.py`](../tests/test_make_splits.py) |
 | [`features.py`](features.py) | 78 MFCC summary features per clip (13 MFCC + Δ + ΔΔ, mean and std), cached per dataset | T11 · M1 | [`test_features.py`](../tests/test_features.py) |
 | [`evaluate.py`](evaluate.py) | One evaluation for every model: metrics, reports, per-speaker table, confusion matrix; pools the 5 folds | T11 · M1 | [`test_evaluate.py`](../tests/test_evaluate.py) |
 | [`classical.py`](classical.py) | Shared runner for Random Forest, XGBoost, k-NN and SVM: hyper-parameters chosen on validation only, scored once on test | T11 · M1 | [`test_classical.py`](../tests/test_classical.py) |
@@ -42,7 +44,7 @@ data/raw/<dataset>/ ──(T42 select_subsets)──► data/subsets/<dataset>.c
 
 Modules for later tasks appear here as they are merged; [docs/STATUS.md](../docs/STATUS.md) lists every task with its files.
 
-**macOS note:** PyTorch (wav2vec 2.0, Whisper) and XGBoost must not run in the same Python process: their OpenMP libraries clash and the process crashes or hangs. The command-line tools keep them apart, `classical.py` refuses XGBoost when PyTorch is loaded, and the PyTorch tests run in a child process (`tests/_wav2vec2_check.py`).
+**macOS note:** PyTorch (wav2vec 2.0, Whisper) and XGBoost must not run in the same Python process: their OpenMP libraries clash and the process crashes or hangs. The command-line scripts keep them apart, `classical.py` refuses XGBoost when PyTorch is loaded, and the PyTorch tests run in a child process (`tests/_wav2vec2_check.py`).
 
 ## Code that is not merged yet
 

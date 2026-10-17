@@ -20,8 +20,8 @@ Output (committed): ``data/prompts/<fsc_phrases|l2arctic_sentences>.csv`` and
 
 Usage::
 
-    python -m tools.select_subsets --dataset fsc
-    python -m tools.select_subsets --dataset all
+    python -m support.select_subsets --dataset fsc
+    python -m support.select_subsets --dataset all
 """
 
 from __future__ import annotations

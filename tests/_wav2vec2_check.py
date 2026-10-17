@@ -34,7 +34,7 @@ def main(out: Path) -> dict:
     from support import train_wav2vec2 as tw
     from support.dataset import build_processed, load_split
     from tests._synthetic import make_config, make_subset, write_audio
-    from tools.make_splits import make_splits
+    from support.make_splits import make_splits
 
     subset = write_audio(make_subset("fsc", n_phrases=3, takes=2), out / "raw")  # 60 clips
     cfg = make_config(out, "fsc", subset)

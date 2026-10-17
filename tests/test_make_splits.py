@@ -1,4 +1,4 @@
-"""Tests for tools/make_splits.py: split sizes, fold design and leakage guards."""
+"""Tests for support/make_splits.py: split sizes, fold design and leakage guards."""
 
 import tempfile
 import unittest
@@ -7,7 +7,7 @@ from pathlib import Path
 import pandas as pd
 
 from tests._synthetic import L1_ORDER, L2_SPEAKERS, make_config, make_subset
-from tools import make_splits as ms
+from support import make_splits as ms
 
 
 def speakers_of(subset):

@@ -1,4 +1,4 @@
-"""Tests for tools/qc_report.py on synthetic clips with known problems."""
+"""Tests for support/qc_report.py on synthetic clips with known problems."""
 
 import tempfile
 import unittest
@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 
 from tests.test_select_subsets import base_config, write_tone
-from tools import qc_report as qc
+from support import qc_report as qc
 
 
 class TestQcReport(unittest.TestCase):

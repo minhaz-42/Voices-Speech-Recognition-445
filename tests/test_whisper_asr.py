@@ -177,7 +177,7 @@ class TestRunSplits(unittest.TestCase):
 
         from support.dataset import build_processed
         from tests._synthetic import make_config, make_subset, write_audio
-        from tools.make_splits import make_splits
+        from support.make_splits import make_splits
 
         with tempfile.TemporaryDirectory() as tmp:
             tmp = Path(tmp)

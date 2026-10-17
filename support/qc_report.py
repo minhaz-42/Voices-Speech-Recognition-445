@@ -18,7 +18,7 @@ Output (committed): ``data/subsets/qc_<dataset>.csv`` and ``qc_<dataset>_summary
 
 Usage::
 
-    python -m tools.qc_report --dataset fsc
+    python -m support.qc_report --dataset fsc
 """
 
 from __future__ import annotations

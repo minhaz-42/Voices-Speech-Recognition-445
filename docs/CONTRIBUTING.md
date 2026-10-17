@@ -1,12 +1,12 @@
 # Contributing to TenVoices
 
-How to do your tasks **by hand or with any AI assistant**. The rules are in [AGENTS.md](AGENTS.md); this page gives the exact steps. Examples use Mahir (M3, branch `dev_mahir`); replace them with your own slot, name and branch:
+How to do your tasks **by hand or with any AI assistant**. The rules are in [AGENTS.md](../AGENTS.md); this page gives the exact steps. Examples use Mahir (M3, branch `dev_mahir`); replace them with your own slot, name and branch:
 
-| Slot | Member | Branch | Progress file |
+| Slot | Member | Branch | Your page |
 |---|---|---|---|
-| M2 | Rabbi | `dev_rabbi` | `docs/progress/M2_rabbi.md` |
-| M3 | Mahir | `dev_mahir` | `docs/progress/M3_mahir.md` |
-| M4 | Shafil | `dev_shafil` | `docs/progress/M4_shafil.md` |
+| M2 | Rabbi | `dev_rabbi` | `docs/team/M2_rabbi.md` |
+| M3 | Mahir | `dev_mahir` | `docs/team/M3_mahir.md` |
+| M4 | Shafil | `dev_shafil` | `docs/team/M4_shafil.md` |
 
 ## 1. One-time setup
 
@@ -34,13 +34,12 @@ git merge origin/main       # brings in everything Tanvir has merged
 ```
 
 Then read:
-- [docs/STATUS.md](docs/STATUS.md): what is merged and what each task depends on,
-- your progress file: your tasks and their status,
-- the task card `docs/tasks/<ID>.md` of your next task.
+- [docs/STATUS.md](STATUS.md): what is merged and what each task depends on,
+- your page `docs/team/<slot>_<name>.md`: your tasks and their status at the top, and the task card of your next task in the *Task cards* section at the end.
 
-To run a model, [docs/tasks/RUNS.md](docs/tasks/RUNS.md) shows how to get the audio and run it, locally or on Colab.
+To run a model, [docs/RUNS.md](RUNS.md) shows how to get the audio and run it, locally or on Colab.
 
-Take your next task whose dependencies are ✅ (merged into `main`, or your own task that you already finished). Mark it 🟡 in your progress file.
+Take your next task whose dependencies are ✅ (merged into `main`, or your own task that you already finished). Mark it 🟡 on your page.
 
 ## 3. Do the task
 
@@ -48,7 +47,7 @@ Whatever tool you use, the task card tells you which files to create, which exis
 
 **A. An assistant that works inside the repository** (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, …). Most of them read `AGENTS.md` automatically; if yours does not, tell it to read it first. Then say:
 
-> I'm Mahir (M3). Do task T33 following AGENTS.md and docs/tasks/T33.md.
+> I'm Mahir (M3). Do task T33 following AGENTS.md and the T33 card on my page, docs/team/M3_mahir.md.
 
 **B. A chat assistant** (ChatGPT, Gemini, Claude.ai, Copilot chat, …). It cannot see your files, so give it the context. Start a new chat with this prompt, and paste (or attach) the files listed under **Give your assistant** in the task card:
 
@@ -65,7 +64,7 @@ Follow the project rules (AGENTS.md) and the task card below exactly.
 (paste AGENTS.md)
 
 === Task card ===
-(paste docs/tasks/T33.md)
+(paste the T33 card from the Task cards section of docs/team/M3_mahir.md)
 
 === Existing files ===
 (paste each file listed under "Give your assistant")
@@ -85,9 +84,9 @@ python -m unittest discover -s tests -v
 
 All tests must pass, not only yours.
 
-## 5. Update your progress file
+## 5. Update your page
 
-In `docs/progress/<slot>_<name>.md`:
+In `docs/team/<slot>_<name>.md`:
 - **My tasks:** set the task to ✅ with the date.
 - **Faculty update:** under `### Week of <date>`, 3–5 plain-language bullets: what you built or did, which files, and what it shows. Only finished work; numbers only from `results/`.
 - **Handoff log:** a new entry at the top:
@@ -106,7 +105,7 @@ In `docs/progress/<slot>_<name>.md`:
 
 ```bash
 git status                                   # only your own files should be listed
-git add support/stats.py tests/test_stats.py docs/progress/M3_mahir.md
+git add support/stats.py tests/test_stats.py docs/team/M3_mahir.md
 git commit -m "T33: add bootstrap CI, McNemar and Wilcoxon tests"
 git push origin dev_mahir                    # first push: git push -u origin dev_mahir
 ```

@@ -4,7 +4,7 @@ Every run task (T12–T19, T44–T46) uses the shared code and the merged subset
 
 ## 1. Get the audio (once)
 
-The audio is never in git. Either copy the archive from the team Drive (`TenVoices/raw/fsc/fluent.tar.gz`) or download the same file yourself (URL and SHA-256 in [data/SOURCES.md](../../data/SOURCES.md)):
+The audio is never in git. Either copy the archive from the team Drive (`TenVoices/raw/fsc/fluent.tar.gz`) or download the same file yourself (URL and SHA-256 in [data/SOURCES.md](../data/SOURCES.md)):
 
 ```bash
 mkdir -p data/raw/fsc
@@ -28,7 +28,7 @@ This checks every one of the 1,000 selected clips against its SHA-256 in `data/s
 | Kind | Command | Where |
 |---|---|---|
 | Traditional model | `python -m support.classical --model <random_forest\|xgboost\|knn\|svm> --dataset fsc` | any laptop, minutes |
-| wav2vec 2.0 family | `python -m support.train_wav2vec2 --dataset fsc --epochs <N> [--noise white] [--model <checkpoint>]` | a GPU: Colab with [notebooks/train_wav2vec2.ipynb](../../notebooks/train_wav2vec2.ipynb), or an Apple Silicon Mac (slower) |
+| wav2vec 2.0 family | `python -m support.train_wav2vec2 --dataset fsc --epochs <N> [--noise white] [--model <checkpoint>]` | a GPU: Colab with [notebooks/train_wav2vec2.ipynb](../notebooks/train_wav2vec2.ipynb), or an Apple Silicon Mac (slower) |
 | Untrained baseline | `python -m support.train_wav2vec2 --dataset fsc --untrained` | any laptop |
 
 - By default a run covers the random split and all 5 folds (`--split all`). Try a quick check first: `--split random --epochs 1 --limit 40`.
@@ -38,6 +38,6 @@ This checks every one of the 1,000 selected clips against its SHA-256 in `data/s
 
 - `results/<run>/fsc/` (CSV and JSON, small) and `images/confusion/<run>_fsc_*.png`.
 - **Not** `outputs/` (features, models: gitignored). Upload trained wav2vec 2.0-family models to the Drive (`TenVoices/models/<run>/`), as the Colab notebook does.
-- In your progress file, the faculty update quotes the numbers from `results/<run>/fsc/summary.json` (`random.accuracy` and `folds.pooled.accuracy`), never from memory.
+- On your page, the faculty update quotes the numbers from `results/<run>/fsc/summary.json` (`random.accuracy` and `folds.pooled.accuracy`), never from memory.
 
 TenVoices-L2 runs use the same commands with `--dataset l2arctic`; M1 runs them for every merged model in T47.

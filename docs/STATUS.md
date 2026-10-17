@@ -1,6 +1,6 @@
 # 📋 TenVoices: Status Board
 
-> **Source of truth for what is merged into `main`.** Only M1 edits this file; members record their progress in `docs/progress/<slot>_<name>.md` and M1 copies it here when merging (rules in [AGENTS.md](../AGENTS.md)). Every task has a card in [docs/tasks/](tasks/).
+> **Source of truth for what is merged into `main`.** Only M1 edits this file; members record their progress on their own page in [docs/team/](team/) and M1 copies it here when merging (rules in [AGENTS.md](../AGENTS.md)). Every task's card is at the end of its owner's page.
 > **Legend:** ⬜ to do · 🟡 in progress · ✅ done and merged · ✖ cancelled · 👤 needs a person (dataset access, listening, video)
 
 **Nobody waits for anyone.** Every member task below depends only on work that is already merged (shared code ✅, TenVoices-FSC subsets and splits ✅) or on the member's own earlier tasks. Work that needs everyone's results is split: members write and test the code; the lead runs it once on all merged results at the end (T24). TenVoices-L2 is prepared and run by the lead (T47).
@@ -13,10 +13,10 @@
 
 | Slot | Member | Branch | Traditional model | Deep-learning runs | Main workstream |
 |---|---|---|---|---|---|
-| M1 | Tanvir Ahmed (lead, merges) | `main` | Random Forest | wav2vec 2.0 15 epochs with and without noise, Whisper zero-shot | Data preparation, shared code, Whisper, noise tests, inference, TenVoices-L2, final aggregation |
-| M2 | Md. Shahriar Rakib Rabbi | `dev_rabbi` | XGBoost | wav2vec 2.0 8 epochs + noise, **WavLM Base+** 15 epochs + noise | Datasheet, listen-check, dataset statistics, subset release |
-| M3 | Mahir Ahmed | `dev_mahir` | k-NN | wav2vec 2.0 3 epochs, **HuBERT Base** 15 epochs + noise | Analysis plan, statistics, results table, hypothesis tests, error analysis |
-| M4 | Shafil Ahmed | `dev_shafil` | SVM | Untrained baseline, **linear probe** on frozen wav2vec 2.0 | Visualisation, demo app, poster, slides, video |
+| M1 | [Tanvir Ahmed](team/M1_tanvir.md) (lead, merges) | `main` | Random Forest | wav2vec 2.0 15 epochs with and without noise, Whisper zero-shot | Data preparation, shared code, Whisper, noise tests, inference, TenVoices-L2, final aggregation |
+| M2 | [Md. Shahriar Rakib Rabbi](team/M2_rabbi.md) | `dev_rabbi` | XGBoost | wav2vec 2.0 8 epochs + noise, **WavLM Base+** 15 epochs + noise | Datasheet, listen-check, dataset statistics, subset release |
+| M3 | [Mahir Ahmed](team/M3_mahir.md) | `dev_mahir` | k-NN | wav2vec 2.0 3 epochs, **HuBERT Base** 15 epochs + noise | Analysis plan, statistics, results table, hypothesis tests, error analysis |
+| M4 | [Shafil Ahmed](team/M4_shafil.md) | `dev_shafil` | SVM | Untrained baseline, **linear probe** on frozen wav2vec 2.0 | Visualisation, demo app, poster, slides, video |
 
 ## 💬 How to work
 
@@ -24,15 +24,15 @@ Use whatever you have: Claude Code, another AI assistant, or no assistant at all
 
 **Members (M2–M4)**
 - **With an assistant that works in the repository** (Claude Code, Codex, Cursor, Copilot, Gemini CLI, …): say *"I'm Mahir (M3). What is completed? Then complete my next tasks."* It follows [AGENTS.md](../AGENTS.md), works on your branch and, when you say *"Wrap up and push"*, updates your progress file and faculty update, commits, pushes and opens a pull request.
-- **With a chat assistant (ChatGPT, Gemini, …) or by hand:** follow [CONTRIBUTING.md](../CONTRIBUTING.md). It has the git commands, a ready-made prompt, and the list of files to give the assistant for each task card.
-- **Running a model:** [docs/tasks/RUNS.md](tasks/RUNS.md) shows how to get the audio and run any model on TenVoices-FSC, locally or on Colab.
+- **With a chat assistant (ChatGPT, Gemini, …) or by hand:** follow [CONTRIBUTING.md](CONTRIBUTING.md). It has the git commands, a ready-made prompt, and the list of files to give the assistant for each task card.
+- **Running a model:** [docs/RUNS.md](RUNS.md) shows how to get the audio and run any model on TenVoices-FSC, locally or on Colab.
 - Either way, tell Tanvir which tasks are ready to merge.
 
 **Lead (M1)**
 1. Your own tasks work the same way, directly on `main`.
 2. When a member's branch is ready: *"Merge dev_mahir."* The merge routine is in [AGENTS.md](../AGENTS.md).
 
-A task is ✅ here once it is merged. Finished work that is not merged yet shows ✅ in the member's progress file, and counts as done for that member's own next tasks.
+A task is ✅ here once it is merged. Finished work that is not merged yet shows ✅ on the member's page, and counts as done for that member's own next tasks.
 
 ## 🗂️ Task Board
 
@@ -105,8 +105,8 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 | T03 | `support/metrics.py` + tests | M3 slot | Tanvir · 2026-10-04 |
 | T29 | Whisper pipeline code + tests | M1 | Tanvir · 2026-10-17 |
 | T41 | Fluent Speech Commands downloaded and checked against the paper (`data/SOURCES.md`); L2-ARCTIC moved to T47 | M1 | Tanvir · 2026-10-17 |
-| T42 | `tools/select_subsets.py`; **TenVoices-FSC** selected: 10 speakers (5 F, 5 M) × 50 phrases × 2 takes = 1,000 clips | M1 | Tanvir · 2026-10-17 |
-| T43 | `tools/qc_report.py`; TenVoices-FSC: 997 / 1,000 clips pass, 3 flagged for clipping | M1 | Tanvir · 2026-10-17 |
+| T42 | `support/select_subsets.py`; **TenVoices-FSC** selected: 10 speakers (5 F, 5 M) × 50 phrases × 2 takes = 1,000 clips | M1 | Tanvir · 2026-10-17 |
+| T43 | `support/qc_report.py`; TenVoices-FSC: 997 / 1,000 clips pass, 3 flagged for clipping | M1 | Tanvir · 2026-10-17 |
 | T08 | Processed copies, manifest, random split + 5 speaker-independent folds of TenVoices-FSC, leakage tests | M1 | Tanvir · 2026-10-17 |
 
 ### ✖ Cancelled
@@ -117,10 +117,20 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 
 ## 📝 Handoff Log (newest first)
 
+### 2026-10-17 · Tanvir Ahmed (M1) · T00 (simpler layout, one page per member)
+
+- **Done:** the repository is easier to read and every member's work is in one place.
+  - **One page per member** in `docs/team/` (`M1_tanvir.md`, `M2_rabbi.md`, `M3_mahir.md`, `M4_shafil.md`): role, files, models, task status, faculty update, requests, handoff log, and at the end that member's **task cards**. The 25 separate cards in `docs/tasks/` and the 4 pages in `docs/progress/` are merged into these pages; nothing was dropped.
+  - **All code in `support/`:** `tools/select_subsets.py`, `tools/qc_report.py` and `tools/make_splits.py` moved there; run them as `python -m support.select_subsets` etc.
+  - `CONTRIBUTING.md` and `tasks/RUNS.md` moved to `docs/`; the poster source moved to `others/poster.html`; the report template to `docs/team/individual_report_template.md`.
+  - **README:** a *Team: Who Does What* table (responsibilities, models, done so far, next, link to each page) and the first measured results on TenVoices-FSC (Random Forest, Whisper), taken from `results/`.
+- **Files:** moved as above; links and module paths updated in `AGENTS.md`, `README.md`, `docs/`, `support/`, `tests/`, `configs/config.yaml`. All tests pass.
+- **For members:** after `git merge origin/main`, your page is `docs/team/<slot>_<name>.md`; your task cards are at the end of it.
+
 ### 2026-10-17 · Tanvir Ahmed (M1) · T00 (no member waits for another), T42, T43, T08
 
 - **Why:** members' tasks waited for each other (data selection by M2, the analysis plan by M3, everyone's runs for the results table and figures). Now every member task depends only on merged work or on the member's own tasks.
-- **Data preparation done by M1 and merged:** **TenVoices-FSC** selected by `tools/select_subsets.py` (10 speakers, 5 F and 5 M, × 50 phrases × 2 takes = **1,000 clips**, 24 min of speech; 29,980 of 30,043 source clips eligible), QC by `tools/qc_report.py` (**997 / 1,000 pass**, 3 flagged for clipping), and the random split (720 / 80 / 200) plus 5 speaker-independent folds in `data/splits/fsc/`. Members get the audio themselves ([docs/tasks/RUNS.md](tasks/RUNS.md)); `support/dataset.py --build` checks every clip's SHA-256. TenVoices-L2 moves to M1 (T47, needs the form 👤).
+- **Data preparation done by M1 and merged:** **TenVoices-FSC** selected by `support/select_subsets.py` (10 speakers, 5 F and 5 M, × 50 phrases × 2 takes = **1,000 clips**, 24 min of speech; 29,980 of 30,043 source clips eligible), QC by `support/qc_report.py` (**997 / 1,000 pass**, 3 flagged for clipping), and the random split (720 / 80 / 200) plus 5 speaker-independent folds in `data/splits/fsc/`. Members get the audio themselves ([docs/RUNS.md](RUNS.md)); `support/dataset.py --build` checks every clip's SHA-256. TenVoices-L2 moves to M1 (T47, needs the form 👤).
 - **Analysis decisions frozen** in `docs/PROJECT_PLAN.md` before any model was trained (pooled folds, which runs H1–H4 compare, the H5 test, no multiple-comparison correction, bootstrap settings), so T10 no longer gates any run.
 - **New independent model per member (exploratory, E10):** WavLM Base+ (M2, T44), HuBERT Base (M3, T45), linear probe on frozen wav2vec 2.0 (M4, T46). The shared code supports them already (`--model …`; `--features w2v2 --model logreg`).
 - **Aggregation split:** M3 writes and tests the results table (T20), error analysis (T34) and hypothesis tests (T40); M4 writes the figures command and connects the demo to their own SVM (T23); M1 runs them on all merged results at the end (T24).
@@ -130,21 +140,21 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 ### 2026-10-17 · Tanvir Ahmed (M1) · T08, T11, T15, T21, T22, T30 (code)
 
 - **Done:** all of M1's pipeline code, each with unit tests on synthetic audio, so the experiments can start as soon as the subsets exist. The tasks stay 🟡 because their runs wait for data:
-  - **T08** `support/dataset.py` (SHA-256-checked processed copies + manifest, split loader) and `tools/make_splits.py` (random 80/20 split and 5 speaker-independent folds, 1 F + 1 M test speakers, same first language on TenVoices-L2, leakage checks).
+  - **T08** `support/dataset.py` (SHA-256-checked processed copies + manifest, split loader) and `support/make_splits.py` (random 80/20 split and 5 speaker-independent folds, 1 F + 1 M test speakers, same first language on TenVoices-L2, leakage checks).
   - **T11** `support/features.py` (78 MFCC statistics, cached), `support/evaluate.py` (one evaluation for every model; folds pooled, mean ± std) and `support/classical.py` (Random Forest / XGBoost / k-NN / SVM, grid on validation only). The grids are in `configs/config.yaml`.
   - **T15** `support/train_wav2vec2.py` (`--epochs`, `--noise white`, `--untrained`; best epoch on validation; fp16 on CUDA), `support/noise.py`, `support/device.py` and `notebooks/train_wav2vec2.ipynb` (Colab). One real training step of `facebook/wav2vec2-base` on real FSC clips runs on Apple MPS.
   - **T22** `support/inference.py` + `main.py` (audio, video via ffmpeg, microphone; top-5; `--asr whisper`; `--benchmark`) and `.github/workflows/tests.yml`. GitHub did not start the first run: *"account is locked due to a billing issue"* (fix in the GitHub account settings).
   - **T30** `support/whisper_asr.py --dataset … --split …` (each clip transcribed once; WER per speaker and first language for H5); the tests use a fixture copy of the old phrase list.
   - **T21** `support/noise_test.py` (the same white noise for every model, per clip and SNR, for paired tests of H3).
 - **Found and fixed:** on macOS, PyTorch and XGBoost in one Python process crash (XGBoost after PyTorch) or hang (the other way round). The tools keep them in separate processes, `classical.py` refuses XGBoost when PyTorch is loaded, and the PyTorch tests run in a child process (`tests/_wav2vec2_check.py`). Full suite: **125 tests**, about 10 s.
-- **Files:** `support/{dataset,features,evaluate,classical,noise,device,train_wav2vec2,inference,noise_test,whisper_asr}.py`, `tools/make_splits.py`, `main.py`, `notebooks/train_wav2vec2.ipynb`, `.github/workflows/tests.yml`, `configs/config.yaml`, `tests/` (+ `_synthetic.py`, `_wav2vec2_check.py`, `fixtures/`), `support/README.md`, `AGENTS.md`, `README.md`, `docs/progress/M1_tanvir.md`.
+- **Files:** `support/{dataset,features,evaluate,classical,noise,device,train_wav2vec2,inference,noise_test,whisper_asr}.py`, `support/make_splits.py`, `main.py`, `notebooks/train_wav2vec2.ipynb`, `.github/workflows/tests.yml`, `configs/config.yaml`, `tests/` (+ `_synthetic.py`, `_wav2vec2_check.py`, `fixtures/`), `support/README.md`, `AGENTS.md`, `README.md`, `docs/team/M1_tanvir.md`.
 - **For others:** M2's `select_subsets.py` must write `data/subsets/<dataset>.csv` with the columns in DATASETS.md §2. `support/dataset.py` checks them. M4's demo can call `support.inference.load_recognizer(path).predict(samples, rate)`. M3's `stats.py` can pair noise-test predictions by `utt_id` and `snr_db`.
 - **Next (M1):** once T43 and T10 are merged: build the processed copies and splits (T08), then the Random Forest (T11), then wav2vec 2.0 (T15 / T19) and Whisper (T30).
 
 ### 2026-10-17 · Tanvir Ahmed (M1) · T00 (instructor confirmation)
 
 - **Decision:** the instructor confirmed that the brief needs the data, not our own recordings: published datasets are acceptable. The two-dataset plan stands as it is.
-- **Files:** `docs/PROJECT_PLAN.md` (open decision closed, risk removed), `docs/STATUS.md`, `docs/progress/M1_tanvir.md`.
+- **Files:** `docs/PROJECT_PLAN.md` (open decision closed, risk removed), `docs/STATUS.md`, `docs/team/M1_tanvir.md`.
 - **Blockers:** none.
 
 ### 2026-10-17 · Tanvir Ahmed (M1) · T41 (Fluent Speech Commands)
@@ -164,7 +174,7 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 - **Decision:** we no longer record our own speakers. TenVoices is now two 10-speaker subsets of published datasets, selected by script: **TenVoices-FSC** (main; Fluent Speech Commands, 10 speakers × 50 spoken commands × 2 takes, up to 1,000 clips, CC BY-NC-ND 4.0) and **TenVoices-L2** (accents; L2-ARCTIC v5.0, the 4 Hindi speakers plus a female and a male each from Arabic, Mandarin and Spanish × 50 shared sentences, 500 clips, CC BY-NC 4.0). Both papers and licences were checked on their official pages.
 - **What changes:** every model now runs on both datasets with the same splits protocol (random 80/20 + speaker-independent 5 folds). On TenVoices-L2, each fold's test pair shares a first language, so folds 3–5 test accents never heard in training. H3 uses synthetic white noise only (no real noisy takes). **H5 is redrafted:** Whisper's per-speaker WER is higher on TenVoices-L2 than on TenVoices-FSC; T10 fixes the exact wording. New RQ6 (do the findings hold on both datasets?) and E9 (accents).
 - **Tasks:** recording tasks cancelled (T02, T04–T07, T31, T32; see the table above). New M2 tasks **T41** (get both datasets, start now), **T42** (selection script), **T43** (QC). T08, T09, T21, T26, T30 reworded. The demo (T36) will show the 50 TenVoices-FSC commands.
-- **Files:** `docs/PROJECT_PLAN.md` (v3.0), `docs/DATASETS.md` (new, replaces the recording protocol), `docs/DATA_COLLECTION_PROTOCOL.md` and `docs/consent_form.md` (removed), `docs/STATUS.md`, `AGENTS.md`, `CONTRIBUTING.md`, `README.md`, `configs/config.yaml` (new `datasets` section), `tools/__init__.py`, `data/README.md`, `docs/tasks/` (T02 removed; T41, T42 new; T10, T33, T35, T36, T39 updated), `docs/progress/` (lead notes and task tables).
+- **Files:** `docs/PROJECT_PLAN.md` (v3.0), `docs/DATASETS.md` (new, replaces the recording protocol), `docs/DATA_COLLECTION_PROTOCOL.md` and `docs/consent_form.md` (removed), `docs/STATUS.md`, `AGENTS.md`, `CONTRIBUTING.md`, `README.md`, `configs/config.yaml` (new `datasets` section), `tools/__init__.py`, `data/README.md`, `docs/team/` (T02 removed; T41, T42 new; T10, T33, T35, T36, T39 updated), `docs/team/` (lead notes and task tables).
 - **Kept on purpose:** `data/prompts/phrases.csv` and `support/phrases.py` stay until T42 replaces them, because `tests/test_whisper_asr.py` still uses the old list (moved to a fixture in T30).
 - **Next:** Rabbi starts T41 today. Tanvir asks the instructor whether published-data subsets satisfy "gather a dataset".
 - **Blockers:** the Fluent Speech Commands access link could not be tested; DATASETS.md lists public copies and how to check them against the paper.
@@ -173,24 +183,24 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 
 - **Done:** `support/whisper_asr.py`. Whisper's English normaliser on both sides, with neighbouring digit groups joined, leading zeros dropped and `6.30` read as a time, so spoken and written numbers, times and phone numbers compare equal. Also WER / CER per clip and per corpus, nearest-phrase matching (WER, ties by CER) with a demo-only rejection threshold, a batched `WhisperTranscriber` (CUDA > MPS > CPU), and `run_clip_list` writing `predictions.csv` (`utt_id, speaker_id, label, pred, transcript, wer, cer, match_wer, rejected`) + `metrics.json`. New `whisper` section in `configs/config.yaml`. 18 offline tests (no model download); all 61 tests pass.
 - **Smoke test (not a result):** 16 clips of 8 phrases spoken by two macOS text-to-speech voices (Indian and British English), kept outside the repo. `openai/whisper-small` ran on MPS and matched every clip to the right phrase, while misspelling local names (Mohakhali, Sylhet, Sreemangal). That is what H5 tests on real recordings.
-- **Files:** `support/whisper_asr.py`, `tests/test_whisper_asr.py`, `configs/config.yaml`, `AGENTS.md`, `README.md`, `docs/STATUS.md`, `docs/progress/M1_tanvir.md`.
+- **Files:** `support/whisper_asr.py`, `tests/test_whisper_asr.py`, `configs/config.yaml`, `AGENTS.md`, `README.md`, `docs/STATUS.md`, `docs/team/M1_tanvir.md`.
 - **Notes:** T11's `support/evaluate.py` should read the same `utt_id, speaker_id, label, pred` columns. T30 adds `--split`. The first run downloads the model (~1 GB) into the Hugging Face cache.
 - **Next:** M1 has no other unblocked task until T02 → T04; merge member branches as they come in.
 
 ### 2026-10-17 · Tanvir Ahmed (M1) · T00 (any assistant or by hand)
 
-- **Done:** members no longer need Claude. The rules moved to **`AGENTS.md`**, which many coding assistants read automatically; `CLAUDE.md` now only imports it. **`CONTRIBUTING.md`** gives the whole workflow as plain git commands, with a ready-made prompt for chat assistants. **Task cards** in `docs/tasks/` (T02, T10, T29, T33, T35–T39) say exactly which files to create, which existing functions to use, what to test and when a task is done, and list the files to paste into a chat assistant.
-- **Files:** `AGENTS.md` (new), `CLAUDE.md`, `CONTRIBUTING.md` (new), `docs/tasks/` (new), `docs/STATUS.md`, `docs/PROJECT_PLAN.md`, `README.md`, `docs/progress/`.
+- **Done:** members no longer need Claude. The rules moved to **`AGENTS.md`**, which many coding assistants read automatically; `CLAUDE.md` now only imports it. **`CONTRIBUTING.md`** gives the whole workflow as plain git commands, with a ready-made prompt for chat assistants. **Task cards** in `docs/team/` (T02, T10, T29, T33, T35–T39) say exactly which files to create, which existing functions to use, what to test and when a task is done, and list the files to paste into a chat assistant.
+- **Files:** `AGENTS.md` (new), `CLAUDE.md`, `CONTRIBUTING.md` (new), `docs/team/` (new), `docs/STATUS.md`, `docs/PROJECT_PLAN.md`, `README.md`, `docs/team/`.
 - **Next:** members start their start-now tasks from the cards; M1 does T29.
 - **Blockers:** none.
 
 ### 2026-10-17 · Tanvir Ahmed (M1) · T00 (team of four, branch per member)
 
-- **Done:** Mahir Ahmed takes **M3** (evaluation) and Shafil Ahmed takes **M4** (visualisation, demo, presentation). Every member now works on their own branch (`dev_rabbi`, `dev_mahir`, `dev_shafil`), edits only the files they own, and records progress and a plain-language **faculty update** in `docs/progress/<slot>_<name>.md`; M1 reviews, merges and keeps this board.
+- **Done:** Mahir Ahmed takes **M3** (evaluation) and Shafil Ahmed takes **M4** (visualisation, demo, presentation). Every member now works on their own branch (`dev_rabbi`, `dev_mahir`, `dev_shafil`), edits only the files they own, and records progress and a plain-language **faculty update** in `docs/team/<slot>_<name>.md`; M1 reviews, merges and keeps this board.
 - **Re-balanced tasks:** M1 keeps the complex shared work (splits, shared runners, training, Whisper, noise tests T21, inference). M3 gets statistics (T33), results tables (T20 → T40), error analysis (T34) and literature notes (T37). M4 gets the visualisation module (T35), demo skeleton (T36), literature notes (T38) and poster v2 (T39). Recording is split per member: M2 S05–S06 (T06), M3 S03 + S07–S08 (T31), M4 S04 + S09–S10 (T32); M1 records only S01.
 - **Start now (no recordings needed):** M3: T10, T33, T37 · M4: T35, T36, T38, T39 · M1: T29.
 - **T02 change for M2:** the recorder writes metadata one file per speaker, so recordings made on different branches merge cleanly.
-- **Files:** `CLAUDE.md`, `README.md`, `docs/STATUS.md`, `docs/PROJECT_PLAN.md`, `docs/DATA_COLLECTION_PROTOCOL.md`, `docs/templates/individual_update_report.md`, `docs/progress/` (new).
+- **Files:** `CLAUDE.md`, `README.md`, `docs/STATUS.md`, `docs/PROJECT_PLAN.md`, `docs/DATA_COLLECTION_PROTOCOL.md`, `docs/team/individual_report_template.md`, `docs/team/` (new).
 - **Blockers:** Mahir needs a GitHub collaborator invite (username needed). Mahir's and Shafil's git user.name are still *(add)* in `CLAUDE.md`.
 
 ### 2026-10-17 · Tanvir Ahmed (M1) · T00 (Whisper pipeline)

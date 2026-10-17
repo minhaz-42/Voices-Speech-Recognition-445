@@ -2,7 +2,7 @@
 
 **Name:** <full name> **ID:** <student ID> **Role:** Member <n>, <role> **Group:** <group>
 
-> 2 pages, two-column format. Write it from the **Faculty update** and **Handoff log** in your progress file `docs/progress/<slot>_<name>.md`.
+> 2 pages, two-column format. Write it from the **Faculty update** and **Handoff log** on your page `docs/team/<slot>_<name>.md`.
 
 ## Week 1 (<dates>)
 What you did, what you learned, what you decided and why. Name the files and functions you wrote.

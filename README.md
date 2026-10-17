@@ -8,7 +8,7 @@
 ![HuggingFace](https://img.shields.io/badge/🤗%20HuggingFace-Transformers-yellow)
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-F7931E)
 ![License](https://img.shields.io/badge/License-MIT-green)
-![Status](https://img.shields.io/badge/Status-Planning-lightgrey)
+![Status](https://img.shields.io/badge/Status-In%20progress-yellow)
 
 | Course | Section | Group | Instructor |
 | :---: | :---: | :---: | :---: |
@@ -22,174 +22,123 @@
   <em>Project poster (planning edition). It still shows the earlier self-recorded dataset plan and is updated in task T39.</em>
 </p>
 
-> 📋 **Status: planning stage.** This repository contains:
-> - the project plan and the dataset guide
-> - the shared code written so far (configuration, audio pre-processing, metrics, Whisper pipeline) with unit tests
-> - the task board and task cards
-> - the poster
->
-> Data selection and results will be added week by week (see the roadmap below).
-
 ## 📖 Overview
-This project builds a **speech recognition system** that recognises which of **50 phrases or sentences** a person has spoken. We evaluate it on **TenVoices**: two **10-speaker** datasets that we select by script from published speech corpora, one of spoken commands and one of non-native English speakers. On both, we compare traditional machine learning, a fine-tuned self-supervised speech model and a general-purpose speech-to-text model.
+This project builds a **speech recognition system** that recognises which of **50 phrases or sentences** a person has spoken. We evaluate it on **TenVoices**: two **10-speaker** datasets that we select by script from published speech corpora, one of spoken commands and one of non-native English speakers. On both, we compare traditional machine learning, fine-tuned self-supervised speech models and a general-purpose speech-to-text model.
 
-The comparison has four stages:
 * **Traditional Machine Learning:** MFCC features with k-NN, SVM, Random Forest and XGBoost.
-* **Deep Learning baseline:** wav2vec 2.0 with an untrained classification head, which shows the chance level.
-* **Our approach:** wav2vec 2.0 **fine-tuned** on each dataset for 3, 8 and 15 epochs, with white-noise augmentation for robustness.
-* **Open-vocabulary pipeline:** **Whisper** speech-to-text used **zero-shot** (no training on our data). Its transcript is matched to the closest of the 50 phrases, and its word error rate shows how a general-purpose recogniser copes with non-native accents.
+* **Deep Learning baseline:** wav2vec 2.0 with an untrained classification head (chance level).
+* **Our approach:** wav2vec 2.0 **fine-tuned** for 3, 8 and 15 epochs with white-noise augmentation, plus WavLM Base+, HuBERT Base and a linear probe for comparison.
+* **Open-vocabulary pipeline:** **Whisper** speech-to-text used **zero-shot**; its transcript is matched to the closest of the 50 phrases.
 
-Every model is tested on both datasets, in two ways:
-* on a random 80/20 split, where the speakers have been seen in training;
-* with **speaker-independent 5-fold cross-validation**, where the test speakers have never been heard. This is the headline result.
+Every model is tested on a random 80/20 split (speakers seen in training) and with **speaker-independent 5-fold cross-validation** (speakers never heard), which is the headline result.
+
+---
+
+## 👥 Team: Who Does What
+Each member owns one traditional model, one or two deep-learning runs, a part of the shared work and a set of files. **Each member's page** lists their files, their tasks with status, their faculty update and the exact task cards.
+
+| Member | Responsible for | Models they run | Done so far | Next | Page |
+| :--- | :--- | :--- | :--- | :--- | :---: |
+| **Tanvir Ahmed** (lead) | Data preparation, shared code (pre-processing, splits, training, evaluation, Whisper, inference), merging everyone's work | Random Forest · wav2vec 2.0 15 epochs with / without noise · Whisper | Plan and repository; audio, config, metrics and Whisper code; TenVoices-FSC selected, checked and split; Random Forest and Whisper results on TenVoices-FSC; training, noise-test and inference code | wav2vec 2.0 15-epoch runs, TenVoices-L2, final results and report | [M1_tanvir](docs/team/M1_tanvir.md) |
+| **Md. Shahriar Rakib Rabbi** | Datasheet, dataset statistics, listen-check, subset release | XGBoost · wav2vec 2.0 8 epochs + noise · WavLM Base+ | Phrase-list loader `support/phrases.py` with tests | XGBoost (T12), datasheet and listen-check (T09), wav2vec 2.0 8 epochs (T16), WavLM (T44) | [M2_rabbi](docs/team/M2_rabbi.md) |
+| **Mahir Ahmed** | Analysis plan, statistics, results table, hypothesis tests, error analysis | k-NN · wav2vec 2.0 3 epochs · HuBERT Base | Not started yet (takes over the metrics module `support/metrics.py`, written by Tanvir) | Analysis plan (T10), statistics (T33), k-NN (T13), literature (T37) | [M3_mahir](docs/team/M3_mahir.md) |
+| **Shafil Ahmed** | Figures, demo app, poster, slides, demo video | SVM · untrained baseline · linear probe | Not started yet | SVM (T14), visualisation (T35), poster v2 (T39), untrained baseline (T18) | [M4_shafil](docs/team/M4_shafil.md) |
+
+Task board with every task, its owner and status: [docs/STATUS.md](docs/STATUS.md).
 
 ---
 
 ## 📊 Datasets
-We do not record our own audio. **TenVoices** is two 10-speaker subsets (5 female, 5 male each) of published datasets, selected by a script with fixed rules, so anyone with the source data gets the same clips.
+We do not record our own audio (the instructor confirmed that published data meets the brief). **TenVoices** is two 10-speaker subsets (5 female, 5 male each) of published datasets, selected by a script with fixed rules, so anyone with the source data gets the same clips.
 
 | | **TenVoices-FSC** (main) | **TenVoices-L2** (accents) |
 | :--- | :--- | :--- |
 | **Source** | [Fluent Speech Commands](https://fluent.ai/research/fluent-speech-commands/) (Lugosch et al., Interspeech 2019) | [L2-ARCTIC](https://psi.engr.tamu.edu/l2-arctic-corpus/) v5.0 (Zhao et al., Interspeech 2018) |
 | **What is said** | Smart-home commands, e.g. "turn on the lights", "put on the music", "turn up the heat in the kitchen" | Read sentences from the CMU ARCTIC prompts |
 | **Speakers** | 10 of the 97, chosen by script | 10 non-native speakers: the 4 Hindi-L1 speakers, plus a female and a male each with Arabic, Mandarin and Spanish as first language |
-| **Classes** | 50 commands; many share most of their words, so the model has to hear the exact wording | 50 sentences read by all 10 speakers |
-| **Clips** | 2 takes per speaker and command, up to 1,000 | 1 per speaker and sentence, 500 |
+| **Classes** | 50 commands; many share most of their words | 50 sentences read by all 10 speakers |
+| **Clips** | 1,000 (2 takes per speaker and command); 997 pass every quality check | 500 (1 per speaker and sentence) |
+| **Status** | ✅ selected, checked and split | ⬜ waiting for the download form (task T47) |
 | **Licence** | CC BY-NC-ND 4.0, academic research only | CC BY-NC 4.0 |
 
-* **Why two datasets:** short commands with confusable words, and longer sentences from speakers with different accents. Hindi is the accent in L2-ARCTIC closest to Bangladeshi English.
-* **Format:** 16 kHz mono after pre-processing. Speakers keep the datasets' own anonymous IDs.
-* **Not in this repository:** the audio. We publish only the subset lists, the selection script and checksums; the audio stays with its publishers.
-
-Sources, licences, download steps and selection rules: [docs/DATASETS.md](docs/DATASETS.md)
+The audio is not in this repository: we publish the subset lists, the selection script and checksums. Sources, download steps and selection rules: [docs/DATASETS.md](docs/DATASETS.md) · datasheet: [data/README.md](data/README.md)
 
 ---
 
 ## 🧠 Methodology
 
 ### 1. Traditional Machine Learning (Baseline)
-We extract **MFCCs (Mel-Frequency Cepstral Coefficients)** from each clip to build a tabular dataset.
-* **Feature Extraction:** Librosa, 13 MFCCs + Δ + ΔΔ, each summarised by mean and standard deviation (78 values), then standardised.
-* **Models:** k-NN, SVM, Random Forest and XGBoost, with hyper-parameters tuned on validation data.
+* **Features:** Librosa, 13 MFCCs + Δ + ΔΔ, each summarised by mean and standard deviation (78 values), then standardised.
+* **Models:** k-NN, SVM, Random Forest and XGBoost; hyper-parameters chosen on validation data only.
 
 ### 2. Deep Learning Baseline (Untrained)
-* `facebook/wav2vec2-base` with a new classification head for the 50 phrases, evaluated **without training**. It shows the chance level of about 2%.
+* `facebook/wav2vec2-base` with a new classification head for the 50 classes, evaluated **without training** (chance is 2%).
 
-### 3. Our Approach: Fine-Tuning wav2vec 2.0
-We fine-tune a pre-trained **wav2vec 2.0 Base** model (`facebook/wav2vec2-base`) directly on the raw audio.
-* **Architecture:** CNN feature encoder + Transformer context network + classification head (50 classes).
-* **Training (planned):**
-    * Optimizer: AdamW, learning rate 3e-5, 10% warm-up
-    * Epochs: 3, 8 and 15 (compared)
-    * Batch size: 4, accumulated to 8
-    * **Augmentation:** white noise added to half of the training clips, so the model learns to ignore noise
-    * **Model selection:** the best epoch is chosen on validation data, never on the test set
-* **Input length:** clips are padded to 6 s, so no phrase is ever cut off.
-* **Hardware:** Google Colab GPU (T4) or Apple Silicon (MPS).
+### 3. Our Approach: Fine-Tuning Self-Supervised Speech Models
+* **Model:** `facebook/wav2vec2-base` + classification head, fine-tuned on the raw audio.
+* **Training:** AdamW, learning rate 3e-5, 10% warm-up, batch size 4 accumulated to 8; 3, 8 and 15 epochs compared.
+* **Augmentation:** white noise added to half of the training clips; a 15-epoch run without noise isolates its effect.
+* **Model selection:** the best epoch is chosen on validation data, never on the test set.
+* **Comparisons:** the same script fine-tunes WavLM Base+ and HuBERT Base; a linear probe trains only a logistic regression on frozen wav2vec 2.0 features.
+* **Input:** clips padded to 6 s, never cut. **Hardware:** Google Colab GPU (T4) or Apple Silicon (MPS).
 
 ### 4. Open-Vocabulary Pipeline: Whisper (Zero-Shot)
-* **Model:** `openai/whisper-small`, transcribing English, with **no training** on TenVoices.
-* **Phrase matching:** the transcript and the 50 phrases are normalised the same way (case, punctuation, numbers), and the phrase with the smallest word-level edit distance is the prediction. Whisper then fits the same tables and tests as every other model.
-* **Extra output:** the transcript itself, with word and character error rate per clip, per category and per speaker.
-* **Demo:** the app shows the transcript, and says "not one of the 50 phrases" when the speech matches none of them.
+* **Model:** `openai/whisper-small`, English, **no training** on our data.
+* **Phrase matching:** transcript and phrases are normalised the same way; the phrase with the smallest word-level edit distance is the prediction, so Whisper fits the same tables as every other model.
+* **Extra output:** word and character error rate per clip, speaker and first language.
+
+### Evaluation
+Per dataset: random 80/20 split (stratified, seed 42) and 5 speaker-independent folds (2 test speakers, 1 validation, 7 training; every speaker tested once). Metrics: accuracy, macro and weighted F1, confusion matrices, per-speaker accuracy, WER / CER for Whisper. Statistics: bootstrap confidence intervals, McNemar, Wilcoxon and Mann–Whitney tests. Hypotheses H1–H5 and the frozen analysis decisions: [docs/PROJECT_PLAN.md](docs/PROJECT_PLAN.md).
 
 ---
 
-## 📏 Evaluation Protocol
-Applied to each dataset separately.
-* **Random split (seen speakers):** stratified 80/20 split of the clips (seed 42).
-* **Speaker-independent CV (unseen speakers):** 5 folds, each with 2 test speakers, 1 validation speaker and 7 training speakers. Every speaker is tested exactly once. On TenVoices-L2 the two test speakers of a fold share a first language, so three folds test accents never heard in training.
-* **Metrics:** Accuracy, Macro F1, Weighted F1, per-class F1, confusion matrices and per-speaker accuracy (per first language on TenVoices-L2); word and character error rate for the Whisper transcripts.
-* **Noise tests:** white noise added at 20 / 10 / 5 dB SNR.
-* **Statistics:** 95% bootstrap confidence intervals, McNemar's test between models, Wilcoxon test over speakers, Mann–Whitney test between the two datasets.
+## 🏆 Results
+Measured so far on **TenVoices-FSC** (1,000 clips). Every number comes from `results/<run>/fsc/summary.json`; *TBD* means the run is not merged yet.
+
+| Model | Owner | Accuracy, unseen speakers | Macro F1, unseen | Accuracy, random split | Macro F1, random | Purpose |
+| :--- | :--- | :---: | :---: | :---: | :---: | :--- |
+| **Baseline wav2vec 2.0 (untrained)** | Shafil | TBD | TBD | TBD | TBD | Chance level without training |
+| **k-NN** | Mahir | TBD | TBD | TBD | TBD | Distance-based MFCC baseline |
+| **SVM** | Shafil | TBD | TBD | TBD | TBD | Margin-based MFCC baseline |
+| **Random Forest** | Tanvir | **20.9%** | 0.199 | **31.0%** | 0.299 | Tree ensemble on MFCC features |
+| **XGBoost** | Rabbi | TBD | TBD | TBD | TBD | Gradient boosting on MFCC features |
+| **wav2vec 2.0, 3 epochs** | Mahir | TBD | TBD | TBD | TBD | Short fine-tuning |
+| **wav2vec 2.0, 8 epochs + noise** | Rabbi | TBD | TBD | TBD | TBD | Medium fine-tuning with augmentation |
+| **wav2vec 2.0, 15 epochs + noise** | Tanvir | TBD | TBD | TBD | TBD | Full fine-tuning with augmentation |
+| **wav2vec 2.0, 15 epochs, no noise** | Tanvir | TBD | TBD | TBD | TBD | Effect of noise augmentation (H3) |
+| **WavLM Base+, 15 epochs + noise** | Rabbi | TBD | TBD | TBD | TBD | Another self-supervised model |
+| **HuBERT Base, 15 epochs + noise** | Mahir | TBD | TBD | TBD | TBD | Another self-supervised model |
+| **Linear probe (frozen wav2vec 2.0)** | Shafil | TBD | TBD | TBD | TBD | Pre-trained features without fine-tuning |
+| **Whisper small, zero-shot + phrase matching** | Tanvir | **98.7%** | 0.987 | **99.0%** | 0.990 | General-purpose speech-to-text, no training |
+
+* **Random Forest** drops from 31.0% to 20.9% when the test speakers were never heard in training: MFCC statistics depend heavily on the speaker.
+* **Whisper** recognises the commands almost perfectly without any training; its word error rate on the unseen-speaker folds is 3.9%.
+* Confusion matrices: [images/confusion/](images/confusion/). TenVoices-L2 results follow after task T47.
 
 ---
 
-## 🏆 Results & Performance (planned)
-The results will be filled in after the experiments in Weeks 3–5. **Nothing below is a measured result yet.**
-
-| Model | FSC: unseen speakers | FSC: random split | L2: unseen speakers | L2: random split | Purpose |
-| :--- | :---: | :---: | :---: | :---: | :--- |
-| **Baseline Wav2Vec2 (Untrained)** | TBD | TBD | TBD | TBD | Chance level without training |
-| **k-NN** | TBD | TBD | TBD | TBD | Distance-based MFCC baseline |
-| **SVM** | TBD | TBD | TBD | TBD | Margin-based MFCC baseline |
-| **Random Forest** | TBD | TBD | TBD | TBD | Tree ensemble on MFCC features |
-| **XGBoost** | TBD | TBD | TBD | TBD | Gradient boosting on MFCC features |
-| **Wav2Vec2 (Fine-Tuned) 3 epochs** | TBD | TBD | TBD | TBD | Short fine-tuning |
-| **Wav2Vec2 (Fine-Tuned) 8 epochs + noise** | TBD | TBD | TBD | TBD | Medium fine-tuning with augmentation |
-| **Wav2Vec2 (Fine-Tuned) 15 epochs + noise** | TBD | TBD | TBD | TBD | Full fine-tuning with augmentation |
-| **Wav2Vec2 (Fine-Tuned) 15 epochs, no noise** | TBD | TBD | TBD | TBD | Ablation for noise augmentation (H3) |
-| **WavLM Base+ 15 epochs + noise** | TBD | TBD | TBD | TBD | Exploratory: another self-supervised model |
-| **HuBERT Base 15 epochs + noise** | TBD | TBD | TBD | TBD | Exploratory: another self-supervised model |
-| **Linear probe (frozen wav2vec 2.0 + logistic regression)** | TBD | TBD | TBD | TBD | Exploratory: pre-trained features without fine-tuning |
-| **Whisper small (zero-shot) + phrase matching** | TBD | TBD | TBD | TBD | General-purpose speech-to-text, no training |
-
-Accuracy per dataset and split; macro and weighted F1 will be in `results/all_results.csv`.
-
-**Hypotheses** (fixed before testing; reported whether or not they hold):
-
-| ID | Hypothesis |
-| :---: | :--- |
-| H1 | Fine-tuned wav2vec 2.0 beats the best traditional model on unseen speakers by ≥ 20 accuracy points |
-| H2 | Traditional models lose more accuracy than wav2vec 2.0 when moving from seen to unseen speakers |
-| H3 | White-noise augmentation improves accuracy on noisy audio without hurting clean accuracy |
-| H4 | Longer fine-tuning has diminishing returns (8 → 15 epochs gains less than 3 → 8) |
-| H5 | Zero-shot Whisper makes more word errors on non-native speech (TenVoices-L2) than on spoken commands (TenVoices-FSC) *(draft, fixed in the analysis plan)* |
-
-H1–H4 are tested on each dataset separately.
-
-**Planned figures:**
-* Combined results table (`images/all_results_table.png`)
-* A confusion matrix per model
-* Accuracy vs noise level
-* Per-speaker accuracy
-
----
-
-## 🗓️ Development Roadmap
-- Week 1: Planning, repository setup, shared code, dataset access.
-- Week 2: Subset selection and quality control for both datasets, datasheet and data splits.
-- Week 3: MFCC features and traditional ML models (k-NN, SVM, Random Forest, XGBoost) on both datasets.
-- Week 4: wav2vec 2.0: untrained baseline and fine-tuning for 3, 8 and 15 epochs with white noise; Whisper zero-shot speech-to-text.
-- Week 5: Combined results, seen vs unseen speakers, accents, noise tests, error analysis, inference script and demo.
-- Week 6: Report, slides, demo video, poster and final polish.
-
-Tasks, owners, dependencies and progress: [docs/STATUS.md](docs/STATUS.md).
-
----
-
-## 📁 Repository Structure (planned)
-The code that exists today, module by module, is listed in [support/README.md](support/README.md). Folders that only contain a README are placeholders for later tasks.
-
+## 📁 Repository Structure
 ```text
 Voices-Speech-Recognition-445/
-|-- AGENTS.md                 project rules for every member and AI assistant
-|-- CONTRIBUTING.md           step-by-step workflow, by hand or with any assistant
-|-- main.py                   inference: audio / video / microphone -> phrase
-|-- app.py                    Gradio live demo
+|-- README.md               this page: overview, team, results, how to run
+|-- main.py                 inference: audio / video / microphone -> top-5 phrases
 |-- requirements.txt
-|-- configs/                  config.yaml (paths, sample rate, training settings)
-|-- support/                  shared code; README.md lists every module
-|   |-- config.py, audio.py, phrases.py, dataset.py, features.py   data pipeline
-|   |-- classical.py          k-NN / SVM / Random Forest / XGBoost runner
-|   |-- train_wav2vec2.py     fine-tuning (--epochs, --noise, --split)
-|   |-- whisper_asr.py        zero-shot Whisper speech-to-text + phrase matching
-|   |-- evaluate.py           one evaluation script for every model
-|   |-- metrics.py, stats.py, results_table.py, error_analysis.py
-|   `-- visualization.py      spectrograms, MFCCs and result charts
-|-- tools/                    select_subsets.py, qc_report.py, make_splits.py (data preparation)
-|-- notebooks/                Colab notebook for fine-tuning
-|-- tests/
-|-- data/                     subset and phrase lists, sources, splits (audio is gitignored)
-|-- results/                  per-model, per-dataset reports and all_results.csv
-|-- docs/                     STATUS.md, PROJECT_PLAN.md, DATASETS.md
-|   |-- progress/             one page per member: tasks, handoff log, faculty update
-|   |-- tasks/                task cards: what to build, files, tests, done when
-|   `-- literature/           literature notes for the report
-|-- poster/poster.html        poster source
-|-- images/                   poster, results table, confusion matrices
-|-- outputs/                  large generated files (gitignored)
-`-- others/                   report, slides, demo video
+|-- AGENTS.md, CLAUDE.md    rules for members and AI assistants
+|-- configs/config.yaml     every setting (paths, audio, models, training)
+|-- support/                ALL code, one shared module per job (code map: support/README.md)
+|-- tests/                  unit tests for every module
+|-- notebooks/              Colab notebook for GPU training
+|-- data/                   subset lists, phrase lists, splits, sources (audio is not in git)
+|-- results/                one folder per model and dataset: metrics, predictions, reports
+|-- images/                 poster, confusion matrices, figures
+|-- others/                 poster source, report, slides, demo video
+`-- docs/
+    |-- team/               ONE PAGE PER MEMBER: role, files, tasks, faculty update, task cards
+    |-- STATUS.md           task board and merge log
+    |-- PROJECT_PLAN.md     design, hypotheses, evaluation protocol, file ownership, risks
+    |-- DATASETS.md         dataset sources, licences, selection rules
+    |-- RUNS.md             how to run any model, locally or on Colab
+    `-- CONTRIBUTING.md     the workflow as plain git commands
 ```
 
 ---
@@ -219,32 +168,32 @@ Voices-Speech-Recognition-445/
 ---
 
 ## 🚀 Usage
-Run every command from the repository root. Scripts in `support/` and `tools/` are run as modules (`python -m ...`) so they can import the shared code. *Code ready* means the code and its tests are merged; the run itself waits for the data step named in brackets. Every module is described in [support/README.md](support/README.md).
+Run every command from the repository root; scripts in `support/` run as modules (`python -m support.<name>`). Getting the audio and running a model step by step: [docs/RUNS.md](docs/RUNS.md).
 
-| Command | Purpose | Planned for |
-| :--- | :--- | :---: |
-| `python -m unittest discover -s tests -v` | Run the unit tests | ✅ ready |
-| `python -m support.config` | Print the settings and resolved paths | ✅ ready |
-| `python -m support.audio clip.wav [--out clip_16k.wav]` | Load and pre-process one clip (mono, 16 kHz, trimmed, normalised, padded to 6 s) | ✅ ready |
-| `python -m support.whisper_asr clip.wav` | Transcribe a clip with Whisper (zero-shot) and show the 5 nearest phrases | ✅ ready |
-| `python -m tools.select_subsets --dataset fsc` | Select a 10-speaker subset from the downloaded dataset (rules in `docs/DATASETS.md`) | ✅ ready (FSC done) |
-| `python -m tools.qc_report --dataset fsc` | Quality report of a subset | ✅ ready (FSC done) |
-| `python -m support.dataset --dataset fsc --build` | Processed 16 kHz copies + manifest of a subset (checks every clip's SHA-256) | ✅ ready |
-| `python -m tools.make_splits --dataset fsc` | Random 80/20 split + 5 speaker-independent folds, leakage-checked | ✅ ready (FSC done) |
-| `python -m support.classical --dataset fsc --model svm --split all` | Train and evaluate a traditional model (also `random_forest`, `xgboost`, `knn`) | ✅ ready |
-| `python -m support.train_wav2vec2 --dataset fsc --epochs 15 --noise white` | Fine-tune wav2vec 2.0 on every split (`--untrained` for the baseline); Colab: `notebooks/train_wav2vec2.ipynb` | ✅ ready |
-| `python -m support.evaluate --dataset fsc --run w2v2_15ep_noise` | Rebuild a run's metrics, reports and confusion matrices from its predictions | ✅ code ready |
-| `python -m support.whisper_asr --dataset l2arctic --split all` | Zero-shot Whisper on the same test clips: transcripts, WER per speaker and first language | ✅ ready |
-| `python -m support.noise_test --run w2v2_15ep_noise --dataset fsc` | Accuracy with white noise at 20 / 10 / 5 dB on the test clips | ✅ code ready (trained models) |
-| `python main.py --audio clip.wav --model <saved model>` | Top-5 phrases for an audio file (also `--video`, `--mic`, `--asr whisper`, `--benchmark N`) | ✅ code ready (trained model) |
-| `python app.py` | Live microphone demo (Gradio) | Week 5 |
+| Command | Purpose |
+| :--- | :--- |
+| `python -m unittest discover -s tests -v` | Run the unit tests |
+| `python -m support.config` | Print the settings and resolved paths |
+| `python -m support.audio clip.wav [--out clip_16k.wav]` | Pre-process one clip (mono, 16 kHz, trimmed, normalised, padded to 6 s) |
+| `python -m support.whisper_asr clip.wav` | Transcribe a clip with Whisper (zero-shot) and show the 5 nearest phrases |
+| `python -m support.select_subsets --dataset fsc` | Select a 10-speaker subset from the downloaded dataset |
+| `python -m support.qc_report --dataset fsc` | Quality report of a subset |
+| `python -m support.dataset --dataset fsc --build` | Processed 16 kHz copies + manifest (checks every clip's SHA-256) |
+| `python -m support.make_splits --dataset fsc` | Random 80/20 split + 5 speaker-independent folds, leakage-checked |
+| `python -m support.classical --dataset fsc --model svm --split all` | Train and evaluate a traditional model (`random_forest`, `xgboost`, `knn`, `svm`) |
+| `python -m support.train_wav2vec2 --dataset fsc --epochs 15 --noise white` | Fine-tune wav2vec 2.0 on every split (`--untrained` for the baseline, `--model` for WavLM / HuBERT); Colab: `notebooks/train_wav2vec2.ipynb` |
+| `python -m support.whisper_asr --dataset fsc --split all` | Zero-shot Whisper on the same test clips, with WER per speaker and first language |
+| `python -m support.evaluate --dataset fsc --run random_forest` | Rebuild a run's metrics, reports and confusion matrices |
+| `python -m support.noise_test --run w2v2_15ep_noise --dataset fsc` | Accuracy with white noise at 20 / 10 / 5 dB |
+| `python main.py --audio clip.wav --model <saved model>` | Top-5 phrases for an audio file (also `--video`, `--mic`, `--asr whisper`, `--benchmark N`) |
+| `python app.py` | Live microphone demo (Gradio), task T36 |
 
 ---
 
 ## 🔮 Future Work
-* **Fine-tuned speech-to-text:** fine-tune Whisper (or wav2vec 2.0 with CTC) on non-native speech to reduce its word errors, and move fully from 50 known phrases to free speech-to-text.
-* **Stronger models:** compare with WavLM and XLS-R, which are pre-trained on more varied speech.
-* **Bangladeshi speakers:** test the trained models on Bangladeshi speakers reading the same commands, the accent closest to our own users.
+* **Fine-tuned speech-to-text:** fine-tune Whisper (or wav2vec 2.0 with CTC) on non-native speech to reduce its word errors, and move from 50 known phrases to free speech-to-text.
+* **Stronger models:** compare with XLS-R, which is pre-trained on many more languages.
+* **Bangladeshi speakers:** test the trained models on Bangladeshi speakers reading the same commands.
 * **More speakers:** use the full Fluent Speech Commands corpus (97 speakers) and measure how results scale with the number of training speakers.
 
 ---
@@ -256,25 +205,10 @@ Run every command from the repository root. Scripts in `support/` and `tools/` a
 ---
 
 ## 🔄 Team Workflow
-Every member works on their **own branch** (`dev_rabbi`, `dev_mahir`, `dev_shafil`) and owns a fixed set of files, so nobody waits for anyone else. Members can work by hand or with any AI assistant:
-1. **Sync:** switch to your branch and merge in the latest `main`.
-2. **Do a task:** each task has a card in [docs/tasks/](docs/tasks/) with the files to create, the functions to use, the tests and the *done when* condition.
-3. **Wrap up:** run the tests, update your progress file and faculty update in [docs/progress/](docs/progress/), commit, push your branch and open a pull request.
-4. The team lead reviews and merges each branch into `main` and updates the task board in [docs/STATUS.md](docs/STATUS.md).
-
-Step-by-step commands and a ready-made prompt for chat assistants: [CONTRIBUTING.md](CONTRIBUTING.md). Rules for coding assistants: [AGENTS.md](AGENTS.md). File ownership: [docs/PROJECT_PLAN.md](docs/PROJECT_PLAN.md).
-
----
-
-## 👥 Contributors
-* **Tanvir Ahmed** - *team lead (Member 1): data pipeline and splits, shared training and evaluation code, Whisper pipeline, noise tests, inference, integration; Random Forest, wav2vec 2.0 fine-tuning (15 epochs)*
-* **Md. Shahriar Rakib Rabbi** - *Member 2: datasets (access, subset selection, quality control, datasheet, subset release); XGBoost, wav2vec 2.0 fine-tuning (8 epochs)*
-* **Mahir Ahmed** - *Member 3: evaluation (analysis plan, statistics, results tables, error analysis); k-NN, wav2vec 2.0 fine-tuning (3 epochs)*
-* **Shafil Ahmed** - *Member 4: visualisation, demo app, poster, slides and video; SVM, untrained baseline*
+Every member works on their own branch (`dev_rabbi`, `dev_mahir`, `dev_shafil`), by hand or with any AI assistant, pushes at the end of every session and opens a pull request; Tanvir reviews and merges into `main`. Steps: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) · rules for assistants: [AGENTS.md](AGENTS.md).
 
 ---
 
 ## 📄 License
-* **Code:** [MIT](LICENSE).
-* **Subset lists and selection script:** MIT, like the code.
+* **Code, subset lists and selection script:** [MIT](LICENSE).
 * **Audio:** not distributed here. Fluent Speech Commands: CC BY-NC-ND 4.0 ([Lugosch et al., 2019](https://arxiv.org/abs/1904.03670)); L2-ARCTIC: CC BY-NC 4.0 ([Zhao et al., 2018](https://doi.org/10.21437/Interspeech.2018-1110)).
