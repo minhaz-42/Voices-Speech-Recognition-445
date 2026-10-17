@@ -1,0 +1,51 @@
+phrase_id,category,text
+FSC01,bring,bring my shoes
+FSC02,change language,change the language
+FSC03,decrease,decrease the temperature in the bedroom
+FSC04,decrease,heat down
+FSC05,increase,increase the heating
+FSC06,increase,increase the heating in the bathroom
+FSC07,increase,increase the heating in the kitchen
+FSC08,increase,increase the heating in the washroom
+FSC09,increase,increase the temperature
+FSC10,increase,increase the temperature in the bathroom
+FSC11,increase,increase the temperature in the bedroom
+FSC12,increase,increase the temperature in the washroom
+FSC13,activate,kitchen lights on
+FSC14,deactivate,lamp off
+FSC15,activate,lamp on
+FSC16,deactivate,lights off in the bedroom
+FSC17,decrease,make the music softer
+FSC18,activate,play the music
+FSC19,activate,put on the music
+FSC20,decrease,quieter
+FSC21,activate,resume
+FSC22,activate,start the music
+FSC23,deactivate,stop the music
+FSC24,deactivate,switch off the lamp
+FSC25,deactivate,switch off the lights
+FSC26,deactivate,switch off the washroom lights
+FSC27,activate,switch on the bathroom lights
+FSC28,activate,switch on the kitchen lights
+FSC29,deactivate,switch the lights off
+FSC30,activate,switch the lights on
+FSC31,decrease,thats too loud
+FSC32,increase,thats too quiet
+FSC33,decrease,turn down the volume
+FSC34,deactivate,turn off the lamp
+FSC35,deactivate,turn off the music
+FSC36,activate,turn on the bathroom lights
+FSC37,activate,turn on the lamp
+FSC38,decrease,turn the heat down
+FSC39,increase,turn the heat up
+FSC40,increase,turn the heat up in the washroom
+FSC41,activate,turn the lights on
+FSC42,activate,turn the lights on in the kitchen
+FSC43,decrease,turn the temperature down
+FSC44,increase,turn the volume up
+FSC45,increase,turn up the heat in the kitchen
+FSC46,increase,turn up the temperature
+FSC47,increase,turn up the temperature in the bedroom
+FSC48,increase,volume max
+FSC49,decrease,volume mute
+FSC50,increase,volume up
