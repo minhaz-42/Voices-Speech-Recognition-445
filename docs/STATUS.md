@@ -4,7 +4,7 @@
 > **Legend:** ⬜ to do · 🟡 in progress · ✅ done and merged · ⛔ blocked · ✖ cancelled · 👤 needs people (dataset access, video)
 
 **Current phase:** Weeks 1–2: dataset access and subset selection (M2), plus start-now work for every member. **Since 2026-10-17 we use two published datasets instead of recording our own** (see [DATASETS.md](DATASETS.md)).
-**Next up:** M2 · Rabbi: T41 → T42 → T43 · M3 · Mahir: T10, T33, T37 · M4 · Shafil: T35, T36, T38, T39 · M1 · Tanvir: merging; T08 once T43 lands
+**Next up:** M2 · Rabbi: T42 on Fluent Speech Commands (downloaded, `data/raw/fsc/`), then T43; someone fills in the L2-ARCTIC form (T41) · M3 · Mahir: T10, T33, T37 · M4 · Shafil: T35, T36, T38, T39 · M1 · Tanvir: all pipeline code is ready; runs start when T43 (subsets) and T10 (analysis plan) are merged
 **Last updated:** 2026-10-17 by Tanvir Ahmed (M1)
 
 ## 👥 Team
@@ -120,6 +120,20 @@ Every run from here on covers **both datasets**: results go to `results/<run>/fs
 | T07 | QC and listen-checks of all sessions | T43 |
 
 ## 📝 Handoff Log (newest first)
+
+### 2026-10-17 · Tanvir Ahmed (M1) · T08, T11, T15, T21, T22, T30 (code)
+
+- **Done:** all of M1's pipeline code, each with unit tests on synthetic audio, so the experiments can start as soon as the subsets exist. The tasks stay 🟡 because their runs wait for data:
+  - **T08** `support/dataset.py` (SHA-256-checked processed copies + manifest, split loader) and `tools/make_splits.py` (random 80/20 split and 5 speaker-independent folds, 1 F + 1 M test speakers, same first language on TenVoices-L2, leakage checks).
+  - **T11** `support/features.py` (78 MFCC statistics, cached), `support/evaluate.py` (one evaluation for every model; folds pooled, mean ± std) and `support/classical.py` (Random Forest / XGBoost / k-NN / SVM, grid on validation only). The grids are in `configs/config.yaml`.
+  - **T15** `support/train_wav2vec2.py` (`--epochs`, `--noise white`, `--untrained`; best epoch on validation; fp16 on CUDA), `support/noise.py`, `support/device.py` and `notebooks/train_wav2vec2.ipynb` (Colab). One real training step of `facebook/wav2vec2-base` on real FSC clips runs on Apple MPS.
+  - **T22** `support/inference.py` + `main.py` (audio, video via ffmpeg, microphone; top-5; `--asr whisper`; `--benchmark`) and `.github/workflows/tests.yml`. GitHub did not start the first run: *"account is locked due to a billing issue"* (fix in the GitHub account settings).
+  - **T30** `support/whisper_asr.py --dataset … --split …` (each clip transcribed once; WER per speaker and first language for H5); the tests use a fixture copy of the old phrase list.
+  - **T21** `support/noise_test.py` (the same white noise for every model, per clip and SNR, for paired tests of H3).
+- **Found and fixed:** on macOS, PyTorch and XGBoost in one Python process crash (XGBoost after PyTorch) or hang (the other way round). The tools keep them in separate processes, `classical.py` refuses XGBoost when PyTorch is loaded, and the PyTorch tests run in a child process (`tests/_wav2vec2_check.py`). Full suite: **125 tests**, about 10 s.
+- **Files:** `support/{dataset,features,evaluate,classical,noise,device,train_wav2vec2,inference,noise_test,whisper_asr}.py`, `tools/make_splits.py`, `main.py`, `notebooks/train_wav2vec2.ipynb`, `.github/workflows/tests.yml`, `configs/config.yaml`, `tests/` (+ `_synthetic.py`, `_wav2vec2_check.py`, `fixtures/`), `support/README.md`, `AGENTS.md`, `README.md`, `docs/progress/M1_tanvir.md`.
+- **For others:** M2's `select_subsets.py` must write `data/subsets/<dataset>.csv` with the columns in DATASETS.md §2. `support/dataset.py` checks them. M4's demo can call `support.inference.load_recognizer(path).predict(samples, rate)`. M3's `stats.py` can pair noise-test predictions by `utt_id` and `snr_db`.
+- **Next (M1):** once T43 and T10 are merged: build the processed copies and splits (T08), then the Random Forest (T11), then wav2vec 2.0 (T15 / T19) and Whisper (T30).
 
 ### 2026-10-17 · Tanvir Ahmed (M1) · T00 (instructor confirmation)
 

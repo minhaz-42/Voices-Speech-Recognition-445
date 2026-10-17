@@ -215,7 +215,7 @@ Voices-Speech-Recognition-445/
 ---
 
 ## 🚀 Usage
-Run every command from the repository root. Scripts in `support/` and `tools/` are run as modules (`python -m ...`) so they can import the shared code. Entry points marked *planned* are documented here once they work.
+Run every command from the repository root. Scripts in `support/` and `tools/` are run as modules (`python -m ...`) so they can import the shared code. *Code ready* means the code and its tests are merged; the run itself waits for the data step named in brackets. Every module is described in [support/README.md](support/README.md).
 
 | Command | Purpose | Planned for |
 | :--- | :--- | :---: |
@@ -224,11 +224,14 @@ Run every command from the repository root. Scripts in `support/` and `tools/` a
 | `python -m support.audio clip.wav [--out clip_16k.wav]` | Load and pre-process one clip (mono, 16 kHz, trimmed, normalised, padded to 6 s) | ✅ ready |
 | `python -m support.whisper_asr clip.wav` | Transcribe a clip with Whisper (zero-shot) and show the 5 nearest phrases | ✅ ready |
 | `python -m tools.select_subsets --dataset all` | Build the two 10-speaker subsets from the downloaded datasets | Week 2 |
-| `python -m support.classical --dataset fsc --model svm --split folds` | Train and evaluate a traditional model | Week 3 |
-| `python -m support.train_wav2vec2 --dataset fsc --epochs 15 --noise white --split folds` | Fine-tune wav2vec 2.0 | Week 4 |
-| `python -m support.evaluate --dataset fsc --run w2v2_15ep_noise` | Accuracy, F1, confusion matrix for one run | Week 4 |
-| `python -m support.whisper_asr --dataset l2arctic --model small --split folds` | Zero-shot Whisper: transcripts, WER and the matched phrase | Week 4 |
-| `python main.py --audio clip.wav` | Predict the phrase in an audio file (also `--video`, `--mic`) | Week 5 |
+| `python -m support.dataset --dataset fsc --build` | Processed 16 kHz copies + manifest of a subset | ✅ code ready (subsets, T42) |
+| `python -m tools.make_splits --dataset fsc` | Random 80/20 split + 5 speaker-independent folds, leakage-checked | ✅ code ready (subsets, T42) |
+| `python -m support.classical --dataset fsc --model svm --split all` | Train and evaluate a traditional model (also `random_forest`, `xgboost`, `knn`) | ✅ code ready (splits, T08) |
+| `python -m support.train_wav2vec2 --dataset fsc --epochs 15 --noise white` | Fine-tune wav2vec 2.0 on every split (`--untrained` for the baseline); Colab: `notebooks/train_wav2vec2.ipynb` | ✅ code ready (splits, T08) |
+| `python -m support.evaluate --dataset fsc --run w2v2_15ep_noise` | Rebuild a run's metrics, reports and confusion matrices from its predictions | ✅ code ready |
+| `python -m support.whisper_asr --dataset l2arctic --split all` | Zero-shot Whisper on the same test clips: transcripts, WER per speaker and first language | ✅ code ready (splits, T08) |
+| `python -m support.noise_test --run w2v2_15ep_noise --dataset fsc` | Accuracy with white noise at 20 / 10 / 5 dB on the test clips | ✅ code ready (trained models) |
+| `python main.py --audio clip.wav --model <saved model>` | Top-5 phrases for an audio file (also `--video`, `--mic`, `--asr whisper`, `--benchmark N`) | ✅ code ready (trained model) |
 | `python app.py` | Live microphone demo (Gradio) | Week 5 |
 
 ---
