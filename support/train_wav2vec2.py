@@ -1,4 +1,4 @@
-"""Fine-tune wav2vec 2.0 to recognise the phrases, or evaluate it untrained. One script for every run.
+"""Fine-tune wav2vec 2.0 (or WavLM / HuBERT) to recognise the phrases, or evaluate it untrained. One script for every run.
 
 Each run is a set of CLI options, not a new script:
 
@@ -9,6 +9,8 @@ Each run is a set of CLI options, not a new script:
 | 3 epochs (T17) | ``--epochs 3`` | ``results/w2v2_3ep/`` |
 | Untrained baseline (T18) | ``--untrained`` | ``results/w2v2_untrained/`` |
 | 15 epochs, no noise (T19) | ``--epochs 15`` | ``results/w2v2_15ep/`` |
+| WavLM Base+ (T44) | ``--model microsoft/wavlm-base-plus --epochs 15 --noise white`` | ``results/wavlm_15ep_noise/`` |
+| HuBERT Base (T45) | ``--model facebook/hubert-base-ls960 --epochs 15 --noise white`` | ``results/hubert_15ep_noise/`` |
 
 For every split: load the processed clips (padded to 6 s), fine-tune with AdamW and a
 linear warm-up schedule (settings: ``wav2vec2`` section of the config), evaluate on the
@@ -46,11 +48,21 @@ from support.evaluate import save_run
 from support.noise import augment
 
 
-def default_run_name(epochs: int, noise: str, untrained: bool) -> str:
-    """``w2v2_untrained``, ``w2v2_3ep``, ``w2v2_15ep_noise`` …"""
+def model_tag(model_name: str | None) -> str:
+    """Short family name of a checkpoint: ``w2v2``, ``wavlm``, ``hubert`` or the checkpoint's own name."""
+    name = (model_name or "wav2vec2").lower()
+    for key, tag in (("wavlm", "wavlm"), ("hubert", "hubert"), ("wav2vec2", "w2v2")):
+        if key in name:
+            return tag
+    return Path(name).name.replace("-", "_")
+
+
+def default_run_name(epochs: int, noise: str, untrained: bool, model_name: str | None = None) -> str:
+    """``w2v2_untrained``, ``w2v2_3ep``, ``w2v2_15ep_noise``, ``wavlm_15ep_noise``, ``hubert_15ep_noise`` …"""
+    tag = model_tag(model_name)
     if untrained:
-        return "w2v2_untrained"
-    return f"w2v2_{epochs}ep" + ("_noise" if noise == "white" else "")
+        return f"{tag}_untrained"
+    return f"{tag}_{epochs}ep" + ("_noise" if noise == "white" else "")
 
 
 class ClipDataset(Dataset):
@@ -208,8 +220,8 @@ def run(dataset: str, splits: Sequence[str], epochs: int = 15, noise: str = "non
     cfg = cfg if cfg is not None else load_config()
     if noise not in {"none", "white"}:
         raise ValueError("noise must be 'none' or 'white'")
-    run_name = run_name or default_run_name(epochs, noise, untrained)
     model_name = model_name or cfg["wav2vec2"]["model"]
+    run_name = run_name or default_run_name(epochs, noise, untrained, model_name)
     device = pick_device(device)
     models_root = resolve_path(cfg, "outputs") / "models" / run_name / dataset
     preds, details = {}, {}

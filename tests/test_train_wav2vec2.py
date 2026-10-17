@@ -31,7 +31,8 @@ class TestTrainWav2vec2(unittest.TestCase):
         cls.tmp.cleanup()
 
     def test_run_names(self):
-        self.assertEqual(self.report["run_names"], ["w2v2_15ep_noise", "w2v2_3ep", "w2v2_untrained"])
+        self.assertEqual(self.report["run_names"], ["w2v2_15ep_noise", "w2v2_3ep", "w2v2_untrained",
+                                                    "wavlm_15ep_noise", "hubert_15ep_noise", "w2v2_8ep_noise"])
 
     def test_training_selects_best_validation_epoch(self):
         summary = self.report["trained"]

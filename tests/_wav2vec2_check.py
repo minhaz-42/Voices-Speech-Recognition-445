@@ -47,9 +47,14 @@ def main(out: Path) -> dict:
         build_processed("fsc", cfg)
         make_splits("fsc", cfg)
         report["run_names"] = [tw.default_run_name(15, "white", False), tw.default_run_name(3, "none", False),
-                               tw.default_run_name(15, "white", True)]
-        report["trained"] = tw.run("fsc", ["random", "fold1"], epochs=3, noise="white", cfg=cfg, device="cpu")
-        report["untrained"] = tw.run("fsc", ["random"], untrained=True, cfg=cfg, device="cpu", save_models=False)
+                               tw.default_run_name(15, "white", True),
+                               tw.default_run_name(15, "white", False, "microsoft/wavlm-base-plus"),
+                               tw.default_run_name(15, "white", False, "facebook/hubert-base-ls960"),
+                               tw.default_run_name(8, "white", False, "facebook/wav2vec2-base")]
+        report["trained"] = tw.run("fsc", ["random", "fold1"], epochs=3, noise="white", cfg=cfg, device="cpu",
+                                   run_name="w2v2_3ep_noise")
+        report["untrained"] = tw.run("fsc", ["random"], untrained=True, cfg=cfg, device="cpu", save_models=False,
+                                     run_name="w2v2_untrained")
         try:
             tw.run("fsc", ["random"], noise="pink", cfg=cfg, device="cpu")
             report["bad_noise_raises"] = False
