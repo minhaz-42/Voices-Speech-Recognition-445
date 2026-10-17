@@ -51,9 +51,9 @@ We do not record our own audio. **TenVoices** is two 10-speaker subsets (5 femal
 | | **TenVoices-FSC** (main) | **TenVoices-L2** (accents) |
 | :--- | :--- | :--- |
 | **Source** | [Fluent Speech Commands](https://fluent.ai/research/fluent-speech-commands/) (Lugosch et al., Interspeech 2019) | [L2-ARCTIC](https://psi.engr.tamu.edu/l2-arctic-corpus/) v5.0 (Zhao et al., Interspeech 2018) |
-| **What is said** | Smart-home commands, e.g. "turn on the lights in the kitchen" | Read sentences from the CMU ARCTIC prompts |
+| **What is said** | Smart-home commands, e.g. "turn on the lights", "put on the music", "turn up the heat in the kitchen" | Read sentences from the CMU ARCTIC prompts |
 | **Speakers** | 10 of the 97, chosen by script | 10 non-native speakers: the 4 Hindi-L1 speakers, plus a female and a male each with Arabic, Mandarin and Spanish as first language |
-| **Classes** | 50 commands, including confusable pairs ("turn **on** / **off** the lights", "**increase** / **decrease** the volume") | 50 sentences read by all 10 speakers |
+| **Classes** | 50 commands; many share most of their words, so the model has to hear the exact wording | 50 sentences read by all 10 speakers |
 | **Clips** | 2 takes per speaker and command, up to 1,000 | 1 per speaker and sentence, 500 |
 | **Licence** | CC BY-NC-ND 4.0, academic research only | CC BY-NC 4.0 |
 

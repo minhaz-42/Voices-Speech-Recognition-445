@@ -30,7 +30,7 @@
 
 **Interpretation**
 - Speech recognition is framed as **closed-set phrase recognition**, the same way spoken commands are recognised by voice assistants. Every phrase is a class.
-- **Why two datasets.** TenVoices-FSC holds short spoken commands with natural confusable pairs, such as "turn **on** / turn **off** the lights" and "**increase** / **decrease** the volume": recognising them requires the actual words, not just the voice. TenVoices-L2 holds longer read sentences from non-native speakers with different first languages, including Hindi, the accent in that corpus closest to Bangladeshi English. A method that only works on one of them is not convincing.
+- **Why two datasets.** TenVoices-FSC holds short spoken commands such as "turn on the lights", "lights on" and "turn up the heat in the kitchen". Many commands share most of their words, and different wordings of the same request are different classes, so recognising them requires the actual words, not just the voice. TenVoices-L2 holds longer read sentences from non-native speakers with different first languages, including Hindi, the accent in that corpus closest to Bangladeshi English. A method that only works on one of them is not convincing.
 - The system can also **transcribe** free speech. Whisper turns a recording into text without any training on our data, and the closest of the 50 phrases becomes its prediction. Its word error rate shows how a general-purpose recogniser copes with non-native accents.
 - **Effectiveness** must hold for **speakers the system has never heard**. Every model is also scored on a random split, so the gap between seen and unseen speakers is visible.
 - **Check with the instructor** that selecting the 10 speakers from published data satisfies "gather a dataset" (see **❓ Decisions to Confirm**).
@@ -93,9 +93,9 @@ Sources, licences, download steps, folder layout and the exact selection and QC 
 |---|---|---|
 | Source | *Fluent Speech Commands* (Lugosch et al., Interspeech 2019) | *L2-ARCTIC* v5 (Zhao et al., Interspeech 2018) |
 | Source size | 30,043 clips, 97 speakers, 248 phrasings of 31 intents, 19 hours, 16 kHz mono | 24 non-native speakers (6 first languages × 2 F + 2 M), about 1 hour each, 44.1 kHz |
-| What speakers say | Smart-home commands ("turn on the lights in the kitchen"); each speaker said each phrasing twice | The same CMU ARCTIC prompt sentences, read once by every speaker |
+| What speakers say | Smart-home commands ("put on the music", "turn up the heat in the kitchen"); each speaker was recorded saying each phrasing twice | The same CMU ARCTIC prompt sentences, read once by every speaker |
 | Our 10 speakers | 5 female, 5 male, chosen by script from the dataset's demographics file | Hindi: ASI (M), RRBI (M), SVBI (F), TNI (F) · Arabic: ABA (M), SKA (F) · Mandarin: BWC (M), LXC (F) · Spanish: EBVS (M), NJS (F) |
-| Our 50 classes | 50 phrases recorded by the most speakers, keeping minimal pairs (on / off, increase / decrease) | 50 sentences read by all 10 speakers, drawn with seed 42 |
+| Our 50 classes | The 50 phrasings recorded twice by the most speakers | 50 sentences read by all 10 speakers, drawn with seed 42 |
 | Takes per speaker and class | 2 | 1 |
 | Clips | up to **1,000** (the datasheet reports the exact number) | **500** |
 | Licence | CC BY-NC-ND 4.0, academic research only | CC BY-NC 4.0 |
@@ -176,7 +176,7 @@ Every experiment runs on both datasets unless the setup says otherwise.
 | E3 | How much does fine-tuning help? | wav2vec 2.0: 3 epochs (M3), 8 epochs + noise (M2), 15 epochs + noise (M1), on both splits | Same + learning curves | M1–M3 | 4 | Must |
 | E4 | Seen vs unseen speakers | Random split vs speaker-independent CV for every model; per-speaker accuracy | Accuracy drop, per-speaker table | M3 | 5 | Must |
 | E5 | Noise robustness | White noise at 20 / 10 / 5 dB on the test clips; 15 epochs with vs without noise | Accuracy vs SNR | M1 | 5 | Should |
-| E6 | Where are the errors? | Most-confused phrase pairs (e.g. on / off), accuracy per phrase and per intent | Confusion analysis | M3 | 5 | Must |
+| E6 | Where are the errors? | Most-confused phrase pairs (e.g. two wordings of one request, or commands that differ in one word), accuracy per phrase and per intent | Confusion analysis | M3 | 5 | Must |
 | E7 | Is it practical? | Inference time per clip on laptop CPU vs GPU; model size | ms per clip, MB | M1 | 5 | Should |
 | E8 | How good is general-purpose speech-to-text without training? | Whisper small, zero-shot, + phrase matching on the test clips of both splits | Accuracy, F1, WER, CER per speaker and dataset | M1 | 4 | Should |
 | E9 | Do accents matter? | TenVoices-L2 only: accuracy and Whisper WER per first language; folds 3–5 hold out a whole first language | Per-L1 accuracy and WER | M3 | 5 | Should |
@@ -345,7 +345,7 @@ The tasks for each week, with owners and dependencies, are in [STATUS.md](STATUS
 | Few training clips per class on TenVoices-L2 (7 per fold) | High | Medium | Expected and part of the comparison; report learning curves and per-fold results honestly | M1 |
 | No GPU / slow training | Medium | Medium | Free Colab GPU; reduced epoch comparison (see compute); CPU only as a last resort | M1 |
 | Traditional models score near chance on unseen speakers | Medium | Low | Expected, and a finding in itself; the random split shows the contrast | M3 |
-| Confusable phrases (on / off) hurt accuracy | High | Low | That is intended; analysed in E6 rather than avoided | M3 |
+| Similar commands (different wordings of one request) hurt accuracy | High | Low | That is intended; analysed in E6 rather than avoided | M3 |
 | Data leakage between train and test | Low | High | Split rules + unit tests | M1, M3 |
 | A member is unavailable and a handoff stalls | Medium | Medium | Every task is written up on the board and in the member's progress file, so the lead (or another member) can take it over; small tasks, frequent pushes | M1 |
 | Merge conflicts | Low | Medium | One branch per member, strict file ownership, per-member progress files; only the lead edits the shared docs and merges | M1 |

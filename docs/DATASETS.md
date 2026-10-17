@@ -41,7 +41,7 @@ TenVoices is two 10-speaker subsets of published datasets, selected by script:
 
 **TenVoices-FSC**
 1. **Phrase text:** the transcription, lower-cased, punctuation removed, spaces collapsed. Different wordings are different phrases ("turn on the lights" and "lights on" are two classes).
-2. **Phrases:** rank the phrasings by the number of speakers who have **two** eligible takes of them; ties alphabetically. Keep the top 50. Phrase IDs `FSC01`–`FSC50` follow the alphabetical order of the kept texts. The datasheet lists the minimal pairs that made it in (e.g. *turn on / turn off the lights*, *increase / decrease the volume*).
+2. **Phrases:** rank the phrasings by the number of speakers who have **two** eligible takes of them; ties alphabetically. Keep the top 50. Phrase IDs `FSC01`–`FSC50` follow the alphabetical order of the kept texts. The datasheet lists the kept phrases that differ in only one word or share an intent, since those are the hardest to tell apart.
 3. **Speakers:** rank speakers by the number of the 50 phrases for which they have two eligible takes; take the top 5 female and the top 5 male; ties broken with `numpy.random.default_rng(42)`.
 4. **Clips:** the first two eligible takes (by file name) of every chosen speaker and phrase. A missing take stays missing; it is not replaced by a third take or another speaker.
 5. **Category:** the intent's *action* (e.g. `activate`, `decrease`), for per-intent error analysis.
