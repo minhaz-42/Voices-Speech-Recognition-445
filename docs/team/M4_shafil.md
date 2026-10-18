@@ -61,7 +61,13 @@ Plain-language summary for the weekly project update, newest week first. Add to 
 
 ## Handoff log (newest first)
 
-*(Nothing yet.)*
+**2026-10-18 · Shafil**
+- **Ready to merge:** T14, T18, T36, T38, T39, T46. **Code done, waiting for me (👤):** T35 example figures from my own recordings; T23 live check of the demo with my voice.
+- **Files:** `support/visualization.py`, `support/embeddings.py`, `app.py`, `tests/test_visualization.py`, `tests/test_app.py`, `tests/test_embeddings.py`, `tests/_embeddings_check.py`, `docs/literature/self_supervised_speech.md`, `others/poster.html`, `images/poster.png`, `results/svm/fsc/`, `results/w2v2_untrained/fsc/`, `results/w2v2_probe/fsc/`, `images/confusion/{svm,w2v2_untrained,w2v2_probe}_fsc_*.png`, `images/results_*.png`, this page.
+- **Key results (TenVoices-FSC, unseen speakers / random split):** SVM 0.223 / 0.305; untrained wav2vec 2.0 0.028 / 0.025; linear probe 0.605 / 0.695.
+- **Tests:** 179 run, all pass except `test_inference.test_main_cli_with_benchmark` on a Windows console (see *Requests for the lead*; passes with `PYTHONIOENCODING=utf-8`).
+- **Next:** record 2–3 commands for the T35 example figures; try the demo with my voice (T23); then T27 (results poster, slides, demo video). The SVM is weak (22% on unseen speakers), so for the video the demo should load a fine-tuned wav2vec 2.0 model from the Drive (`python app.py --model <folder>`).
+- **Blockers:** none.
 
 ## Task cards
 
