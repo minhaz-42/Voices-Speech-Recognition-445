@@ -462,6 +462,55 @@ def results_table(results: str | Path | None = None, dataset: str | None = None)
     return pd.DataFrame(rows, columns=["run", "dataset", "protocol", "accuracy", "macro_f1"])
 
 
+PROTOCOL_LABELS = {"random": "random split (speakers seen)", "unseen": "unseen speakers (5 folds)"}
+
+
+def plot_protocol_comparison(
+    table: pd.DataFrame,
+    metric: str = "accuracy",
+    title: str | None = None,
+    path: str | Path | None = None,
+) -> Figure:
+    """Grouped bars: per run, the random split next to unseen speakers.
+
+    Args:
+        table: Rows of :func:`results_table` (columns ``run``, ``protocol`` and ``metric``).
+        metric: ``accuracy`` or ``macro_f1``.
+        title: Figure title.
+        path: If given, the figure is saved there.
+
+    Returns:
+        The matplotlib figure.
+
+    Raises:
+        ValueError: If a required column is missing.
+    """
+    _require_columns(table, ["run", "protocol", metric])
+    pivot = table.pivot_table(index="run", columns="protocol", values=metric, aggfunc="mean")
+    pivot = pivot.reindex(columns=[p for p in PROTOCOL_LABELS if p in pivot.columns])
+    if "unseen" in pivot.columns:  # weakest to strongest on unseen speakers, the headline
+        pivot = pivot.sort_values("unseen", na_position="first")
+    runs, protocols = list(pivot.index), list(pivot.columns)
+    width = 0.8 / max(len(protocols), 1)
+    positions = np.arange(len(runs))
+
+    fig = Figure(figsize=(max(7.0, 1.1 * len(runs) + 2.0), 4.8))
+    ax = fig.add_subplot()
+    for i, protocol in enumerate(protocols):
+        values = pivot[protocol].to_numpy(dtype=float)
+        bars = ax.bar(positions + (i - (len(protocols) - 1) / 2) * width, values, width,
+                      label=PROTOCOL_LABELS[protocol])
+        ax.bar_label(bars, labels=["" if np.isnan(v) else f"{v:.2f}" for v in values], padding=2, fontsize=7)
+    ax.set_xticks(positions, labels=runs, rotation=30, ha="right")
+    ax.set_ylabel(metric.replace("_", " ").capitalize())
+    ax.set_ylim(0.0, 1.1)
+    ax.set_title(title or f"{metric.replace('_', ' ').capitalize()}: seen vs unseen speakers")
+    ax.grid(axis="y", alpha=0.3)
+    ax.legend(fontsize=8, loc="upper left")
+    fig.tight_layout()
+    return _save(fig, path)
+
+
 def main() -> None:
     """Draw the overview (and optionally the pre-processing figure) of one audio file."""
     parser = argparse.ArgumentParser(description="Draw waveform, spectrograms and MFCCs of one audio file.")
