@@ -8,10 +8,12 @@ saves it as a 150 dpi PNG and creates the folder.
 Usage::
 
     python -m support.visualization clip.wav --out images/example_overview.png
+    python -m support.visualization clip.wav --out images/example_overview.png         --preprocessing images/example_preprocessing.png
 """
 
 from __future__ import annotations
 
+import argparse
 from pathlib import Path
 from typing import Any
 
@@ -383,3 +385,27 @@ def plot_per_speaker(
         ax.legend(fontsize=8)
     fig.tight_layout()
     return _save(fig, path)
+
+
+def main() -> None:
+    """Draw the overview (and optionally the pre-processing figure) of one audio file."""
+    parser = argparse.ArgumentParser(description="Draw waveform, spectrograms and MFCCs of one audio file.")
+    parser.add_argument("path", help="audio file (WAV, FLAC, OGG or MP3)")
+    parser.add_argument("--out", required=True, help="PNG for the four-panel overview")
+    parser.add_argument("--preprocessing", default=None, help="also save the before/after pre-processing PNG here")
+    parser.add_argument("--title", default=None, help="title of the overview (default: the file name)")
+    parser.add_argument("--config", default=None, help="config file (default: configs/config.yaml)")
+    args = parser.parse_args()
+
+    audio_cfg = load_config(args.config)["audio"]
+    raw, raw_sr = read_audio(args.path)
+    processed = preprocess(raw, raw_sr, audio_cfg, pad=False)
+    clip_overview(processed, int(audio_cfg["sample_rate"]), title=args.title or Path(args.path).name, path=args.out)
+    print(f"saved: {args.out}")
+    if args.preprocessing:
+        plot_preprocessing(args.path, audio_cfg, out_path=args.preprocessing)
+        print(f"saved: {args.preprocessing}")
+
+
+if __name__ == "__main__":
+    main()
