@@ -387,6 +387,42 @@ def plot_per_speaker(
     return _save(fig, path)
 
 
+def plot_top_k(
+    top: list[dict],
+    title: str | None = None,
+    path: str | Path | None = None,
+) -> Figure:
+    """Horizontal bar chart of a recogniser's best phrases and their confidence, best on top.
+
+    Args:
+        top: ``[{"phrase_id", "text", "score"}, ...]`` as returned by
+            ``support.inference`` recognisers, best first.
+        title: Figure title.
+        path: If given, the figure is saved there.
+
+    Returns:
+        The matplotlib figure.
+
+    Raises:
+        ValueError: If ``top`` is empty.
+    """
+    if not top:
+        raise ValueError("no predictions to plot")
+    labels = [f"{r['phrase_id']}  {r.get('text', '')}".strip() for r in top][::-1]
+    scores = [float(r["score"]) for r in top][::-1]
+    fig = Figure(figsize=(7, 0.55 * len(top) + 1.2))
+    ax = fig.add_subplot()
+    colors = ["tab:blue"] * (len(top) - 1) + ["tab:orange"]  # the best phrase stands out
+    bars = ax.barh(range(len(top)), scores, color=colors)
+    ax.bar_label(bars, labels=[f"{v:.1%}" for v in scores], padding=3, fontsize=9)
+    ax.set_yticks(range(len(top)), labels=labels, fontsize=9)
+    ax.set_xlim(0.0, 1.15)
+    ax.set_xlabel("Confidence")
+    ax.set_title(title or f"Top {len(top)} phrases")
+    fig.tight_layout()
+    return _save(fig, path)
+
+
 def main() -> None:
     """Draw the overview (and optionally the pre-processing figure) of one audio file."""
     parser = argparse.ArgumentParser(description="Draw waveform, spectrograms and MFCCs of one audio file.")
