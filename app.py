@@ -11,6 +11,7 @@ Usage::
 
 from __future__ import annotations
 
+import argparse
 from typing import Any
 
 import numpy as np
@@ -84,8 +85,7 @@ def build_app():
     import gradio as gr
 
     with gr.Blocks(title="TenVoices demo") as app:
-        gr.Markdown("# TenVoices: spoken phrase recognition
-"
+        gr.Markdown("# TenVoices: spoken phrase recognition\n"
                     "Say one of the 50 smart-home commands below (or upload a clip) and see exactly what the "
                     "system receives after pre-processing: 16 kHz mono, silence trimmed, peak-normalised.")
         with gr.Row():
@@ -105,8 +105,6 @@ def build_app():
 
 def main() -> None:
     """Launch the demo in the browser."""
-    import argparse
-
     parser = argparse.ArgumentParser(description="TenVoices live demo (Gradio).")
     parser.add_argument("--port", type=int, default=7860, help="local port (default: 7860)")
     parser.add_argument("--share", action="store_true", help="also create a temporary public Gradio link")
