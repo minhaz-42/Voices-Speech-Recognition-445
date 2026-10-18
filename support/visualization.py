@@ -8,7 +8,9 @@ saves it as a 150 dpi PNG and creates the folder.
 Usage::
 
     python -m support.visualization clip.wav --out images/example_overview.png
-    python -m support.visualization clip.wav --out images/example_overview.png         --preprocessing images/example_preprocessing.png
+    python -m support.visualization clip.wav --out images/example_overview.png \
+        --preprocessing images/example_preprocessing.png
+    python -m support.visualization --results results --out images
 """
 
 from __future__ import annotations
@@ -545,16 +547,61 @@ def noise_table(results: str | Path | None = None, dataset: str = "fsc", protoco
     return table.rename(columns={"run": "model"})[["model", "snr_db", "accuracy"]].reset_index(drop=True)
 
 
+def draw_results(results: str | Path | None = None, out: str | Path = "images") -> list[Path]:
+    """Draw the results figures of every run, per dataset, into ``out``.
+
+    - ``results_<dataset>_accuracy.png`` and ``results_<dataset>_macro_f1.png``: random
+      split vs unseen speakers per run (from ``summary.json``);
+    - ``results_<dataset>_per_speaker.png``: unseen-speaker accuracy per speaker and run;
+    - ``results_<dataset>_noise.png``: accuracy vs SNR on unseen speakers, when noise tests exist.
+
+    Confusion matrices are drawn by the shared evaluation already, so they are not repeated.
+
+    Returns:
+        The paths written.
+    """
+    out = Path(out)
+    written: list[Path] = []
+    table = results_table(results)
+    for dataset in sorted(table["dataset"].unique()):
+        rows = table[table["dataset"] == dataset]
+        for metric in ("accuracy", "macro_f1"):
+            path = out / f"results_{dataset}_{metric}.png"
+            plot_protocol_comparison(rows, metric, title=f"{metric.replace('_', ' ').capitalize()} on "
+                                     f"{dataset}: seen vs unseen speakers", path=path)
+            written.append(path)
+        speakers = per_speaker_table(results, dataset)
+        if not speakers.empty:
+            path = out / f"results_{dataset}_per_speaker.png"
+            plot_per_speaker(speakers, title=f"Accuracy per unseen speaker ({dataset})", path=path)
+            written.append(path)
+        noise = noise_table(results, dataset)
+        if not noise.empty:
+            path = out / f"results_{dataset}_noise.png"
+            plot_accuracy_vs_snr(noise, title=f"Accuracy vs white noise, unseen speakers ({dataset})", path=path)
+            written.append(path)
+    return written
+
+
 def main() -> None:
-    """Draw the overview (and optionally the pre-processing figure) of one audio file."""
-    parser = argparse.ArgumentParser(description="Draw waveform, spectrograms and MFCCs of one audio file.")
-    parser.add_argument("path", help="audio file (WAV, FLAC, OGG or MP3)")
-    parser.add_argument("--out", required=True, help="PNG for the four-panel overview")
+    """Draw the figures of one audio file, or (with ``--results``) the results figures of every run."""
+    parser = argparse.ArgumentParser(description="Draw waveform, spectrograms and MFCCs of one audio file, "
+                                                 "or with --results the results figures of every run.")
+    parser.add_argument("path", nargs="?", help="audio file (WAV, FLAC, OGG or MP3)")
+    parser.add_argument("--out", default=None,
+                        help="PNG for the overview of a clip; with --results the output folder (default: images)")
+    parser.add_argument("--results", default=None, help="results folder: draw the figures of every run in it")
     parser.add_argument("--preprocessing", default=None, help="also save the before/after pre-processing PNG here")
     parser.add_argument("--title", default=None, help="title of the overview (default: the file name)")
     parser.add_argument("--config", default=None, help="config file (default: configs/config.yaml)")
     args = parser.parse_args()
 
+    if args.results:
+        for path in draw_results(args.results, args.out or "images"):
+            print(f"saved: {path}")
+        return
+    if not args.path or not args.out:
+        parser.error("give an audio file and --out, or --results <folder>")
     audio_cfg = load_config(args.config)["audio"]
     raw, raw_sr = read_audio(args.path)
     processed = preprocess(raw, raw_sr, audio_cfg, pad=False)
