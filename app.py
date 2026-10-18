@@ -101,3 +101,18 @@ def build_app():
             gr.Dataframe(value=phrase_table(), headers=["ID", "Phrase"], interactive=False)
         analyse.click(process_audio, inputs=audio_in, outputs=[processed, plot, info])
     return app
+
+
+def main() -> None:
+    """Launch the demo in the browser."""
+    import argparse
+
+    parser = argparse.ArgumentParser(description="TenVoices live demo (Gradio).")
+    parser.add_argument("--port", type=int, default=7860, help="local port (default: 7860)")
+    parser.add_argument("--share", action="store_true", help="also create a temporary public Gradio link")
+    args = parser.parse_args()
+    build_app().launch(server_port=args.port, share=args.share)
+
+
+if __name__ == "__main__":
+    main()
