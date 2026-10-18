@@ -47,7 +47,11 @@ Every one of your tasks below depends only on work that is already merged or on 
 
 Plain-language summary for the weekly project update, newest week first. Add to it at the end of every session: only finished work, and numbers only from `results/`.
 
-*(Nothing yet.)*
+**Week of 2026-10-18**
+- **SVM (T14):** I trained and evaluated a support vector machine on the 78 MFCC statistics of TenVoices-FSC. It reaches 30.5% accuracy on the random split and 22.3% on speakers it never heard (5 folds pooled; `results/svm/fsc/summary.json`), close to Random Forest: MFCC models depend strongly on knowing the speaker.
+- **Untrained baseline and linear probe (T18, T46):** wav2vec 2.0 with an untrained head scores 2.8% on unseen speakers (chance is 2%; `results/w2v2_untrained/fsc/summary.json`). With the same model frozen and only a logistic regression trained on its features (`support/embeddings.py`), accuracy rises to 60.5% on unseen speakers and 69.5% on the random split (`results/w2v2_probe/fsc/summary.json`). Pre-training alone explains most of the gain; full fine-tuning adds the rest.
+- **Visualisation and demo (T35, T36, T23):** `support/visualization.py` draws waveforms, spectrograms, MFCCs, the effect of our pre-processing and the results charts; one command (`python -m support.visualization --results results`) draws the comparison, per-speaker and noise figures of every run in `images/`. The demo app (`app.py`) records or uploads a phrase, shows what the model receives and the top-5 phrases from the saved model, with an optional Whisper transcript.
+- **Poster and literature (T39, T38):** the planning poster now shows the team of four, the two datasets and the four-stage pipeline with Whisper; the literature notes cover eight checked papers on self-supervised speech models (`docs/literature/self_supervised_speech.md`).
 
 ## Requests for the lead
 
