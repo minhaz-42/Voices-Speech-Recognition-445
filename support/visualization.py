@@ -69,7 +69,9 @@ def plot_waveform(
     return _save(fig, path)
 
 
-def _draw_spectrogram(fig: Figure, ax, samples: np.ndarray, sample_rate: int, kind: str, title: str | None) -> None:
+def _draw_spectrogram(
+    fig: Figure, ax, samples: np.ndarray, sample_rate: int, kind: str, title: str | None, colorbar: bool = True
+) -> None:
     """Draw a log-power (``"linear"``) or 64-band log-mel (``"mel"``) spectrogram in dB on ``ax``."""
     samples = np.asarray(samples, dtype=np.float32)
     hop = HOP_LENGTH
@@ -87,7 +89,8 @@ def _draw_spectrogram(fig: Figure, ax, samples: np.ndarray, sample_rate: int, ki
     image = librosa.display.specshow(
         db, sr=sample_rate, hop_length=hop, x_axis="time", y_axis=y_axis, ax=ax, cmap="magma"
     )
-    fig.colorbar(image, ax=ax, format="%+.0f dB", label="dB")
+    if colorbar:
+        fig.colorbar(image, ax=ax, format="%+.0f dB", label="dB")
     ax.set_xlabel("Time (s)")
     ax.set_ylabel("Frequency (Hz)")
     ax.set_title(title or f"{label} (dB)")
@@ -122,7 +125,9 @@ def plot_spectrogram(
     return _save(fig, path)
 
 
-def _draw_mfcc(fig: Figure, ax, samples: np.ndarray, sample_rate: int, n_mfcc: int, title: str | None) -> None:
+def _draw_mfcc(
+    fig: Figure, ax, samples: np.ndarray, sample_rate: int, n_mfcc: int, title: str | None, colorbar: bool = True
+) -> None:
     """Draw an MFCC heatmap (coefficient index over time) on ``ax``."""
     samples = np.asarray(samples, dtype=np.float32)
     mfcc = librosa.feature.mfcc(
@@ -131,7 +136,8 @@ def _draw_mfcc(fig: Figure, ax, samples: np.ndarray, sample_rate: int, n_mfcc: i
     image = librosa.display.specshow(
         mfcc, sr=sample_rate, hop_length=HOP_LENGTH, x_axis="time", ax=ax, cmap="coolwarm"
     )
-    fig.colorbar(image, ax=ax, label="value")
+    if colorbar:
+        fig.colorbar(image, ax=ax, label="value")
     ax.set_xlabel("Time (s)")
     ax.set_ylabel("MFCC coefficient")
     ax.set_title(title or f"{n_mfcc} MFCCs")
@@ -179,14 +185,16 @@ def clip_overview(
         path: If given, the figure is saved there.
 
     Returns:
-        The matplotlib figure (four panels plus their colour bars).
+        The matplotlib figure with exactly four axes.
     """
     fig = Figure(figsize=(9, 11))
     axes = fig.subplots(4, 1)
     _draw_waveform(axes[0], samples, sample_rate, None)
-    _draw_spectrogram(fig, axes[1], samples, sample_rate, "linear", None)
-    _draw_spectrogram(fig, axes[2], samples, sample_rate, "mel", None)
-    _draw_mfcc(fig, axes[3], samples, sample_rate, 13, None)
+    # No colour bars, so the figure has exactly four axes and the panels share one time axis width.
+    _draw_spectrogram(fig, axes[1], samples, sample_rate, "linear", "Log-power spectrogram (dB)", colorbar=False)
+    _draw_spectrogram(fig, axes[2], samples, sample_rate, "mel", f"Log-mel spectrogram, {N_MELS} bands (dB)",
+                      colorbar=False)
+    _draw_mfcc(fig, axes[3], samples, sample_rate, 13, "13 MFCCs", colorbar=False)
     if title:
         fig.suptitle(title, fontsize=13)
     fig.tight_layout()
