@@ -55,7 +55,7 @@
   .stats div{display:flex;flex-direction:column}
   .stats b{font:700 42px/1 var(--display);background:linear-gradient(90deg,var(--teal),var(--blue));
     -webkit-background-clip:text;background-clip:text;color:transparent}
-  .stats span{font-size:15px;color:var(--mut);margin-top:3px}
+  .stats span{font-size:15px;line-height:1.3;color:var(--mut);margin-top:6px}
   /* example card */
   .card .ex{margin-bottom:13px}
   .card small{display:block;font:500 12px var(--mono);letter-spacing:.08em;color:var(--dim);margin-bottom:4px}
@@ -118,14 +118,12 @@
 </div>
 
 <div class="panel" style="left:1164px;top:36px;width:400px;height:280px">
-  <h3>TENVOICES DATASET</h3>
+  <h3>TENVOICES &middot; TWO DATASETS</h3>
   <div class="stats">
-    <div><b>10</b><span>speakers &middot; 5F / 5M target</span></div>
-    <div><b>1,600</b><span>recordings</span></div>
-    <div><b>50</b><span>phrases (classes)</span></div>
-    <div><b>3&times;</b><span>repetitions each</span></div>
+    <div><b>FSC</b><span>10 speakers (5F/5M) &middot; 50 commands &times; 2 takes = 1,000 clips</span></div>
+    <div><b>L2</b><span>10 non-native speakers &middot; 50 sentences = 500 clips</span></div>
   </div>
-  <p class="note">commands &middot; numbers &middot; everyday sentences &middot; Bangladeshi names &middot; phonetic sentences, plus real-noise takes, recorded with consent</p>
+  <p class="note">Selected by script from published corpora: <em>Fluent Speech Commands</em> (CC BY-NC-ND 4.0) and <em>L2-ARCTIC</em> (CC BY-NC 4.0; first languages Hindi, Mandarin, Spanish, Korean, Vietnamese). Audio is never redistributed.</p>
 </div>
 
 <div class="panel card" style="left:1236px;top:446px;width:328px;height:262px">
