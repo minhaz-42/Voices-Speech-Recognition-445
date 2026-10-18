@@ -109,6 +109,24 @@ def phrase_table(dataset: str = DATASET) -> list[list[str]]:
     return labels[["phrase_id", "text"]].astype(str).values.tolist()
 
 
+def whisper_text(audio: tuple[int, np.ndarray] | None, whisper) -> str:
+    """Whisper's transcript of one clip and the nearest of the 50 phrases, as one line.
+
+    Args:
+        audio: ``(sample_rate, samples)`` from the audio widget, or ``None``.
+        whisper: A ``support.inference.WhisperRecognizer``.
+    """
+    if audio is None or np.asarray(audio[1]).size == 0:
+        return ""
+    try:
+        out = whisper.predict(np.asarray(audio[1]), int(audio[0]), k=1)
+    except ValueError as err:
+        return f"Cannot use this clip: {err}"
+    best = out["top"][0]
+    verdict = "not one of the 50 phrases" if out["rejected"] else f"nearest phrase {best['phrase_id']}: {best['text']}"
+    return f'"{out["transcript"].strip()}" -> {verdict}'
+
+
 def load_model(path: str | Path | None):
     """Open a saved model with ``support.inference.load_recognizer``.
 
@@ -148,11 +166,22 @@ def build_app(model_path: str | Path | None = DEFAULT_MODEL, recognizer=None):
     else:
         recognizer, status = load_model(model_path)
     texts = phrase_texts()
+    whisper_cache: dict = {}
 
-    def analyse(audio):
+    def get_whisper():
+        """Load Whisper the first time the checkbox is used (it is a large download)."""
+        if "model" not in whisper_cache:
+            from support.inference import WhisperRecognizer
+
+            phrases = [{"phrase_id": pid, "text": text} for pid, text in texts.items()]
+            whisper_cache["model"] = WhisperRecognizer(phrases)
+        return whisper_cache["model"]
+
+    def analyse(audio, use_whisper):
         processed, overview, info = process_audio(audio)
         rows, chart = recognise(audio, recognizer, texts) if recognizer is not None and processed else ([], None)
-        return processed, overview, info, rows, chart
+        transcript = whisper_text(audio, get_whisper()) if use_whisper and processed else ""
+        return processed, overview, info, rows, chart, transcript
 
     with gr.Blocks(title="TenVoices demo") as app:
         gr.Markdown("# TenVoices: spoken phrase recognition\n"
@@ -162,6 +191,8 @@ def build_app(model_path: str | Path | None = DEFAULT_MODEL, recognizer=None):
         with gr.Row():
             with gr.Column():
                 audio_in = gr.Audio(sources=["microphone", "upload"], type="numpy", label="Your phrase")
+                use_whisper = gr.Checkbox(label="Also transcribe with Whisper (zero-shot; downloads the model "
+                                                "the first time)", value=False)
                 analyse_btn = gr.Button("Analyse", variant="primary")
                 info = gr.Textbox(label="Clip", lines=2, interactive=False)
                 processed = gr.Audio(label="After pre-processing", type="numpy", interactive=False)
@@ -169,10 +200,12 @@ def build_app(model_path: str | Path | None = DEFAULT_MODEL, recognizer=None):
                 gr.Markdown(f"**Prediction** · {status}")
                 top_table = gr.Dataframe(headers=["Rank", "ID", "Phrase", "Confidence"], interactive=False)
                 top_plot = gr.Plot(label="Confidence of the top 5 phrases")
+                transcript = gr.Textbox(label="Whisper transcript", interactive=False)
         plot = gr.Plot(label="Waveform, spectrogram, log-mel spectrogram and MFCCs")
         with gr.Accordion("The 50 phrases (TenVoices-FSC)", open=False):
             gr.Dataframe(value=phrase_table(), headers=["ID", "Phrase"], interactive=False)
-        analyse_btn.click(analyse, inputs=audio_in, outputs=[processed, plot, info, top_table, top_plot])
+        analyse_btn.click(analyse, inputs=[audio_in, use_whisper],
+                          outputs=[processed, plot, info, top_table, top_plot, transcript])
     return app
 
 
