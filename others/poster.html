@@ -48,8 +48,8 @@
   .node.ours svg{stroke:var(--amber)}
   .node.ours small{color:#f3d3a6}
   .arrow{align-self:center;color:var(--teal);font-size:20px;width:20px;text-align:center}
-  .chips{margin-top:16px;display:flex;flex-wrap:wrap;gap:7px;align-items:center;font-size:13.5px;color:var(--mut)}
-  .chips span{border:1px solid rgba(159,178,204,.38);border-radius:999px;padding:4px 10px;color:var(--txt)}
+  .chips{margin-top:12px;display:flex;flex-wrap:wrap;gap:7px;align-items:center;font-size:13.5px;color:var(--mut)}
+  .chips span{border:1px solid rgba(159,178,204,.38);border-radius:999px;padding:3px 9px;color:var(--txt)}
   /* dataset */
   .stats{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
   .stats div{display:flex;flex-direction:column}
@@ -108,13 +108,13 @@
     <div class="arrow">&#8594;</div>
     <div class="node"><svg viewBox="0 0 24 24"><path d="M2 12h3l2-6 3 12 3-9 2 6 2-3h5"/></svg><b>Pre-process</b><small>16 kHz &middot; trim &middot; pad to 6 s</small></div>
     <div class="arrow">&#8594;</div>
-    <div class="node ours"><svg viewBox="0 0 24 24"><path d="M3 12h2M7 7v10M11 4v16M15 8v8M19 10v4M21 12h0"/></svg><b>Augment</b><small>white noise (training only)</small></div>
+    <div class="node ours"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg><b>3 &middot; wav2vec 2.0</b><small>fine-tuned 3 / 8 / 15 ep, white-noise training</small></div>
     <div class="arrow">&#8594;</div>
-    <div class="node ours"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg><b>wav2vec 2.0</b><small>fine-tuned 3 / 8 / 15 epochs</small></div>
+    <div class="node ours"><svg viewBox="0 0 24 24"><path d="M4 5h16v10H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg><b>4 &middot; Whisper</b><small>zero-shot text &#8594; nearest phrase, WER</small></div>
     <div class="arrow">&#8594;</div>
     <div class="node"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h12M4 18h8"/></svg><b>Prediction</b><small>1 of 50 phrases + confidence</small></div>
   </div>
-  <div class="chips">Baselines: <span>MFCC + k-NN &middot; SVM &middot; RF &middot; XGBoost</span><span>untrained wav2vec 2.0</span></div>
+  <div class="chips">Compared with: <span>1 &middot; MFCC + k-NN / SVM / RF / XGBoost</span><span>2 &middot; untrained wav2vec 2.0</span><span>WavLM &middot; HuBERT &middot; linear probe</span></div>
 </div>
 
 <div class="panel" style="left:1164px;top:36px;width:400px;height:280px">
