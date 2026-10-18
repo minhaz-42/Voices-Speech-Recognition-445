@@ -306,7 +306,8 @@ def plot_accuracy_vs_snr(
 
     Args:
         table: Columns ``model``, ``snr_db`` and ``accuracy``. Clean audio can be
-            given as ``snr_db = inf``; it is drawn at the right edge, labelled "clean".
+            given as ``snr_db = "clean"`` (as in ``noise/*.csv``) or ``inf``; it is
+            drawn at the right edge, labelled "clean".
         title: Figure title.
         path: If given, the figure is saved there.
 
@@ -336,5 +337,49 @@ def plot_accuracy_vs_snr(
     ax.set_title(title or "Accuracy vs noise level")
     ax.grid(alpha=0.3)
     ax.legend(fontsize=8)
+    fig.tight_layout()
+    return _save(fig, path)
+
+
+def plot_per_speaker(
+    table: pd.DataFrame,
+    title: str | None = None,
+    path: str | Path | None = None,
+) -> Figure:
+    """Bar chart of accuracy per speaker, grouped by model when a ``model`` column exists.
+
+    Args:
+        table: Columns ``speaker_id`` and ``accuracy`` (e.g. ``folds/per_speaker.csv``),
+            optionally ``model``.
+        title: Figure title.
+        path: If given, the figure is saved there.
+
+    Returns:
+        The matplotlib figure.
+
+    Raises:
+        ValueError: If a required column is missing.
+    """
+    _require_columns(table, ["speaker_id", "accuracy"])
+    data = table if "model" in table.columns else table.assign(model="")
+    pivot = data.pivot_table(index="speaker_id", columns="model", values="accuracy", aggfunc="mean", sort=False)
+    speakers = [str(s) for s in pivot.index]
+    models = list(pivot.columns)
+    width = 0.8 / max(len(models), 1)
+    positions = np.arange(len(speakers))
+
+    fig = Figure(figsize=(max(7.0, 0.6 * len(speakers) * max(len(models), 1) + 2.0), 4.5))
+    ax = fig.add_subplot()
+    for i, model in enumerate(models):
+        offset = (i - (len(models) - 1) / 2) * width
+        ax.bar(positions + offset, pivot[model].to_numpy(dtype=float), width, label=str(model) or None)
+    ax.set_xticks(positions, labels=speakers, rotation=45, ha="right", fontsize=8)
+    ax.set_xlabel("Speaker")
+    ax.set_ylabel("Accuracy")
+    ax.set_ylim(0.0, 1.05)
+    ax.set_title(title or "Accuracy per speaker")
+    ax.grid(axis="y", alpha=0.3)
+    if any(str(m) for m in models):
+        ax.legend(fontsize=8)
     fig.tight_layout()
     return _save(fig, path)
