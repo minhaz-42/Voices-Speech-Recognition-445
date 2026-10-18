@@ -12,9 +12,15 @@ PyTorch is imported inside the functions, so importing this module stays cheap
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any, Sequence
 
 import numpy as np
+
+from support.config import load_config, resolve_path
+from support.dataset import load_manifest, read_processed
+
+DEFAULT_MODEL = "facebook/wav2vec2-base"
 
 
 def embed_clips(
@@ -56,3 +62,58 @@ def embed_clips(
             vectors.append(states.mean(dim=1).squeeze(0).float().cpu().numpy())
     hidden = int(model.config.hidden_size)
     return np.stack(vectors).astype(np.float32) if vectors else np.zeros((0, hidden), dtype=np.float32)
+
+
+def features_path(dataset: str, cfg: dict[str, Any]) -> Path:
+    """``outputs/features/<dataset>_w2v2.npz``, the file ``support.classical --features w2v2`` reads."""
+    return resolve_path(cfg, "outputs") / "features" / f"{dataset}_w2v2.npz"
+
+
+def extract_dataset(
+    dataset: str,
+    model_name: str = DEFAULT_MODEL,
+    layer: int | None = None,
+    cfg: dict[str, Any] | None = None,
+    device: str | None = None,
+) -> Path:
+    """Embed every clip of the dataset's manifest and save the cache for the linear probe.
+
+    The ``.npz`` file holds exactly:
+
+    - ``utt_ids``: ``np.array(ids, dtype=str)``, one per row;
+    - ``features``: float32, shape ``(n_clips, hidden_size)`` (768 for wav2vec 2.0 Base);
+    - ``settings``: ``np.array(["model=...", "layer=..."], dtype=str)``.
+
+    Args:
+        dataset: ``fsc`` or ``l2arctic``.
+        model_name: Pre-trained checkpoint (a Hugging Face name or a local folder).
+        layer: Hidden-state index (see :func:`embed_clips`); ``None`` = last layer.
+        cfg: Project config. Defaults to ``configs/config.yaml``.
+        device: ``cuda``, ``mps`` or ``cpu`` (default: best available).
+
+    Returns:
+        Path of the saved ``.npz`` file.
+    """
+    from tqdm import tqdm
+    from transformers import AutoFeatureExtractor, Wav2Vec2Model
+
+    from support.device import pick_device
+
+    cfg = cfg if cfg is not None else load_config()
+    device = pick_device(device)
+    manifest = load_manifest(dataset, cfg)
+    extractor = AutoFeatureExtractor.from_pretrained(model_name)
+    model = Wav2Vec2Model.from_pretrained(model_name)
+    sample_rate = int(cfg["audio"]["sample_rate"])
+
+    vectors = []
+    for path in tqdm(manifest["path"], desc=f"embedding {dataset}", unit="clip"):
+        vectors.append(embed_clips([read_processed(path)], model, extractor, device, layer, sample_rate)[0])
+    features = np.stack(vectors).astype(np.float32)
+
+    out = features_path(dataset, cfg)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    layer_name = "last" if layer is None else str(layer)
+    np.savez(out, utt_ids=np.array(manifest["utt_id"].tolist(), dtype=str), features=features,
+             settings=np.array([f"model={model_name}", f"layer={layer_name}"], dtype=str))
+    return out
