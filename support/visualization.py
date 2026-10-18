@@ -13,11 +13,15 @@ Usage::
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 import librosa
 import librosa.display
 import numpy as np
 from matplotlib.figure import Figure
+
+from support.audio import peak_dbfs, preprocess, read_audio, to_mono
+from support.config import load_config
 
 DPI = 150
 N_FFT = 512        # 32 ms window at 16 kHz, as in the MFCC features
@@ -199,3 +203,41 @@ def clip_overview(
         fig.suptitle(title, fontsize=13)
     fig.tight_layout()
     return _save(fig, path)
+
+
+def plot_preprocessing(
+    path_to_audio: str | Path,
+    audio_cfg: dict[str, Any] | None = None,
+    out_path: str | Path | None = None,
+) -> Figure:
+    """Show a clip before and after the shared pre-processing.
+
+    Top: the raw waveform at its own sample rate (mixed to mono for display).
+    Bottom: the processed waveform (16 kHz, trimmed, peak-normalised, padded to 6 s).
+    Durations and peak levels are in the titles.
+
+    Args:
+        path_to_audio: Audio file.
+        audio_cfg: The ``audio`` section of the config. Defaults to ``configs/config.yaml``.
+        out_path: If given, the figure is saved there.
+
+    Returns:
+        The matplotlib figure with two axes.
+    """
+    cfg = audio_cfg if audio_cfg is not None else load_config()["audio"]
+    raw, raw_sr = read_audio(path_to_audio)
+    processed = preprocess(raw, raw_sr, cfg, pad=True)
+    target_sr = int(cfg["sample_rate"])
+    raw_mono = to_mono(raw)
+    channels = 1 if raw.ndim == 1 else raw.shape[1]
+
+    fig = Figure(figsize=(9, 5.5))
+    top, bottom = fig.subplots(2, 1)
+    _draw_waveform(top, raw_mono, raw_sr,
+                   f"Before: {raw_sr / 1000:g} kHz, {channels} channel(s), {raw_mono.size / raw_sr:.2f} s, "
+                   f"peak {peak_dbfs(raw_mono):.1f} dBFS")
+    _draw_waveform(bottom, processed, target_sr,
+                   f"After: {target_sr / 1000:g} kHz mono, trimmed, normalised, padded to "
+                   f"{processed.size / target_sr:.2f} s, peak {peak_dbfs(processed):.1f} dBFS")
+    fig.tight_layout()
+    return _save(fig, out_path)
