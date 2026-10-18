@@ -24,7 +24,7 @@ import pandas as pd
 from matplotlib.figure import Figure
 
 from support.audio import peak_dbfs, preprocess, read_audio, to_mono
-from support.config import load_config
+from support.config import load_config, resolve_path
 
 DPI = 150
 N_FFT = 512        # 32 ms window at 16 kHz, as in the MFCC features
@@ -509,6 +509,40 @@ def plot_protocol_comparison(
     ax.legend(fontsize=8, loc="upper left")
     fig.tight_layout()
     return _save(fig, path)
+
+
+def per_speaker_table(results: str | Path | None = None, dataset: str = "fsc") -> pd.DataFrame:
+    """Unseen-speaker accuracy per speaker for every run (``folds/per_speaker.csv``).
+
+    Returns:
+        ``model, speaker_id, accuracy``; empty when no run has folds.
+    """
+    from support.evaluate import list_runs
+
+    frames = []
+    for run in list_runs(dataset, _results_cfg(results)).itertuples():
+        path = Path(run.path) / "folds" / "per_speaker.csv"
+        if path.exists():
+            frames.append(pd.read_csv(path, dtype={"speaker_id": str}).assign(model=run.run))
+    if not frames:
+        return pd.DataFrame(columns=["model", "speaker_id", "accuracy"])
+    return pd.concat(frames, ignore_index=True)[["model", "speaker_id", "accuracy"]]
+
+
+def noise_table(results: str | Path | None = None, dataset: str = "fsc", protocol: str = "folds") -> pd.DataFrame:
+    """Accuracy per noise level from every ``noise/<run>_<dataset>.csv`` under the results folder.
+
+    Returns:
+        ``model, snr_db, accuracy`` for one protocol (``folds`` = unseen speakers); empty
+        when no noise test exists yet.
+    """
+    root = resolve_path(_results_cfg(results), "results")
+    frames = [pd.read_csv(p, dtype={"snr_db": str}) for p in sorted(root.rglob(f"noise/*_{dataset}.csv"))]
+    if not frames:
+        return pd.DataFrame(columns=["model", "snr_db", "accuracy"])
+    table = pd.concat(frames, ignore_index=True)
+    table = table[(table["dataset"] == dataset) & (table["protocol"] == protocol)]
+    return table.rename(columns={"run": "model"})[["model", "snr_db", "accuracy"]].reset_index(drop=True)
 
 
 def main() -> None:
