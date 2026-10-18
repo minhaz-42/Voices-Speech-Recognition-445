@@ -8,10 +8,16 @@ features already know about the 50 phrases.
 
 PyTorch is imported inside the functions, so importing this module stays cheap
 (and never loads PyTorch next to XGBoost; see AGENTS.md).
+
+Usage::
+
+    python -m support.embeddings --dataset fsc [--layer 12] [--device mps]
+    python -m support.classical --model logreg --dataset fsc --features w2v2 --run w2v2_probe
 """
 
 from __future__ import annotations
 
+import argparse
 from pathlib import Path
 from typing import Any, Sequence
 
@@ -117,3 +123,24 @@ def extract_dataset(
     np.savez(out, utt_ids=np.array(manifest["utt_id"].tolist(), dtype=str), features=features,
              settings=np.array([f"model={model_name}", f"layer={layer_name}"], dtype=str))
     return out
+
+
+def main() -> None:
+    """Embed every clip of a dataset with frozen wav2vec 2.0 and save the cache."""
+    parser = argparse.ArgumentParser(description="Frozen wav2vec 2.0 embeddings for the linear probe.")
+    parser.add_argument("--dataset", required=True, help="fsc or l2arctic")
+    parser.add_argument("--model", default=DEFAULT_MODEL, help=f"pre-trained checkpoint (default: {DEFAULT_MODEL})")
+    parser.add_argument("--layer", type=int, default=None,
+                        help="hidden-state index: 0 = CNN output, 1-12 = Transformer layers (default: last)")
+    parser.add_argument("--device", default=None, help="cuda, mps or cpu (default: best available)")
+    parser.add_argument("--config", default=None, help="config file (default: configs/config.yaml)")
+    args = parser.parse_args()
+
+    out = extract_dataset(args.dataset, args.model, args.layer, load_config(args.config), args.device)
+    with np.load(out, allow_pickle=False) as data:
+        print(f"saved: {out} ({data['features'].shape[0]} clips x {data['features'].shape[1]} values; "
+              f"{', '.join(data['settings'].tolist())})")
+
+
+if __name__ == "__main__":
+    main()
