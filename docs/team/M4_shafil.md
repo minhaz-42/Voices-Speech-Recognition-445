@@ -36,8 +36,8 @@ Every one of your tasks below depends only on work that is already merged or on 
 | T38 | Literature notes ([card](#t38)) | — | ✅ | 2026-10-18 |
 | T39 | Planning poster v2 ([card](#t39)) | — | ✅ | 2026-10-18 |
 | T14 | SVM → `results/svm/fsc/` ([card](#t14)) | — | ✅ | 2026-10-18 |
-| T18 | Untrained wav2vec 2.0 baseline → `results/w2v2_untrained/fsc/` ([card](#t18)) | — | 🟡 running | |
-| T46 | Linear probe: `support/embeddings.py` + logistic regression → `results/w2v2_probe/fsc/` ([card](#t46)) | — | 🟡 code + tests done, run pending | |
+| T18 | Untrained wav2vec 2.0 baseline → `results/w2v2_untrained/fsc/` ([card](#t18)) | — | ✅ | 2026-10-18 |
+| T46 | Linear probe: `support/embeddings.py` + logistic regression → `results/w2v2_probe/fsc/` ([card](#t46)) | — | ✅ | 2026-10-18 |
 | T23 | Demo recognising with your SVM + figures command ([card](#t23)) | T14, T35, T36 | 🟡 code + tests done; 👤 live check with my voice | |
 | T27 | Results poster, slides, 👤 demo video ([card](#t27)) | T23 | ⬜ | |
 
@@ -53,6 +53,7 @@ Plain-language summary for the weekly project update, newest week first. Add to 
 
 - **Phrase list for the demo (T36):** `support/phrases.py` `load_phrases()` has no `dataset` argument yet and still reads the old `data/prompts/phrases.csv`. The demo therefore uses `support.dataset.load_labels("fsc")` for the 50 TenVoices-FSC commands. If you add `load_phrases(dataset=...)`, `phrase_table()` / `phrase_texts()` in `app.py` can switch to it in one line.
 - **Commands for AGENTS.md:** demo `python app.py [--model outputs/models/svm/fsc/random.joblib]`; clip figures `python -m support.visualization clip.wav --out images/example_overview.png [--preprocessing images/example_preprocessing.png]`; results figures `python -m support.visualization --results results --out images`; probe `python -m support.embeddings --dataset fsc [--layer N]`.
+- **`main.py` on Windows:** `tests/test_inference.py::test_main_cli_with_benchmark` fails on a Windows console (cp1252): `main.py` prints characters the console cannot encode (`'charmap' codec can't encode characters`). It passes with `PYTHONIOENCODING=utf-8`. A `sys.stdout.reconfigure(encoding="utf-8")` at the start of `main()` would fix it. All my tests pass.
 
 ## Handoff log (newest first)
 
