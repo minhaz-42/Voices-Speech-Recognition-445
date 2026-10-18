@@ -18,6 +18,7 @@ from typing import Any
 import librosa
 import librosa.display
 import numpy as np
+import pandas as pd
 from matplotlib.figure import Figure
 
 from support.audio import peak_dbfs, preprocess, read_audio, to_mono
@@ -241,3 +242,56 @@ def plot_preprocessing(
                    f"{processed.size / target_sr:.2f} s, peak {peak_dbfs(processed):.1f} dBFS")
     fig.tight_layout()
     return _save(fig, out_path)
+
+
+def _require_columns(table: pd.DataFrame, columns: list[str]) -> None:
+    """Raise ``ValueError`` naming every column of ``columns`` that ``table`` lacks."""
+    missing = [c for c in columns if c not in table.columns]
+    if missing:
+        raise ValueError(f"table is missing columns: {missing}")
+
+
+def plot_model_comparison(
+    table: pd.DataFrame,
+    metric: str = "accuracy",
+    error_cols: tuple[str, str] | None = None,
+    title: str | None = None,
+    path: str | Path | None = None,
+) -> Figure:
+    """Bar chart with one bar per model.
+
+    Args:
+        table: One row per model, with a ``model`` column and the ``metric`` column.
+        metric: Column to plot (values in [0, 1] are shown as fractions).
+        error_cols: Optional ``(low, high)`` columns, e.g. a bootstrap confidence
+            interval, drawn as error bars.
+        title: Figure title.
+        path: If given, the figure is saved there.
+
+    Returns:
+        The matplotlib figure.
+
+    Raises:
+        ValueError: If a required column is missing.
+    """
+    _require_columns(table, ["model", metric] + list(error_cols or []))
+    values = table[metric].to_numpy(dtype=float)
+    yerr = None
+    if error_cols:
+        low = table[error_cols[0]].to_numpy(dtype=float)
+        high = table[error_cols[1]].to_numpy(dtype=float)
+        yerr = np.vstack([values - low, high - values])
+
+    fig = Figure(figsize=(max(6.0, 0.8 * len(table) + 2.0), 4.5))
+    ax = fig.add_subplot()
+    positions = np.arange(len(table))
+    bars = ax.bar(positions, values, yerr=yerr, capsize=4 if yerr is not None else 0, color="tab:blue")
+    ax.bar_label(bars, labels=[f"{v:.3f}" for v in values], padding=2, fontsize=8)
+    ax.set_xticks(positions, labels=table["model"].astype(str), rotation=30, ha="right")
+    ax.set_ylabel(metric.replace("_", " ").capitalize())
+    if np.nanmax(values, initial=0.0) <= 1.0:
+        ax.set_ylim(0.0, 1.08)
+    ax.set_title(title or f"{metric.replace('_', ' ').capitalize()} per model")
+    ax.grid(axis="y", alpha=0.3)
+    fig.tight_layout()
+    return _save(fig, path)
