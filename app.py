@@ -1,17 +1,18 @@
 """TenVoices live demo (Gradio): speak or upload a phrase and see what the system hears.
 
-Task T36 builds the skeleton: the clip is pre-processed exactly like the training data
-and shown as audio and as a four-panel figure (waveform, spectrogram, log-mel, MFCC).
-The trained model is connected in task T23; until then the app shows no predictions.
+The clip is pre-processed exactly like the training data and shown as audio and as a
+four-panel figure (waveform, spectrogram, log-mel, MFCC) (T36). A saved model, by default
+the SVM of task T14, recognises it and shows the top-5 phrases with their confidence (T23).
 
 Usage::
 
-    python app.py [--port 7860] [--share]
+    python app.py [--model outputs/models/svm/fsc/random.joblib] [--port 7860] [--share]
 """
 
 from __future__ import annotations
 
 import argparse
+from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -22,7 +23,7 @@ from support.dataset import load_labels
 from support.visualization import clip_overview, plot_top_k
 
 DATASET = "fsc"  # the demo recognises the 50 spoken commands of TenVoices-FSC
-NOT_CONNECTED = "Model not connected yet: predictions arrive with the trained model (task T23)."
+NOT_CONNECTED = "No model loaded: start the app with --model <saved model>."
 DEFAULT_MODEL = "outputs/models/svm/fsc/random.joblib"  # your SVM from T14 (python -m support.classical --model svm)
 TOP_K = 5
 EMPTY_MESSAGE = "No audio yet: record a phrase with the microphone or upload a clip, then press Analyse."
@@ -108,32 +109,70 @@ def phrase_table(dataset: str = DATASET) -> list[list[str]]:
     return labels[["phrase_id", "text"]].astype(str).values.tolist()
 
 
-def build_app():
+def load_model(path: str | Path | None):
+    """Open a saved model with ``support.inference.load_recognizer``.
+
+    Returns:
+        ``(recognizer, status)``: the recogniser (``None`` when ``path`` is missing or
+        cannot be opened) and a one-line status for the app.
+    """
+    if not path:
+        return None, NOT_CONNECTED
+    if not Path(path).exists():
+        return None, (f"No model at {path}: train one with python -m support.classical --model svm "
+                      f"--dataset {DATASET}, or start the app with --model <saved model>.")
+    from support.inference import load_recognizer
+
+    try:
+        return load_recognizer(path), f"Model: {path}"
+    except (ValueError, OSError) as err:
+        return None, f"Cannot open {path}: {err}"
+
+
+def build_app(model_path: str | Path | None = DEFAULT_MODEL, recognizer=None):
     """The Gradio interface (built, not launched).
+
+    Args:
+        model_path: Saved model to recognise with (a ``.joblib`` file or a wav2vec 2.0 folder).
+        recognizer: An already loaded recogniser; overrides ``model_path`` (used by the tests).
 
     Returns:
         A ``gr.Blocks`` app: audio input and an Analyse button; the processed audio,
-        the overview figure and an info text; a prediction box (not connected yet) and
+        the overview figure and an info text; the top-5 phrases with a confidence chart;
         the table of the 50 phrases.
     """
     import gradio as gr
 
+    if recognizer is not None:
+        status = f"Model: {getattr(recognizer, 'path', 'loaded')}"
+    else:
+        recognizer, status = load_model(model_path)
+    texts = phrase_texts()
+
+    def analyse(audio):
+        processed, overview, info = process_audio(audio)
+        rows, chart = recognise(audio, recognizer, texts) if recognizer is not None and processed else ([], None)
+        return processed, overview, info, rows, chart
+
     with gr.Blocks(title="TenVoices demo") as app:
         gr.Markdown("# TenVoices: spoken phrase recognition\n"
-                    "Say one of the 50 smart-home commands below (or upload a clip) and see exactly what the "
-                    "system receives after pre-processing: 16 kHz mono, silence trimmed, peak-normalised.")
+                    "Say one of the 50 smart-home commands below (or upload a clip). The app shows what the "
+                    "system receives after pre-processing (16 kHz mono, silence trimmed, peak-normalised) "
+                    "and the five phrases the model finds most likely.")
         with gr.Row():
             with gr.Column():
                 audio_in = gr.Audio(sources=["microphone", "upload"], type="numpy", label="Your phrase")
-                analyse = gr.Button("Analyse", variant="primary")
+                analyse_btn = gr.Button("Analyse", variant="primary")
                 info = gr.Textbox(label="Clip", lines=2, interactive=False)
                 processed = gr.Audio(label="After pre-processing", type="numpy", interactive=False)
-                gr.Textbox(value=NOT_CONNECTED, label="Prediction", interactive=False)
             with gr.Column():
-                plot = gr.Plot(label="Waveform, spectrogram, log-mel spectrogram and MFCCs")
+                gr.Markdown(f"**Prediction** · {status}")
+                top_table = gr.Dataframe(headers=["Rank", "ID", "Phrase", "Confidence"], interactive=False)
+                top_plot = gr.Plot(label="Confidence of the top 5 phrases")
+        plot = gr.Plot(label="Waveform, spectrogram, log-mel spectrogram and MFCCs")
         with gr.Accordion("The 50 phrases (TenVoices-FSC)", open=False):
             gr.Dataframe(value=phrase_table(), headers=["ID", "Phrase"], interactive=False)
-        analyse.click(process_audio, inputs=audio_in, outputs=[processed, plot, info])
+        analyse_btn.click(analyse, inputs=audio_in, outputs=[processed, plot, info, top_table, top_plot])
     return app
 
 
@@ -141,9 +180,11 @@ def main() -> None:
     """Launch the demo in the browser."""
     parser = argparse.ArgumentParser(description="TenVoices live demo (Gradio).")
     parser.add_argument("--port", type=int, default=7860, help="local port (default: 7860)")
+    parser.add_argument("--model", default=DEFAULT_MODEL,
+                        help=f"saved model: .joblib or wav2vec 2.0 folder (default: {DEFAULT_MODEL})")
     parser.add_argument("--share", action="store_true", help="also create a temporary public Gradio link")
     args = parser.parse_args()
-    build_app().launch(server_port=args.port, share=args.share)
+    build_app(args.model).launch(server_port=args.port, share=args.share)
 
 
 if __name__ == "__main__":
