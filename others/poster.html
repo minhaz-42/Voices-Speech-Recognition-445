@@ -99,7 +99,7 @@
     <li><b>02</b><span>Gather speech from <em>10 speakers</em> uttering diverse phrases &amp; sentences</span></li>
     <li><b>03</b><span>Showcase its effectiveness on <em>this dataset</em></span></li>
   </ol>
-  <p class="note">Our reading: recognise which of 50 phrases was spoken, judged on voices (and accents) the system has never heard, using two published 10-speaker subsets.</p>
+  <p class="note">Our reading: recognise which of 50 phrases was spoken, judged on voices and accents the system has never heard.</p>
 </div>
 
 <div class="panel" style="left:460px;top:36px;width:680px;height:280px">
@@ -109,13 +109,13 @@
     <div class="arrow">&#8594;</div>
     <div class="node"><svg viewBox="0 0 24 24"><path d="M2 12h3l2-6 3 12 3-9 2 6 2-3h5"/></svg><b>Pre-process</b><small>16 kHz &middot; trim &middot; pad to 6 s</small></div>
     <div class="arrow">&#8594;</div>
-    <div class="node ours"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg><b>3 &middot; wav2vec 2.0</b><small>fine-tuned 3 / 8 / 15 ep, white-noise training</small></div>
+    <div class="node ours"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg><b>wav2vec 2.0</b><small>fine-tuned 3 / 8 / 15 ep + noise</small></div>
     <div class="arrow">&#8594;</div>
-    <div class="node ours"><svg viewBox="0 0 24 24"><path d="M4 5h16v10H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg><b>4 &middot; Whisper</b><small>zero-shot text &#8594; nearest phrase, WER</small></div>
+    <div class="node ours"><svg viewBox="0 0 24 24"><path d="M4 5h16v10H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg><b>Whisper</b><small>zero-shot: text &#8594; nearest phrase</small></div>
     <div class="arrow">&#8594;</div>
     <div class="node"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h12M4 18h8"/></svg><b>Prediction</b><small>1 of 50 phrases + confidence</small></div>
   </div>
-  <div class="chips">Compared with: <span>1 &middot; MFCC + k-NN / SVM / RF / XGBoost</span><span>2 &middot; untrained wav2vec 2.0</span><span>WavLM &middot; HuBERT &middot; linear probe</span></div>
+  <div class="chips">Stages 3 &amp; 4 vs: <span>1 &middot; MFCC + k-NN / SVM / RF / XGBoost</span><span>2 &middot; untrained wav2vec 2.0</span><span>WavLM &middot; HuBERT &middot; linear probe</span></div>
 </div>
 
 <div class="panel" style="left:1164px;top:36px;width:400px;height:280px">
@@ -148,7 +148,7 @@
 <div class="panel" style="left:560px;top:830px;width:480px;height:196px">
   <h3>HYPOTHESES &middot; FIXED BEFORE TESTING</h3>
   <ul class="list hyp">
-    <li><b>H1</b>wav2vec 2.0 &ge; 20 points above best MFCC model (unseen)</li>
+    <li><b>H1</b>wav2vec 2.0 &ge; 20 pts above best MFCC, unseen</li>
     <li><b>H2</b>MFCC models drop more on unseen speakers</li>
     <li><b>H3</b>White-noise training helps at 10 / 5 dB, &le; 2 pts clean loss</li>
     <li><b>H4</b>8 &#8594; 15 epochs gains less than 3 &#8594; 8</li>
