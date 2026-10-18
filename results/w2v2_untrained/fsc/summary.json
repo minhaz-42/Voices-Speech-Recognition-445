@@ -1,0 +1,183 @@
+{
+  "run": "w2v2_untrained",
+  "dataset": "fsc",
+  "random": {
+    "n": 200,
+    "accuracy": 0.025,
+    "macro_f1": 0.004068627450980392,
+    "weighted_f1": 0.004068627450980392,
+    "n_speakers": 10
+  },
+  "folds": {
+    "pooled": {
+      "n": 1000,
+      "accuracy": 0.028,
+      "macro_f1": 0.006259226883599844,
+      "weighted_f1": 0.006259226883599844
+    },
+    "per_fold": {
+      "fold1": {
+        "n": 200,
+        "accuracy": 0.035,
+        "macro_f1": 0.01164918414918415,
+        "weighted_f1": 0.01164918414918415
+      },
+      "fold2": {
+        "n": 200,
+        "accuracy": 0.02,
+        "macro_f1": 0.0030434782608695656,
+        "weighted_f1": 0.0030434782608695656
+      },
+      "fold3": {
+        "n": 200,
+        "accuracy": 0.025,
+        "macro_f1": 0.0047268256700270465,
+        "weighted_f1": 0.0047268256700270465
+      },
+      "fold4": {
+        "n": 200,
+        "accuracy": 0.03,
+        "macro_f1": 0.00596996996996997,
+        "weighted_f1": 0.00596996996996997
+      },
+      "fold5": {
+        "n": 200,
+        "accuracy": 0.03,
+        "macro_f1": 0.008568260568260568,
+        "weighted_f1": 0.008568260568260568
+      }
+    },
+    "mean": {
+      "accuracy": 0.028000000000000004,
+      "macro_f1": 0.006791543723662261,
+      "weighted_f1": 0.006791543723662261
+    },
+    "std": {
+      "accuracy": 0.005700877125495691,
+      "macro_f1": 0.0033815466888942433,
+      "weighted_f1": 0.0033815466888942433
+    },
+    "folds_run": [
+      "fold1",
+      "fold2",
+      "fold3",
+      "fold4",
+      "fold5"
+    ]
+  },
+  "model": "facebook/wav2vec2-base",
+  "epochs": 0,
+  "noise": "none",
+  "untrained": true,
+  "device": "cpu",
+  "settings": {
+    "model": "facebook/wav2vec2-base",
+    "learning_rate": 3e-05,
+    "batch_size": 4,
+    "grad_accum": 2,
+    "warmup_ratio": 0.1,
+    "weight_decay": 0.0,
+    "freeze_feature_encoder": true
+  },
+  "augmentation": null,
+  "selection": "best validation accuracy over epochs",
+  "limit": null,
+  "splits": {
+    "random": {
+      "trained": false,
+      "best_epoch": 0,
+      "val_accuracy": 0.025,
+      "curve": [
+        {
+          "epoch": 0,
+          "train_loss": null,
+          "val_loss": 3.9115,
+          "val_accuracy": 0.025
+        }
+      ],
+      "n_train": 720,
+      "n_val": 80,
+      "n_test": 200
+    },
+    "fold1": {
+      "trained": false,
+      "best_epoch": 0,
+      "val_accuracy": 0.02,
+      "curve": [
+        {
+          "epoch": 0,
+          "train_loss": null,
+          "val_loss": 3.9093,
+          "val_accuracy": 0.02
+        }
+      ],
+      "n_train": 700,
+      "n_val": 100,
+      "n_test": 200
+    },
+    "fold2": {
+      "trained": false,
+      "best_epoch": 0,
+      "val_accuracy": 0.02,
+      "curve": [
+        {
+          "epoch": 0,
+          "train_loss": null,
+          "val_loss": 3.9106,
+          "val_accuracy": 0.02
+        }
+      ],
+      "n_train": 700,
+      "n_val": 100,
+      "n_test": 200
+    },
+    "fold3": {
+      "trained": false,
+      "best_epoch": 0,
+      "val_accuracy": 0.03,
+      "curve": [
+        {
+          "epoch": 0,
+          "train_loss": null,
+          "val_loss": 3.9123,
+          "val_accuracy": 0.03
+        }
+      ],
+      "n_train": 700,
+      "n_val": 100,
+      "n_test": 200
+    },
+    "fold4": {
+      "trained": false,
+      "best_epoch": 0,
+      "val_accuracy": 0.03,
+      "curve": [
+        {
+          "epoch": 0,
+          "train_loss": null,
+          "val_loss": 3.9132,
+          "val_accuracy": 0.03
+        }
+      ],
+      "n_train": 700,
+      "n_val": 100,
+      "n_test": 200
+    },
+    "fold5": {
+      "trained": false,
+      "best_epoch": 0,
+      "val_accuracy": 0.04,
+      "curve": [
+        {
+          "epoch": 0,
+          "train_loss": null,
+          "val_loss": 3.9119,
+          "val_accuracy": 0.04
+        }
+      ],
+      "n_train": 700,
+      "n_val": 100,
+      "n_test": 200
+    }
+  }
+}
