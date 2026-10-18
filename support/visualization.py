@@ -423,6 +423,45 @@ def plot_top_k(
     return _save(fig, path)
 
 
+def _results_cfg(results: str | Path | None) -> dict[str, Any]:
+    """The project config, with ``paths.results`` pointing at ``results`` when given."""
+    cfg = load_config()
+    if results is not None:
+        cfg["paths"]["results"] = str(Path(results).resolve())
+    return cfg
+
+
+def results_table(results: str | Path | None = None, dataset: str | None = None) -> pd.DataFrame:
+    """Accuracy and macro F1 of every saved run, from the runs' ``summary.json`` files.
+
+    Runs are found with ``support.evaluate.list_runs`` (so Tanvir's runs in
+    ``results/M1_tanvir/`` are included). A run without folds or without a random split
+    simply has no row for that protocol.
+
+    Args:
+        results: Results folder (default: ``paths.results`` of the config).
+        dataset: Keep only this dataset (default: all).
+
+    Returns:
+        ``run, dataset, protocol, accuracy, macro_f1`` with protocol ``random`` or ``unseen``.
+    """
+    import json
+
+    from support.evaluate import list_runs
+
+    rows = []
+    for run in list_runs(dataset, _results_cfg(results)).itertuples():
+        summary = json.loads((Path(run.path) / "summary.json").read_text(encoding="utf-8"))
+        if "random" in summary:
+            rows.append({"run": run.run, "dataset": run.dataset, "protocol": "random",
+                         "accuracy": summary["random"]["accuracy"], "macro_f1": summary["random"]["macro_f1"]})
+        if "folds" in summary:
+            pooled = summary["folds"]["pooled"]
+            rows.append({"run": run.run, "dataset": run.dataset, "protocol": "unseen",
+                         "accuracy": pooled["accuracy"], "macro_f1": pooled["macro_f1"]})
+    return pd.DataFrame(rows, columns=["run", "dataset", "protocol", "accuracy", "macro_f1"])
+
+
 def main() -> None:
     """Draw the overview (and optionally the pre-processing figure) of one audio file."""
     parser = argparse.ArgumentParser(description="Draw waveform, spectrograms and MFCCs of one audio file.")
