@@ -19,10 +19,12 @@ import numpy as np
 from support.audio import peak_dbfs, preprocess
 from support.config import load_config
 from support.dataset import load_labels
-from support.visualization import clip_overview
+from support.visualization import clip_overview, plot_top_k
 
 DATASET = "fsc"  # the demo recognises the 50 spoken commands of TenVoices-FSC
 NOT_CONNECTED = "Model not connected yet: predictions arrive with the trained model (task T23)."
+DEFAULT_MODEL = "outputs/models/svm/fsc/random.joblib"  # your SVM from T14 (python -m support.classical --model svm)
+TOP_K = 5
 EMPTY_MESSAGE = "No audio yet: record a phrase with the microphone or upload a clip, then press Analyse."
 
 
@@ -66,6 +68,38 @@ def process_audio(audio: tuple[int, np.ndarray] | None, audio_cfg: dict[str, Any
             f"After pre-processing: {target_sr / 1000:g} kHz mono, {processed.size / target_sr:.2f} s of speech, "
             f"peak {peak_dbfs(processed):.1f} dBFS")
     return (target_sr, processed), figure, info
+
+
+def phrase_texts(dataset: str = DATASET) -> dict[str, str]:
+    """``{phrase_id: text}`` of the dataset's phrases, to label the predictions."""
+    labels = load_labels(dataset)
+    return dict(zip(labels["phrase_id"].astype(str), labels["text"].astype(str)))
+
+
+def recognise(audio: tuple[int, np.ndarray] | None, recognizer, texts: dict[str, str] | None = None,
+              k: int = TOP_K):
+    """The top-k phrases for one clip from the audio widget.
+
+    Args:
+        audio: ``(sample_rate, samples)`` from ``gr.Audio(type="numpy")``, or ``None``.
+        recognizer: A ``support.inference`` recogniser (``predict(samples, rate, k, texts)``).
+        texts: ``{phrase_id: text}`` to show with each phrase ID.
+        k: Number of phrases.
+
+    Returns:
+        ``(rows, figure)``: ``[[rank, phrase_id, text, "confidence %"], ...]`` and the
+        :func:`plot_top_k` chart, or ``([], None)`` for missing audio or a clip the
+        recogniser cannot use.
+    """
+    if audio is None or np.asarray(audio[1]).size == 0:
+        return [], None
+    sample_rate, samples = audio
+    try:
+        top = recognizer.predict(np.asarray(samples), int(sample_rate), k=k, texts=texts)
+    except ValueError:
+        return [], None
+    rows = [[i + 1, r["phrase_id"], r["text"], f"{r['score']:.1%}"] for i, r in enumerate(top)]
+    return rows, plot_top_k(top, title="What the model heard")
 
 
 def phrase_table(dataset: str = DATASET) -> list[list[str]]:
