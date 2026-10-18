@@ -295,3 +295,46 @@ def plot_model_comparison(
     ax.grid(axis="y", alpha=0.3)
     fig.tight_layout()
     return _save(fig, path)
+
+
+def plot_accuracy_vs_snr(
+    table: pd.DataFrame,
+    title: str | None = None,
+    path: str | Path | None = None,
+) -> Figure:
+    """Line chart of accuracy against signal-to-noise ratio, one line per model.
+
+    Args:
+        table: Columns ``model``, ``snr_db`` and ``accuracy``. Clean audio can be
+            given as ``snr_db = inf``; it is drawn at the right edge, labelled "clean".
+        title: Figure title.
+        path: If given, the figure is saved there.
+
+    Returns:
+        The matplotlib figure.
+
+    Raises:
+        ValueError: If a required column is missing.
+    """
+    _require_columns(table, ["model", "snr_db", "accuracy"])
+    snr = pd.to_numeric(table["snr_db"], errors="coerce").replace([np.inf], np.nan)
+    finite = snr.dropna()
+    clean_x = (finite.max() + 5.0) if not finite.empty else 0.0
+    data = table.assign(_x=snr.fillna(clean_x))
+
+    fig = Figure(figsize=(7, 4.5))
+    ax = fig.add_subplot()
+    for model, rows in data.groupby("model", sort=False):
+        rows = rows.sort_values("_x")
+        ax.plot(rows["_x"], rows["accuracy"].astype(float), marker="o", label=str(model))
+    ticks = sorted(data["_x"].unique())
+    labels = ["clean" if (x == clean_x and snr.isna().any()) else f"{x:g}" for x in ticks]
+    ax.set_xticks(ticks, labels=labels)
+    ax.set_xlabel("Signal-to-noise ratio (dB)")
+    ax.set_ylabel("Accuracy")
+    ax.set_ylim(0.0, 1.05)
+    ax.set_title(title or "Accuracy vs noise level")
+    ax.grid(alpha=0.3)
+    ax.legend(fontsize=8)
+    fig.tight_layout()
+    return _save(fig, path)
