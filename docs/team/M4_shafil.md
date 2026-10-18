@@ -31,14 +31,14 @@ Every one of your tasks below depends only on work that is already merged or on 
 
 | ID | Task | Depends on | Status | Done · date |
 |---|---|---|---|---|
-| T35 | Visualisation module + tests + example figures ([card](#t35)) | — | ⬜ | |
-| T36 | Demo skeleton `app.py` ([card](#t36)) | T35 | ⬜ | |
-| T38 | Literature notes ([card](#t38)) | — | ⬜ | |
-| T39 | Planning poster v2 ([card](#t39)) | — | ⬜ | |
-| T14 | SVM → `results/svm/fsc/` ([card](#t14)) | — | ⬜ | |
-| T18 | Untrained wav2vec 2.0 baseline → `results/w2v2_untrained/fsc/` ([card](#t18)) | — | ⬜ | |
-| T46 | Linear probe: `support/embeddings.py` + logistic regression → `results/w2v2_probe/fsc/` ([card](#t46)) | — | ⬜ | |
-| T23 | Demo recognising with your SVM + figures command ([card](#t23)) | T14, T35, T36 | ⬜ | |
+| T35 | Visualisation module + tests + example figures ([card](#t35)) | — | 🟡 code + tests done; 👤 example figures from my own recordings | |
+| T36 | Demo skeleton `app.py` ([card](#t36)) | T35 | ✅ | 2026-10-18 |
+| T38 | Literature notes ([card](#t38)) | — | ✅ | 2026-10-18 |
+| T39 | Planning poster v2 ([card](#t39)) | — | ✅ | 2026-10-18 |
+| T14 | SVM → `results/svm/fsc/` ([card](#t14)) | — | ✅ | 2026-10-18 |
+| T18 | Untrained wav2vec 2.0 baseline → `results/w2v2_untrained/fsc/` ([card](#t18)) | — | 🟡 running | |
+| T46 | Linear probe: `support/embeddings.py` + logistic regression → `results/w2v2_probe/fsc/` ([card](#t46)) | — | 🟡 code + tests done, run pending | |
+| T23 | Demo recognising with your SVM + figures command ([card](#t23)) | T14, T35, T36 | 🟡 code + tests done; 👤 live check with my voice | |
 | T27 | Results poster, slides, 👤 demo video ([card](#t27)) | T23 | ⬜ | |
 
 **Start with:** T14 (minutes on a laptop), T35 and T18. Your demo uses your own SVM model, so nothing you do waits for anyone.
@@ -51,7 +51,8 @@ Plain-language summary for the weekly project update, newest week first. Add to 
 
 ## Requests for the lead
 
-*(None.)*
+- **Phrase list for the demo (T36):** `support/phrases.py` `load_phrases()` has no `dataset` argument yet and still reads the old `data/prompts/phrases.csv`. The demo therefore uses `support.dataset.load_labels("fsc")` for the 50 TenVoices-FSC commands. If you add `load_phrases(dataset=...)`, `phrase_table()` / `phrase_texts()` in `app.py` can switch to it in one line.
+- **Commands for AGENTS.md:** demo `python app.py [--model outputs/models/svm/fsc/random.joblib]`; clip figures `python -m support.visualization clip.wav --out images/example_overview.png [--preprocessing images/example_preprocessing.png]`; results figures `python -m support.visualization --results results --out images`; probe `python -m support.embeddings --dataset fsc [--layer N]`.
 
 ## Handoff log (newest first)
 
