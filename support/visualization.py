@@ -381,11 +381,12 @@ def plot_per_speaker(
     ax.set_xticks(positions, labels=speakers, rotation=45, ha="right", fontsize=8)
     ax.set_xlabel("Speaker")
     ax.set_ylabel("Accuracy")
-    ax.set_ylim(0.0, 1.05)
+    ax.set_ylim(0.0, 1.18)  # room for the legend above the bars
+    ax.set_yticks(np.arange(0.0, 1.01, 0.2))
     ax.set_title(title or "Accuracy per speaker")
     ax.grid(axis="y", alpha=0.3)
     if any(str(m) for m in models):
-        ax.legend(fontsize=8)
+        ax.legend(fontsize=8, ncol=min(len(models), 6), loc="upper center", frameon=False)
     fig.tight_layout()
     return _save(fig, path)
 
