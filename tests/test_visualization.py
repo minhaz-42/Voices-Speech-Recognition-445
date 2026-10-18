@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 import soundfile as sf
 from matplotlib.figure import Figure
 
@@ -83,6 +84,68 @@ class TestClipFigures(unittest.TestCase):
     def test_silent_clip_does_not_crash(self):
         fig = viz.clip_overview(np.zeros(SR, dtype=np.float32), SR)
         self.assertEqual(len(fig.axes), 4)
+
+
+class TestResultCharts(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.dir = Path(self.tmp.name)
+        self.models = pd.DataFrame({
+            "model": ["svm", "random_forest"],
+            "accuracy": [0.4, 0.3],
+            "low": [0.35, 0.25],
+            "high": [0.45, 0.36],
+        })
+        self.snr = pd.DataFrame({
+            "model": ["a", "a", "a", "b", "b", "b"],
+            "snr_db": ["clean", "20", "5", "clean", "20", "5"],
+            "accuracy": [0.9, 0.8, 0.5, 0.7, 0.4, 0.1],
+        })
+        self.speakers = pd.DataFrame({
+            "speaker_id": ["s1", "s2", "s1", "s2"],
+            "model": ["a", "a", "b", "b"],
+            "accuracy": [0.5, 0.6, 0.7, 0.8],
+        })
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_model_comparison(self):
+        path = self.dir / "models.png"
+        fig = viz.plot_model_comparison(self.models, path=path)
+        self.assertEqual(len(fig.axes), 1)
+        self.assertEqual(len(fig.axes[0].patches), 2)
+        self.assertGreater(path.stat().st_size, 0)
+
+    def test_model_comparison_with_error_bars(self):
+        fig = viz.plot_model_comparison(self.models, error_cols=("low", "high"))
+        self.assertEqual(len(fig.axes), 1)
+
+    def test_accuracy_vs_snr_one_line_per_model(self):
+        path = self.dir / "snr.png"
+        fig = viz.plot_accuracy_vs_snr(self.snr, path=path)
+        ax = fig.axes[0]
+        self.assertEqual(len(ax.get_lines()), 2)
+        self.assertIn("clean", [t.get_text() for t in ax.get_xticklabels()])
+        self.assertGreater(path.stat().st_size, 0)
+
+    def test_per_speaker_grouped_and_single(self):
+        path = self.dir / "speakers.png"
+        fig = viz.plot_per_speaker(self.speakers, path=path)
+        self.assertEqual(len(fig.axes[0].patches), 4)  # 2 speakers x 2 models
+        self.assertGreater(path.stat().st_size, 0)
+        fig = viz.plot_per_speaker(self.speakers[self.speakers["model"] == "a"].drop(columns="model"))
+        self.assertEqual(len(fig.axes[0].patches), 2)
+
+    def test_missing_columns_raise(self):
+        with self.assertRaises(ValueError):
+            viz.plot_model_comparison(self.models.drop(columns="accuracy"))
+        with self.assertRaises(ValueError):
+            viz.plot_model_comparison(self.models, error_cols=("low", "upper"))
+        with self.assertRaises(ValueError):
+            viz.plot_accuracy_vs_snr(self.snr.drop(columns="snr_db"))
+        with self.assertRaises(ValueError):
+            viz.plot_per_speaker(self.speakers.drop(columns="speaker_id"))
 
 
 if __name__ == "__main__":
