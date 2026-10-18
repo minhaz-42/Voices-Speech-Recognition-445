@@ -372,7 +372,8 @@ def plot_per_speaker(
     width = 0.8 / max(len(models), 1)
     positions = np.arange(len(speakers))
 
-    fig = Figure(figsize=(max(7.0, 0.6 * len(speakers) * max(len(models), 1) + 2.0), 4.5))
+    width_in = min(14.0, max(7.0, 0.25 * len(speakers) * max(len(models), 1) + 2.0))  # readable, never huge
+    fig = Figure(figsize=(width_in, 5.0))
     ax = fig.add_subplot()
     for i, model in enumerate(models):
         offset = (i - (len(models) - 1) / 2) * width
