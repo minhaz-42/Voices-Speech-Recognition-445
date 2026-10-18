@@ -18,6 +18,9 @@ import numpy as np
 from matplotlib.figure import Figure
 
 DPI = 150
+N_FFT = 512        # 32 ms window at 16 kHz, as in the MFCC features
+HOP_LENGTH = 160   # 10 ms hop
+N_MELS = 64        # bands of the log-mel spectrogram
 
 
 def _save(fig: Figure, path: str | Path | None) -> Figure:
@@ -60,5 +63,61 @@ def plot_waveform(
     """
     fig = Figure(figsize=(8, 2.8))
     _draw_waveform(fig.add_subplot(), samples, sample_rate, title)
+    fig.tight_layout()
+    return _save(fig, path)
+
+
+def _draw_spectrogram(fig: Figure, ax, samples: np.ndarray, sample_rate: int, kind: str, title: str | None) -> None:
+    """Draw a log-power (``"linear"``) or 64-band log-mel (``"mel"``) spectrogram in dB on ``ax``."""
+    import librosa
+    import librosa.display
+
+    samples = np.asarray(samples, dtype=np.float32)
+    hop = HOP_LENGTH
+    if kind == "linear":
+        power = np.abs(librosa.stft(samples, n_fft=N_FFT, hop_length=hop)) ** 2
+        y_axis, label = "linear", "Log-power spectrogram"
+    elif kind == "mel":
+        power = librosa.feature.melspectrogram(
+            y=samples, sr=sample_rate, n_fft=N_FFT, hop_length=hop, n_mels=N_MELS
+        )
+        y_axis, label = "mel", f"Log-mel spectrogram ({N_MELS} bands)"
+    else:
+        raise ValueError(f"kind must be 'linear' or 'mel', got {kind!r}")
+    db = librosa.power_to_db(power, ref=np.max(power) if power.size and power.max() > 0 else 1.0)
+    image = librosa.display.specshow(
+        db, sr=sample_rate, hop_length=hop, x_axis="time", y_axis=y_axis, ax=ax, cmap="magma"
+    )
+    fig.colorbar(image, ax=ax, format="%+.0f dB", label="dB")
+    ax.set_xlabel("Time (s)")
+    ax.set_ylabel("Frequency (Hz)")
+    ax.set_title(title or f"{label} (dB)")
+
+
+def plot_spectrogram(
+    samples: np.ndarray,
+    sample_rate: int,
+    kind: str = "linear",
+    title: str | None = None,
+    path: str | Path | None = None,
+) -> Figure:
+    """Draw the spectrogram of a mono clip in dB.
+
+    Args:
+        samples: Mono float audio.
+        sample_rate: Sample rate in Hz.
+        kind: ``"linear"`` for a log-power spectrogram (STFT), ``"mel"`` for a
+            64-band log-mel spectrogram.
+        title: Figure title.
+        path: If given, the figure is saved there.
+
+    Returns:
+        The matplotlib figure.
+
+    Raises:
+        ValueError: For an unknown ``kind``.
+    """
+    fig = Figure(figsize=(8, 3.2))
+    _draw_spectrogram(fig, fig.add_subplot(), samples, sample_rate, kind, title)
     fig.tight_layout()
     return _save(fig, path)
