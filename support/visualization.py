@@ -14,6 +14,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import librosa
+import librosa.display
 import numpy as np
 from matplotlib.figure import Figure
 
@@ -69,9 +71,6 @@ def plot_waveform(
 
 def _draw_spectrogram(fig: Figure, ax, samples: np.ndarray, sample_rate: int, kind: str, title: str | None) -> None:
     """Draw a log-power (``"linear"``) or 64-band log-mel (``"mel"``) spectrogram in dB on ``ax``."""
-    import librosa
-    import librosa.display
-
     samples = np.asarray(samples, dtype=np.float32)
     hop = HOP_LENGTH
     if kind == "linear":
@@ -119,5 +118,47 @@ def plot_spectrogram(
     """
     fig = Figure(figsize=(8, 3.2))
     _draw_spectrogram(fig, fig.add_subplot(), samples, sample_rate, kind, title)
+    fig.tight_layout()
+    return _save(fig, path)
+
+
+def _draw_mfcc(fig: Figure, ax, samples: np.ndarray, sample_rate: int, n_mfcc: int, title: str | None) -> None:
+    """Draw an MFCC heatmap (coefficient index over time) on ``ax``."""
+    samples = np.asarray(samples, dtype=np.float32)
+    mfcc = librosa.feature.mfcc(
+        y=samples, sr=sample_rate, n_mfcc=n_mfcc, n_fft=N_FFT, hop_length=HOP_LENGTH, n_mels=40
+    )
+    image = librosa.display.specshow(
+        mfcc, sr=sample_rate, hop_length=HOP_LENGTH, x_axis="time", ax=ax, cmap="coolwarm"
+    )
+    fig.colorbar(image, ax=ax, label="value")
+    ax.set_xlabel("Time (s)")
+    ax.set_ylabel("MFCC coefficient")
+    ax.set_title(title or f"{n_mfcc} MFCCs")
+
+
+def plot_mfcc(
+    samples: np.ndarray,
+    sample_rate: int,
+    n_mfcc: int = 13,
+    title: str | None = None,
+    path: str | Path | None = None,
+) -> Figure:
+    """Draw the MFCCs of a mono clip as a heatmap.
+
+    This figure is for display only; the models' features come from ``support/features.py``.
+
+    Args:
+        samples: Mono float audio.
+        sample_rate: Sample rate in Hz.
+        n_mfcc: Number of coefficients.
+        title: Figure title.
+        path: If given, the figure is saved there.
+
+    Returns:
+        The matplotlib figure.
+    """
+    fig = Figure(figsize=(8, 3.2))
+    _draw_mfcc(fig, fig.add_subplot(), samples, sample_rate, n_mfcc, title)
     fig.tight_layout()
     return _save(fig, path)
