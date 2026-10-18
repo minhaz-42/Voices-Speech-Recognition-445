@@ -162,3 +162,32 @@ def plot_mfcc(
     _draw_mfcc(fig, fig.add_subplot(), samples, sample_rate, n_mfcc, title)
     fig.tight_layout()
     return _save(fig, path)
+
+
+def clip_overview(
+    samples: np.ndarray,
+    sample_rate: int,
+    title: str | None = None,
+    path: str | Path | None = None,
+) -> Figure:
+    """One figure with four panels: waveform, log-power spectrogram, log-mel spectrogram and MFCCs.
+
+    Args:
+        samples: Mono float audio.
+        sample_rate: Sample rate in Hz.
+        title: Overall title above the panels.
+        path: If given, the figure is saved there.
+
+    Returns:
+        The matplotlib figure (four panels plus their colour bars).
+    """
+    fig = Figure(figsize=(9, 11))
+    axes = fig.subplots(4, 1)
+    _draw_waveform(axes[0], samples, sample_rate, None)
+    _draw_spectrogram(fig, axes[1], samples, sample_rate, "linear", None)
+    _draw_spectrogram(fig, axes[2], samples, sample_rate, "mel", None)
+    _draw_mfcc(fig, axes[3], samples, sample_rate, 13, None)
+    if title:
+        fig.suptitle(title, fontsize=13)
+    fig.tight_layout()
+    return _save(fig, path)
