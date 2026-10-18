@@ -64,7 +64,7 @@
   .chip{display:inline-block;margin-top:7px;font:600 12px var(--mono);color:#04130f;background:var(--teal);border-radius:6px;padding:3px 8px}
   .card p.legend{font-size:12.5px;color:var(--mut)}
   /* bottom panels */
-  .list{list-style:none;display:grid;gap:6px;font-size:16.5px;line-height:1.3}
+  .list{list-style:none;display:grid;gap:5px;font-size:16px;line-height:1.3}
   .list li::before{content:"\25B8";color:var(--teal);margin-right:9px}
   .hyp li::before{content:none}
   .hyp b{font:700 14px var(--mono);color:var(--amber);margin-right:10px}
@@ -138,8 +138,8 @@
   <ul class="list">
     <li>Random 80/20 split <em>and</em> unseen speakers (5-fold)</li>
     <li>Accuracy &middot; macro F1 &middot; weighted F1 &middot; confusion matrix</li>
-    <li>Per-speaker accuracy, McNemar &amp; Wilcoxon tests</li>
-    <li>White noise at 20 / 10 / 5 dB + real noisy takes</li>
+    <li>Per-speaker accuracy &middot; McNemar, Wilcoxon, Mann&ndash;Whitney</li>
+    <li>White noise at 20 / 10 / 5 dB &middot; Whisper word error rate</li>
     <li>Best epoch chosen on validation, never on test</li>
   </ul>
 </div>
@@ -147,10 +147,11 @@
 <div class="panel" style="left:560px;top:830px;width:480px;height:196px">
   <h3>HYPOTHESES &middot; FIXED BEFORE TESTING</h3>
   <ul class="list hyp">
-    <li><b>H1</b>wav2vec 2.0 &ge; 20 points above best MFCC model</li>
+    <li><b>H1</b>wav2vec 2.0 &ge; 20 points above best MFCC model (unseen)</li>
     <li><b>H2</b>MFCC models drop more on unseen speakers</li>
-    <li><b>H3</b>White-noise training helps on noisy audio</li>
+    <li><b>H3</b>White-noise training helps at 10 / 5 dB, &le; 2 pts clean loss</li>
     <li><b>H4</b>8 &#8594; 15 epochs gains less than 3 &#8594; 8</li>
+    <li><b>H5</b>Whisper&rsquo;s WER is higher on non-native speech (L2)</li>
   </ul>
 </div>
 
