@@ -148,5 +148,74 @@ class TestResultCharts(unittest.TestCase):
             viz.plot_per_speaker(self.speakers.drop(columns="speaker_id"))
 
 
+class TestFiguresCommand(unittest.TestCase):
+    """``draw_results`` on fake runs saved with support.evaluate.save_run."""
+
+    @classmethod
+    def setUpClass(cls):
+        import copy
+
+        from support import evaluate
+        from support.config import load_config
+
+        cls.tmp = tempfile.TemporaryDirectory()
+        cls.dir = Path(cls.tmp.name)
+        cfg = copy.deepcopy(load_config())
+        cfg["paths"]["results"] = str(cls.dir / "results")
+        cfg["paths"]["images"] = str(cls.dir / "images")
+        cfg["result_folders"] = {}
+
+        def preds(prefix, speakers, wrong):
+            rows = []
+            for spk in speakers:
+                for i, label in enumerate(["A", "B", "A", "B"]):
+                    pred = "B" if (label == "A" and i < wrong) else label
+                    rows.append({"utt_id": f"{prefix}_{spk}_{i}", "speaker_id": spk, "label": label, "pred": pred})
+            return pd.DataFrame(rows)
+
+        for run, wrong in (("svm", 1), ("w2v2_probe", 0)):
+            evaluate.save_run(run, "fsc", {"random": preds("r", ["s1", "s2"], wrong),
+                                           "fold1": preds("f1", ["s1"], wrong),
+                                           "fold2": preds("f2", ["s2"], wrong)}, labels=["A", "B"], cfg=cfg)
+        noise = cls.dir / "results" / "noise"
+        noise.mkdir(parents=True)
+        pd.DataFrame({"run": "svm", "dataset": "fsc", "protocol": ["random", "folds", "folds"],
+                      "snr_db": ["clean", "clean", "10"], "n": 8, "accuracy": [0.9, 0.8, 0.4],
+                      "macro_f1": [0.9, 0.8, 0.4]}).to_csv(noise / "svm_fsc.csv", index=False)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.tmp.cleanup()
+
+    def test_results_table(self):
+        table = viz.results_table(self.dir / "results")
+        self.assertEqual(sorted(table["run"].unique()), ["svm", "w2v2_probe"])
+        self.assertEqual(sorted(table["protocol"].unique()), ["random", "unseen"])
+        probe = table[(table["run"] == "w2v2_probe") & (table["protocol"] == "unseen")]
+        self.assertEqual(float(probe["accuracy"].iloc[0]), 1.0)
+
+    def test_per_speaker_and_noise_tables(self):
+        speakers = viz.per_speaker_table(self.dir / "results", "fsc")
+        self.assertEqual(len(speakers), 4)  # 2 runs x 2 unseen speakers
+        noise = viz.noise_table(self.dir / "results", "fsc")
+        self.assertEqual(noise["snr_db"].tolist(), ["clean", "10"])  # folds only
+
+    def test_draw_results_writes_every_figure(self):
+        out = self.dir / "figures"
+        written = viz.draw_results(self.dir / "results", out)
+        names = sorted(p.name for p in written)
+        self.assertEqual(names, ["results_fsc_accuracy.png", "results_fsc_macro_f1.png",
+                                 "results_fsc_noise.png", "results_fsc_per_speaker.png"])
+        for path in written:
+            self.assertGreater(path.stat().st_size, 0)
+
+    def test_top_k_chart(self):
+        fig = viz.plot_top_k([{"phrase_id": "A", "text": "a", "score": 0.7},
+                              {"phrase_id": "B", "text": "b", "score": 0.3}])
+        self.assertEqual(len(fig.axes[0].patches), 2)
+        with self.assertRaises(ValueError):
+            viz.plot_top_k([])
+
+
 if __name__ == "__main__":
     unittest.main()
