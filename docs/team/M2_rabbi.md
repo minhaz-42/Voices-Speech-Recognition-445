@@ -8,7 +8,7 @@ On this page: [My tasks](#my-tasks) · [Faculty update](#faculty-update) · [Tas
 |---|---|
 | **Role** | Datasheet, listen-check, dataset statistics, subset release |
 | **Models** | XGBoost (traditional) · wav2vec 2.0 8 epochs + white noise · **WavLM Base+** 15 epochs + white noise |
-| **Branch** | `dev_rabbi` (Tanvir merges it into `main`) |
+| **Branch** | `dev_shahriar` (Tanvir merges it into `main`) |
 | **Owns** | `support/phrases.py`, `data/README.md` (datasheet), `data/metadata/`, `data/listen_check_<dataset>.csv`, `support/dataset_stats.py`, `support/make_release.py`, `docs/DATASETS.md`, `results/xgboost/`, `results/w2v2_8ep_noise/`, `results/wavlm_15ep_noise/` |
 | **Report** | Section 3 (the TenVoices subsets) |
 
@@ -46,7 +46,7 @@ On this page: [My tasks](#my-tasks) · [Faculty update](#faculty-update) · [Tas
 | ID | Task | Depends on | Status | Done · date |
 |---|---|---|---|---|
 | T02 | Phrase catalogue loader `support/phrases.py` (the recorder part was cancelled) | — | ✅ | Rabbi · 2026-10-07 |
-| T12 | XGBoost → `results/xgboost/fsc/` ([card](#t12)) | — | ⬜ | |
+| T12 | XGBoost → `results/xgboost/fsc/` ([card](#t12)) | — | ✅ | Rabbi · 2026-10-20 |
 | T16 | wav2vec 2.0, 8 epochs + white noise → `results/w2v2_8ep_noise/fsc/` ([card](#t16)) | — | ⬜ | |
 | T44 | WavLM Base+, 15 epochs + white noise → `results/wavlm_15ep_noise/fsc/` ([card](#t44)) | — | ⬜ | |
 | T09 | Datasheet, dataset statistics figure, 👤 listen-check of 100 clips ([card](#t09)) | — | ⬜ | |
@@ -58,6 +58,11 @@ On this page: [My tasks](#my-tasks) · [Faculty update](#faculty-update) · [Tas
 
 Plain-language summary for the weekly project update, newest week first. Add to it at the end of every session: only finished work, and numbers only from `results/`.
 
+### Week of 2026-10-20
+- Trained and evaluated XGBoost (gradient-boosted decision trees) on 78 MFCC statistics across 50 spoken phrases.
+- On seen speakers (random split), the model achieved 22.0% accuracy; on unseen speakers across 5 speaker-independent folds, it achieved 16.9% ± 1.6% pooled accuracy (summary in `results/xgboost/fsc/summary.json`).
+- Generated confusion matrices for both random and 5-fold evaluation in `images/confusion/`.
+
 ### Week of 2026-10-07
 - Wrote `support/phrases.py`, which loads and checks the 50-phrase catalogue (5 categories of 10, unique IDs, the 10 noisy-take phrases), with 6 unit tests.
 - Started the recorder tool (T02).
@@ -67,6 +72,12 @@ Plain-language summary for the weekly project update, newest week first. Add to 
 *(None.)*
 
 ## Handoff log (newest first)
+
+### 2026-10-20 · Md. Shahriar Rakib Rabbi (M2) · T12 (XGBoost)
+- **Done:** Completed T12. Evaluated XGBoost on TenVoices-FSC using the shared runner. Random split accuracy 0.220, unseen speakers pooled accuracy 0.169 (fold1: 0.155, fold2: 0.185, fold3: 0.150, fold4: 0.180, fold5: 0.175).
+- **Files:** `results/xgboost/fsc/`, `images/confusion/xgboost_fsc_*.png`.
+- **Branch:** `dev_shahriar`
+- **Next:** T09 (dataset statistics, datasheet, and listen-check).
 
 Entries up to 2026-10-07 are in the Handoff Log of [STATUS.md](../STATUS.md).
 
