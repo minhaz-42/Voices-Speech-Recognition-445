@@ -40,7 +40,7 @@ Each member owns one traditional model, one or two deep-learning runs, a part of
 | Member | Responsible for | Models they run | Done so far | Next | Page |
 | :--- | :--- | :--- | :--- | :--- | :---: |
 | **Tanvir Ahmed** (lead) | Data preparation, shared code (pre-processing, splits, training, evaluation, Whisper, inference), merging everyone's work | Random Forest · wav2vec 2.0 15 epochs with / without noise · Whisper | Plan and repository; audio, config, metrics and Whisper code; TenVoices-FSC selected, checked and split; Random Forest and Whisper results on TenVoices-FSC; training, noise-test and inference code | wav2vec 2.0 15-epoch runs, TenVoices-L2, final results and report | [M1_tanvir](docs/team/M1_tanvir.md) |
-| **Md. Shahriar Rakib Rabbi** | Datasheet, dataset statistics, listen-check, subset release | XGBoost · wav2vec 2.0 8 epochs + noise · WavLM Base+ | Phrase-list loader `support/phrases.py` with tests | XGBoost (T12), datasheet and listen-check (T09), wav2vec 2.0 8 epochs (T16), WavLM (T44) | [M2_rabbi](docs/team/M2_rabbi.md) |
+| **Md. Shahriar Rakib Rabbi** | Datasheet, dataset statistics, listen-check, subset release | XGBoost · wav2vec 2.0 8 epochs + noise · WavLM Base+ | Phrase loader `support/phrases.py`; XGBoost (T12); Datasheet, statistics & listen-check (T09); Subset release (T26); wav2vec 2.0 8ep (T16); WavLM Base+ 15ep (T44) | All tasks completed | [M2_rabbi](docs/team/M2_rabbi.md) |
 | **Mahir Ahmed** | Analysis plan, statistics, results table, hypothesis tests, error analysis | k-NN · wav2vec 2.0 3 epochs · HuBERT Base | Not started yet (takes over the metrics module `support/metrics.py`, written by Tanvir) | Analysis plan (T10), statistics (T33), k-NN (T13), literature (T37) | [M3_mahir](docs/team/M3_mahir.md) |
 | **Shafil Ahmed** | Figures, demo app, poster, slides, demo video | SVM · untrained baseline · linear probe | Not started yet | SVM (T14), visualisation (T35), poster v2 (T39), untrained baseline (T18) | [M4_shafil](docs/team/M4_shafil.md) |
 
@@ -101,12 +101,12 @@ Measured so far on **TenVoices-FSC** (1,000 clips). Every number comes from the 
 | **k-NN** | Mahir | TBD | TBD | TBD | TBD | Distance-based MFCC baseline |
 | **SVM** | Shafil | TBD | TBD | TBD | TBD | Margin-based MFCC baseline |
 | **Random Forest** | Tanvir | **20.9%** | 0.199 | **31.0%** | 0.299 | Tree ensemble on MFCC features |
-| **XGBoost** | Rabbi | TBD | TBD | TBD | TBD | Gradient boosting on MFCC features |
+| **XGBoost** | Rabbi | **16.9%** | 0.158 | **22.0%** | 0.208 | Gradient boosting on MFCC features |
 | **wav2vec 2.0, 3 epochs** | Mahir | TBD | TBD | TBD | TBD | Short fine-tuning |
-| **wav2vec 2.0, 8 epochs + noise** | Rabbi | TBD | TBD | TBD | TBD | Medium fine-tuning with augmentation |
+| **wav2vec 2.0, 8 epochs + noise** | Rabbi | **21.0%** | 0.198 | **40.5%** | 0.287 | Medium fine-tuning with augmentation |
 | **wav2vec 2.0, 15 epochs + noise** | Tanvir | **88.5%** | 0.881 | **100.0%** | 1.000 | Full fine-tuning with augmentation |
 | **wav2vec 2.0, 15 epochs, no noise** | Tanvir | **92.8%** | 0.927 | **85.5%** | 0.824 | Effect of noise augmentation (H3) |
-| **WavLM Base+, 15 epochs + noise** | Rabbi | TBD | TBD | TBD | TBD | Another self-supervised model |
+| **WavLM Base+, 15 epochs + noise** | Rabbi | **33.6%** | 0.354 | **39.0%** | 0.332 | Another self-supervised model |
 | **HuBERT Base, 15 epochs + noise** | Mahir | TBD | TBD | TBD | TBD | Another self-supervised model |
 | **Linear probe (frozen wav2vec 2.0)** | Shafil | TBD | TBD | TBD | TBD | Pre-trained features without fine-tuning |
 | **Whisper small, zero-shot + phrase matching** | Tanvir | **98.7%** | 0.987 | **99.0%** | 0.990 | General-purpose speech-to-text, no training |

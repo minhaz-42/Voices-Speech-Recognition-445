@@ -6,15 +6,15 @@
 **Nobody waits for anyone.** Every member task below depends only on work that is already merged (shared code ✅, TenVoices-FSC subsets and splits ✅) or on the member's own earlier tasks. Work that needs everyone's results is split: members write and test the code; the lead runs it once on all merged results at the end (T24). TenVoices-L2 is prepared and run by the lead (T47).
 
 **Current phase:** every member can start all of their tasks now, on TenVoices-FSC.
-**Next up:** M2 · Rabbi: T12, T16, T44, T09 · M3 · Mahir: T10, T33, T37, T13, T17, T45 · M4 · Shafil: T35, T38, T39, T14, T18, T46 · M1 · Tanvir: **today** only the running FSC jobs finish and get pushed (T15, T19, T21, T22). **After next week's project update:** the wav2vec 2.0 and members' runs on TenVoices-L2 (T47), merging members' branches, final aggregation (T24), report (T25), submission (T28).
-**Last updated:** 2026-10-17 by Tanvir Ahmed (M1)
+**Next up:** M3 · Mahir: T10, T33, T37, T13, T17, T45 · M4 · Shafil: T35, T38, T39, T14, T18, T46 · M1 · Tanvir: the wav2vec 2.0 and members' runs on TenVoices-L2 (T47), final aggregation (T24), report (T25), submission (T28). (M2 Rabbi: all tasks completed and merged).
+**Last updated:** 2026-10-20 by Md. Shahriar Rakib Rabbi (M2) & Tanvir Ahmed (M1)
 
 ## 👥 Team
 
 | Slot | Member | Branch | Traditional model | Deep-learning runs | Main workstream |
 |---|---|---|---|---|---|
 | M1 | [Tanvir Ahmed](team/M1_tanvir.md) (lead, merges) | `main` | Random Forest | wav2vec 2.0 15 epochs with and without noise, Whisper zero-shot | Data preparation, shared code, Whisper, noise tests, inference, TenVoices-L2, final aggregation |
-| M2 | [Md. Shahriar Rakib Rabbi](team/M2_rabbi.md) | `dev_rabbi` | XGBoost | wav2vec 2.0 8 epochs + noise, **WavLM Base+** 15 epochs + noise | Datasheet, listen-check, dataset statistics, subset release |
+| M2 | [Md. Shahriar Rakib Rabbi](team/M2_rabbi.md) | `dev_shahriar` (merged) | XGBoost | wav2vec 2.0 8 epochs + noise, **WavLM Base+** 15 epochs + noise | Datasheet, listen-check, dataset statistics, subset release |
 | M3 | [Mahir Ahmed](team/M3_mahir.md) | `dev_mahir` | k-NN | wav2vec 2.0 3 epochs, **HuBERT Base** 15 epochs + noise | Analysis plan, statistics, results table, hypothesis tests, error analysis |
 | M4 | [Shafil Ahmed](team/M4_shafil.md) | `dev_shafil` | SVM | Untrained baseline, **linear probe** on frozen wav2vec 2.0 | Visualisation, demo app, poster, slides, video |
 
@@ -42,11 +42,11 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 
 | ID | Task (→ done when) | Depends on | Status | Done by · date |
 |---|---|---|---|---|
-| T12 | **XGBoost** with the shared runner → `results/xgboost/fsc/` | — | ⬜ | |
-| T16 | **wav2vec 2.0, 8 epochs + white noise** → `results/w2v2_8ep_noise/fsc/` | — | ⬜ | |
-| T44 | **WavLM Base+, 15 epochs + white noise** (same script, `--model microsoft/wavlm-base-plus`) → `results/wavlm_15ep_noise/fsc/` | — | ⬜ | |
-| T09 | Datasheet `data/README.md` for TenVoices-FSC (sources, selection, QC, statistics, licences) + dataset statistics figure + 👤 listen-check of the 100 marked clips → `data/listen_check_fsc.csv` | — | ⬜ | |
-| T26 | Subset release: subset and phrase lists, selection and QC scripts, datasheet, checksums (no audio) as a GitHub Release draft | T09 | ⬜ | |
+| T12 | **XGBoost** with the shared runner → `results/xgboost/fsc/` | — | ✅ | Rabbi · 2026-10-20 |
+| T16 | **wav2vec 2.0, 8 epochs + white noise** → `results/w2v2_8ep_noise/fsc/` | — | ✅ | Rabbi · 2026-10-20 |
+| T44 | **WavLM Base+, 15 epochs + white noise** (same script, `--model microsoft/wavlm-base-plus`) → `results/wavlm_15ep_noise/fsc/` | — | ✅ | Rabbi · 2026-10-20 |
+| T09 | Datasheet `data/README.md` for TenVoices-FSC (sources, selection, QC, statistics, licences) + dataset statistics figure + 👤 listen-check of the 100 marked clips → `data/listen_check_fsc.csv` | — | ✅ | Rabbi · 2026-10-20 |
+| T26 | Subset release: subset and phrase lists, selection and QC scripts, datasheet, checksums (no audio) as a GitHub Release draft | T09 | ✅ | Rabbi · 2026-10-20 |
 
 ### M3 · Mahir
 
@@ -126,6 +126,18 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 - **Also:** T11 and T30 marked ✅ on the M1 page (they were already ✅ here). The runs of `M1_tanvir` are listed in the order RF, 15 ep, 15 ep + noise, Whisper, which fixes one colour per run across all figures.
 - **Not overlapping:** Shafil's T23 figures command (every run of every member) is unchanged; these figures are for M1's own experiments.
 - **Tests:** 146 pass (`tests/test_figures.py` is new).
+
+### 2026-10-20 · Md. Shahriar Rakib Rabbi (M2) · Merged dev_shahriar: T02, T12, T09, T26, T16, T44
+
+- **Merged branch:** `dev_shahriar` merged into `main` via Pull Request #1. All 6 tasks owned by Member 2 are complete.
+- **T02:** Phrase catalog loader and checks in `support/phrases.py` (6 unit tests).
+- **T12:** XGBoost evaluated on 78 MFCC statistics across 50 classes for TenVoices-FSC: random split accuracy 22.0%, unseen speakers pooled accuracy 16.9% ± 1.6% (`results/xgboost/fsc/summary.json`).
+- **T09:** Complete dataset documentation: `support/dataset_stats.py`, dataset summary table (`data/subsets/stats_fsc.csv`), distribution figure (`images/dataset_fsc.png`), 100-clip audio listen-check audit (`data/listen_check_fsc.csv`, 100% transcript match), and the full 7-section Datasheet in `data/README.md`.
+- **T26:** Subset release packager `support/make_release.py` and unit tests: packaged 27 metadata, prompt, and split files into `tenvoices-subsets-v1.zip` (169.6 KB) with SHA256 checksums without redistributing audio.
+- **T16:** wav2vec 2.0 (8 epochs + white noise) on TenVoices-FSC: random split accuracy 40.5%, unseen speakers pooled accuracy 21.0% ± 16.0% (`results/w2v2_8ep_noise/fsc/summary.json`).
+- **T44:** WavLM Base+ (15 epochs + white noise) on TenVoices-FSC: random split accuracy 39.0%, unseen speakers pooled accuracy 33.6% ± 28.0% (`results/wavlm_15ep_noise/fsc/summary.json`).
+- **Files added/updated:** 60 files across `support/`, `tests/`, `data/`, `results/`, `images/`, `docs/team/M2_rabbi.md`.
+- **Tests:** All 148 repository tests pass.
 
 ### 2026-10-17 · Tanvir Ahmed (M1) · T48 (M1's results in one folder)
 
