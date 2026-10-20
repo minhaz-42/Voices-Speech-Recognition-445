@@ -50,7 +50,7 @@ On this page: [My tasks](#my-tasks) · [Faculty update](#faculty-update) · [Tas
 | T16 | wav2vec 2.0, 8 epochs + white noise → `results/w2v2_8ep_noise/fsc/` ([card](#t16)) | — | ⬜ | |
 | T44 | WavLM Base+, 15 epochs + white noise → `results/wavlm_15ep_noise/fsc/` ([card](#t44)) | — | ⬜ | |
 | T09 | Datasheet, dataset statistics figure, 👤 listen-check of 100 clips ([card](#t09)) | — | ✅ | Rabbi · 2026-10-20 |
-| T26 | Subset release package, draft GitHub Release ([card](#t26)) | T09 | ⬜ | |
+| T26 | Subset release package, draft GitHub Release ([card](#t26)) | T09 | ✅ | Rabbi · 2026-10-20 |
 
 **Start with:** T12 (minutes on a laptop) and T09. Run T16 and T44 on Colab. Data selection (formerly T41–T43) is done and merged by Tanvir, so nothing you do waits for anyone.
 
@@ -59,6 +59,8 @@ On this page: [My tasks](#my-tasks) · [Faculty update](#faculty-update) · [Tas
 Plain-language summary for the weekly project update, newest week first. Add to it at the end of every session: only finished work, and numbers only from `results/`.
 
 ### Week of 2026-10-20
+
+- Packaged the dataset release (`support/make_release.py`, `tests/test_make_release.py`): bundled 27 essential files (manifests, prompts, splits, datasheet, and selection scripts) into `tenvoices-subsets-v1.zip` (169.6 KB) with cryptographic SHA256SUMS for tamper-proof reproducibility without redistributing audio.
 
 - Implemented `support/dataset_stats.py` and unit tests (`tests/test_dataset_stats.py`) to systematically analyze audio clip durations and demographics.
 - Generated the dataset statistics table (`data/subsets/stats_fsc.csv`) and distribution figure (`images/dataset_fsc.png`) showing perfectly balanced speakers (5 female, 5 male) and a median duration of 1.34s.
@@ -78,6 +80,12 @@ Plain-language summary for the weekly project update, newest week first. Add to 
 *(None.)*
 
 ## Handoff log (newest first)
+
+### 2026-10-20 · Md. Shahriar Rakib Rabbi (M2) · T26 (Subset Release)
+- **Done:** Completed T26. Created `support/make_release.py` and `tests/test_make_release.py`. Generated `outputs/release/tenvoices-subsets-v1.zip` (169.6 KB, 27 files) with SHA256SUMS. All local code tasks are now complete!
+- **Files:** `support/make_release.py`, `tests/test_make_release.py`.
+- **Branch:** `dev_shahriar`
+- **Next:** T16 (wav2vec 2.0 8 epochs + noise on Colab GPU).
 
 ### 2026-10-20 · Md. Shahriar Rakib Rabbi (M2) · T09 (Datasheet, Stats & Listen-Check)
 - **Done:** Completed T09. Built `support/dataset_stats.py` with passing unit tests. Exported `data/subsets/stats_fsc.csv` and plotted `images/dataset_fsc.png`. Completed human listen-check (`data/listen_check_fsc.csv`). Authored standard dataset datasheet in `data/README.md`.
