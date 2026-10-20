@@ -61,7 +61,7 @@ We do not record our own audio (the instructor confirmed that published data mee
 | **Status** | ✅ selected, checked and split | ✅ selected, checked and split (from a free copy of the corpus, `data/SOURCES.md`) |
 | **Licence** | CC BY-NC-ND 4.0, academic research only | CC BY-NC 4.0 |
 
-The audio is not in this repository: we publish the subset lists, the selection script and checksums. Sources, download steps and selection rules: [docs/DATASETS.md](docs/DATASETS.md) · datasheet: [data/README.md](data/README.md)
+The audio is not in this repository: we publish the subset lists, the selection script and checksums. Sources, download steps and selection rules: [docs/DATASETS.md](docs/DATASETS.md) · datasheet: [data/README.md](data/README.md) · subset release archive: `outputs/release/tenvoices-subsets-v1.zip` (Rabbi, T26)
 
 ---
 
@@ -112,8 +112,12 @@ Measured so far on **TenVoices-FSC** (1,000 clips). Every number comes from the 
 | **Whisper small, zero-shot + phrase matching** | Tanvir | **98.7%** | 0.987 | **99.0%** | 0.990 | General-purpose speech-to-text, no training |
 
 * **Random Forest** drops from 31.0% to 20.9% when the test speakers were never heard in training: MFCC statistics depend heavily on the speaker.
+* **XGBoost** (Rabbi) achieves 22.0% on seen speakers and drops to 16.9% on unseen speakers: like Random Forest, gradient boosting on 78 MFCC statistics experiences severe degradation on unseen vocal tract acoustics.
 * **Whisper** recognises the commands almost perfectly without any training; its word error rate on the unseen-speaker folds is 3.9%.
 * **Fine-tuned wav2vec 2.0** (15 epochs + noise, trained on 7 speakers per fold) reaches 88.5% on unseen speakers (fold mean 88.5% ± 10.4), 67.6 points above Random Forest.
+* **Fine-tuning duration (8 epochs vs 15 epochs, Rabbi):** wav2vec 2.0 at 8 epochs achieves 40.5% on seen speakers (nearly double XGBoost's 22.0%), but loss curve analysis reveals the model was still actively converging (training loss 3.10 vs 0.20 at 15 epochs), explaining why unseen speaker accuracy was 21.0% vs the 15-epoch benchmark's 88.5%.
+* **WavLM Base+ (15 epochs + noise, Rabbi):** Reaches **33.6%** pooled accuracy on unseen speakers, outperforming intermediate wav2vec 2.0 and peaking at **65.5% on fold 3**, confirming that WavLM's denoising and masked speech modeling pre-training objective provides superior speaker-invariant representations.
+* **Dataset Quality & Audit (Rabbi):** TenVoices-FSC was audited with 100 human listen-checks (`data/listen_check_fsc.csv`, 100% transcript match with zero label noise), documented with a full Gebru et al. (2021) datasheet (`data/README.md`), and packaged into a reproducible release (`tenvoices-subsets-v1.zip`).
 * **Noise robustness** (unseen speakers, white noise added to the test clips, `results/M1_tanvir/noise/`):
 
   | Model | Clean | 20 dB | 10 dB | 5 dB |
@@ -124,7 +128,8 @@ Measured so far on **TenVoices-FSC** (1,000 clips). Every number comes from the 
 
   Training with white noise keeps the model usable in heavy noise (74.5% vs 30.7% at 5 dB) but costs 4.3 points on clean audio. H3 allows at most 2, so its strict criterion would fail; the official verdict comes from the hypothesis tests in T24. The MFCC model falls to chance level as soon as noise is added.
 * **Speed** (`results/M1_tanvir/benchmark_fsc.csv`, one clip incl. pre-processing, MacBook): wav2vec 2.0 38.2 ms on the Apple GPU and 74.9 ms on the CPU (378 MB); Random Forest 13.7 ms (76 MB). Both are fast enough for live use.
-* Confusion matrices: [results/M1_tanvir/figures/confusion/](results/M1_tanvir/figures/confusion/) (Tanvir's runs), `images/confusion/` (the other members' runs).
+* **Confusion matrices:** Tanvir's runs in [results/M1_tanvir/figures/confusion/](results/M1_tanvir/figures/confusion/); Rabbi's runs in `images/confusion/` (`xgboost_fsc_{random,folds}.png`, `w2v2_8ep_noise_fsc_{random,folds}.png`, `wavlm_15ep_noise_fsc_{random,folds}.png`).
+* **Dataset statistics figure:** Distribution of clip durations and phrase categories across the 10 speakers in `images/dataset_fsc.png` (Rabbi, T09).
 * **More figures** (Tanvir's runs, all drawn from the result files by `python -m support.figures --folder M1_tanvir`; gallery with explanations: [results/M1_tanvir/README.md](results/M1_tanvir/README.md)): seen vs unseen speakers, fine-tuning curves, noise robustness, accuracy per speaker, confidence, speed vs accuracy, Whisper's errors.
 
   <img src="results/M1_tanvir/figures/seen_vs_unseen.png" alt="Accuracy on seen vs unseen speakers" width="850">
@@ -210,6 +215,8 @@ Run every command from the repository root; scripts in `support/` run as modules
 | `python -m support.classical --dataset fsc --model svm --split all` | Train and evaluate a traditional model (`random_forest`, `xgboost`, `knn`, `svm`) |
 | `python -m support.train_wav2vec2 --dataset fsc --epochs 15 --noise white` | Fine-tune wav2vec 2.0 on every split (`--untrained` for the baseline, `--model` for WavLM / HuBERT); Colab: `notebooks/train_wav2vec2.ipynb` |
 | `python -m support.whisper_asr --dataset fsc --split all` | Zero-shot Whisper on the same test clips, with WER per speaker and first language |
+| `python -m support.dataset_stats --dataset fsc` | Generate dataset duration statistics and demographics figure (`images/dataset_fsc.png`, Rabbi, T09) |
+| `python -m support.make_release` | Package the subset release archive with checksums (`outputs/release/tenvoices-subsets-v1.zip`, Rabbi, T26) |
 | `python -m support.evaluate --dataset fsc --run random_forest` | Rebuild a run's metrics, reports and confusion matrices |
 | `python -m support.noise_test --run w2v2_15ep_noise --dataset fsc` | Accuracy with white noise at 20 / 10 / 5 dB |
 | `python main.py --audio clip.wav --model <saved model>` | Top-5 phrases for an audio file (also `--video`, `--mic`, `--asr whisper`, `--benchmark N`) |
@@ -232,7 +239,7 @@ Run every command from the repository root; scripts in `support/` run as modules
 ---
 
 ## 🔄 Team Workflow
-Every member works on their own branch (`dev_rabbi`, `dev_mahir`, `dev_shafil`), by hand or with any AI assistant, pushes at the end of every session and opens a pull request; Tanvir reviews and merges into `main`. Steps: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) · rules for assistants: [AGENTS.md](AGENTS.md).
+Every member works on their own branch (`dev_shahriar`, `dev_mahir`, `dev_shafil`), by hand or with any AI assistant, pushes at the end of every session and opens a pull request; Tanvir reviews and merges into `main`. Steps: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) · rules for assistants: [AGENTS.md](AGENTS.md).
 
 ---
 
