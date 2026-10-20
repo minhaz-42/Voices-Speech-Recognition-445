@@ -47,7 +47,7 @@ On this page: [My tasks](#my-tasks) · [Faculty update](#faculty-update) · [Tas
 |---|---|---|---|---|
 | T02 | Phrase catalogue loader `support/phrases.py` (the recorder part was cancelled) | — | ✅ | Rabbi · 2026-10-07 |
 | T12 | XGBoost → `results/xgboost/fsc/` ([card](#t12)) | — | ✅ | Rabbi · 2026-10-20 |
-| T16 | wav2vec 2.0, 8 epochs + white noise → `results/w2v2_8ep_noise/fsc/` ([card](#t16)) | — | ⬜ | |
+| T16 | wav2vec 2.0, 8 epochs + white noise → `results/w2v2_8ep_noise/fsc/` ([card](#t16)) | — | ✅ | Rabbi · 2026-10-20 |
 | T44 | WavLM Base+, 15 epochs + white noise → `results/wavlm_15ep_noise/fsc/` ([card](#t44)) | — | ⬜ | |
 | T09 | Datasheet, dataset statistics figure, 👤 listen-check of 100 clips ([card](#t09)) | — | ✅ | Rabbi · 2026-10-20 |
 | T26 | Subset release package, draft GitHub Release ([card](#t26)) | T09 | ✅ | Rabbi · 2026-10-20 |
@@ -59,6 +59,10 @@ On this page: [My tasks](#my-tasks) · [Faculty update](#faculty-update) · [Tas
 Plain-language summary for the weekly project update, newest week first. Add to it at the end of every session: only finished work, and numbers only from `results/`.
 
 ### Week of 2026-10-20
+
+- Fine-tuned wav2vec 2.0 (`facebook/wav2vec2-base`) for 8 epochs with white-noise data augmentation as the middle comparison point for hypothesis H4.
+- On seen speakers (random split), accuracy reached 40.5% (nearly double XGBoost's 22.0%); on unseen speakers across 5 speaker-independent folds, pooled accuracy was 21.0% ± 16.0% (summary in `results/w2v2_8ep_noise/fsc/summary.json`).
+- Comparative curve analysis with the 15-epoch baseline showed that training loss was still steadily decreasing at epoch 8 (from 3.91 to 3.10), indicating that the learning-rate schedule requires more epochs to achieve full convergence.
 
 - Packaged the dataset release (`support/make_release.py`, `tests/test_make_release.py`): bundled 27 essential files (manifests, prompts, splits, datasheet, and selection scripts) into `tenvoices-subsets-v1.zip` (169.6 KB) with cryptographic SHA256SUMS for tamper-proof reproducibility without redistributing audio.
 
@@ -80,6 +84,12 @@ Plain-language summary for the weekly project update, newest week first. Add to 
 *(None.)*
 
 ## Handoff log (newest first)
+
+### 2026-10-20 · Md. Shahriar Rakib Rabbi (M2) · T16 (wav2vec 2.0 8ep + noise)
+- **Done:** Completed T16. Fine-tuned wav2vec 2.0 for 8 epochs with white noise on Colab GPU. Random split accuracy 0.405, unseen speakers pooled accuracy 0.210 ± 0.160 (fold1: 0.055, fold2: 0.230, fold3: 0.040, fold4: 0.400, fold5: 0.325).
+- **Files:** `results/w2v2_8ep_noise/fsc/`, `images/confusion/w2v2_8ep_noise_fsc_*.png`.
+- **Branch:** `dev_shahriar`
+- **Next:** T44 (WavLM Base+, 15 epochs + white noise on Colab GPU).
 
 ### 2026-10-20 · Md. Shahriar Rakib Rabbi (M2) · T26 (Subset Release)
 - **Done:** Completed T26. Created `support/make_release.py` and `tests/test_make_release.py`. Generated `outputs/release/tenvoices-subsets-v1.zip` (169.6 KB, 27 files) with SHA256SUMS. All local code tasks are now complete!
