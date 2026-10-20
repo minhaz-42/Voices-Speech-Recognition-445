@@ -1,0 +1,351 @@
+{
+  "run": "xgboost",
+  "dataset": "fsc",
+  "random": {
+    "n": 200,
+    "accuracy": 0.22,
+    "macro_f1": 0.20841558441558436,
+    "weighted_f1": 0.20841558441558436,
+    "n_speakers": 10
+  },
+  "folds": {
+    "pooled": {
+      "n": 1000,
+      "accuracy": 0.169,
+      "macro_f1": 0.15824045504284223,
+      "weighted_f1": 0.15824045504284226
+    },
+    "per_fold": {
+      "fold1": {
+        "n": 200,
+        "accuracy": 0.155,
+        "macro_f1": 0.12187493987493986,
+        "weighted_f1": 0.12187493987493986
+      },
+      "fold2": {
+        "n": 200,
+        "accuracy": 0.185,
+        "macro_f1": 0.16875809214939647,
+        "weighted_f1": 0.16875809214939647
+      },
+      "fold3": {
+        "n": 200,
+        "accuracy": 0.15,
+        "macro_f1": 0.12709775248905683,
+        "weighted_f1": 0.12709775248905683
+      },
+      "fold4": {
+        "n": 200,
+        "accuracy": 0.18,
+        "macro_f1": 0.14274332684858998,
+        "weighted_f1": 0.14274332684858998
+      },
+      "fold5": {
+        "n": 200,
+        "accuracy": 0.175,
+        "macro_f1": 0.15079365079365079,
+        "weighted_f1": 0.15079365079365079
+      }
+    },
+    "mean": {
+      "accuracy": 0.16899999999999998,
+      "macro_f1": 0.14225355243112678,
+      "weighted_f1": 0.14225355243112678
+    },
+    "std": {
+      "accuracy": 0.015572411502397436,
+      "macro_f1": 0.018845754868790403,
+      "weighted_f1": 0.018845754868790403
+    },
+    "folds_run": [
+      "fold1",
+      "fold2",
+      "fold3",
+      "fold4",
+      "fold5"
+    ]
+  },
+  "model": "xgboost",
+  "feature_kind": "mfcc",
+  "features": {
+    "n_mfcc": 13,
+    "n_fft": 512,
+    "hop_length": 160,
+    "n_mels": 40
+  },
+  "selection": "best validation accuracy",
+  "splits": {
+    "random": {
+      "params": {
+        "learning_rate": 0.3,
+        "max_depth": 6,
+        "n_estimators": 300
+      },
+      "val_accuracy": 0.2,
+      "n_train": 720,
+      "n_val": 80,
+      "n_test": 200
+    },
+    "fold1": {
+      "params": {
+        "learning_rate": 0.3,
+        "max_depth": 4,
+        "n_estimators": 300
+      },
+      "val_accuracy": 0.23,
+      "n_train": 700,
+      "n_val": 100,
+      "n_test": 200
+    },
+    "fold2": {
+      "params": {
+        "learning_rate": 0.1,
+        "max_depth": 6,
+        "n_estimators": 300
+      },
+      "val_accuracy": 0.17,
+      "n_train": 700,
+      "n_val": 100,
+      "n_test": 200
+    },
+    "fold3": {
+      "params": {
+        "learning_rate": 0.1,
+        "max_depth": 4,
+        "n_estimators": 300
+      },
+      "val_accuracy": 0.12,
+      "n_train": 700,
+      "n_val": 100,
+      "n_test": 200
+    },
+    "fold4": {
+      "params": {
+        "learning_rate": 0.1,
+        "max_depth": 4,
+        "n_estimators": 300
+      },
+      "val_accuracy": 0.24,
+      "n_train": 700,
+      "n_val": 100,
+      "n_test": 200
+    },
+    "fold5": {
+      "params": {
+        "learning_rate": 0.1,
+        "max_depth": 6,
+        "n_estimators": 300
+      },
+      "val_accuracy": 0.09,
+      "n_train": 700,
+      "n_val": 100,
+      "n_test": 200
+    }
+  },
+  "grids": {
+    "random": [
+      {
+        "params": {
+          "learning_rate": 0.1,
+          "max_depth": 4,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.125
+      },
+      {
+        "params": {
+          "learning_rate": 0.1,
+          "max_depth": 6,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.15
+      },
+      {
+        "params": {
+          "learning_rate": 0.3,
+          "max_depth": 4,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.1875
+      },
+      {
+        "params": {
+          "learning_rate": 0.3,
+          "max_depth": 6,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.2
+      }
+    ],
+    "fold1": [
+      {
+        "params": {
+          "learning_rate": 0.1,
+          "max_depth": 4,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.21
+      },
+      {
+        "params": {
+          "learning_rate": 0.1,
+          "max_depth": 6,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.22
+      },
+      {
+        "params": {
+          "learning_rate": 0.3,
+          "max_depth": 4,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.23
+      },
+      {
+        "params": {
+          "learning_rate": 0.3,
+          "max_depth": 6,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.21
+      }
+    ],
+    "fold2": [
+      {
+        "params": {
+          "learning_rate": 0.1,
+          "max_depth": 4,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.16
+      },
+      {
+        "params": {
+          "learning_rate": 0.1,
+          "max_depth": 6,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.17
+      },
+      {
+        "params": {
+          "learning_rate": 0.3,
+          "max_depth": 4,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.12
+      },
+      {
+        "params": {
+          "learning_rate": 0.3,
+          "max_depth": 6,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.14
+      }
+    ],
+    "fold3": [
+      {
+        "params": {
+          "learning_rate": 0.1,
+          "max_depth": 4,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.12
+      },
+      {
+        "params": {
+          "learning_rate": 0.1,
+          "max_depth": 6,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.1
+      },
+      {
+        "params": {
+          "learning_rate": 0.3,
+          "max_depth": 4,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.11
+      },
+      {
+        "params": {
+          "learning_rate": 0.3,
+          "max_depth": 6,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.12
+      }
+    ],
+    "fold4": [
+      {
+        "params": {
+          "learning_rate": 0.1,
+          "max_depth": 4,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.24
+      },
+      {
+        "params": {
+          "learning_rate": 0.1,
+          "max_depth": 6,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.23
+      },
+      {
+        "params": {
+          "learning_rate": 0.3,
+          "max_depth": 4,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.22
+      },
+      {
+        "params": {
+          "learning_rate": 0.3,
+          "max_depth": 6,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.18
+      }
+    ],
+    "fold5": [
+      {
+        "params": {
+          "learning_rate": 0.1,
+          "max_depth": 4,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.04
+      },
+      {
+        "params": {
+          "learning_rate": 0.1,
+          "max_depth": 6,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.09
+      },
+      {
+        "params": {
+          "learning_rate": 0.3,
+          "max_depth": 4,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.09
+      },
+      {
+        "params": {
+          "learning_rate": 0.3,
+          "max_depth": 6,
+          "n_estimators": 300
+        },
+        "val_accuracy": 0.08
+      }
+    ]
+  }
+}
