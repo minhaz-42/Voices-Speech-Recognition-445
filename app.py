@@ -222,15 +222,80 @@ def build_app(model_path: str | Path | None = DEFAULT_MODEL, recognizer=None):
     return app
 
 
+def check_files(paths: list[str], model_paths: list[str], expect: list[str] | None = None,
+                use_whisper: bool = False) -> "pd.DataFrame":
+    """Run the demo's recognisers on audio files, as a reproducible record of a live check.
+
+    Args:
+        paths: Audio files (e.g. your own recordings).
+        model_paths: Saved models, as for ``--model``.
+        expect: The phrase ID each file should be, in the same order (optional).
+        use_whisper: Also run zero-shot Whisper.
+
+    Returns:
+        One row per file and recogniser: ``file, recognizer, expected, phrase_id, text,
+        score, correct`` (the best phrase only).
+    """
+    import pandas as pd
+
+    from support.audio import read_audio
+
+    texts = phrase_texts()
+    recognisers = []
+    for path in model_paths:
+        rec, status = load_model(path)
+        if rec is None:
+            raise ValueError(status)
+        recognisers.append((Path(path).parent.parent.name, rec))
+    whisper = None
+    if use_whisper:
+        from support.inference import WhisperRecognizer
+
+        whisper = WhisperRecognizer([{"phrase_id": k, "text": v} for k, v in texts.items()])
+    rows = []
+    for i, file in enumerate(paths):
+        samples, rate = read_audio(file)
+        expected = expect[i] if expect else ""
+        for name, rec in recognisers:
+            best = rec.predict(samples, rate, k=1, texts=texts)[0]
+            rows.append({"file": Path(file).name, "recognizer": name, "expected": expected,
+                         "phrase_id": best["phrase_id"], "text": best["text"], "score": round(best["score"], 4)})
+        if whisper is not None:
+            best = whisper.predict(samples, rate, k=1)["top"][0]
+            rows.append({"file": Path(file).name, "recognizer": "whisper_small", "expected": expected,
+                         "phrase_id": best["phrase_id"], "text": best["text"], "score": round(best["score"], 4)})
+    table = pd.DataFrame(rows)
+    table["correct"] = (table["phrase_id"] == table["expected"]) if expect else ""
+    return table
+
+
 def main() -> None:
-    """Launch the demo in the browser."""
+    """Launch the demo in the browser, or with ``--check`` run its models on audio files."""
     parser = argparse.ArgumentParser(description="TenVoices live demo (Gradio).")
     parser.add_argument("--port", type=int, default=7860, help="local port (default: 7860)")
-    parser.add_argument("--model", default=DEFAULT_MODEL,
-                        help=f"saved model: .joblib or wav2vec 2.0 folder (default: {DEFAULT_MODEL})")
+    parser.add_argument("--model", default=DEFAULT_MODEL, nargs="+",
+                        help=f"saved model: .joblib or wav2vec 2.0 folder (default: {DEFAULT_MODEL}); "
+                             "with --check, several models can be given")
     parser.add_argument("--share", action="store_true", help="also create a temporary public Gradio link")
+    parser.add_argument("--check", nargs="+", default=None, metavar="WAV",
+                        help="do not launch: recognise these files with --model (and --whisper) and print the result")
+    parser.add_argument("--expect", nargs="+", default=None, help="with --check: the phrase ID of each file")
+    parser.add_argument("--whisper", action="store_true", help="with --check: also run zero-shot Whisper")
+    parser.add_argument("--out", default=None, help="with --check: also save the table as CSV here")
     args = parser.parse_args()
-    build_app(args.model).launch(server_port=args.port, share=args.share)
+
+    models = args.model if isinstance(args.model, list) else [args.model]
+    if args.check:
+        if args.expect and len(args.expect) != len(args.check):
+            parser.error("give one --expect phrase ID per --check file")
+        table = check_files(args.check, models, args.expect, args.whisper)
+        print(table.to_string(index=False))
+        if args.out:
+            Path(args.out).parent.mkdir(parents=True, exist_ok=True)
+            table.to_csv(args.out, index=False)
+            print(f"saved: {args.out}")
+        return
+    build_app(models[0]).launch(server_port=args.port, share=args.share)
 
 
 if __name__ == "__main__":
