@@ -99,3 +99,123 @@ def fill(template: str, values: dict[str, tuple[str, str]]) -> tuple[str, list[d
         return text
 
     return PLACEHOLDER.sub(replace, template), list(used.values())
+
+
+CHROME_CANDIDATES = [
+    r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+    r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
+    r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+]
+CHECKLIST_START = "<!-- numbers checklist: written by python -m support.presentation -->"
+CHECKLIST_END = "<!-- end of numbers checklist -->"
+
+
+def find_chrome() -> str | None:
+    """Path of Chrome, Chromium or Edge, or ``None`` when none is installed."""
+    import shutil
+
+    for name in ("google-chrome", "chromium", "chromium-browser", "chrome", "msedge"):
+        if shutil.which(name):
+            return shutil.which(name)
+    return next((p for p in CHROME_CANDIDATES if Path(p).exists()), None)
+
+
+def render(html: Path, out: Path, width: int, height: int, chrome: str | None = None) -> None:
+    """Render a local HTML page with headless Chrome: PNG at 2x scale, or PDF when ``out`` ends in .pdf.
+
+    Raises:
+        RuntimeError: If no Chrome / Edge is installed.
+    """
+    import subprocess
+
+    chrome = chrome or find_chrome()
+    if chrome is None:
+        raise RuntimeError("no Chrome or Edge found: install one, or use --no-render")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    url = Path(html).resolve().as_uri()
+    common = [chrome, "--headless=new", "--disable-gpu", "--hide-scrollbars", "--virtual-time-budget=3000"]
+    if out.suffix == ".pdf":
+        args = common + ["--no-pdf-header-footer", f"--print-to-pdf={out.resolve()}", url]
+    else:
+        args = common + ["--force-device-scale-factor=2", f"--window-size={width},{height}",
+                         f"--screenshot={out.resolve()}", url]
+    subprocess.run(args, check=True, capture_output=True, timeout=120)
+
+
+def checklist_markdown(used: dict[str, list[dict[str, Any]]]) -> str:
+    """The numbers checklist: per output file, every placeholder, its value and its source."""
+    lines = [CHECKLIST_START, "", "### Numbers checklist (generated, do not edit by hand)", ""]
+    for name, rows in used.items():
+        lines += [f"**{name}**", "", "| Placeholder | Value | Source |", "|---|---|---|"]
+        lines += [f"| `{r['key']}` | {r['value']} | {('`' + r['source'] + '`') if r['source'] else 'not merged yet'} |"
+                  for r in rows]
+        lines.append("")
+    lines.append(CHECKLIST_END)
+    return "\n".join(lines)
+
+
+def update_checklist(readme: Path, used: dict[str, list[dict[str, Any]]]) -> None:
+    """Write the checklist into ``readme`` between its markers (appended the first time)."""
+    text = readme.read_text(encoding="utf-8") if readme.exists() else ""
+    block = checklist_markdown(used)
+    if CHECKLIST_START in text and CHECKLIST_END in text:
+        start, end = text.index(CHECKLIST_START), text.index(CHECKLIST_END) + len(CHECKLIST_END)
+        text = text[:start] + block + text[end:]
+    else:
+        text = text.rstrip("\n") + "\n\n" + block + "\n"
+    readme.write_text(text, encoding="utf-8", newline="\n")
+
+
+# Template -> (filled HTML, rendered output, CSS width, CSS height)
+OUTPUTS = {
+    "poster_results.template.html": ("poster_results.html", "images/poster_results.png", 1600, 1200),
+    "slides.template.html": ("slides.html", "others/slides.pdf", 1280, 720),
+}
+
+
+def build(results: str | Path | None = None, others: str | Path = "others", do_render: bool = True,
+          chrome: str | None = None) -> list[Path]:
+    """Fill every template in ``others``, update the checklist and (optionally) render the outputs.
+
+    Returns:
+        The files written.
+    """
+    others = PROJECT_ROOT / others if not Path(others).is_absolute() else Path(others)
+    values = collect_values(results)
+    written: list[Path] = []
+    used: dict[str, list[dict[str, Any]]] = {}
+    for template, (html_name, rendered, width, height) in OUTPUTS.items():
+        source = others / template
+        if not source.exists():
+            continue
+        text, rows = fill(source.read_text(encoding="utf-8"), values)
+        html = others / html_name
+        html.write_text(text, encoding="utf-8", newline="\n")
+        written.append(html)
+        used[f"{html_name} → {rendered}"] = rows
+        if do_render:
+            out = PROJECT_ROOT / rendered
+            render(html, out, width, height, chrome)
+            written.append(out)
+    if used:
+        update_checklist(others / "README.md", used)
+        written.append(others / "README.md")
+    return written
+
+
+def main() -> None:
+    """Fill the poster and slide templates from ``results/`` and render them."""
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Fill the poster and slides with numbers from results/.")
+    parser.add_argument("--results", default=None, help="results folder (default: config paths.results)")
+    parser.add_argument("--no-render", action="store_true", help="only write the filled HTML and the checklist")
+    parser.add_argument("--chrome", default=None, help="path of Chrome / Edge (default: found automatically)")
+    args = parser.parse_args()
+    for path in build(args.results, do_render=not args.no_render, chrome=args.chrome):
+        print(f"saved: {_relative(path)}")
+
+
+if __name__ == "__main__":
+    main()
