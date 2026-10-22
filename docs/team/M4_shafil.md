@@ -31,15 +31,15 @@ Every one of your tasks below depends only on work that is already merged or on 
 
 | ID | Task | Depends on | Status | Done · date |
 |---|---|---|---|---|
-| T35 | Visualisation module + tests + example figures ([card](#t35)) | — | 🟡 code + tests done; 👤 example figures from my own recordings | |
+| T35 | Visualisation module + tests + example figures ([card](#t35)) | — | ✅ | 2026-10-23 |
 | T36 | Demo skeleton `app.py` ([card](#t36)) | T35 | ✅ | 2026-10-18 |
 | T38 | Literature notes ([card](#t38)) | — | ✅ | 2026-10-18 |
 | T39 | Planning poster v2 ([card](#t39)) | — | ✅ | 2026-10-18 |
 | T14 | SVM → `results/svm/fsc/` ([card](#t14)) | — | ✅ | 2026-10-18 |
 | T18 | Untrained wav2vec 2.0 baseline → `results/w2v2_untrained/fsc/` ([card](#t18)) | — | ✅ | 2026-10-18 |
 | T46 | Linear probe: `support/embeddings.py` + logistic regression → `results/w2v2_probe/fsc/` ([card](#t46)) | — | ✅ | 2026-10-18 |
-| T23 | Demo recognising with your SVM + figures command ([card](#t23)) | T14, T35, T36 | 🟡 code + tests done; 👤 live check with my voice | |
-| T27 | Results poster, slides, 👤 demo video ([card](#t27)) | T23 | ⬜ | |
+| T23 | Demo recognising with your SVM + figures command ([card](#t23)) | T14, T35, T36 | ✅ (SVM 0/3 on my voice, Whisper 3/3: `results/demo_check/`) | 2026-10-23 |
+| T27 | Results poster, slides, 👤 demo video ([card](#t27)) | T23 | 🟡 poster + slides ✅; 👤 demo video (`others/demo_video_script.md`) | |
 
 **Start with:** T14 (minutes on a laptop), T35 and T18. Your demo uses your own SVM model, so nothing you do waits for anyone.
 
