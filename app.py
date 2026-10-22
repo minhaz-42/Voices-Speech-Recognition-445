@@ -127,8 +127,16 @@ def whisper_text(audio: tuple[int, np.ndarray] | None, whisper) -> str:
     return f'"{out["transcript"].strip()}" -> {verdict}'
 
 
+def _is_probe(path: str | Path) -> bool:
+    """True for a model saved by ``support.classical --features w2v2`` (the linear probe)."""
+    import joblib
+
+    return joblib.load(path).get("feature_kind", "mfcc") == "w2v2"
+
+
 def load_model(path: str | Path | None):
-    """Open a saved model with ``support.inference.load_recognizer``.
+    """Open a saved model: a linear probe (``w2v2_probe``) with ``support.embeddings.ProbeRecognizer``,
+    anything else with ``support.inference.load_recognizer``.
 
     Returns:
         ``(recognizer, status)``: the recogniser (``None`` when ``path`` is missing or
@@ -142,6 +150,10 @@ def load_model(path: str | Path | None):
     from support.inference import load_recognizer
 
     try:
+        if Path(path).suffix == ".joblib" and _is_probe(path):
+            from support.embeddings import ProbeRecognizer
+
+            return ProbeRecognizer(path), f"Model: {path} (linear probe on frozen wav2vec 2.0)"
         return load_recognizer(path), f"Model: {path}"
     except (ValueError, OSError) as err:
         return None, f"Cannot open {path}: {err}"
@@ -151,7 +163,8 @@ def build_app(model_path: str | Path | None = DEFAULT_MODEL, recognizer=None):
     """The Gradio interface (built, not launched).
 
     Args:
-        model_path: Saved model to recognise with (a ``.joblib`` file or a wav2vec 2.0 folder).
+        model_path: Saved model to recognise with (a ``.joblib`` file, MFCC or linear probe, or a
+            wav2vec 2.0 folder).
         recognizer: An already loaded recogniser; overrides ``model_path`` (used by the tests).
 
     Returns:
