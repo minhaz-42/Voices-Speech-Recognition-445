@@ -6,7 +6,8 @@ the SVM of task T14, recognises it and shows the top-5 phrases with their confid
 
 Usage::
 
-    python app.py [--model outputs/models/svm/fsc/random.joblib] [--port 7860] [--share]
+    python app.py [--model outputs/models/svm/fsc/random.joblib] [--whisper] [--port 7860] [--share]
+    python app.py --check a.wav b.wav --expect FSC41 FSC35 --model <model> [<model> ...] [--whisper]         --out results/demo_check/<name>.csv
 """
 
 from __future__ import annotations
@@ -159,13 +160,14 @@ def load_model(path: str | Path | None):
         return None, f"Cannot open {path}: {err}"
 
 
-def build_app(model_path: str | Path | None = DEFAULT_MODEL, recognizer=None):
+def build_app(model_path: str | Path | None = DEFAULT_MODEL, recognizer=None, whisper_on: bool = False):
     """The Gradio interface (built, not launched).
 
     Args:
         model_path: Saved model to recognise with (a ``.joblib`` file, MFCC or linear probe, or a
             wav2vec 2.0 folder).
         recognizer: An already loaded recogniser; overrides ``model_path`` (used by the tests).
+        whisper_on: Start with the Whisper transcript ticked.
 
     Returns:
         A ``gr.Blocks`` app: audio input and an Analyse button; the processed audio,
@@ -205,7 +207,7 @@ def build_app(model_path: str | Path | None = DEFAULT_MODEL, recognizer=None):
             with gr.Column():
                 audio_in = gr.Audio(sources=["microphone", "upload"], type="numpy", label="Your phrase")
                 use_whisper = gr.Checkbox(label="Also transcribe with Whisper (zero-shot; downloads the model "
-                                                "the first time)", value=False)
+                                                "the first time)", value=whisper_on)
                 analyse_btn = gr.Button("Analyse", variant="primary")
                 info = gr.Textbox(label="Clip", lines=2, interactive=False)
                 processed = gr.Audio(label="After pre-processing", type="numpy", interactive=False)
@@ -280,7 +282,8 @@ def main() -> None:
     parser.add_argument("--check", nargs="+", default=None, metavar="WAV",
                         help="do not launch: recognise these files with --model (and --whisper) and print the result")
     parser.add_argument("--expect", nargs="+", default=None, help="with --check: the phrase ID of each file")
-    parser.add_argument("--whisper", action="store_true", help="with --check: also run zero-shot Whisper")
+    parser.add_argument("--whisper", action="store_true",
+                        help="also run zero-shot Whisper (with --check), or start the app with it ticked")
     parser.add_argument("--out", default=None, help="with --check: also save the table as CSV here")
     args = parser.parse_args()
 
@@ -295,7 +298,7 @@ def main() -> None:
             table.to_csv(args.out, index=False)
             print(f"saved: {args.out}")
         return
-    build_app(models[0]).launch(server_port=args.port, share=args.share)
+    build_app(models[0], whisper_on=args.whisper).launch(server_port=args.port, share=args.share)
 
 
 if __name__ == "__main__":
