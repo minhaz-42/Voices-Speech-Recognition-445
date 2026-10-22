@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import argparse
 import statistics
+import sys
 import time
 from pathlib import Path
 
@@ -62,6 +63,9 @@ def benchmark(recognizer, samples: np.ndarray, sample_rate: int, repeats: int) -
 
 def main() -> None:
     """Parse the options, read the input and print the recognised phrases."""
+    # The score bars use "█", which a Windows console (cp1252) cannot encode: print UTF-8 there.
+    if hasattr(sys.stdout, "reconfigure") and (sys.stdout.encoding or "").lower() not in ("utf-8", "utf8"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     parser = argparse.ArgumentParser(description="Recognise which TenVoices phrase was spoken.")
     source = parser.add_mutually_exclusive_group(required=True)
     source.add_argument("--audio", help="audio file (WAV, FLAC, OGG, MP3)")
