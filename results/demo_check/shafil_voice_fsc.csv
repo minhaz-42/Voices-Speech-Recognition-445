@@ -1,0 +1,10 @@
+file,recognizer,expected,phrase_id,text,score,correct
+lights.wav,svm,FSC41,FSC25,switch off the lights,0.6352,False
+lights.wav,w2v2_probe,FSC41,FSC26,switch off the washroom lights,0.9692,False
+lights.wav,whisper_small,FSC41,FSC41,turn the lights on,1.0,True
+music.wav,svm,FSC35,FSC25,switch off the lights,0.6353,False
+music.wav,w2v2_probe,FSC35,FSC12,increase the temperature in the washroom,0.8656,False
+music.wav,whisper_small,FSC35,FSC35,turn off the music,1.0,True
+heating.wav,svm,FSC05,FSC25,switch off the lights,0.643,False
+heating.wav,w2v2_probe,FSC05,FSC12,increase the temperature in the washroom,0.5154,False
+heating.wav,whisper_small,FSC05,FSC05,increase the heating,1.0,True
