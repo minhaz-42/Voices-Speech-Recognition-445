@@ -6,6 +6,18 @@ Final deliverables that are not code:
 - the report (**T25**, M1),
 - the slides and the 1-minute demo video (**T27**, M4).
 
+### Results poster and slides (T27)
+
+Numbers are never typed by hand. The templates `poster_results.template.html` and `slides.template.html` contain placeholders such as `{{fsc:svm:unseen:accuracy}}`; one command fills them from `results/` and renders them:
+
+```bash
+python -m support.visualization --results results --out images   # the results figures the slides use
+python -m support.presentation                                    # poster_results.html -> images/poster_results.png,
+                                                                  # slides.html -> slides.pdf, and the checklist below
+```
+
+Edit the templates, never `poster_results.html` or `slides.html`. A run that is not merged yet shows `TBD`; rerun both commands after every merge (T28). The 1-minute demo video follows `demo_video_script.md`.
+
 Large media (the video, high-resolution exports) are attached to the GitHub Release instead of being committed.
 
 <!-- numbers checklist: written by python -m support.presentation -->
