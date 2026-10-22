@@ -70,6 +70,15 @@ Plain-language summary for the weekly project update, newest week first. Add to 
 
 ## Handoff log (newest first)
 
+**2026-10-23 · Shafil**
+- **Ready to merge:** T35 (example figures from my recordings), T23 (demo checked on my voice; the demo also loads the linear probe; `app.py --check`), and T27 poster + slides, together with T14, T18, T36, T38, T39, T46 from before. **Still 👤:** the T27 demo video (`others/demo_video_script.md`).
+- **Merged `main` into `dev_shafil`** (Rabbi's runs); no conflicts.
+- **Files:** `app.py`, `support/embeddings.py` (`ProbeRecognizer`), `support/presentation.py` (new), `tests/test_app.py`, `tests/test_embeddings.py`, `tests/_embeddings_check.py`, `tests/test_presentation.py` (new), `others/poster_results.template.html`, `others/poster_results.html`, `others/slides.template.html`, `others/slides.html`, `others/slides.pdf`, `others/README.md`, `others/demo_video_script.md`, `images/example_*.png`, `images/poster_results.png`, `images/results_fsc_*.png`, `results/demo_check/shafil_voice_fsc.csv`, this page.
+- **Key results:** on three of my own recordings, SVM 0/3, linear probe 0/3, Whisper 3/3 (`results/demo_check/shafil_voice_fsc.csv`).
+- **Tests:** 187 run, all pass (1 skipped) with UTF-8 console output. Without it, only `test_inference.test_main_cli_with_benchmark` fails on Windows; the fix is in a separate pull request from `fix/windows-console-utf8` (one change in `main.py`, for Tanvir to review).
+- **Next:** film the demo video; after the remaining runs are merged, `python -m support.visualization --results results --out images` and `python -m support.presentation` refresh every figure and number (T28).
+- **Blockers:** none. GitHub Actions does not run until the repository owner's billing issue is fixed (see *Requests for the lead*).
+
 **2026-10-18 · Shafil**
 - **Ready to merge:** T14, T18, T36, T38, T39, T46. **Code done, waiting for me (👤):** T35 example figures from my own recordings; T23 live check of the demo with my voice.
 - **Files:** `support/visualization.py`, `support/embeddings.py`, `app.py`, `tests/test_visualization.py`, `tests/test_app.py`, `tests/test_embeddings.py`, `tests/_embeddings_check.py`, `docs/literature/self_supervised_speech.md`, `others/poster.html`, `images/poster.png`, `results/svm/fsc/`, `results/w2v2_untrained/fsc/`, `results/w2v2_probe/fsc/`, `images/confusion/{svm,w2v2_untrained,w2v2_probe}_fsc_*.png`, `images/results_*.png`, this page.
