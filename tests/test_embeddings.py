@@ -59,6 +59,16 @@ class TestEmbeddings(unittest.TestCase):
         self.assertEqual(cache["cached_shape"], [5, 32])
         self.assertTrue(cache["cached_matches"])
 
+    def test_probe_recognizer(self):
+        probe = self.report["probe"]
+        self.assertEqual(probe["n_top"], 2)
+        self.assertTrue(set(probe["ids"]) <= set(probe["labels"]))
+        self.assertEqual(probe["scores"], sorted(probe["scores"], reverse=True))
+        self.assertLessEqual(sum(probe["scores"]), 1.0 + 1e-6)
+        if probe["labels"][0] in probe["texts"]:
+            self.assertEqual(probe["texts"][probe["labels"][0]], "first")
+        self.assertTrue(probe["wrong_kind_raises"])
+
 
 if __name__ == "__main__":
     unittest.main()

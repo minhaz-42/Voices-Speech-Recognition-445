@@ -73,6 +73,33 @@ def main(out: Path) -> dict:
         ids = manifest["utt_id"].tolist()[:5]
         cached = load_cached_features("fsc", "w2v2", ids, cfg)
 
+        # ProbeRecognizer: a probe saved like support.classical does, used on raw 48 kHz stereo audio
+        import joblib
+        from sklearn.linear_model import LogisticRegression
+        from sklearn.pipeline import make_pipeline
+        from sklearn.preprocessing import StandardScaler
+
+        labels = sorted(manifest["label"].unique())
+        y = manifest["label"].map({lab: i for i, lab in enumerate(labels)}).to_numpy()
+        clf = make_pipeline(StandardScaler(), LogisticRegression(max_iter=500)).fit(features, y)
+        joblib.dump({"model": clf, "labels": labels, "params": {"C": 1.0}, "features": cfg["features"],
+                     "feature_kind": "w2v2"}, out / "probe.joblib")
+        rec = embeddings.ProbeRecognizer(out / "probe.joblib", model_name=str(out / "tiny"), device="cpu",
+                                         audio_cfg=cfg["audio"])
+        t = np.arange(int(0.5 * 48000)) / 48000
+        stereo = np.stack([0.3 * np.sin(2 * np.pi * 300 * t)] * 2, axis=1)
+        top = rec.predict(stereo, 48000, k=2, texts={labels[0]: "first"})
+        joblib.dump({"model": clf, "labels": labels, "features": cfg["features"], "feature_kind": "mfcc"},
+                    out / "mfcc.joblib")
+        try:
+            embeddings.ProbeRecognizer(out / "mfcc.joblib", model_name=str(out / "tiny"), device="cpu")
+            wrong_kind_raises = False
+        except ValueError:
+            wrong_kind_raises = True
+    report["probe"] = {"labels": labels, "n_top": len(top), "ids": [r["phrase_id"] for r in top],
+                       "scores": [r["score"] for r in top], "texts": {r["phrase_id"]: r["text"] for r in top},
+                       "wrong_kind_raises": wrong_kind_raises}
+
     report["cache"] = {
         "name": path.name, "keys": keys, "n_clips": int(features.shape[0]), "n_manifest": len(manifest),
         "width": int(features.shape[1]), "features_dtype": str(features.dtype),
