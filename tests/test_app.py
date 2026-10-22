@@ -107,6 +107,20 @@ class TestRecognise(unittest.TestCase):
         self.assertIsNone(missing)
         self.assertIn("No model", status)
 
+    def test_check_files_records_each_model(self):
+        import soundfile as sf
+
+        wav = Path(self.tmp.name) / "p03.wav"
+        sf.write(wav, tone(PITCHES["P03"], sr=44100), 44100)
+        table = app.check_files([str(wav)], [str(self.model_path)], expect=["P03"])
+        self.assertEqual(len(table), 1)
+        row = table.iloc[0]
+        self.assertEqual(row["file"], "p03.wav")
+        self.assertEqual(row["phrase_id"], "P03")
+        self.assertTrue(row["correct"])
+        with self.assertRaises(ValueError):
+            app.check_files([str(wav)], [str(Path(self.tmp.name) / "missing.joblib")])
+
     def test_build_app_with_a_model(self):
         import gradio as gr
 
