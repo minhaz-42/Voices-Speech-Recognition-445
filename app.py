@@ -7,7 +7,8 @@ the SVM of task T14, recognises it and shows the top-5 phrases with their confid
 Usage::
 
     python app.py [--model outputs/models/svm/fsc/random.joblib] [--whisper] [--port 7860] [--share]
-    python app.py --check a.wav b.wav --expect FSC41 FSC35 --model <model> [<model> ...] [--whisper]         --out results/demo_check/<name>.csv
+    python app.py --check a.wav b.wav --expect FSC41 FSC35 --model <model> [<model> ...] [--whisper] \
+        --out results/demo_check/<name>.csv
 """
 
 from __future__ import annotations
