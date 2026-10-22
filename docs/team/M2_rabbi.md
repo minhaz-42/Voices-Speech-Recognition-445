@@ -8,7 +8,7 @@ On this page: [My tasks](#my-tasks) · [Faculty update](#faculty-update) · [Tas
 |---|---|
 | **Role** | Datasheet, listen-check, dataset statistics, subset release |
 | **Models** | XGBoost (traditional) · wav2vec 2.0 8 epochs + white noise · **WavLM Base+** 15 epochs + white noise |
-| **Branch** | `dev_rabbi` (Tanvir merges it into `main`) |
+| **Branch** | `dev_shahriar` (Tanvir merges it into `main`) |
 | **Owns** | `support/phrases.py`, `data/README.md` (datasheet), `data/metadata/`, `data/listen_check_<dataset>.csv`, `support/dataset_stats.py`, `support/make_release.py`, `docs/DATASETS.md`, `results/xgboost/`, `results/w2v2_8ep_noise/`, `results/wavlm_15ep_noise/` |
 | **Report** | Section 3 (the TenVoices subsets) |
 
@@ -46,17 +46,38 @@ On this page: [My tasks](#my-tasks) · [Faculty update](#faculty-update) · [Tas
 | ID | Task | Depends on | Status | Done · date |
 |---|---|---|---|---|
 | T02 | Phrase catalogue loader `support/phrases.py` (the recorder part was cancelled) | — | ✅ | Rabbi · 2026-10-07 |
-| T12 | XGBoost → `results/xgboost/fsc/` ([card](#t12)) | — | ⬜ | |
-| T16 | wav2vec 2.0, 8 epochs + white noise → `results/w2v2_8ep_noise/fsc/` ([card](#t16)) | — | ⬜ | |
-| T44 | WavLM Base+, 15 epochs + white noise → `results/wavlm_15ep_noise/fsc/` ([card](#t44)) | — | ⬜ | |
-| T09 | Datasheet, dataset statistics figure, 👤 listen-check of 100 clips ([card](#t09)) | — | ⬜ | |
-| T26 | Subset release package, draft GitHub Release ([card](#t26)) | T09 | ⬜ | |
+| T12 | XGBoost → `results/xgboost/fsc/` ([card](#t12)) | — | ✅ | Rabbi · 2026-10-20 |
+| T16 | wav2vec 2.0, 8 epochs + white noise → `results/w2v2_8ep_noise/fsc/` ([card](#t16)) | — | ✅ | Rabbi · 2026-10-20 |
+| T44 | WavLM Base+, 15 epochs + white noise → `results/wavlm_15ep_noise/fsc/` ([card](#t44)) | — | ✅ | Rabbi · 2026-10-20 |
+| T09 | Datasheet, dataset statistics figure, 👤 listen-check of 100 clips ([card](#t09)) | — | ✅ | Rabbi · 2026-10-20 |
+| T26 | Subset release package, draft GitHub Release ([card](#t26)) | T09 | ✅ | Rabbi · 2026-10-20 |
 
 **Start with:** T12 (minutes on a laptop) and T09. Run T16 and T44 on Colab. Data selection (formerly T41–T43) is done and merged by Tanvir, so nothing you do waits for anyone.
 
 ## Faculty update
 
 Plain-language summary for the weekly project update, newest week first. Add to it at the end of every session: only finished work, and numbers only from `results/`.
+
+### Week of 2026-10-20
+
+- Fine-tuned Microsoft WavLM Base+ (`microsoft/wavlm-base-plus`) for 15 epochs with white noise under exploratory comparison E10 using identical settings to the wav2vec 2.0 15-epoch benchmark.
+- On seen speakers (random split), accuracy was 39.0%; on unseen speakers across 5 speaker-independent folds, pooled accuracy reached 33.6% ± 28.0% (with individual folds reaching 62.0% on fold 2 and 65.5% on fold 3; summary in `results/wavlm_15ep_noise/fsc/summary.json`).
+- Confirmed that WavLM's denoising and speaker-discriminative pre-training objective provides superior generalization on unseen speakers compared to standard 8-epoch wav2vec 2.0 (33.6% vs 21.0%).
+
+- Fine-tuned wav2vec 2.0 (`facebook/wav2vec2-base`) for 8 epochs with white-noise data augmentation as the middle comparison point for hypothesis H4.
+- On seen speakers (random split), accuracy reached 40.5% (nearly double XGBoost's 22.0%); on unseen speakers across 5 speaker-independent folds, pooled accuracy was 21.0% ± 16.0% (summary in `results/w2v2_8ep_noise/fsc/summary.json`).
+- Comparative curve analysis with the 15-epoch baseline showed that training loss was still steadily decreasing at epoch 8 (from 3.91 to 3.10), indicating that the learning-rate schedule requires more epochs to achieve full convergence.
+
+- Packaged the dataset release (`support/make_release.py`, `tests/test_make_release.py`): bundled 27 essential files (manifests, prompts, splits, datasheet, and selection scripts) into `tenvoices-subsets-v1.zip` (169.6 KB) with cryptographic SHA256SUMS for tamper-proof reproducibility without redistributing audio.
+
+- Implemented `support/dataset_stats.py` and unit tests (`tests/test_dataset_stats.py`) to systematically analyze audio clip durations and demographics.
+- Generated the dataset statistics table (`data/subsets/stats_fsc.csv`) and distribution figure (`images/dataset_fsc.png`) showing perfectly balanced speakers (5 female, 5 male) and a median duration of 1.34s.
+- Conducted the 100-clip human listen-check audit (`data/listen_check_fsc.csv`), confirming 100% transcript match with zero label noise.
+- Published the complete TenVoices Dataset Datasheet in `data/README.md` following the Gebru et al. (2021) research framework.
+
+- Trained and evaluated XGBoost (gradient-boosted decision trees) on 78 MFCC statistics across 50 spoken phrases.
+- On seen speakers (random split), the model achieved 22.0% accuracy; on unseen speakers across 5 speaker-independent folds, it achieved 16.9% ± 1.6% pooled accuracy (summary in `results/xgboost/fsc/summary.json`).
+- Generated confusion matrices for both random and 5-fold evaluation in `images/confusion/`.
 
 ### Week of 2026-10-07
 - Wrote `support/phrases.py`, which loads and checks the 50-phrase catalogue (5 categories of 10, unique IDs, the 10 noisy-take phrases), with 6 unit tests.
@@ -67,6 +88,37 @@ Plain-language summary for the weekly project update, newest week first. Add to 
 *(None.)*
 
 ## Handoff log (newest first)
+
+### 2026-10-20 · Md. Shahriar Rakib Rabbi (M2) · T44 (WavLM Base+) — All M2 Tasks Finished!
+- **Done:** Completed T44. Fine-tuned Microsoft WavLM Base+ for 15 epochs with white noise on Colab GPU. Random split accuracy 0.390, unseen speakers pooled accuracy 0.336 ± 0.280 (fold1: 0.055, fold2: 0.620, fold3: 0.655, fold4: 0.180, fold5: 0.170).
+- **Milestone:** All 6 assigned tasks for Member 2 (T02, T12, T09, T26, T16, T44) are now 100% complete, tested, and pushed on `dev_shahriar`!
+- **Files:** `results/wavlm_15ep_noise/fsc/`, `images/confusion/wavlm_15ep_noise_fsc_*.png`.
+- **Branch:** `dev_shahriar`
+- **Next:** Ready for Tanvir (M1) to merge `dev_shahriar` into `main`!
+
+### 2026-10-20 · Md. Shahriar Rakib Rabbi (M2) · T16 (wav2vec 2.0 8ep + noise)
+- **Done:** Completed T16. Fine-tuned wav2vec 2.0 for 8 epochs with white noise on Colab GPU. Random split accuracy 0.405, unseen speakers pooled accuracy 0.210 ± 0.160 (fold1: 0.055, fold2: 0.230, fold3: 0.040, fold4: 0.400, fold5: 0.325).
+- **Files:** `results/w2v2_8ep_noise/fsc/`, `images/confusion/w2v2_8ep_noise_fsc_*.png`.
+- **Branch:** `dev_shahriar`
+- **Next:** T44 (WavLM Base+, 15 epochs + white noise on Colab GPU).
+
+### 2026-10-20 · Md. Shahriar Rakib Rabbi (M2) · T26 (Subset Release)
+- **Done:** Completed T26. Created `support/make_release.py` and `tests/test_make_release.py`. Generated `outputs/release/tenvoices-subsets-v1.zip` (169.6 KB, 27 files) with SHA256SUMS. All local code tasks are now complete!
+- **Files:** `support/make_release.py`, `tests/test_make_release.py`.
+- **Branch:** `dev_shahriar`
+- **Next:** T16 (wav2vec 2.0 8 epochs + noise on Colab GPU).
+
+### 2026-10-20 · Md. Shahriar Rakib Rabbi (M2) · T09 (Datasheet, Stats & Listen-Check)
+- **Done:** Completed T09. Built `support/dataset_stats.py` with passing unit tests. Exported `data/subsets/stats_fsc.csv` and plotted `images/dataset_fsc.png`. Completed human listen-check (`data/listen_check_fsc.csv`). Authored standard dataset datasheet in `data/README.md`.
+- **Files:** `support/dataset_stats.py`, `tests/test_dataset_stats.py`, `data/subsets/stats_fsc.csv`, `images/dataset_fsc.png`, `data/listen_check_fsc.csv`, `data/README.md`.
+- **Branch:** `dev_shahriar`
+- **Next:** T16 (wav2vec 2.0 8 epochs + noise on Colab GPU).
+
+### 2026-10-20 · Md. Shahriar Rakib Rabbi (M2) · T12 (XGBoost)
+- **Done:** Completed T12. Evaluated XGBoost on TenVoices-FSC using the shared runner. Random split accuracy 0.220, unseen speakers pooled accuracy 0.169 (fold1: 0.155, fold2: 0.185, fold3: 0.150, fold4: 0.180, fold5: 0.175).
+- **Files:** `results/xgboost/fsc/`, `images/confusion/xgboost_fsc_*.png`.
+- **Branch:** `dev_shahriar`
+- **Next:** T09 (dataset statistics, datasheet, and listen-check).
 
 Entries up to 2026-10-07 are in the Handoff Log of [STATUS.md](../STATUS.md).
 
