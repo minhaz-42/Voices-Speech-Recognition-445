@@ -125,6 +125,43 @@ def extract_dataset(
     return out
 
 
+class ProbeRecognizer:
+    """A saved linear probe (``outputs/models/w2v2_probe/<dataset>/<split>.joblib``) for the demo.
+
+    It works like the recognisers in ``support/inference.py``: raw audio in, the top-k
+    phrases out. Each clip is pre-processed, embedded with the frozen wav2vec 2.0 model
+    (the same model and layer as the training cache) and scored by the logistic regression.
+    """
+
+    def __init__(self, path: str | Path, model_name: str = DEFAULT_MODEL, layer: int | None = None,
+                 device: str | None = None, audio_cfg: dict[str, Any] | None = None):
+        import joblib
+        from transformers import AutoFeatureExtractor, Wav2Vec2Model
+
+        from support.device import pick_device
+
+        bundle = joblib.load(path)
+        if bundle.get("feature_kind") != "w2v2":
+            raise ValueError(f"{path} is not a linear probe on w2v2 embeddings")
+        self.classifier, self.labels = bundle["model"], list(bundle["labels"])
+        self.audio_cfg = audio_cfg if audio_cfg is not None else load_config()["audio"]
+        self.sample_rate = int(self.audio_cfg["sample_rate"])
+        self.device, self.layer, self.path = pick_device(device), layer, Path(path)
+        self.extractor = AutoFeatureExtractor.from_pretrained(model_name)
+        self.model = Wav2Vec2Model.from_pretrained(model_name)
+
+    def predict(self, samples: np.ndarray, sample_rate: int, k: int = 5,
+                texts: dict[str, str] | None = None) -> list[dict[str, Any]]:
+        """Top-k phrases for raw audio (any rate, mono or stereo, float or int16)."""
+        from support.audio import preprocess
+        from support.classical import predict_scores
+        from support.inference import top_k
+
+        clip = preprocess(samples, sample_rate, self.audio_cfg, pad=False)
+        vector = embed_clips([clip], self.model, self.extractor, self.device, self.layer, self.sample_rate)
+        return top_k(predict_scores(self.classifier, vector)[0], self.labels, k, texts)
+
+
 def main() -> None:
     """Embed every clip of a dataset with frozen wav2vec 2.0 and save the cache."""
     parser = argparse.ArgumentParser(description="Frozen wav2vec 2.0 embeddings for the linear probe.")
