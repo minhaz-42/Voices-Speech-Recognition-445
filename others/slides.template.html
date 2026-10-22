@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TenVoices Slides</title>
+<!--
+  Presentation slides (16:9, 1280x720 per slide), task T27. This is the TEMPLATE: every number
+  is a placeholder such as {{fsc:svm:unseen:accuracy}}, filled from results/ by
+      python -m support.presentation
+  which writes others/slides.html and exports others/slides.pdf (one page per slide).
+  Edit this file, never the generated one. A run that is not merged yet shows TBD.
+-->
+<style>
+  @page{size:1280px 720px;margin:0}
+  :root{
+    --bg:#04070e; --panel:rgba(10,24,44,.9); --edge:rgba(62,224,207,.45);
+    --teal:#3ee0cf; --blue:#62a8ff; --amber:#ffb454; --red:#ff7a7a;
+    --txt:#eaf2ff; --mut:#9fb2cc; --dim:#71859f;
+    --mono:"SF Mono",Menlo,Consolas,monospace;
+    --display:"Avenir Next",-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  section{width:1280px;height:720px;position:relative;overflow:hidden;padding:56px 72px;page-break-after:always;
+    background:radial-gradient(700px 480px at 12% 20%, rgba(46,210,195,.13), transparent 70%),
+               radial-gradient(760px 520px at 85% 80%, rgba(80,140,255,.12), transparent 70%), var(--bg)}
+  section:last-child{page-break-after:auto}
+  .kicker{font:600 14px var(--mono);letter-spacing:.28em;color:var(--teal)}
+  h1{font:650 56px/1.12 var(--display);margin-top:14px}
+  h2{font:650 38px/1.15 var(--display);margin:10px 0 26px}
+  p,li{font-size:23px;line-height:1.45;color:#d4e0f0}
+  em{font-style:normal;color:var(--teal)}
+  .mut{color:var(--mut)}
+  ul{list-style:none;display:grid;gap:14px}
+  ul li::before{content:"\25B8";color:var(--teal);margin-right:12px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:36px}
+  .card{background:var(--panel);border:1px solid var(--edge);border-radius:14px;padding:22px 26px}
+  .card h3{font:600 14px var(--mono);letter-spacing:.18em;color:var(--teal);margin-bottom:12px}
+  .card p,.card li{font-size:19px}
+  .big{display:flex;justify-content:space-between;align-items:flex-end;margin-top:30px}
+  .big div{text-align:center;width:30%}
+  .big b{display:block;font:700 72px/1 var(--display);background:linear-gradient(90deg,var(--teal),var(--blue));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .big span{display:block;font-size:19px;color:var(--mut);margin-top:10px;line-height:1.35}
+  .big .arrow{width:auto;color:var(--teal);font-size:40px;align-self:center}
+  table{border-collapse:collapse;width:100%;font-size:21px}
+  th{font:600 14px var(--mono);color:var(--mut);text-align:right;padding:8px 10px;border-bottom:1px solid rgba(159,178,204,.35)}
+  th:first-child,td:first-child{text-align:left}
+  td{padding:9px 10px;text-align:right;border-bottom:1px solid rgba(159,178,204,.14);font-variant-numeric:tabular-nums}
+  td.hi{color:var(--teal);font-weight:650}
+  td.lo{color:var(--red)}
+  img.fig{display:block;max-width:100%;border-radius:10px;background:#fff}
+  .src{position:absolute;left:72px;bottom:26px;font:13px var(--mono);color:var(--dim)}
+  .num{position:absolute;right:48px;bottom:24px;font:13px var(--mono);color:var(--dim)}
+  .stage{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .stage .card b{display:block;font:700 15px var(--mono);color:var(--amber);margin-bottom:8px}
+  .stage .card p{font-size:18px}
+</style>
+</head>
+<body>
+
+<section>
+  <div style="margin-top:150px">
+    <div class="kicker">CSE445 &middot; NORTH SOUTH UNIVERSITY &middot; 2026</div>
+    <h1>TenVoices: Speech Recognition<br>from Ten Voices</h1>
+    <p class="mut" style="margin-top:22px;font-size:26px">Which of 50 phrases was spoken &mdash; by a voice the system has never heard?</p>
+    <p style="margin-top:56px;font-size:21px">Tanvir Ahmed &middot; Md. Shahriar Rakib Rabbi &middot; Mahir Ahmed &middot; Shafil Ahmed</p>
+  </div>
+  <div class="num">1</div>
+</section>
+
+<section>
+  <div class="kicker">THE TASK</div>
+  <h2>Recognise one of 50 phrases, from unfamiliar speakers</h2>
+  <div class="cols">
+    <ul>
+      <li>Input: one spoken command or sentence (&ldquo;turn the lights on&rdquo;).</li>
+      <li>Output: which of the <em>50 phrases</em> it was, with a confidence.</li>
+      <li>The hard part: the test speakers are <em>never heard in training</em>.</li>
+    </ul>
+    <div class="card">
+      <h3>RESEARCH QUESTIONS</h3>
+      <ul>
+        <li>Which approach recognises speech most accurately?</li>
+        <li>Does longer fine-tuning help?</li>
+        <li>How do new speakers, accents and noise affect results?</li>
+      </ul>
+    </div>
+  </div>
+  <div class="num">2</div>
+</section>
+
+<section>
+  <div class="kicker">DATA</div>
+  <h2>Two published 10-speaker subsets</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>TENVOICES-FSC &middot; MAIN</h3>
+      <p>From <em>Fluent Speech Commands</em> (Lugosch et al., 2019): 10 speakers (5 F, 5 M) &times; 50 smart-home commands &times; 2 takes = <b>1,000 clips</b>.</p>
+      <p class="mut" style="margin-top:12px">Many commands share most of their words: &ldquo;switch the lights <em>on</em>&rdquo; vs &ldquo;<em>off</em>&rdquo;.</p>
+    </div>
+    <div class="card">
+      <h3>TENVOICES-L2 &middot; ACCENTS</h3>
+      <p>From <em>L2-ARCTIC</em> (Zhao et al., 2018): 10 non-native speakers &mdash; first languages Hindi, Mandarin, Spanish, Korean, Vietnamese &times; 50 sentences = <b>500 clips</b>.</p>
+      <p class="mut" style="margin-top:12px">Selected by script with fixed rules; audio never redistributed.</p>
+    </div>
+  </div>
+  <div class="num">3</div>
+</section>
+
+<section>
+  <div class="kicker">METHOD</div>
+  <h2>Four stages, one shared pipeline</h2>
+  <p class="mut" style="margin-bottom:22px">All audio: mono, 16 kHz, silence trimmed, peak-normalised, padded to 6 s.</p>
+  <div class="stage">
+    <div class="card"><b>1 &middot; MFCC + CLASSIC ML</b><p>13 MFCCs + &Delta; + &Delta;&Delta;, mean and std (78 values) &rarr; k-NN, SVM, Random Forest, XGBoost.</p></div>
+    <div class="card"><b>2 &middot; UNTRAINED BASELINE</b><p>wav2vec 2.0 with a new, untrained head: the chance level.</p></div>
+    <div class="card"><b>3 &middot; FINE-TUNED</b><p>wav2vec 2.0 for 3 / 8 / 15 epochs, white-noise augmentation; also WavLM, HuBERT and a frozen linear probe.</p></div>
+    <div class="card"><b>4 &middot; WHISPER</b><p>Zero-shot speech-to-text; the transcript is matched to the nearest of the 50 phrases.</p></div>
+  </div>
+  <div class="num">4</div>
+</section>
+
+<section>
+  <div class="kicker">EVALUATION</div>
+  <h2>Fair comparison: seen vs unseen speakers</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>RANDOM SPLIT</h3>
+      <p>80 / 20, stratified by phrase. The test speakers were also heard in training.</p>
+    </div>
+    <div class="card">
+      <h3>SPEAKER-INDEPENDENT &middot; HEADLINE</h3>
+      <p>5 folds: 7 training, 1 validation, 2 test speakers; every speaker is tested once.</p>
+    </div>
+  </div>
+  <ul style="margin-top:30px">
+    <li>Accuracy, macro F1, confusion matrices, accuracy per speaker; word error rate for Whisper.</li>
+    <li>Best epoch and hyper-parameters chosen on validation data, never on the test set.</li>
+    <li>White noise added to the test clips at 20 / 10 / 5 dB.</li>
+  </ul>
+  <div class="num">5</div>
+</section>
+
+<section>
+  <div class="kicker">RESULTS &middot; TENVOICES-FSC</div>
+  <h2>Accuracy on seen and unseen speakers</h2>
+  <img class="fig" src="../images/results_fsc_accuracy.png" style="height:470px">
+  <div class="src">source: results/&lt;run&gt;/fsc/summary.json &middot; figure: python -m support.visualization --results results</div>
+  <div class="num">6</div>
+</section>
+
+<section>
+  <div class="kicker">RESULTS</div>
+  <h2>Pre-training does most of the work</h2>
+  <p>The same wav2vec 2.0 Base model, on unseen speakers:</p>
+  <div class="big">
+    <div><b>{{fsc:w2v2_untrained:unseen:accuracy}}</b><span>untrained head<br>(chance is 2%)</span></div>
+    <div class="arrow">&#8594;</div>
+    <div><b>{{fsc:w2v2_probe:unseen:accuracy}}</b><span>frozen features +<br>logistic regression</span></div>
+    <div class="arrow">&#8594;</div>
+    <div><b>{{fsc:w2v2_15ep_noise:unseen:accuracy}}</b><span>fine-tuned<br>15 epochs + noise</span></div>
+  </div>
+  <p class="mut" style="margin-top:40px">For comparison: MFCC + SVM reaches {{fsc:svm:unseen:accuracy}}, MFCC + Random Forest {{fsc:random_forest:unseen:accuracy}}; zero-shot Whisper {{fsc:whisper_small:unseen:accuracy}}.</p>
+  <div class="src">source: results/{w2v2_untrained,w2v2_probe,svm}/fsc &middot; results/M1_tanvir/{w2v2_15ep_noise,whisper_small}/fsc</div>
+  <div class="num">7</div>
+</section>
+
+<section>
+  <div class="kicker">RESULTS &middot; NOISE</div>
+  <h2>White-noise training buys robustness</h2>
+  <div class="cols" style="grid-template-columns:1.1fr 1fr;align-items:start">
+    <table>
+      <tr><th>unseen speakers</th><th>clean</th><th>20 dB</th><th>10 dB</th><th>5 dB</th></tr>
+      <tr><td>wav2vec 2.0 + noise</td><td>{{fsc:noise:w2v2_15ep_noise:clean}}</td><td>{{fsc:noise:w2v2_15ep_noise:20}}</td><td class="hi">{{fsc:noise:w2v2_15ep_noise:10}}</td><td class="hi">{{fsc:noise:w2v2_15ep_noise:5}}</td></tr>
+      <tr><td>wav2vec 2.0, no noise</td><td>{{fsc:noise:w2v2_15ep:clean}}</td><td>{{fsc:noise:w2v2_15ep:20}}</td><td>{{fsc:noise:w2v2_15ep:10}}</td><td class="lo">{{fsc:noise:w2v2_15ep:5}}</td></tr>
+      <tr><td>MFCC + Random Forest</td><td>{{fsc:noise:random_forest:clean}}</td><td class="lo">{{fsc:noise:random_forest:20}}</td><td class="lo">{{fsc:noise:random_forest:10}}</td><td class="lo">{{fsc:noise:random_forest:5}}</td></tr>
+    </table>
+    <img class="fig" src="../images/results_fsc_noise.png" style="height:330px">
+  </div>
+  <p class="mut" style="margin-top:26px">Training with noise costs a little on clean audio but keeps the model usable at 5 dB; MFCC features collapse to chance as soon as noise is added.</p>
+  <div class="src">source: results/M1_tanvir/noise/*_fsc.csv</div>
+  <div class="num">8</div>
+</section>
+
+<section>
+  <div class="kicker">RESULTS &middot; TENVOICES-L2</div>
+  <h2>Accents: right sentence, more word errors</h2>
+  <div class="cols">
+    <table>
+      <tr><th>unseen first language</th><th>accuracy</th></tr>
+      <tr><td>MFCC + Random Forest</td><td class="lo">{{l2arctic:random_forest:unseen:accuracy}}</td></tr>
+      <tr><td>Whisper small, zero-shot</td><td class="hi">{{l2arctic:whisper_small:unseen:accuracy}}</td></tr>
+    </table>
+    <table>
+      <tr><th>Whisper word error rate</th><th>unseen folds</th></tr>
+      <tr><td>TenVoices-FSC (native)</td><td>{{fsc:wer:whisper_small}}</td></tr>
+      <tr><td>TenVoices-L2 (non-native)</td><td class="lo">{{l2arctic:wer:whisper_small}}</td></tr>
+    </table>
+  </div>
+  <p class="mut" style="margin-top:34px">Whisper still picks the right sentence almost every time, but its transcripts contain more errors for non-native speakers (hypothesis H5, tested formally in the report).</p>
+  <div class="src">source: results/M1_tanvir/{random_forest,whisper_small}/{fsc,l2arctic}/summary.json</div>
+  <div class="num">9</div>
+</section>
+
+<section>
+  <div class="kicker">DEMO</div>
+  <h2>Live demo: speak, see, recognise</h2>
+  <div class="cols" style="grid-template-columns:1fr 1.05fr;align-items:start">
+    <div>
+      <ul>
+        <li><em>python app.py</em>: record or upload a phrase.</li>
+        <li>Shows what the model receives: waveform, spectrograms, MFCCs.</li>
+        <li>Top-5 phrases with confidence; optional Whisper transcript.</li>
+      </ul>
+      <table style="margin-top:24px;font-size:19px">
+        <tr><th>a new voice, 3 commands</th><th>correct</th></tr>
+        <tr><td>MFCC + SVM</td><td class="lo">{{demo:svm}}</td></tr>
+        <tr><td>Linear probe</td><td class="lo">{{demo:w2v2_probe}}</td></tr>
+        <tr><td>Whisper, zero-shot</td><td class="hi">{{demo:whisper_small}}</td></tr>
+      </table>
+    </div>
+    <img class="fig" src="../images/example_lights_overview.png" style="height:520px;margin:-40px auto 0">
+  </div>
+  <div class="src">source: results/demo_check/shafil_voice_fsc.csv (3 clips: an illustration, not a test)</div>
+  <div class="num">10</div>
+</section>
+
+<section>
+  <div class="kicker">CONCLUSIONS</div>
+  <h2>What we learned</h2>
+  <div class="cols">
+    <ul>
+      <li>Self-supervised pre-training makes 50 commands learnable from <em>7 training speakers</em>.</li>
+      <li>MFCC models depend heavily on the speaker and fail in noise.</li>
+      <li>Noise augmentation trades a little clean accuracy for robustness.</li>
+      <li>Zero-shot Whisper is the strongest and most portable, but accents raise its word errors.</li>
+    </ul>
+    <div class="card">
+      <h3>FUTURE WORK</h3>
+      <ul>
+        <li>Fine-tune Whisper or wav2vec 2.0 (CTC) on non-native speech.</li>
+        <li>Multilingual pre-training (XLS-R).</li>
+        <li>Bangladeshi speakers reading the same commands.</li>
+        <li>All 97 FSC speakers: how accuracy scales with speakers.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="num">11</div>
+</section>
+
+<section>
+  <div style="margin-top:170px;text-align:center">
+    <div class="kicker">THANK YOU</div>
+    <h1>Questions?</h1>
+    <p class="mut" style="margin-top:26px">github.com/minhaz-42/Voices-Speech-Recognition-445</p>
+  </div>
+  <div class="num">12</div>
+</section>
+
+</body>
+</html>
