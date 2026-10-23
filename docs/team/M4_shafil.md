@@ -31,15 +31,15 @@ Every one of your tasks below depends only on work that is already merged or on 
 
 | ID | Task | Depends on | Status | Done · date |
 |---|---|---|---|---|
-| T35 | Visualisation module + tests + example figures ([card](#t35)) | — | ⬜ | |
-| T36 | Demo skeleton `app.py` ([card](#t36)) | T35 | ⬜ | |
-| T38 | Literature notes ([card](#t38)) | — | ⬜ | |
-| T39 | Planning poster v2 ([card](#t39)) | — | ⬜ | |
-| T14 | SVM → `results/svm/fsc/` ([card](#t14)) | — | ⬜ | |
-| T18 | Untrained wav2vec 2.0 baseline → `results/w2v2_untrained/fsc/` ([card](#t18)) | — | ⬜ | |
-| T46 | Linear probe: `support/embeddings.py` + logistic regression → `results/w2v2_probe/fsc/` ([card](#t46)) | — | ⬜ | |
-| T23 | Demo recognising with your SVM + figures command ([card](#t23)) | T14, T35, T36 | ⬜ | |
-| T27 | Results poster, slides, 👤 demo video ([card](#t27)) | T23 | ⬜ | |
+| T35 | Visualisation module + tests + example figures ([card](#t35)) | — | ✅ | 2026-10-23 |
+| T36 | Demo skeleton `app.py` ([card](#t36)) | T35 | ✅ | 2026-10-18 |
+| T38 | Literature notes ([card](#t38)) | — | ✅ | 2026-10-18 |
+| T39 | Planning poster v2 ([card](#t39)) | — | ✅ | 2026-10-18 |
+| T14 | SVM → `results/svm/fsc/` ([card](#t14)) | — | ✅ | 2026-10-18 |
+| T18 | Untrained wav2vec 2.0 baseline → `results/w2v2_untrained/fsc/` ([card](#t18)) | — | ✅ | 2026-10-18 |
+| T46 | Linear probe: `support/embeddings.py` + logistic regression → `results/w2v2_probe/fsc/` ([card](#t46)) | — | ✅ | 2026-10-18 |
+| T23 | Demo recognising with your SVM + figures command ([card](#t23)) | T14, T35, T36 | ✅ (SVM 0/3 on my voice, Whisper 3/3: `results/demo_check/`) | 2026-10-23 |
+| T27 | Results poster, slides, 👤 demo video ([card](#t27)) | T23 | 🟡 poster + slides ✅; 👤 demo video (`others/demo_video_script.md`) | |
 
 **Start with:** T14 (minutes on a laptop), T35 and T18. Your demo uses your own SVM model, so nothing you do waits for anyone.
 
@@ -47,15 +47,45 @@ Every one of your tasks below depends only on work that is already merged or on 
 
 Plain-language summary for the weekly project update, newest week first. Add to it at the end of every session: only finished work, and numbers only from `results/`.
 
-*(Nothing yet.)*
+**Week of 2026-10-23**
+- **Demo on my own voice (T35, T23):** I recorded three of our commands and drew them as waveform, spectrogram and MFCC figures (`images/example_*.png`). In the demo, the SVM and the linear probe recognised none of the three (0/3), while zero-shot Whisper recognised all three (3/3; `results/demo_check/shafil_voice_fsc.csv`). Models trained on 10 speakers do not carry over to a new voice and microphone; this is only three clips, so it illustrates the speaker effect rather than measuring it.
+- **Results poster and slides (T27):** a results-edition poster (`images/poster_results.png`) and 12 slides (`others/slides.pdf`). Every number on them is filled in from `results/` by `python -m support.presentation`, which also writes a checklist of each number and its source file (`others/README.md`), so they can be refreshed in one command when the remaining runs are merged.
+- **Next:** the 1-minute demo video (script in `others/demo_video_script.md`).
+
+**Week of 2026-10-18**
+- **SVM (T14):** I trained and evaluated a support vector machine on the 78 MFCC statistics of TenVoices-FSC. It reaches 30.5% accuracy on the random split and 22.3% on speakers it never heard (5 folds pooled; `results/svm/fsc/summary.json`), close to Random Forest: MFCC models depend strongly on knowing the speaker.
+- **Untrained baseline and linear probe (T18, T46):** wav2vec 2.0 with an untrained head scores 2.8% on unseen speakers (chance is 2%; `results/w2v2_untrained/fsc/summary.json`). With the same model frozen and only a logistic regression trained on its features (`support/embeddings.py`), accuracy rises to 60.5% on unseen speakers and 69.5% on the random split (`results/w2v2_probe/fsc/summary.json`). Pre-training alone explains most of the gain; full fine-tuning adds the rest.
+- **Visualisation and demo (T35, T36, T23):** `support/visualization.py` draws waveforms, spectrograms, MFCCs, the effect of our pre-processing and the results charts; one command (`python -m support.visualization --results results`) draws the comparison, per-speaker and noise figures of every run in `images/`. The demo app (`app.py`) records or uploads a phrase, shows what the model receives and the top-5 phrases from the saved model, with an optional Whisper transcript.
+- **Poster and literature (T39, T38):** the planning poster now shows the team of four, the two datasets and the four-stage pipeline with Whisper; the literature notes cover eight checked papers on self-supervised speech models (`docs/literature/self_supervised_speech.md`).
 
 ## Requests for the lead
 
-*(None.)*
+- **Phrase list for the demo (T36):** `support/phrases.py` `load_phrases()` has no `dataset` argument yet and still reads the old `data/prompts/phrases.csv`. The demo therefore uses `support.dataset.load_labels("fsc")` for the 50 TenVoices-FSC commands. If you add `load_phrases(dataset=...)`, `phrase_table()` / `phrase_texts()` in `app.py` can switch to it in one line.
+- **New file `support/presentation.py` (T27):** fills the poster and slide templates in `others/` from `results/` and renders them, so every number on them comes from a file and T28 is one command. Please add it to M4's files in the ownership table of `docs/PROJECT_PLAN.md` (with `others/*.template.html`, `others/slides.*`, `others/poster_results.html`, `images/poster_results.png`, `results/demo_check/`).
+- **README poster (T28):** `images/poster_results.png` is the results edition; when the results are final, the README can show it instead of the planning poster `images/poster.png`.
+- **Rabbi's fine-tuning runs look under-trained:** on unseen speakers, `w2v2_8ep_noise` reaches 21.0% and `wavlm_15ep_noise` 33.6% (`results/<run>/fsc/summary.json`), against 88.5% for your `w2v2_15ep_noise` with the same settings. In `w2v2_8ep_noise`, folds 1 and 3 picked epoch 1 as the best epoch, i.e. validation accuracy never improved. Worth checking before T24 (H4 compares 3 → 8 → 15 epochs).
+- **GitHub Actions:** every run fails in about 3 s with "The job was not started because your account is locked due to a billing issue" (the repository owner's account), on `main` too. The tests never run on GitHub until the billing is fixed.
+- **Commands for AGENTS.md:** results poster and slides `python -m support.presentation`; demo check on audio files `python app.py --check a.wav ... --expect FSC41 ... --model <model> ... [--whisper] --out results/demo_check/<name>.csv`; demo `python app.py [--model outputs/models/svm/fsc/random.joblib] [--whisper]` (also loads the linear probe); clip figures `python -m support.visualization clip.wav --out images/example_overview.png [--preprocessing images/example_preprocessing.png]`; results figures `python -m support.visualization --results results --out images`; probe `python -m support.embeddings --dataset fsc [--layer N]`.
+- **`main.py` on Windows:** `tests/test_inference.py::test_main_cli_with_benchmark` fails on a Windows console (cp1252): `main.py` prints characters the console cannot encode (`'charmap' codec can't encode characters`). It passes with `PYTHONIOENCODING=utf-8`. A `sys.stdout.reconfigure(encoding="utf-8")` at the start of `main()` would fix it. All my tests pass.
 
 ## Handoff log (newest first)
 
-*(Nothing yet.)*
+**2026-10-23 · Shafil**
+- **Ready to merge:** T35 (example figures from my recordings), T23 (demo checked on my voice; the demo also loads the linear probe; `app.py --check`), and T27 poster + slides, together with T14, T18, T36, T38, T39, T46 from before. **Still 👤:** the T27 demo video (`others/demo_video_script.md`).
+- **Merged `main` into `dev_shafil`** (Rabbi's runs); no conflicts.
+- **Files:** `app.py`, `support/embeddings.py` (`ProbeRecognizer`), `support/presentation.py` (new), `tests/test_app.py`, `tests/test_embeddings.py`, `tests/_embeddings_check.py`, `tests/test_presentation.py` (new), `others/poster_results.template.html`, `others/poster_results.html`, `others/slides.template.html`, `others/slides.html`, `others/slides.pdf`, `others/README.md`, `others/demo_video_script.md`, `images/example_*.png`, `images/poster_results.png`, `images/results_fsc_*.png`, `results/demo_check/shafil_voice_fsc.csv`, this page.
+- **Key results:** on three of my own recordings, SVM 0/3, linear probe 0/3, Whisper 3/3 (`results/demo_check/shafil_voice_fsc.csv`).
+- **Tests:** 187 run, all pass (1 skipped) with UTF-8 console output. Without it, only `test_inference.test_main_cli_with_benchmark` fails on Windows; the fix is in a separate pull request from `fix/windows-console-utf8` (one change in `main.py`, for Tanvir to review).
+- **Next:** film the demo video; after the remaining runs are merged, `python -m support.visualization --results results --out images` and `python -m support.presentation` refresh every figure and number (T28).
+- **Blockers:** none. GitHub Actions does not run until the repository owner's billing issue is fixed (see *Requests for the lead*).
+
+**2026-10-18 · Shafil**
+- **Ready to merge:** T14, T18, T36, T38, T39, T46. **Code done, waiting for me (👤):** T35 example figures from my own recordings; T23 live check of the demo with my voice.
+- **Files:** `support/visualization.py`, `support/embeddings.py`, `app.py`, `tests/test_visualization.py`, `tests/test_app.py`, `tests/test_embeddings.py`, `tests/_embeddings_check.py`, `docs/literature/self_supervised_speech.md`, `others/poster.html`, `images/poster.png`, `results/svm/fsc/`, `results/w2v2_untrained/fsc/`, `results/w2v2_probe/fsc/`, `images/confusion/{svm,w2v2_untrained,w2v2_probe}_fsc_*.png`, `images/results_*.png`, this page.
+- **Key results (TenVoices-FSC, unseen speakers / random split):** SVM 0.223 / 0.305; untrained wav2vec 2.0 0.028 / 0.025; linear probe 0.605 / 0.695.
+- **Tests:** 179 run, all pass except `test_inference.test_main_cli_with_benchmark` on a Windows console (see *Requests for the lead*; passes with `PYTHONIOENCODING=utf-8`).
+- **Next:** record 2–3 commands for the T35 example figures; try the demo with my voice (T23); then T27 (results poster, slides, demo video). The SVM is weak (22% on unseen speakers), so for the video the demo should load a fine-tuned wav2vec 2.0 model from the Drive (`python app.py --model <folder>`).
+- **Blockers:** none.
 
 ## Task cards
 

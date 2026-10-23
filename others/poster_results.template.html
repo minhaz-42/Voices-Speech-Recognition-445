@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TenVoices Results Poster</title>
+<!--
+  Results-edition poster (1600x1200, 4:3), task T27. This is the TEMPLATE: every number is a
+  placeholder such as {{fsc:svm:unseen:accuracy}}, filled from results/ by
+      python -m support.presentation
+  which writes others/poster_results.html and renders images/poster_results.png (3200x2400).
+  Edit this file, never the generated one. A run that is not merged yet shows TBD.
+-->
+<style>
+  :root{
+    --bg:#04070e; --panel:rgba(8,19,35,.86); --edge:rgba(62,224,207,.50);
+    --teal:#3ee0cf; --blue:#62a8ff; --violet:#a78bfa; --amber:#ffb454; --red:#ff7a7a;
+    --txt:#eaf2ff; --mut:#9fb2cc; --dim:#71859f;
+    --mono:"SF Mono",Menlo,Consolas,monospace;
+    --display:"Avenir Next",-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1600px;height:1200px;overflow:hidden;background:var(--bg);color:var(--txt);
+    font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif}
+  .bg{position:absolute;inset:0;background:
+      radial-gradient(720px 520px at 15% 30%, rgba(46,210,195,.16), transparent 70%),
+      radial-gradient(760px 540px at 70% 40%, rgba(80,140,255,.15), transparent 70%),
+      radial-gradient(620px 380px at 90% 95%, rgba(255,170,70,.09), transparent 70%)}
+  .panel{position:absolute;background:var(--panel);border:1px solid var(--edge);border-radius:16px;
+    padding:18px 22px;box-shadow:inset 0 0 40px rgba(62,224,207,.05),0 12px 40px rgba(0,0,0,.5)}
+  .panel::before{content:"";position:absolute;left:18px;top:-1px;width:46px;height:2px;background:var(--teal);border-radius:2px}
+  h3{font:600 15px/1.2 var(--mono);letter-spacing:.2em;color:var(--teal);margin-bottom:12px}
+  em{font-style:normal;color:var(--teal)}
+  b.amber{color:var(--amber)}
+  .src{position:absolute;left:22px;bottom:10px;font:11px var(--mono);color:var(--dim)}
+  p.body{font-size:16px;line-height:1.4;color:#d4e0f0}
+  /* horizontal bar chart */
+  .bars{display:grid;grid-template-columns:200px 1fr 64px;gap:5px 10px;align-items:center;font-size:14.5px}
+  .bars .name{color:#d4e0f0;text-align:right}
+  .bars .track{height:17px;background:rgba(159,178,204,.12);border-radius:4px;overflow:hidden}
+  .bars .fill{width:0;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--teal),var(--blue))}
+  .bars .fill.mfcc{background:linear-gradient(90deg,#5b6b82,#8a9bb3)}
+  .bars .fill.base{background:#3b4658}
+  .bars .fill.zero{background:linear-gradient(90deg,var(--amber),#ffd08a)}
+  .bars .val{font:600 14px var(--mono);color:var(--txt)}
+  .legend{margin-top:10px;font-size:12.5px;color:var(--mut);display:flex;gap:16px}
+  .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+  /* big numbers */
+  .steps{display:flex;align-items:flex-end;justify-content:space-between;margin-top:6px}
+  .step{text-align:center;width:31%}
+  .step b{display:block;font:700 44px/1 var(--display);background:linear-gradient(90deg,var(--teal),var(--blue));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .step span{display:block;font-size:14px;color:var(--mut);margin-top:6px;line-height:1.3}
+  .arrow{color:var(--teal);font-size:26px;align-self:center}
+  /* tables */
+  table{border-collapse:collapse;width:100%;font-size:15px}
+  th{font:600 12.5px var(--mono);color:var(--mut);text-align:right;padding:4px 6px;border-bottom:1px solid rgba(159,178,204,.3)}
+  th:first-child,td:first-child{text-align:left}
+  td{padding:4px 6px;text-align:right;border-bottom:1px solid rgba(159,178,204,.12);font-variant-numeric:tabular-nums}
+  td.hi{color:var(--teal);font-weight:650}
+  td.lo{color:var(--red)}
+  .list{list-style:none;display:grid;gap:7px;font-size:15.5px;line-height:1.35}
+  .list li::before{content:"\25B8";color:var(--teal);margin-right:9px}
+  .team{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;font-size:13.5px}
+  .team b{font-size:14.5px}
+  .team span{color:var(--mut)}
+  /* banner */
+  .banner{position:absolute;left:36px;top:1060px;width:1528px;height:112px;border:1.5px solid rgba(150,220,255,.5);
+    border-radius:20px;background:rgba(4,10,20,.78);text-align:center;padding-top:12px;box-shadow:0 0 44px rgba(62,224,207,.12)}
+  .kicker{font:600 13px var(--mono);letter-spacing:.3em;color:var(--teal)}
+  h1{font:600 40px/1.15 var(--display);margin-top:3px}
+  .banner p{font-size:18px;color:#cfdced;margin-top:2px}
+  .banner p span{color:var(--teal)}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<!-- 1. Headline chart: unseen speakers -->
+<div class="panel" style="left:36px;top:36px;width:760px;height:560px">
+  <h3>HEADLINE &middot; ACCURACY ON UNSEEN SPEAKERS</h3>
+  <p class="body" style="margin-bottom:12px">TenVoices-FSC, 50 spoken commands, 5 folds: every speaker is tested once and never heard in training. Chance is 2%.</p>
+  <div class="bars">
+    <div class="name">wav2vec 2.0, untrained</div><div class="track"><div class="fill base" style="width:{{fsc:w2v2_untrained:unseen:accuracy}}"></div></div><div class="val">{{fsc:w2v2_untrained:unseen:accuracy}}</div>
+    <div class="name">MFCC + XGBoost</div><div class="track"><div class="fill mfcc" style="width:{{fsc:xgboost:unseen:accuracy}}"></div></div><div class="val">{{fsc:xgboost:unseen:accuracy}}</div>
+    <div class="name">MFCC + k-NN</div><div class="track"><div class="fill mfcc" style="width:{{fsc:knn:unseen:accuracy}}"></div></div><div class="val">{{fsc:knn:unseen:accuracy}}</div>
+    <div class="name">MFCC + Random Forest</div><div class="track"><div class="fill mfcc" style="width:{{fsc:random_forest:unseen:accuracy}}"></div></div><div class="val">{{fsc:random_forest:unseen:accuracy}}</div>
+    <div class="name">MFCC + SVM</div><div class="track"><div class="fill mfcc" style="width:{{fsc:svm:unseen:accuracy}}"></div></div><div class="val">{{fsc:svm:unseen:accuracy}}</div>
+    <div class="name">wav2vec 2.0, 3 epochs</div><div class="track"><div class="fill" style="width:{{fsc:w2v2_3ep:unseen:accuracy}}"></div></div><div class="val">{{fsc:w2v2_3ep:unseen:accuracy}}</div>
+    <div class="name">wav2vec 2.0, 8 ep + noise</div><div class="track"><div class="fill" style="width:{{fsc:w2v2_8ep_noise:unseen:accuracy}}"></div></div><div class="val">{{fsc:w2v2_8ep_noise:unseen:accuracy}}</div>
+    <div class="name">WavLM Base+, 15 ep + noise</div><div class="track"><div class="fill" style="width:{{fsc:wavlm_15ep_noise:unseen:accuracy}}"></div></div><div class="val">{{fsc:wavlm_15ep_noise:unseen:accuracy}}</div>
+    <div class="name">HuBERT Base, 15 ep + noise</div><div class="track"><div class="fill" style="width:{{fsc:hubert_15ep_noise:unseen:accuracy}}"></div></div><div class="val">{{fsc:hubert_15ep_noise:unseen:accuracy}}</div>
+    <div class="name">Linear probe (frozen)</div><div class="track"><div class="fill" style="width:{{fsc:w2v2_probe:unseen:accuracy}}"></div></div><div class="val">{{fsc:w2v2_probe:unseen:accuracy}}</div>
+    <div class="name">wav2vec 2.0, 15 ep + noise</div><div class="track"><div class="fill" style="width:{{fsc:w2v2_15ep_noise:unseen:accuracy}}"></div></div><div class="val">{{fsc:w2v2_15ep_noise:unseen:accuracy}}</div>
+    <div class="name">wav2vec 2.0, 15 ep</div><div class="track"><div class="fill" style="width:{{fsc:w2v2_15ep:unseen:accuracy}}"></div></div><div class="val">{{fsc:w2v2_15ep:unseen:accuracy}}</div>
+    <div class="name">Whisper small, zero-shot</div><div class="track"><div class="fill zero" style="width:{{fsc:whisper_small:unseen:accuracy}}"></div></div><div class="val">{{fsc:whisper_small:unseen:accuracy}}</div>
+  </div>
+  <div class="legend"><span><i style="background:#8a9bb3"></i>MFCC features</span><span><i style="background:var(--blue)"></i>self-supervised, trained on 7 speakers</span><span><i style="background:var(--amber)"></i>no task training</span><span>TBD = run not merged yet</span></div>
+  <div class="src">source: results/&lt;run&gt;/fsc/summary.json &middot; folds.pooled.accuracy</div>
+</div>
+
+<!-- 2. Where the gain comes from -->
+<div class="panel" style="left:820px;top:36px;width:744px;height:270px">
+  <h3>WHERE DOES THE GAIN COME FROM?</h3>
+  <p class="body">The same wav2vec 2.0 Base model, three ways, on unseen speakers:</p>
+  <div class="steps">
+    <div class="step"><b>{{fsc:w2v2_untrained:unseen:accuracy}}</b><span>untrained head<br>(chance level)</span></div>
+    <div class="arrow">&#8594;</div>
+    <div class="step"><b>{{fsc:w2v2_probe:unseen:accuracy}}</b><span>frozen features +<br>logistic regression</span></div>
+    <div class="arrow">&#8594;</div>
+    <div class="step"><b>{{fsc:w2v2_15ep_noise:unseen:accuracy}}</b><span>fully fine-tuned,<br>15 epochs + noise</span></div>
+  </div>
+  <p class="body" style="margin-top:12px;font-size:14.5px;color:var(--mut)">Pre-training alone gives most of the accuracy; fine-tuning adds the rest.</p>
+  <div class="src">source: results/{w2v2_untrained,w2v2_probe}/fsc, results/M1_tanvir/w2v2_15ep_noise/fsc</div>
+</div>
+
+<!-- 3. Seen vs unseen speakers -->
+<div class="panel" style="left:820px;top:322px;width:360px;height:274px">
+  <h3>SEEN vs UNSEEN</h3>
+  <table style="font-size:14px">
+    <tr><th>model</th><th>random split</th><th>unseen</th></tr>
+    <tr><td>MFCC + SVM</td><td>{{fsc:svm:random:accuracy}}</td><td class="lo">{{fsc:svm:unseen:accuracy}}</td></tr>
+    <tr><td>MFCC + RF</td><td>{{fsc:random_forest:random:accuracy}}</td><td class="lo">{{fsc:random_forest:unseen:accuracy}}</td></tr>
+    <tr><td>Linear probe</td><td>{{fsc:w2v2_probe:random:accuracy}}</td><td>{{fsc:w2v2_probe:unseen:accuracy}}</td></tr>
+    <tr><td>w2v2 15 ep</td><td>{{fsc:w2v2_15ep_noise:random:accuracy}}</td><td class="hi">{{fsc:w2v2_15ep_noise:unseen:accuracy}}</td></tr>
+    <tr><td>Whisper</td><td>{{fsc:whisper_small:random:accuracy}}</td><td class="hi">{{fsc:whisper_small:unseen:accuracy}}</td></tr>
+  </table>
+  <p class="body" style="margin-top:6px;font-size:13.5px;color:var(--mut)">MFCC models lose most on a new voice.</p>
+  <div class="src">source: summary.json &middot; random / folds.pooled</div>
+</div>
+
+<!-- 4. Noise -->
+<div class="panel" style="left:1204px;top:322px;width:360px;height:274px">
+  <h3>WHITE NOISE &middot; UNSEEN</h3>
+  <table>
+    <tr><th>model</th><th>clean</th><th>10 dB</th><th>5 dB</th></tr>
+    <tr><td>w2v2 + noise</td><td>{{fsc:noise:w2v2_15ep_noise:clean}}</td><td class="hi">{{fsc:noise:w2v2_15ep_noise:10}}</td><td class="hi">{{fsc:noise:w2v2_15ep_noise:5}}</td></tr>
+    <tr><td>w2v2, no noise</td><td>{{fsc:noise:w2v2_15ep:clean}}</td><td>{{fsc:noise:w2v2_15ep:10}}</td><td class="lo">{{fsc:noise:w2v2_15ep:5}}</td></tr>
+    <tr><td>MFCC + RF</td><td>{{fsc:noise:random_forest:clean}}</td><td class="lo">{{fsc:noise:random_forest:10}}</td><td class="lo">{{fsc:noise:random_forest:5}}</td></tr>
+  </table>
+  <p class="body" style="margin-top:8px;font-size:13.5px;color:var(--mut)">Noise in training keeps wav2vec 2.0 usable at 5 dB; MFCC falls to chance.</p>
+  <div class="src">source: results/M1_tanvir/noise/*_fsc.csv</div>
+</div>
+
+<!-- 5. Accents -->
+<div class="panel" style="left:36px;top:620px;width:500px;height:420px">
+  <h3>ACCENTS &middot; TENVOICES-L2</h3>
+  <p class="body">10 non-native speakers (Hindi, Mandarin, Spanish, Korean, Vietnamese), 50 read sentences; each fold tests a first language never heard in training.</p>
+  <table style="margin-top:12px">
+    <tr><th>model</th><th>unseen speakers</th></tr>
+    <tr><td>MFCC + Random Forest</td><td class="lo">{{l2arctic:random_forest:unseen:accuracy}}</td></tr>
+    <tr><td>Whisper small, zero-shot</td><td class="hi">{{l2arctic:whisper_small:unseen:accuracy}}</td></tr>
+  </table>
+  <table style="margin-top:14px">
+    <tr><th>Whisper word error rate</th><th>FSC (native)</th><th>L2 (non-native)</th></tr>
+    <tr><td>unseen-speaker folds</td><td>{{fsc:wer:whisper_small}}</td><td class="lo">{{l2arctic:wer:whisper_small}}</td></tr>
+  </table>
+  <p class="body" style="margin-top:12px;font-size:14px;color:var(--mut)">Whisper still finds the right sentence, but makes more word errors on non-native speech (H5).</p>
+  <div class="src">source: results/M1_tanvir/{random_forest,whisper_small}/l2arctic/summary.json</div>
+</div>
+
+<!-- 6. Live demo -->
+<div class="panel" style="left:560px;top:620px;width:480px;height:420px">
+  <h3>LIVE DEMO &middot; A NEW VOICE</h3>
+  <p class="body">The demo app (<em>python app.py</em>) records or uploads a command, shows the waveform, spectrogram and MFCCs, and the top-5 phrases. Tested on three commands spoken by a team member, through a laptop microphone:</p>
+  <table style="margin-top:14px">
+    <tr><th>recogniser</th><th>correct</th></tr>
+    <tr><td>MFCC + SVM</td><td class="lo">{{demo:svm}}</td></tr>
+    <tr><td>Linear probe (frozen wav2vec 2.0)</td><td class="lo">{{demo:w2v2_probe}}</td></tr>
+    <tr><td>Whisper small, zero-shot</td><td class="hi">{{demo:whisper_small}}</td></tr>
+  </table>
+  <p class="body" style="margin-top:12px;font-size:14px;color:var(--mut)">Models trained on 10 speakers did not carry over to a new voice and microphone; the general-purpose model did. Three clips only: an illustration, not a test.</p>
+  <div class="src">source: results/demo_check/shafil_voice_fsc.csv</div>
+</div>
+
+<!-- 7. Takeaways + team -->
+<div class="panel" style="left:1064px;top:620px;width:500px;height:420px">
+  <h3>TAKEAWAYS</h3>
+  <ul class="list">
+    <li>Self-supervised pre-training is what makes 50 commands learnable from <em>7 training speakers</em>.</li>
+    <li>MFCC models depend heavily on the <em>speaker</em>: they drop on new voices and fall to chance in noise.</li>
+    <li>White-noise augmentation trades a little clean accuracy for <em>robustness</em> at 5&ndash;10 dB.</li>
+    <li>Zero-shot Whisper is the strongest and most portable recogniser, but accents raise its word errors.</li>
+  </ul>
+  <h3 style="margin-top:18px">TEAM</h3>
+  <div class="team">
+    <div><b>Tanvir Ahmed</b> <span>lead &middot; pipeline, Whisper</span></div>
+    <div><b>Md. Shahriar Rakib Rabbi</b> <span>data &middot; XGBoost, WavLM</span></div>
+    <div><b>Mahir Ahmed</b> <span>statistics &middot; k-NN, HuBERT</span></div>
+    <div><b>Shafil Ahmed</b> <span>figures, demo &middot; SVM, probe</span></div>
+  </div>
+</div>
+
+<div class="banner">
+  <div class="kicker">RESULTS &middot; NORTH SOUTH UNIVERSITY &middot; 2026</div>
+  <h1>TenVoices: Speech Recognition from Ten Voices</h1>
+  <p>Two published 10-speaker datasets &middot; 50 phrases &middot; <span>speaker-independent</span> evaluation</p>
+</div>
+</body>
+</html>

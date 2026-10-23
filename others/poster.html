@@ -4,10 +4,11 @@
 <meta charset="utf-8">
 <title>TenVoices Poster</title>
 <!--
-  Planning-edition poster (1600x1200, 4:3). Render to images/poster.png with:
+  Planning-edition poster v2 (1600x1200, 4:3). Render to images/poster.png (3200x2400) with:
   "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --disable-gpu --hide-scrollbars \
     --force-device-scale-factor=2 --window-size=1600,1200 --virtual-time-budget=3000 \
-    --screenshot=images/poster.png "file://$PWD/poster/poster.html"
+    --screenshot=images/poster.png "file://$PWD/others/poster.html"
+  Windows: the same flags with "C:\Program Files\Google\Chrome\Application\chrome.exe".
   Week 6: replace the hypothesis panel with real results for the results edition.
 -->
 <style>
@@ -48,32 +49,32 @@
   .node.ours svg{stroke:var(--amber)}
   .node.ours small{color:#f3d3a6}
   .arrow{align-self:center;color:var(--teal);font-size:20px;width:20px;text-align:center}
-  .chips{margin-top:16px;display:flex;flex-wrap:wrap;gap:7px;align-items:center;font-size:13.5px;color:var(--mut)}
-  .chips span{border:1px solid rgba(159,178,204,.38);border-radius:999px;padding:4px 10px;color:var(--txt)}
+  .chips{margin-top:12px;display:flex;flex-wrap:wrap;gap:7px;align-items:center;font-size:13.5px;color:var(--mut)}
+  .chips span{border:1px solid rgba(159,178,204,.38);border-radius:999px;padding:3px 9px;color:var(--txt)}
   /* dataset */
   .stats{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
   .stats div{display:flex;flex-direction:column}
   .stats b{font:700 42px/1 var(--display);background:linear-gradient(90deg,var(--teal),var(--blue));
     -webkit-background-clip:text;background-clip:text;color:transparent}
-  .stats span{font-size:15px;color:var(--mut);margin-top:3px}
+  .stats span{font-size:15px;line-height:1.3;color:var(--mut);margin-top:6px}
   /* example card */
-  .card .ex{margin-bottom:13px}
+  .card .ex{margin-bottom:10px}
   .card small{display:block;font:500 12px var(--mono);letter-spacing:.08em;color:var(--dim);margin-bottom:4px}
   .card p{font-size:20px;line-height:1.3}
   mark{background:none;color:var(--amber);font-weight:650}
   .chip{display:inline-block;margin-top:7px;font:600 12px var(--mono);color:#04130f;background:var(--teal);border-radius:6px;padding:3px 8px}
   .card p.legend{font-size:12.5px;color:var(--mut)}
   /* bottom panels */
-  .list{list-style:none;display:grid;gap:6px;font-size:16.5px;line-height:1.3}
+  .list{list-style:none;display:grid;gap:5px;font-size:16px;line-height:1.3}
   .list li::before{content:"\25B8";color:var(--teal);margin-right:9px}
   .hyp li::before{content:none}
   .hyp b{font:700 14px var(--mono);color:var(--amber);margin-right:10px}
   .team{display:grid;grid-template-columns:1fr 1fr;gap:9px 16px}
   .team b{display:block;font-size:16.5px;font-weight:650}
   .team span{font-size:13.5px;color:var(--mut)}
-  .team.inline{grid-template-columns:1fr;gap:8px}
+  .team.inline{grid-template-columns:1fr;gap:3px}
   .team.inline b{display:inline;margin-right:10px}
-  .timeline{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-top:15px}
+  .timeline{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-top:9px}
   .timeline div{border-top:3px solid var(--blue);padding-top:5px;font:600 12px/1.35 var(--mono)}
   .timeline div:nth-child(3n+1){border-color:var(--teal)}
   .timeline div:nth-child(3n+3){border-color:var(--violet)}
@@ -98,7 +99,7 @@
     <li><b>02</b><span>Gather speech from <em>10 speakers</em> uttering diverse phrases &amp; sentences</span></li>
     <li><b>03</b><span>Showcase its effectiveness on <em>this dataset</em></span></li>
   </ol>
-  <p class="note">Our reading: recognise which of 50 diverse phrases was spoken, judged on voices the system has never heard.</p>
+  <p class="note">Our reading: recognise which of 50 phrases was spoken, judged on voices and accents the system has never heard.</p>
 </div>
 
 <div class="panel" style="left:460px;top:36px;width:680px;height:280px">
@@ -108,31 +109,29 @@
     <div class="arrow">&#8594;</div>
     <div class="node"><svg viewBox="0 0 24 24"><path d="M2 12h3l2-6 3 12 3-9 2 6 2-3h5"/></svg><b>Pre-process</b><small>16 kHz &middot; trim &middot; pad to 6 s</small></div>
     <div class="arrow">&#8594;</div>
-    <div class="node ours"><svg viewBox="0 0 24 24"><path d="M3 12h2M7 7v10M11 4v16M15 8v8M19 10v4M21 12h0"/></svg><b>Augment</b><small>white noise (training only)</small></div>
+    <div class="node ours"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg><b>wav2vec 2.0</b><small>fine-tuned 3 / 8 / 15 ep + noise</small></div>
     <div class="arrow">&#8594;</div>
-    <div class="node ours"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg><b>wav2vec 2.0</b><small>fine-tuned 3 / 8 / 15 epochs</small></div>
+    <div class="node ours"><svg viewBox="0 0 24 24"><path d="M4 5h16v10H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg><b>Whisper</b><small>zero-shot: text &#8594; nearest phrase</small></div>
     <div class="arrow">&#8594;</div>
     <div class="node"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h12M4 18h8"/></svg><b>Prediction</b><small>1 of 50 phrases + confidence</small></div>
   </div>
-  <div class="chips">Baselines: <span>MFCC + k-NN &middot; SVM &middot; RF &middot; XGBoost</span><span>untrained wav2vec 2.0</span></div>
+  <div class="chips">Stages 3 &amp; 4 vs: <span>1 &middot; MFCC + k-NN / SVM / RF / XGBoost</span><span>2 &middot; untrained wav2vec 2.0</span><span>WavLM &middot; HuBERT &middot; linear probe</span></div>
 </div>
 
 <div class="panel" style="left:1164px;top:36px;width:400px;height:280px">
-  <h3>TENVOICES DATASET</h3>
+  <h3>TENVOICES &middot; TWO DATASETS</h3>
   <div class="stats">
-    <div><b>10</b><span>speakers &middot; 5F / 5M target</span></div>
-    <div><b>1,600</b><span>recordings</span></div>
-    <div><b>50</b><span>phrases (classes)</span></div>
-    <div><b>3&times;</b><span>repetitions each</span></div>
+    <div><b>FSC</b><span>10 speakers (5F/5M) &middot; 50 commands &times; 2 takes = 1,000 clips</span></div>
+    <div><b>L2</b><span>10 non-native speakers &middot; 50 sentences = 500 clips</span></div>
   </div>
-  <p class="note">commands &middot; numbers &middot; everyday sentences &middot; Bangladeshi names &middot; phonetic sentences, plus real-noise takes, recorded with consent</p>
+  <p class="note">Selected by script from published corpora: <em>Fluent Speech Commands</em> (CC BY-NC-ND 4.0) and <em>L2-ARCTIC</em> (CC BY-NC 4.0; first languages Hindi, Mandarin, Spanish, Korean, Vietnamese). Audio is never redistributed.</p>
 </div>
 
 <div class="panel card" style="left:1236px;top:446px;width:328px;height:262px">
   <h3>EXAMPLE PHRASES</h3>
-  <div class="ex"><small>NER01 &middot; SENTENCE</small><p>I took a bus from <mark>Mohakhali</mark> to <mark>Sylhet</mark>.</p></div>
-  <div class="ex"><small>CMD02 &middot; COMMAND</small><p>Turn <mark>off</mark> the fan.</p><span class="chip">&#8594; class CMD02</span></div>
-  <p class="legend">Each phrase is one of 50 classes; <mark>on / off</mark> pairs test the words, not the voice</p>
+  <div class="ex"><small>FSC30 &middot; COMMAND</small><p>Switch the lights <mark>on</mark>.</p><span class="chip">&#8594; class FSC30</span></div>
+  <div class="ex"><small>FSC29 &middot; COMMAND</small><p>Switch the lights <mark>off</mark>.</p></div>
+  <div class="ex"><small>ARCTIC_A0008 &middot; SENTENCE (L2)</small><p>Gad your letter came just in time.</p></div>
 </div>
 
 <div class="panel" style="left:36px;top:830px;width:500px;height:196px">
@@ -140,8 +139,8 @@
   <ul class="list">
     <li>Random 80/20 split <em>and</em> unseen speakers (5-fold)</li>
     <li>Accuracy &middot; macro F1 &middot; weighted F1 &middot; confusion matrix</li>
-    <li>Per-speaker accuracy, McNemar &amp; Wilcoxon tests</li>
-    <li>White noise at 20 / 10 / 5 dB + real noisy takes</li>
+    <li>Per-speaker accuracy &middot; McNemar, Wilcoxon, Mann&ndash;Whitney</li>
+    <li>White noise at 20 / 10 / 5 dB &middot; Whisper word error rate</li>
     <li>Best epoch chosen on validation, never on test</li>
   </ul>
 </div>
@@ -149,18 +148,21 @@
 <div class="panel" style="left:560px;top:830px;width:480px;height:196px">
   <h3>HYPOTHESES &middot; FIXED BEFORE TESTING</h3>
   <ul class="list hyp">
-    <li><b>H1</b>wav2vec 2.0 &ge; 20 points above best MFCC model</li>
+    <li><b>H1</b>wav2vec 2.0 &ge; 20 pts above best MFCC, unseen</li>
     <li><b>H2</b>MFCC models drop more on unseen speakers</li>
-    <li><b>H3</b>White-noise training helps on noisy audio</li>
+    <li><b>H3</b>White-noise training helps at 10 / 5 dB, &le; 2 pts clean loss</li>
     <li><b>H4</b>8 &#8594; 15 epochs gains less than 3 &#8594; 8</li>
+    <li><b>H5</b>Whisper&rsquo;s WER is higher on non-native speech (L2)</li>
   </ul>
 </div>
 
 <div class="panel" style="left:1064px;top:830px;width:500px;height:196px">
   <h3>TEAM &middot; 6-WEEK PLAN</h3>
   <div class="team inline">
-    <div><b>Tanvir Ahmed</b><span>lead &middot; pipeline, RF, wav2vec 2.0, evaluation, demo</span></div>
-    <div><b>Md. Shahriar Rakib Rabbi</b><span>dataset &middot; XGBoost &middot; wav2vec 2.0</span></div>
+    <div><b>Tanvir Ahmed</b><span>lead &middot; pipeline, Whisper, RF, wav2vec 2.0 15 ep</span></div>
+    <div><b>Md. Shahriar Rakib Rabbi</b><span>datasheet &middot; XGBoost, 8 ep, WavLM</span></div>
+    <div><b>Mahir Ahmed</b><span>statistics &middot; k-NN, 3 ep, HuBERT</span></div>
+    <div><b>Shafil Ahmed</b><span>figures, demo, poster &middot; SVM, baseline, probe</span></div>
   </div>
   <div class="timeline">
     <div>W1<i>setup</i></div><div>W2<i>dataset</i></div><div>W3<i>classical</i></div>
@@ -171,7 +173,7 @@
 <div class="banner">
   <div class="kicker">PROJECT PLAN &middot; NORTH SOUTH UNIVERSITY &middot; 2026</div>
   <h1>TenVoices: Speech Recognition from Ten Voices</h1>
-  <p>Ten Voices. Fifty Phrases. <span>Speaker-Independent</span> Recognition.</p>
+  <p>Ten Voices. Fifty Phrases. Two Datasets. <span>Speaker-Independent</span> Recognition.</p>
 </div>
 
 <script>
