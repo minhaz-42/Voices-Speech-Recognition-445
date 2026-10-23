@@ -121,6 +121,11 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 
 ## 📝 Handoff Log (newest first)
 
+### 2026-10-23 · Tanvir Ahmed (M1) · T27 (results poster redesigned)
+
+- **Done:** the results poster (`images/poster_results.png`, template `others/poster_results.template.html`) is now an academic conference poster in light greens: NSU logo, title, the four members and the department at the top, three columns below. Text is cut to captions; diagrams carry the content: the two datasets and the 5-fold speaker split as pictures, the pipeline, accuracy on unseen speakers, seen vs unseen, pre-training vs fine-tuning, three confusion matrices (MFCC + Random Forest, wav2vec 2.0, Whisper), white noise, accents and the live demo clip. Every number and chart still comes from `results/` through `python -m support.presentation`; the slides are unchanged.
+- **Open:** the advisor / course line waits for the instructor's name; `images/poster_results.png` is 1.1 MB (limit 1 MB); the planning poster `images/poster.png` in the README is unchanged.
+
 ### 2026-10-23 · Tanvir Ahmed (M1) · T51 (one results folder per member)
 
 - **Done:** every member's runs are now in their own folder, like Tanvir's: `results/M2_rabbi/` (`xgboost/`, `w2v2_8ep_noise/`, `wavlm_15ep_noise/`), `results/M4_shafil/` (`svm/`, `w2v2_untrained/`, `w2v2_probe/`) and `results/M3_mahir/` for Mahir's runs. Moved with `git mv`; no number changed. Their confusion matrices moved from `images/confusion/` to `<folder>/figures/confusion/`, and `python -m support.figures --folder M2_rabbi` / `M4_shafil` drew the same figures as for Tanvir (seen vs unseen, fine-tuning curves, per speaker, confidence). Each folder has a `README.md` and a generated `RUNS.md`.
