@@ -207,7 +207,7 @@ End with a short **Summary** paragraph (5–6 sentences) that could become the f
 |---|---|
 | **Goal** | k-nearest neighbours on the 78 MFCC statistics: the simplest traditional baseline. |
 | **Depends on** | — (shared code and the TenVoices-FSC splits are merged) |
-| **You create** | `results/knn/fsc/` and `images/confusion/knn_fsc_*.png` (by running the command) |
+| **You create** | `results/M3_mahir/knn/fsc/` and `results/M3_mahir/figures/confusion/knn_fsc_*.png` (by running the command) |
 | **How** | [RUNS.md](../RUNS.md): get the audio, build the processed copies, run, commit |
 
 #### Run
@@ -218,13 +218,13 @@ python -m support.classical --model knn --dataset fsc
 
 #### Done when
 
-- `results/knn/fsc/summary.json` has both `random` and `folds` (5 folds pooled).
+- `results/M3_mahir/knn/fsc/summary.json` has both `random` and `folds` (5 folds pooled).
 - The results folder and the two confusion-matrix images are committed and pushed on your branch.
 - The faculty update on your page quotes the accuracies from `summary.json`.
 
 #### For the faculty update
 
-"I trained and evaluated k-nearest neighbours on MFCC features, on seen and on unseen speakers (numbers from `results/knn/fsc/summary.json`)."
+"I trained and evaluated k-nearest neighbours on MFCC features, on seen and on unseen speakers (numbers from `results/M3_mahir/knn/fsc/summary.json`)."
 
 ---
 
@@ -235,7 +235,7 @@ python -m support.classical --model knn --dataset fsc
 |---|---|
 | **Goal** | The shortest fine-tuning run of the 3 / 8 / 15-epoch comparison (H4), without noise. |
 | **Depends on** | — (shared code and the TenVoices-FSC splits are merged) |
-| **You create** | `results/w2v2_3ep/fsc/` and `images/confusion/w2v2_3ep_fsc_*.png` (by running the command) |
+| **You create** | `results/M3_mahir/w2v2_3ep/fsc/` and `results/M3_mahir/figures/confusion/w2v2_3ep_fsc_*.png` (by running the command) |
 | **How** | [RUNS.md](../RUNS.md): get the audio, build the processed copies, run, commit |
 
 #### Run
@@ -248,13 +248,13 @@ This is a GPU job: use Colab (`notebooks/train_wav2vec2.ipynb`, set the options 
 
 #### Done when
 
-- `results/w2v2_3ep/fsc/summary.json` has both `random` and `folds` (5 folds pooled).
+- `results/M3_mahir/w2v2_3ep/fsc/summary.json` has both `random` and `folds` (5 folds pooled).
 - The results folder and the two confusion-matrix images are committed and pushed on your branch.
 - The faculty update on your page quotes the accuracies from `summary.json`.
 
 #### For the faculty update
 
-"I fine-tuned wav2vec 2.0 for 3 epochs, the short end of our epochs comparison (numbers from `results/w2v2_3ep/fsc/summary.json`)."
+"I fine-tuned wav2vec 2.0 for 3 epochs, the short end of our epochs comparison (numbers from `results/M3_mahir/w2v2_3ep/fsc/summary.json`)."
 
 ---
 
@@ -265,7 +265,7 @@ This is a GPU job: use Colab (`notebooks/train_wav2vec2.ipynb`, set the options 
 |---|---|
 | **Goal** | HuBERT (Hsu et al., 2021), the same size as wav2vec 2.0 Base but pre-trained to predict cluster labels; fine-tuned with exactly the same script, data and settings as M1's wav2vec 2.0 run. Exploratory comparison E10. |
 | **Depends on** | — (shared code and the TenVoices-FSC splits are merged) |
-| **You create** | `results/hubert_15ep_noise/fsc/` and `images/confusion/hubert_15ep_noise_fsc_*.png` (by running the command) |
+| **You create** | `results/M3_mahir/hubert_15ep_noise/fsc/` and `results/M3_mahir/figures/confusion/hubert_15ep_noise_fsc_*.png` (by running the command) |
 | **How** | [RUNS.md](../RUNS.md): get the audio, build the processed copies, run, commit |
 
 #### Run
@@ -278,13 +278,13 @@ This is a GPU job: use Colab (`notebooks/train_wav2vec2.ipynb`, set the options 
 
 #### Done when
 
-- `results/hubert_15ep_noise/fsc/summary.json` has both `random` and `folds` (5 folds pooled).
+- `results/M3_mahir/hubert_15ep_noise/fsc/summary.json` has both `random` and `folds` (5 folds pooled).
 - The results folder and the two confusion-matrix images are committed and pushed on your branch.
 - The faculty update on your page quotes the accuracies from `summary.json`.
 
 #### For the faculty update
 
-"I fine-tuned HuBERT, another self-supervised speech model, with exactly the same settings as our wav2vec 2.0 run, to compare pre-training methods (numbers from `results/hubert_15ep_noise/fsc/summary.json`)."
+"I fine-tuned HuBERT, another self-supervised speech model, with exactly the same settings as our wav2vec 2.0 run, to compare pre-training methods (numbers from `results/M3_mahir/hubert_15ep_noise/fsc/summary.json`)."
 
 ---
 

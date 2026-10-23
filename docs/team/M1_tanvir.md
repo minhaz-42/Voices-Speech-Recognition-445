@@ -35,6 +35,7 @@ The task board and handoff log for M1 are in [STATUS.md](../STATUS.md). This pag
 | T48 | All my results in one folder, `results/M1_tanvir/` | — | ✅ 2026-10-17 |
 | T49 | Figures beyond confusion matrices (`support/figures.py`) → `results/M1_tanvir/figures/` | T48 | ✅ 2026-10-17 |
 | T50 | One page per member for the faculty (`support/contributions.py`) → `contributions/` | — | ✅ 2026-10-23 |
+| T51 | One results folder per member (`results/M2_rabbi/`, `M3_mahir/`, `M4_shafil/`), each with a README and `RUNS.md` | T48, T50 | ✅ 2026-10-23 |
 | T47 | TenVoices-L2: free copy of L2-ARCTIC (no form), select, QC, splits ✅; Random Forest ✅; Whisper, wav2vec 2.0 and the members' models on L2; H5 | — | 🟡 data ✅ |
 | T24 | Final aggregation on all merged results, reproducibility, feature freeze | all | ⬜ |
 | T25 | Final report and README | T24 | ⬜ |
@@ -46,7 +47,8 @@ Plain-language summary for the weekly project update, newest week first. Only fi
 
 ### Week of 2026-10-23
 - Reviewed and merged Shafil's work into the main branch: the SVM, the untrained wav2vec 2.0 baseline, the linear probe on frozen wav2vec 2.0, the visualisation module, the demo app, the literature notes and the results poster and slides. On speakers never heard in training, the untrained model is at chance (2.8%), a logistic regression on its frozen features reaches 60.5%, and our fine-tuned model 88.5% (`results/w2v2_untrained/`, `results/w2v2_probe/`, `results/M1_tanvir/w2v2_15ep_noise/`).
-- Added **one page per team member** (`contributions/`), written by one command (`python -m support.contributions`) from the repository itself: each member's tasks and their status, their results with the file each number comes from, the files they created or changed, and every commit under their name. Nothing on these pages is typed by hand, so they always match the repository.
+- Gave **every team member their own results folder**, like mine (`results/M2_rabbi/`, `results/M3_mahir/`, `results/M4_shafil/`): their runs, their figures and a page with every run in detail, so each person's work can be shown on its own.
+- Added **one page per team member** (`contributions/`), written by one command (`python -m support.contributions`) from the repository itself: each member's tasks and their status, their results with the file each number comes from, the files they created or changed, and every commit under their name. A second page per member shows each of their runs in detail: the model, how it was trained, the results on every split and for every test speaker, and the confusion matrices. Nothing on these pages is typed by hand, so they always match the repository.
 
 ### Week of 2026-10-17
 - Put all my results in one folder (`results/M1_tanvir/`) and drew **seven new kinds of figures** from them with one command (`python -m support.figures --folder M1_tanvir`): seen vs unseen speakers, fine-tuning curves, accuracy vs noise level, accuracy per speaker, how confident the models are (and how accuracy rises when uncertain answers are rejected), speed vs accuracy, and Whisper's errors per first language. They show, for example, that both speakers of fold 1 are the hardest for the noise-trained model (71% and 70%), and that Whisper's word error rate is 4.0% for Hindi but 16.8% for Vietnamese speakers while it still picks the right sentence. Gallery: `results/M1_tanvir/README.md`.

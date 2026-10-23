@@ -2,6 +2,8 @@
 
 Everything Tanvir (M1) ran, in one folder so it never mixes with the other members' runs. The shared scripts write here by themselves (`result_folders` in `configs/config.yaml`).
 
+**Every run in detail, with all its numbers: [RUNS.md](RUNS.md)** (model, how it was trained, every split, accuracy per speaker, confusion matrices; written from the files in this folder by `python -m support.contributions`).
+
 | Path | What |
 |---|---|
 | `random_forest/{fsc,l2arctic}/` | Random Forest on MFCC features (T11, T47) |

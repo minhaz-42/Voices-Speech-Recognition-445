@@ -133,7 +133,7 @@ Written by Tanvir: exactly what to build, which files, which functions to use, t
 |---|---|
 | **Goal** | Gradient-boosted trees on the same 78 MFCC statistics as the other traditional models. |
 | **Depends on** | — (shared code and the TenVoices-FSC splits are merged) |
-| **You create** | `results/xgboost/fsc/` and `images/confusion/xgboost_fsc_*.png` (by running the command) |
+| **You create** | `results/M2_rabbi/xgboost/fsc/` and `results/M2_rabbi/figures/confusion/xgboost_fsc_*.png` (by running the command) |
 | **How** | [RUNS.md](../RUNS.md): get the audio, build the processed copies, run, commit |
 
 #### Run
@@ -144,13 +144,13 @@ python -m support.classical --model xgboost --dataset fsc
 
 #### Done when
 
-- `results/xgboost/fsc/summary.json` has both `random` and `folds` (5 folds pooled).
+- `results/M2_rabbi/xgboost/fsc/summary.json` has both `random` and `folds` (5 folds pooled).
 - The results folder and the two confusion-matrix images are committed and pushed on your branch.
 - The faculty update on your page quotes the accuracies from `summary.json`.
 
 #### For the faculty update
 
-"I trained and evaluated XGBoost, a gradient-boosted tree model, on MFCC features: its accuracy on speakers it has seen and on speakers it has never heard (numbers from `results/xgboost/fsc/summary.json`)."
+"I trained and evaluated XGBoost, a gradient-boosted tree model, on MFCC features: its accuracy on speakers it has seen and on speakers it has never heard (numbers from `results/M2_rabbi/xgboost/fsc/summary.json`)."
 
 ---
 
@@ -161,7 +161,7 @@ python -m support.classical --model xgboost --dataset fsc
 |---|---|
 | **Goal** | The middle point of the 3 / 8 / 15-epoch comparison (H4). |
 | **Depends on** | — (shared code and the TenVoices-FSC splits are merged) |
-| **You create** | `results/w2v2_8ep_noise/fsc/` and `images/confusion/w2v2_8ep_noise_fsc_*.png` (by running the command) |
+| **You create** | `results/M2_rabbi/w2v2_8ep_noise/fsc/` and `results/M2_rabbi/figures/confusion/w2v2_8ep_noise_fsc_*.png` (by running the command) |
 | **How** | [RUNS.md](../RUNS.md): get the audio, build the processed copies, run, commit |
 
 #### Run
@@ -174,13 +174,13 @@ This is a GPU job: use Colab (`notebooks/train_wav2vec2.ipynb`, set the options 
 
 #### Done when
 
-- `results/w2v2_8ep_noise/fsc/summary.json` has both `random` and `folds` (5 folds pooled).
+- `results/M2_rabbi/w2v2_8ep_noise/fsc/summary.json` has both `random` and `folds` (5 folds pooled).
 - The results folder and the two confusion-matrix images are committed and pushed on your branch.
 - The faculty update on your page quotes the accuracies from `summary.json`.
 
 #### For the faculty update
 
-"I fine-tuned wav2vec 2.0 for 8 epochs with white-noise augmentation; this run is the middle point of our epochs comparison (numbers from `results/w2v2_8ep_noise/fsc/summary.json`)."
+"I fine-tuned wav2vec 2.0 for 8 epochs with white-noise augmentation; this run is the middle point of our epochs comparison (numbers from `results/M2_rabbi/w2v2_8ep_noise/fsc/summary.json`)."
 
 ---
 
@@ -191,7 +191,7 @@ This is a GPU job: use Colab (`notebooks/train_wav2vec2.ipynb`, set the options 
 |---|---|
 | **Goal** | A newer self-supervised model (Chen et al., 2022) of the same size as wav2vec 2.0 Base, fine-tuned with exactly the same script, data and settings as M1's wav2vec 2.0 run, so the only difference is the pre-trained model. Exploratory comparison E10. |
 | **Depends on** | — (shared code and the TenVoices-FSC splits are merged) |
-| **You create** | `results/wavlm_15ep_noise/fsc/` and `images/confusion/wavlm_15ep_noise_fsc_*.png` (by running the command) |
+| **You create** | `results/M2_rabbi/wavlm_15ep_noise/fsc/` and `results/M2_rabbi/figures/confusion/wavlm_15ep_noise_fsc_*.png` (by running the command) |
 | **How** | [RUNS.md](../RUNS.md): get the audio, build the processed copies, run, commit |
 
 #### Run
@@ -204,13 +204,13 @@ This is a GPU job: use Colab (`notebooks/train_wav2vec2.ipynb`, set the options 
 
 #### Done when
 
-- `results/wavlm_15ep_noise/fsc/summary.json` has both `random` and `folds` (5 folds pooled).
+- `results/M2_rabbi/wavlm_15ep_noise/fsc/summary.json` has both `random` and `folds` (5 folds pooled).
 - The results folder and the two confusion-matrix images are committed and pushed on your branch.
 - The faculty update on your page quotes the accuracies from `summary.json`.
 
 #### For the faculty update
 
-"I fine-tuned WavLM, a newer self-supervised speech model, with exactly the same settings as our wav2vec 2.0 run, to see whether a better pre-training objective helps (numbers from `results/wavlm_15ep_noise/fsc/summary.json`)."
+"I fine-tuned WavLM, a newer self-supervised speech model, with exactly the same settings as our wav2vec 2.0 run, to see whether a better pre-training objective helps (numbers from `results/M2_rabbi/wavlm_15ep_noise/fsc/summary.json`)."
 
 ---
 

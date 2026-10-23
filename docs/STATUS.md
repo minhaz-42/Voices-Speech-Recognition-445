@@ -36,15 +36,15 @@ A task is ✅ here once it is merged. Finished work that is not merged yet shows
 
 ## 🗂️ Task Board
 
-Runs are done when their results for TenVoices-FSC (random split + 5 folds) are in `results/<run>/fsc/`. The same command for TenVoices-L2 is run by M1 in T47.
+Runs are done when their results for TenVoices-FSC (random split + 5 folds) are in the member's folder, `results/<slot>_<name>/<run>/fsc/`. The same command for TenVoices-L2 is run by M1 in T47.
 
 ### M2 · Rabbi
 
 | ID | Task (→ done when) | Depends on | Status | Done by · date |
 |---|---|---|---|---|
-| T12 | **XGBoost** with the shared runner → `results/xgboost/fsc/` | — | ✅ | Rabbi · 2026-10-20 |
-| T16 | **wav2vec 2.0, 8 epochs + white noise** → `results/w2v2_8ep_noise/fsc/` | — | ✅ | Rabbi · 2026-10-20 |
-| T44 | **WavLM Base+, 15 epochs + white noise** (same script, `--model microsoft/wavlm-base-plus`) → `results/wavlm_15ep_noise/fsc/` | — | ✅ | Rabbi · 2026-10-20 |
+| T12 | **XGBoost** with the shared runner → `results/M2_rabbi/xgboost/fsc/` | — | ✅ | Rabbi · 2026-10-20 |
+| T16 | **wav2vec 2.0, 8 epochs + white noise** → `results/M2_rabbi/w2v2_8ep_noise/fsc/` | — | ✅ | Rabbi · 2026-10-20 |
+| T44 | **WavLM Base+, 15 epochs + white noise** (same script, `--model microsoft/wavlm-base-plus`) → `results/M2_rabbi/wavlm_15ep_noise/fsc/` | — | ✅ | Rabbi · 2026-10-20 |
 | T09 | Datasheet `data/README.md` for TenVoices-FSC (sources, selection, QC, statistics, licences) + dataset statistics figure + 👤 listen-check of the 100 marked clips → `data/listen_check_fsc.csv` | — | ✅ | Rabbi · 2026-10-20 |
 | T26 | Subset release: subset and phrase lists, selection and QC scripts, datasheet, checksums (no audio) as a GitHub Release draft | T09 | ✅ | Rabbi · 2026-10-20 |
 
@@ -55,9 +55,9 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 | T10 | `docs/ANALYSIS_PLAN.md`: the full analysis, consistent with the *Frozen analysis decisions* in PROJECT_PLAN.md (it no longer gates any run) | — | ⬜ | |
 | T33 | `support/stats.py`: bootstrap CI, McNemar, Wilcoxon, Mann–Whitney + hand-computed tests | — | ⬜ | |
 | T37 | Literature notes: MFCC, classical classifiers, speaker-independent evaluation | — | ⬜ | |
-| T13 | **k-NN** with the shared runner → `results/knn/fsc/` | — | ⬜ | |
-| T17 | **wav2vec 2.0, 3 epochs** (no noise) → `results/w2v2_3ep/fsc/` | — | ⬜ | |
-| T45 | **HuBERT Base, 15 epochs + white noise** (same script, `--model facebook/hubert-base-ls960`) → `results/hubert_15ep_noise/fsc/` | — | ⬜ | |
+| T13 | **k-NN** with the shared runner → `results/M3_mahir/knn/fsc/` | — | ⬜ | |
+| T17 | **wav2vec 2.0, 3 epochs** (no noise) → `results/M3_mahir/w2v2_3ep/fsc/` | — | ⬜ | |
+| T45 | **HuBERT Base, 15 epochs + white noise** (same script, `--model facebook/hubert-base-ls960`) → `results/M3_mahir/hubert_15ep_noise/fsc/` | — | ⬜ | |
 | T20 | `support/results_table.py`: every run in `results/` → `results/all_results.csv` + table image; seen vs unseen speakers, per speaker, bootstrap CIs; tested on synthetic and your own runs | T33 | ⬜ | |
 | T34 | `support/error_analysis.py`: most-confused phrase pairs, accuracy per phrase category and speaker, for any run; write-up for your own runs → `results/errors/` | T13 | ⬜ | |
 | T40 | `support/hypotheses.py`: H1–H5 exactly as frozen, from whatever runs exist → `results/hypotheses.csv`; tested on synthetic results (M1 runs it on all results in T24) | T10, T20, T33 | ⬜ | |
@@ -70,9 +70,9 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 | T36 | Demo skeleton `app.py` (Gradio) | T35 | ✅ | Shafil · 2026-10-18 |
 | T38 | Literature notes: self-supervised speech models ✅ (`docs/literature/self_supervised_speech.md`) | — | ✅ | Shafil · 2026-10-18 |
 | T39 | Planning poster v2 | — | ✅ | Shafil · 2026-10-18 |
-| T14 | **SVM** with the shared runner → `results/svm/fsc/` ✅ (unseen speakers 0.223, random split 0.305) | — | ✅ | Shafil · 2026-10-18 |
-| T18 | **Untrained wav2vec 2.0 baseline** (`--untrained`) → `results/w2v2_untrained/fsc/` ✅ (unseen speakers 0.028, random split 0.025; chance 0.02) | — | ✅ | Shafil · 2026-10-18 |
-| T46 | **Linear probe:** `support/embeddings.py` (frozen wav2vec 2.0, mean-pooled) + logistic regression with the shared runner → `results/w2v2_probe/fsc/` ✅ (unseen speakers 0.605, random split 0.695) | — | ✅ | Shafil · 2026-10-18 |
+| T14 | **SVM** with the shared runner → `results/M4_shafil/svm/fsc/` ✅ (unseen speakers 0.223, random split 0.305) | — | ✅ | Shafil · 2026-10-18 |
+| T18 | **Untrained wav2vec 2.0 baseline** (`--untrained`) → `results/M4_shafil/w2v2_untrained/fsc/` ✅ (unseen speakers 0.028, random split 0.025; chance 0.02) | — | ✅ | Shafil · 2026-10-18 |
+| T46 | **Linear probe:** `support/embeddings.py` (frozen wav2vec 2.0, mean-pooled) + logistic regression with the shared runner → `results/M4_shafil/w2v2_probe/fsc/` ✅ (unseen speakers 0.605, random split 0.695) | — | ✅ | Shafil · 2026-10-18 |
 | T23 | Demo connected to `support.inference` with your SVM model (top-5 + confidence chart); `python -m support.visualization --results` draws the figures of every run in `results/` ✅ (on 3 of Shafil's own recordings: SVM 0/3, linear probe 0/3, Whisper 3/3; `results/demo_check/`) | T14, T35, T36 | ✅ | Shafil · 2026-10-23 |
 | T27 | Results poster, slides and 👤 1-minute demo video, with numbers and figures generated from `results/` (regenerated by one command in T28): poster (`images/poster_results.png`) and slides (`others/slides.pdf`) ✅ by `python -m support.presentation`; 👤 video to film (`others/demo_video_script.md`) | T23 | 🟡 poster + slides ✅ | Shafil · 2026-10-23 (poster, slides) |
 
@@ -88,7 +88,8 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 | T22 | `main.py`, inference, CI ✅; benchmark → `results/M1_tanvir/benchmark_fsc.csv` ✅ (wav2vec 2.0: 38.2 ms per clip on MPS, 74.9 ms on CPU) | T15 | ✅ | Tanvir · 2026-10-17 |
 | T48 | **One results folder for M1:** every run of Tanvir's (`random_forest`, `w2v2_15ep_noise`, `w2v2_15ep`, `whisper_small`), the noise tests, the benchmark and the confusion matrices → `results/M1_tanvir/` (`result_folders` in the config; `support.evaluate.run_dir` / `list_runs` find it) | — | ✅ | Tanvir · 2026-10-17 |
 | T49 | **Figures beyond confusion matrices:** `support/figures.py` draws, from the result files only, seen vs unseen speakers, fine-tuning curves, noise robustness, accuracy per speaker, confidence (right vs wrong, rejecting uncertain answers), speed vs accuracy and Whisper's errors → `results/M1_tanvir/figures/` (gallery: `results/M1_tanvir/README.md`) | T48 | ✅ | Tanvir · 2026-10-17 |
-| T50 | **One page per member for the faculty:** `support/contributions.py` writes `contributions/README.md` and `contributions/<slot>_<name>.md` from the repository: tasks and status (this board), results (`summary.json` of each run), files created or changed and every commit (git history of `main`); team in `team` of the config; rerun after every merge | — | ✅ | Tanvir · 2026-10-23 |
+| T50 | **One page per member for the faculty:** `support/contributions.py` writes `contributions/README.md` and `contributions/<slot>_<name>.md` from the repository: tasks and status (this board), results (`summary.json` of each run), files created or changed and every commit (git history of `main`); plus `<slot>_<name>_runs.md`: each run's model, training settings, data sizes, every split, accuracy per speaker and confusion matrices; team in `team` of the config; rerun after every merge | — | ✅ | Tanvir · 2026-10-23 |
+| T51 | **One results folder per member:** Rabbi's runs → `results/M2_rabbi/`, Shafil's → `results/M4_shafil/`, Mahir's go to `results/M3_mahir/`, like `results/M1_tanvir/` (`result_folders` in the config; confusion matrices in `<folder>/figures/confusion/`, figures by `python -m support.figures --folder <folder>`); each folder has a `README.md` and a generated `RUNS.md` with every run in detail | T48, T50 | ✅ | Tanvir · 2026-10-23 |
 | T47 | **TenVoices-L2:** data from a free copy of L2-ARCTIC (no form) ✅: 10 speakers × 50 sentences = 500 clips, QC 500 / 500, splits (each fold holds out one first language); Random Forest ✅; Whisper ✅ (WER 0.100 vs 0.039 on FSC); next: the wav2vec 2.0 runs and every merged model on L2; H5 | — | 🟡 data ✅ | Tanvir · 2026-10-17 (data) |
 
 ### At the end (needs everyone's merged work)
@@ -119,6 +120,18 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 | T02, T04–T07, T31, T32 | Recorder, pilot, recording sessions, recording QC | We use published datasets (2026-10-17) |
 
 ## 📝 Handoff Log (newest first)
+
+### 2026-10-23 · Tanvir Ahmed (M1) · T51 (one results folder per member)
+
+- **Done:** every member's runs are now in their own folder, like Tanvir's: `results/M2_rabbi/` (`xgboost/`, `w2v2_8ep_noise/`, `wavlm_15ep_noise/`), `results/M4_shafil/` (`svm/`, `w2v2_untrained/`, `w2v2_probe/`) and `results/M3_mahir/` for Mahir's runs. Moved with `git mv`; no number changed. Their confusion matrices moved from `images/confusion/` to `<folder>/figures/confusion/`, and `python -m support.figures --folder M2_rabbi` / `M4_shafil` drew the same figures as for Tanvir (seen vs unseen, fine-tuning curves, per speaker, confidence). Each folder has a `README.md` and a generated `RUNS.md`.
+- **Fixed:** `support/figures.py` crashed on the untrained baseline (no trained epoch); such runs are now left out of the fine-tuning curves.
+- **Members:** merge `main` into your branch before your next run; the shared scripts then write into your folder by themselves. `results/demo_check/` stays where `support.presentation` reads it.
+- **Docs:** README, AGENTS.md, PROJECT_PLAN.md, RUNS.md, the board and the task cards use the new paths.
+
+### 2026-10-23 · Tanvir Ahmed (M1) · T50 (runs pages)
+
+- **Runs pages:** `python -m support.contributions` also writes `results/<slot>_<name>/RUNS.md`: for each run its model, how it was trained (settings from `summary.json`), data sizes, every split with the kept setting or epoch, the fold mean ± SD, accuracy per test speaker and the confusion matrices.
+- **Tests:** `tests/test_contributions.py` extended (7 tests).
 
 ### 2026-10-23 · Tanvir Ahmed (M1) · T50 (one page per member)
 

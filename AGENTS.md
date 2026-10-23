@@ -28,7 +28,7 @@ Repository: https://github.com/minhaz-42/Voices-Speech-Recognition-445
 | `docs/RUNS.md` | How to get the audio and run any model, locally or on Colab |
 | `docs/CONTRIBUTING.md` | The same workflow as plain git commands, for working by hand or with a chat assistant |
 | `README.md` | Public overview: results and who did what |
-| `contributions/` | One page per member for the faculty (tasks, results, files, commits), written by `python -m support.contributions`; never edited by hand |
+| `contributions/` | One page per member for the faculty (tasks, results, files, commits) and each member's runs in detail in `results/<slot>_<name>/RUNS.md`, written by `python -m support.contributions`; never edited by hand |
 
 ## Team
 
@@ -64,7 +64,7 @@ Repository: https://github.com/minhaz-42/Voices-Speech-Recognition-445
 
 - Stay inside the task's scope and meet its *done when* condition. Follow the task card and `docs/PROJECT_PLAN.md`.
 - **File ownership** (table in `docs/PROJECT_PLAN.md`, section *Team, Roles and File Ownership*). This is what keeps every branch free of merge conflicts.
-  - A member edits only the files their slot owns, their own tests (`tests/test_<their module>.py`), their own run folders in `results/`, their own figures in `images/` (M1: everything in `results/M1_tanvir/`), and the status, faculty update, requests and handoff sections of their own page in `docs/team/`.
+  - A member edits only the files their slot owns, their own tests (`tests/test_<their module>.py`), their own results folder `results/<slot>_<name>/` (runs, figures, README), their own figures in `images/`, and the status, faculty update, requests and handoff sections of their own page in `docs/team/`.
   - Only M1 edits `docs/STATUS.md`, `AGENTS.md`, `CLAUDE.md`, `docs/CONTRIBUTING.md`, `docs/RUNS.md`, `README.md`, `docs/PROJECT_PLAN.md`, the *Task cards* sections of the pages in `docs/team/`, `requirements.txt`, `configs/config.yaml` and the M1-owned modules.
   - If a member needs a change in a file they don't own (a new package, a config key, a fix in shared code), write it under **Requests for the lead** on their page and keep working with CLI options or function arguments meanwhile.
 - 👤 tasks need people (requesting dataset access, filming the demo video). Prepare everything (scripts, sheets, checklists), ask the member to do it, and wait for them to confirm.
@@ -124,7 +124,7 @@ Only merge a branch whose pull request is ready (not a draft) and whose tasks ar
 - Personal data or Drive links
 - Large generated files in `outputs/`
 
-Small result tables (CSV/JSON under 1 MB) go in `results/` and **are** committed, so others can continue from them. Figures go in `images/`. M1's runs, noise tests, benchmark and figures are kept together in `results/M1_tanvir/` (`result_folders` in `configs/config.yaml`; the scripts pick the folder by themselves). Code that reads results finds every run with `support.evaluate.list_runs()` and a run's folder with `run_dir(run, dataset)`, never by building the path.
+Small result tables (CSV/JSON under 1 MB) go in `results/` and **are** committed, so others can continue from them. Figures go in `images/`. Every member's runs and their figures are kept together in the member's folder, `results/M1_tanvir/`, `results/M2_rabbi/`, `results/M3_mahir/`, `results/M4_shafil/` (`result_folders` in `configs/config.yaml`; the scripts pick the folder by themselves). Merge `main` into your branch before your next run, so it is written there. Code that reads results finds every run with `support.evaluate.list_runs()` and a run's folder with `run_dir(run, dataset)`, never by building the path.
 
 ## Commands
 

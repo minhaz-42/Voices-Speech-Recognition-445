@@ -16,7 +16,7 @@ data/raw/<dataset>/ ──(support/select_subsets.py, support/qc_report.py)─�
         └─► support/whisper_asr.py               zero-shot Whisper + WER
                  │
                  ▼  support/evaluate.py          same metrics, reports, confusion matrices for every model
-           results/<run>/<dataset>/   ──►  support/noise_test.py, main.py / support/inference.py
+           results/<member>/<run>/<dataset>/ ──►  support/noise_test.py, main.py / support/inference.py
            (M1's runs: results/M1_tanvir/<run>/<dataset>/)
 ```
 

@@ -272,9 +272,9 @@ Each member owns one traditional model, one or two deep-learning runs, a main wo
 | **M2** | `support/phrases.py`, `data/README.md` (datasheet), `data/metadata/`, `data/listen_check_<dataset>.csv`, `docs/DATASETS.md`; runs `xgboost`, `w2v2_8ep_noise`, `wavlm_15ep_noise` |
 | **M3** | `support/metrics.py`, `support/stats.py`, `support/results_table.py`, `support/error_analysis.py`, `support/hypotheses.py`, `docs/ANALYSIS_PLAN.md`, `docs/literature/classical_and_evaluation.md`; runs `knn`, `w2v2_3ep`, `hubert_15ep_noise`; `results/all_results.csv`, `results/hypotheses.csv`, `results/errors/` |
 | **M4** | `support/visualization.py`, `app.py`, `others/poster.html`, `images/poster.png`, slides and video in `others/`, `docs/literature/self_supervised_speech.md`, `support/embeddings.py`; runs `svm`, `w2v2_untrained`, `w2v2_probe` |
-| **Everyone** | Their own tests (`tests/test_<module>.py`), their run folders `results/<run>/`, their figures in `images/`, and the status, faculty update, requests and handoff sections of their page `docs/team/<slot>_<name>.md` |
+| **Everyone** | Their own tests (`tests/test_<module>.py`), their results folder `results/<slot>_<name>/`, their figures in `images/`, and the status, faculty update, requests and handoff sections of their page `docs/team/<slot>_<name>.md` |
 
-Every model run goes through the shared scripts with its own settings, and saves its results in `results/<run-name>/<dataset>/`; M1's runs, noise tests, benchmark and figures are kept together in `results/M1_tanvir/` (`result_folders` in the config).
+Every model run goes through the shared scripts with its own settings, and saves its results in the member's folder, `results/<slot>_<name>/<run-name>/<dataset>/`, with that member's noise tests, benchmark and figures (`result_folders` in the config). Each member folder has a `README.md` and a `RUNS.md` with every run in detail (written by `python -m support.contributions`).
 
 ---
 

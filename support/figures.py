@@ -105,9 +105,14 @@ def speaker_info(dataset: str, cfg: dict[str, Any]) -> pd.DataFrame:
 
 
 def training_curves(summary: dict[str, Any]) -> pd.DataFrame:
-    """``split, epoch, train_loss, val_loss, val_accuracy, best`` from a fine-tuned run's summary."""
+    """``split, epoch, train_loss, val_loss, val_accuracy, best`` from a fine-tuned run's summary.
+
+    Empty for a run that was not trained (the untrained baseline only has its epoch-0 evaluation).
+    """
     rows = []
     for split, info in (summary.get("splits") or {}).items():
+        if info.get("trained") is False:
+            continue
         for point in info.get("curve") or []:
             rows.append({"split": split, **point, "best": point["epoch"] == info.get("best_epoch")})
     return pd.DataFrame(rows)

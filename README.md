@@ -35,7 +35,7 @@ Every model is tested on a random 80/20 split (speakers seen in training) and wi
 ---
 
 ## 👥 Team: Who Does What
-Each member owns one traditional model, one or two deep-learning runs, a part of the shared work and a set of files. **Each member's work** (tasks with status, results, the files they wrote and every commit under their name) is on one page per member in [contributions/](contributions/), written from the repository by `python -m support.contributions`. **Each member's working page** has their task cards, weekly faculty update and handoff log.
+Each member owns one traditional model, one or two deep-learning runs, a part of the shared work and a set of files. **Each member's work** (tasks with status, results, the files they wrote and every commit under their name) is on one page per member in [contributions/](contributions/), and each member's runs are in their own folder in [results/](results/), with a `RUNS.md` showing each run in detail (model, how it was trained, every split, accuracy per speaker, confusion matrices), all written from the repository by `python -m support.contributions`. **Each member's working page** has their task cards, weekly faculty update and handoff log.
 
 | Member | Responsible for | Models they run | Done so far | Next | Work · page |
 | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -93,7 +93,7 @@ Per dataset: random 80/20 split (stratified, seed 42) and 5 speaker-independent 
 ---
 
 ## 🏆 Results
-Measured so far on **TenVoices-FSC** (1,000 clips). Every number comes from the run's `summary.json` (`results/<run>/fsc/`; Tanvir's runs are in [`results/M1_tanvir/`](results/M1_tanvir/)); *TBD* means the run is not merged yet.
+Measured so far on **TenVoices-FSC** (1,000 clips). Every number comes from the run's `summary.json` in its member's folder ([`results/M1_tanvir/`](results/M1_tanvir/), [`M2_rabbi/`](results/M2_rabbi/), [`M3_mahir/`](results/M3_mahir/), [`M4_shafil/`](results/M4_shafil/); each with a `RUNS.md` showing every run in detail); *TBD* means the run is not merged yet.
 
 | Model | Owner | Accuracy, unseen speakers | Macro F1, unseen | Accuracy, random split | Macro F1, random | Purpose |
 | :--- | :--- | :---: | :---: | :---: | :---: | :--- |
@@ -130,7 +130,7 @@ Measured so far on **TenVoices-FSC** (1,000 clips). Every number comes from the 
 
   Training with white noise keeps the model usable in heavy noise (74.5% vs 30.7% at 5 dB) but costs 4.3 points on clean audio. H3 allows at most 2, so its strict criterion would fail; the official verdict comes from the hypothesis tests in T24. The MFCC model falls to chance level as soon as noise is added.
 * **Speed** (`results/M1_tanvir/benchmark_fsc.csv`, one clip incl. pre-processing, MacBook): wav2vec 2.0 38.2 ms on the Apple GPU and 74.9 ms on the CPU (378 MB); Random Forest 13.7 ms (76 MB). Both are fast enough for live use.
-* **Confusion matrices:** Tanvir's runs in [results/M1_tanvir/figures/confusion/](results/M1_tanvir/figures/confusion/); Rabbi's runs in `images/confusion/` (`xgboost_fsc_{random,folds}.png`, `w2v2_8ep_noise_fsc_{random,folds}.png`, `wavlm_15ep_noise_fsc_{random,folds}.png`); Shafil's runs in `images/confusion/` (`svm_fsc_{random,folds}.png`, `w2v2_untrained_fsc_{random,folds}.png`, `w2v2_probe_fsc_{random,folds}.png`).
+* **Confusion matrices:** Tanvir's runs in [results/M1_tanvir/figures/confusion/](results/M1_tanvir/figures/confusion/); Rabbi's runs in [results/M2_rabbi/figures/confusion/](results/M2_rabbi/figures/confusion/); Shafil's runs in [results/M4_shafil/figures/confusion/](results/M4_shafil/figures/confusion/).
 * **Dataset statistics figure:** Distribution of clip durations and phrase categories across the 10 speakers in `images/dataset_fsc.png` (Rabbi, T09).
 * **More figures** (Tanvir's runs, all drawn from the result files by `python -m support.figures --folder M1_tanvir`; gallery with explanations: [results/M1_tanvir/README.md](results/M1_tanvir/README.md)): seen vs unseen speakers, fine-tuning curves, noise robustness, accuracy per speaker, confidence, speed vs accuracy, Whisper's errors.
 
@@ -163,8 +163,11 @@ Voices-Speech-Recognition-445/
 |-- tests/                  unit tests for every module
 |-- notebooks/              Colab notebook for GPU training
 |-- data/                   subset lists, phrase lists, splits, sources (audio is not in git)
-|-- results/                one folder per model and dataset: metrics, predictions, reports
-|   `-- M1_tanvir/          Tanvir's runs, noise tests, benchmark and figures in one place
+|-- results/                ONE FOLDER PER MEMBER: their runs, figures, README and RUNS.md (every run in detail)
+|   |-- M1_tanvir/          Tanvir's runs, noise tests, benchmark and figures
+|   |-- M2_rabbi/           Rabbi's runs and figures
+|   |-- M3_mahir/           Mahir's runs (not merged yet)
+|   `-- M4_shafil/          Shafil's runs and figures
 |-- images/                 poster, confusion matrices, figures
 |-- others/                 poster source, report, slides, demo video
 `-- docs/

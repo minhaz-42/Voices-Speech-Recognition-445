@@ -14,11 +14,14 @@ paths:
   images: images
   outputs: outputs
 
-# Runs kept together in one member's folder: results/<folder>/<run>/<dataset>/, with the
-# noise tests in results/<folder>/noise/ and the figures in results/<folder>/figures/.
+# Every member's runs are kept together in their own folder: results/<folder>/<run>/<dataset>/,
+# with the noise tests in results/<folder>/noise/ and the figures in results/<folder>/figures/.
 # Runs not listed here use results/<run>/<dataset>/ and images/confusion/.
 result_folders:
   M1_tanvir: [random_forest, w2v2_15ep, w2v2_15ep_noise, whisper_small]
+  M2_rabbi: [xgboost, w2v2_8ep_noise, wavlm_15ep_noise]
+  M3_mahir: [knn, w2v2_3ep, hubert_15ep_noise]
+  M4_shafil: [svm, w2v2_untrained, w2v2_probe]
 
 # The team (AGENTS.md). support/contributions.py writes one page per member into contributions/
 # from the git history (git_names), the task board (docs/STATUS.md, section "<slot> · <short>")

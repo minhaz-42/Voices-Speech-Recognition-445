@@ -283,7 +283,7 @@ Open the PNG and check that nothing is cut off or overlapping.
 |---|---|
 | **Goal** | A support vector machine with an RBF kernel on the 78 MFCC statistics. Its saved model also powers your demo (T23). |
 | **Depends on** | — (shared code and the TenVoices-FSC splits are merged) |
-| **You create** | `results/svm/fsc/` and `images/confusion/svm_fsc_*.png` (by running the command) |
+| **You create** | `results/M4_shafil/svm/fsc/` and `results/M4_shafil/figures/confusion/svm_fsc_*.png` (by running the command) |
 | **How** | [RUNS.md](../RUNS.md): get the audio, build the processed copies, run, commit |
 
 #### Run
@@ -294,13 +294,13 @@ python -m support.classical --model svm --dataset fsc
 
 #### Done when
 
-- `results/svm/fsc/summary.json` has both `random` and `folds` (5 folds pooled).
+- `results/M4_shafil/svm/fsc/summary.json` has both `random` and `folds` (5 folds pooled).
 - The results folder and the two confusion-matrix images are committed and pushed on your branch.
 - The faculty update on your page quotes the accuracies from `summary.json`.
 
 #### For the faculty update
 
-"I trained and evaluated a support vector machine on MFCC features, on seen and on unseen speakers (numbers from `results/svm/fsc/summary.json`); it is the model inside our demo."
+"I trained and evaluated a support vector machine on MFCC features, on seen and on unseen speakers (numbers from `results/M4_shafil/svm/fsc/summary.json`); it is the model inside our demo."
 
 ---
 
@@ -311,7 +311,7 @@ python -m support.classical --model svm --dataset fsc
 |---|---|
 | **Goal** | wav2vec 2.0 with a new, untrained classification head, evaluated without training: it should sit near chance (2% for 50 phrases) and shows that later gains come from fine-tuning. |
 | **Depends on** | — (shared code and the TenVoices-FSC splits are merged) |
-| **You create** | `results/w2v2_untrained/fsc/` and `images/confusion/w2v2_untrained_fsc_*.png` (by running the command) |
+| **You create** | `results/M4_shafil/w2v2_untrained/fsc/` and `results/M4_shafil/figures/confusion/w2v2_untrained_fsc_*.png` (by running the command) |
 | **How** | [RUNS.md](../RUNS.md): get the audio, build the processed copies, run, commit |
 
 #### Run
@@ -322,13 +322,13 @@ python -m support.train_wav2vec2 --dataset fsc --untrained
 
 #### Done when
 
-- `results/w2v2_untrained/fsc/summary.json` has both `random` and `folds` (5 folds pooled).
+- `results/M4_shafil/w2v2_untrained/fsc/summary.json` has both `random` and `folds` (5 folds pooled).
 - The results folder and the two confusion-matrix images are committed and pushed on your branch.
 - The faculty update on your page quotes the accuracies from `summary.json`.
 
 #### For the faculty update
 
-"I evaluated wav2vec 2.0 without any training, which shows the chance level and proves our gains come from fine-tuning (numbers from `results/w2v2_untrained/fsc/summary.json`)."
+"I evaluated wav2vec 2.0 without any training, which shows the chance level and proves our gains come from fine-tuning (numbers from `results/M4_shafil/w2v2_untrained/fsc/summary.json`)."
 
 ---
 
@@ -339,7 +339,7 @@ python -m support.train_wav2vec2 --dataset fsc --untrained
 |---|---|
 | **Goal** | Measure how much the *pre-trained* wav2vec 2.0 features already know about the phrases, without any fine-tuning: frozen embeddings + logistic regression. It sits between your untrained baseline (T18) and fine-tuning (T15) and answers "where does the gain come from?" (E10) |
 | **Depends on** | — |
-| **You create** | `support/embeddings.py`, `tests/_embeddings_check.py`, `tests/test_embeddings.py`, `results/w2v2_probe/fsc/` |
+| **You create** | `support/embeddings.py`, `tests/_embeddings_check.py`, `tests/test_embeddings.py`, `results/M4_shafil/w2v2_probe/fsc/` |
 | **Use, don't edit** | `support/dataset.py` (`load_manifest`, `read_processed`), `support/audio.py` (`pad_to_duration`), `support/device.py` (`pick_device`), `support/classical.py` (runs the probe: `--model logreg --features w2v2`), `transformers` (`AutoFeatureExtractor`, `Wav2Vec2Model`) |
 | **Give your assistant** | `AGENTS.md`, this card, [RUNS.md](../RUNS.md), `support/dataset.py`, `support/classical.py` (`load_cached_features`), `support/train_wav2vec2.py` (style), `tests/_wav2vec2_check.py` and `tests/test_train_wav2vec2.py` (how PyTorch tests run in a child process) |
 
@@ -367,11 +367,11 @@ PyTorch must not share a process with XGBoost on macOS, so follow the existing p
 
 #### Done when
 
-- Tests pass; `results/w2v2_probe/fsc/summary.json` has `random` and `folds`; results and confusion images committed.
+- Tests pass; `results/M4_shafil/w2v2_probe/fsc/summary.json` has `random` and `folds`; results and confusion images committed.
 
 #### For the faculty update
 
-"I built a linear probe: wav2vec 2.0's frozen features plus logistic regression. Compared with the untrained baseline and with full fine-tuning, it shows how much of the accuracy comes from pre-training alone (numbers from `results/w2v2_probe/fsc/summary.json`)."
+"I built a linear probe: wav2vec 2.0's frozen features plus logistic regression. Compared with the untrained baseline and with full fine-tuning, it shows how much of the accuracy comes from pre-training alone (numbers from `results/M4_shafil/w2v2_probe/fsc/summary.json`)."
 
 ---
 

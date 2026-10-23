@@ -16,6 +16,7 @@ import pandas as pd
 from support import classical
 from support import noise_test as nt
 from support.dataset import build_processed
+from support.evaluate import results_root, run_dir
 from support.noise import measured_snr_db
 from tests._synthetic import make_config, make_subset, write_audio
 from support.make_splits import make_splits
@@ -58,13 +59,13 @@ class TestRunNoiseTest(unittest.TestCase):
         self.assertEqual(len(preds), 3 * (16 + 32))
         clean_folds = summary[(summary["snr_db"] == "clean") & (summary["protocol"] == "folds")].iloc[0]
         self.assertEqual(clean_folds["n"], 32)
-        saved = pd.read_csv(self.root / "results" / "noise" / "knn_fsc.csv")
+        saved = pd.read_csv(results_root("knn", self.cfg) / "noise" / "knn_fsc.csv")
         self.assertEqual(len(saved), len(summary))
 
     def test_clean_matches_the_normal_evaluation(self):
         summary, _ = nt.run_noise_test("knn", "fsc", ["random"], self.cfg, snrs=[10])
         clean = summary[summary["snr_db"] == "clean"].iloc[0]["accuracy"]
-        normal = pd.read_csv(self.root / "results" / "knn" / "fsc" / "predictions_random.csv")
+        normal = pd.read_csv(run_dir("knn", "fsc", self.cfg) / "predictions_random.csv")
         self.assertAlmostEqual(clean, float((normal["label"] == normal["pred"]).mean()))
 
     def test_same_predictions_on_a_rerun(self):
