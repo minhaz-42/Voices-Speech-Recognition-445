@@ -10,8 +10,10 @@ Nothing on the pages is typed by hand, so they always match the repository:
 | Files created / edited | the git history: who added each file that still exists, and who changed it later |
 | Commits | every commit (merges not counted) whose author is one of the member's ``git_names`` |
 
-Output: ``contributions/README.md`` (overview) and ``contributions/<slot>_<short>.md`` per member.
-Run it again after every merge.
+Output: ``contributions/README.md`` (overview), ``contributions/<slot>_<short>.md`` per member and, in
+each member's own results folder, ``results/<slot>_<short>/RUNS.md`` with each of their runs in detail:
+model, how it was trained (settings from ``summary.json``), data sizes, every split, accuracy per test
+speaker and the confusion matrices. Run it again after every merge.
 
 Usage::
 
@@ -22,6 +24,7 @@ Usage::
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import re
 import subprocess
@@ -29,11 +32,13 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
-from support.config import PROJECT_ROOT, load_config
-from support.evaluate import run_dir
+from support.config import PROJECT_ROOT, load_config, resolve_path
+from support.evaluate import FOLD_NAMES, figures_root, run_dir
 from support.figures import run_label
 
 BOARD = "docs/STATUS.md"
+MODEL_NAMES = {"svm": "SVM", "random_forest": "Random Forest", "xgboost": "XGBoost", "knn": "k-NN",
+               "logreg": "logistic regression"}
 COLLAPSED_GROUPS = ("Results", "Data and settings")
 GROUP_ORDER = ["Code", "Tests", "Documents", "Figures", "Data and settings", "Results", "Other"]
 
@@ -198,6 +203,152 @@ def run_results(member: dict[str, Any], cfg: dict[str, Any]) -> list[dict[str, A
     return rows
 
 
+def describe_run(summary: dict[str, Any]) -> tuple[str, str]:
+    """What a run is and how it was trained, in words, from its ``summary.json``.
+
+    Returns:
+        ``(model, training)``.
+    """
+    if summary.get("zero_shot"):
+        return (f"`{summary['model']}`, zero-shot: it transcribes each clip and the transcript is matched to the "
+                "nearest of the phrases", "No training on our data; only the test clips are transcribed.")
+    if "feature_kind" in summary:
+        name = MODEL_NAMES.get(summary["model"], summary["model"])
+        feats = summary.get("features")
+        if summary["feature_kind"] == "mfcc" and isinstance(feats, dict):
+            features = (f"78 MFCC statistics per clip ({feats.get('n_mfcc')} MFCCs + deltas + delta-deltas, mean and "
+                        f"standard deviation; FFT {feats.get('n_fft')}, hop {feats.get('hop_length')}, "
+                        f"{feats.get('n_mels')} mel bands)")
+        else:
+            features = "the frozen wav2vec 2.0 Base features of each clip (mean-pooled, `support/embeddings.py`)"
+        return (f"{name} on {features}", "Hyper-parameters chosen per split on the validation speakers "
+                f"({summary.get('selection', 'best validation accuracy')}); the choice is in the table below.")
+    if summary.get("untrained"):
+        return (f"`{summary['model']}` with a new, untrained classification head (baseline)",
+                "Not trained: the pre-trained model is evaluated as it is.")
+    s = summary.get("settings") or {}
+    aug = summary.get("augmentation")
+    noise = (f"white noise added to {100 * float(aug['p']):.0f}% of the training clips at "
+             f"{aug['snr_db'][0]}–{aug['snr_db'][1]} dB SNR" if summary.get("noise") == "white" and aug
+             else "no noise augmentation")
+    return (f"`{summary['model']}`, fine-tuned for {summary.get('epochs')} epochs",
+            f"{noise}; learning rate {s.get('learning_rate')}, batch {s.get('batch_size')} × "
+            f"{s.get('grad_accum')} accumulation steps, {100 * float(s.get('warmup_ratio', 0)):.0f}% warm-up, "
+            f"feature encoder {'frozen' if s.get('freeze_feature_encoder') else 'trained'}; the epoch with the best "
+            f"validation accuracy is kept; trained on `{summary.get('device')}`.")
+
+
+def _chosen(split_info: dict[str, Any]) -> str:
+    """The setting kept for a split: hyper-parameters, or the best epoch."""
+    if "params" in split_info:
+        return ", ".join(f"{k}={v}" for k, v in split_info["params"].items())
+    if split_info.get("trained") is False:
+        return "–"
+    return f"epoch {split_info['best_epoch']}" if "best_epoch" in split_info else "–"
+
+
+def run_details(member: dict[str, Any], cfg: dict[str, Any]) -> list[dict[str, Any]]:
+    """Everything the runs page shows for each of the member's runs and datasets that have a ``summary.json``."""
+    details = []
+    for run in member.get("runs") or []:
+        for dataset, dcfg in cfg["datasets"].items():
+            folder = run_dir(run, dataset, cfg)
+            if not (folder / "summary.json").exists():
+                continue
+            summary = json.loads((folder / "summary.json").read_text(encoding="utf-8"))
+            speakers = []
+            if (folder / "folds" / "per_speaker.csv").exists():
+                with (folder / "folds" / "per_speaker.csv").open(encoding="utf-8") as f:
+                    speakers = list(csv.DictReader(f))
+            confusion = [p for p in (figures_root(run, cfg) / "confusion" / f"{run}_{dataset}_{s}.png"
+                                     for s in ("folds", "random")) if p.exists()]
+            details.append({"run": run, "label": run_label(run), "dataset": dataset,
+                            "dataset_name": dcfg.get("name", dataset), "summary": summary, "folder": folder,
+                            "speakers": speakers, "confusion": confusion})
+    return details
+
+
+def _repo_path(path: Path, root: Path = PROJECT_ROOT) -> str:
+    """A path relative to the repository root (as given when it is outside)."""
+    return path.relative_to(root).as_posix() if path.is_relative_to(root) else path.as_posix()
+
+
+def render_runs(member: dict[str, Any], details: list[dict[str, Any]], base: str = "../../",
+                root: Path = PROJECT_ROOT) -> str:
+    """The Markdown page with each of the member's runs in detail; ``base`` leads from the page to the repository root."""
+    lines = [f"# {member['name']} ({member['slot']}): runs and results", "",
+             f"Every number on this page is read from the run's files in [results/]({base}results/). **Unseen "
+             "speakers:** speaker-independent 5-fold cross-validation, each fold tests speakers never heard in "
+             "training (the headline). **Random split:** 80 / 20, the test speakers were also heard in training.", ""]
+    if not details:
+        planned = ", ".join(f"{run_label(r)} (`{r}`)" for r in member.get("runs") or [])
+        lines += [f"*No runs merged yet.* Planned: {planned}.", ""]
+    else:
+        lines += ["Runs: " + " · ".join(f"[{d['label']}, {d['dataset_name']}](#{_anchor(d)})" for d in details), ""]
+    for d in details:
+        s = d["summary"]
+        model, training = describe_run(s)
+        splits = s.get("splits") or {}
+        sizes = []
+        for name in ("random", "fold1"):
+            info = splits.get(name) or {}
+            if "n_train" in info:
+                label = "random split" if name == "random" else "each fold"
+                sizes.append(f"{label} {info['n_train']} / {info['n_val']} / {info['n_test']}")
+        data = ("; ".join(sizes) + " (train / validation / test clips)") if sizes else \
+            f"test clips only: {s['random'].get('n', '–')} (random split), {s['folds']['pooled'].get('n', '–')} (5 folds)"
+        lines += [f"## {d['label']} · {d['dataset_name']}", "",
+                  "| | |", "|---|---|",
+                  f"| **Model** | {model} |", f"| **How** | {training} |", f"| **Data** | {data} |",
+                  f"| **Run folder** | {_link(_repo_path(d['folder'], root) + '/', base=base)} |", ""]
+        wer = s.get("error_rates") or {}
+        head = "| Split | Test clips | Accuracy | Macro F1 | Kept | Validation accuracy |"
+        rule = "|---|---:|---:|---:|---|---:|"
+        if wer:
+            head, rule = head + " Word error rate |", rule + "---:|"
+        lines += [head, rule]
+        for name in ["random"] + FOLD_NAMES:
+            metrics = s["random"] if name == "random" else (s["folds"].get("per_fold") or {}).get(name)
+            if not metrics:
+                continue
+            info = splits.get(name) or {}
+            val = info.get("val_accuracy")
+            row = (f"| {'Random split (seen speakers)' if name == 'random' else 'Fold ' + name[-1]} | {metrics.get('n', '–')} | "
+                   f"{_pct(metrics['accuracy'])} | {_f1(metrics['macro_f1'])} | {_chosen(info) if info else '–'} | "
+                   f"{_pct(val) if val is not None else '–'} |")
+            if wer:
+                row += f" {_pct((wer.get(name) or {}).get('wer'))} |"
+            lines.append(row)
+        pooled, mean, std = s["folds"]["pooled"], s["folds"].get("mean") or {}, s["folds"].get("std") or {}
+        row = (f"| **All folds (unseen speakers)** | {pooled.get('n', '–')} | **{_pct(pooled['accuracy'])}** | "
+               f"**{_f1(pooled['macro_f1'])}** | fold mean {_pct(mean.get('accuracy'))} ± "
+               f"{100 * std.get('accuracy', 0):.1f} | |")
+        if wer:
+            row += f" {_pct((s.get('error_rates_pooled_folds') or {}).get('wer'))} |"
+        lines += [row, ""]
+        if d["speakers"]:
+            lines += ["Accuracy per test speaker (each speaker scored by the fold that held it out):", "",
+                      "| Speaker | Test clips | Correct | Accuracy |", "|---|---:|---:|---:|"]
+            lines += [f"| `{r['speaker_id']}` | {r['n']} | {r['correct']} | {_pct(float(r['accuracy']))} |"
+                      for r in d["speakers"]]
+            lines.append("")
+        if d["confusion"]:
+            lines.append("Confusion matrices (" + " · ".join(
+                "unseen-speaker folds" if p.stem.endswith("folds") else "random split" for p in d["confusion"]) + "):")
+            lines += ["", " ".join(f'<img src="{base}{_repo_path(p, root)}" alt="{p.stem}" width="420">' for p in d["confusion"]),
+                      ""]
+    lines += ["---", "", f"Written by `python -m support.contributions` from the result files; do not edit by hand. "
+              f"Back to [{member['name']}]({base}contributions/{member_folder(member)}.md) · "
+              f"[who did what]({base}contributions/README.md)", ""]
+    return "\n".join(lines)
+
+
+def _anchor(detail: dict[str, Any]) -> str:
+    """GitHub's anchor for a run's heading on the runs page."""
+    text = f"{detail['label']} · {detail['dataset_name']}".lower()
+    return re.sub(r"[^\w\- ]", "", text).replace(" ", "-")
+
+
 def _n(count: int, word: str) -> str:
     """``1 commit``, ``2 commits``."""
     return f"{count} {word}{'' if count == 1 else 's'}"
@@ -216,9 +367,14 @@ def _text(s: str) -> str:
     return s.replace("|", "\\|").replace("<", "&lt;")
 
 
-def _link(path: str, label: str | None = None) -> str:
-    """Link from ``contributions/`` to a repository path."""
-    return f"[{label or path}](../{path})"
+def _link(path: str, label: str | None = None, base: str = "../") -> str:
+    """Link to a repository path from a page ``base`` below the root (``contributions/`` by default)."""
+    return f"[{label or path}]({base}{path})"
+
+
+def member_folder(member: dict[str, Any]) -> str:
+    """The member's folder name, e.g. ``M2_rabbi`` (``results/M2_rabbi/``, ``contributions/M2_rabbi.md``)."""
+    return f"{member['slot']}_{member['short'].lower()}"
 
 
 def file_lines(paths: set[str], datasets: list[str]) -> list[str]:
@@ -265,7 +421,9 @@ def render_member(member: dict[str, Any], tasks: list[dict[str, str]], results: 
         lines += [f"| {t['id']} | {t['task']} | {t['status']} | {t['done']} |" for t in tasks]
     else:
         lines.append("*No tasks on the board.*")
-    lines += ["", "## Results", ""]
+    runs_page = f"results/{member_folder(member)}/RUNS.md"
+    lines += ["", "## Results", "", f"Each run in detail (model, how it was trained, every split, accuracy per "
+              f"speaker, confusion matrices): {_link(runs_page)}", ""]
     if results:
         lines += ["Unseen speakers: speaker-independent 5-fold cross-validation (the headline). "
                   "Random split: 80 / 20, the test speakers were also heard in training.", "",
@@ -314,12 +472,13 @@ def render_index(summaries: list[dict[str, Any]], ref: str = "main") -> str:
         f"history of `{ref}`, the task board ([docs/STATUS.md](../{BOARD})) and the result files in "
         "[results/](../results/). Nothing is typed by hand, so the pages match the repository; they are "
         "regenerated after every merge.", "",
-        "| Member | Role | Tasks done | In progress | Commits | Runs with results | Page |",
-        "|---|---|---:|---:|---:|---:|---|",
+        "| Member | Role | Tasks done | In progress | Commits | Runs with results | Work | Runs and results |",
+        "|---|---|---:|---:|---:|---:|---|---|",
     ]
     for s in summaries:
+        runs = f"results/{s['file'][:-3]}/RUNS.md"
         lines.append(f"| **{s['name']}** ({s['slot']}) | {s['role']} | {s['done']} | {s['active']} | "
-                     f"{s['commits']} | {s['runs']} | [{s['file']}]({s['file']}) |")
+                     f"{s['commits']} | {s['runs']} | [{s['file']}]({s['file']}) | [{runs}](../{runs}) |")
     return "\n".join(lines + [""])
 
 
@@ -360,11 +519,14 @@ def write_contributions(cfg: dict[str, Any] | None = None, ref: str = "main", ou
         files["edited"] -= files["created"]
         tasks = member_tasks(member, board)
         results = run_results(member, cfg)
-        name = f"{member['slot']}_{member['short'].lower()}.md"
+        name = f"{member_folder(member)}.md"
         path = out / name
         path.write_text(render_member(member, tasks, results, files, commits, datasets, ref, repo_url),
                         encoding="utf-8")
-        written.append(path)
+        runs_path = resolve_path(cfg, "results") / member_folder(member) / "RUNS.md"
+        runs_path.parent.mkdir(parents=True, exist_ok=True)
+        runs_path.write_text(render_runs(member, run_details(member, cfg), root=root), encoding="utf-8")
+        written += [path, runs_path]
         summaries.append({"name": member["name"], "slot": member["slot"], "role": member["role"], "file": name,
                           "done": sum(t["status"].startswith("✅") for t in tasks),
                           "active": sum(t["status"].startswith("🟡") for t in tasks),

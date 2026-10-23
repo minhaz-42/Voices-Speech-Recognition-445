@@ -80,8 +80,14 @@ def make_repo(root: Path) -> None:
     run_git(root, "checkout", "-b", "dev_shafil")
     write(root, "support/core.py", "x = 2\n")
     write(root, "support/visualization.py", "y = 1\n")
-    summary = {"folds": {"pooled": {"accuracy": 0.223, "macro_f1": 0.219}},
-               "random": {"accuracy": 0.305, "macro_f1": 0.304}}
+    summary = {"model": "svm", "feature_kind": "mfcc", "selection": "best validation accuracy",
+               "features": {"n_mfcc": 13, "n_fft": 512, "hop_length": 160, "n_mels": 40},
+               "folds": {"pooled": {"n": 1000, "accuracy": 0.223, "macro_f1": 0.219},
+                         "per_fold": {"fold1": {"n": 200, "accuracy": 0.205, "macro_f1": 0.172}},
+                         "mean": {"accuracy": 0.223}, "std": {"accuracy": 0.05}},
+               "random": {"n": 200, "accuracy": 0.305, "macro_f1": 0.304},
+               "splits": {"random": {"params": {"C": 10}, "val_accuracy": 0.265, "n_train": 720, "n_val": 80,
+                                     "n_test": 200}}}
     for name in ("summary.json", "random/metrics.json", "folds/metrics.json"):
         write(root, f"results/svm/fsc/{name}", json.dumps(summary))
     commit(root, "Shafil Ahmed", "T14: SVM | first run")
@@ -129,6 +135,23 @@ class TestFiles(unittest.TestCase):
         self.assertIn("[data/listen_check_fsc.csv](../data/listen_check_fsc.csv)", "\n".join(lines))
 
 
+class TestDescribe(unittest.TestCase):
+    """How a run is described from its summary."""
+
+    def test_fine_tuned_untrained_and_zero_shot(self):
+        tuned = {"model": "facebook/wav2vec2-base", "epochs": 15, "noise": "white", "device": "mps",
+                 "augmentation": {"p": 0.5, "snr_db": [5, 30]},
+                 "settings": {"learning_rate": 3e-05, "batch_size": 4, "grad_accum": 2, "warmup_ratio": 0.1,
+                              "freeze_feature_encoder": True}}
+        model, how = ct.describe_run(tuned)
+        self.assertEqual(model, "`facebook/wav2vec2-base`, fine-tuned for 15 epochs")
+        self.assertIn("white noise added to 50% of the training clips at 5–30 dB SNR", how)
+        self.assertIn("feature encoder frozen", how)
+        self.assertIn("untrained", ct.describe_run({"model": "facebook/wav2vec2-base", "untrained": True})[0])
+        self.assertIn("zero-shot", ct.describe_run({"model": "openai/whisper-small", "zero_shot": True})[0])
+        self.assertEqual(ct._chosen({"best_epoch": 12, "trained": True}), "epoch 12")
+
+
 class TestRepository(unittest.TestCase):
     """History, attribution and the written pages, on a temporary repository."""
 
@@ -154,10 +177,14 @@ class TestRepository(unittest.TestCase):
     def test_write_contributions(self):
         cfg = copy.deepcopy(load_config())
         cfg["paths"]["results"] = str(self.root / "results")
+        cfg["paths"]["images"] = str(self.root / "images")
         cfg["result_folders"] = {}
         cfg["team"] = [TANVIR, MAHIR, SHAFIL]
         written = ct.write_contributions(cfg, "main", self.root / "contributions", root=self.root)
-        self.assertEqual([p.name for p in written], ["README.md", "M1_tanvir.md", "M3_mahir.md", "M4_shafil.md"])
+        self.assertEqual([p.relative_to(self.root).as_posix() for p in written],
+                         ["contributions/README.md", "contributions/M1_tanvir.md", "results/M1_tanvir/RUNS.md",
+                          "contributions/M3_mahir.md", "results/M3_mahir/RUNS.md", "contributions/M4_shafil.md",
+                          "results/M4_shafil/RUNS.md"])
         shafil = (self.root / "contributions" / "M4_shafil.md").read_text(encoding="utf-8")
         self.assertIn("1 commit on `main`", shafil)
         self.assertIn("T14: SVM \\| first run", shafil)
@@ -168,7 +195,18 @@ class TestRepository(unittest.TestCase):
         self.assertIn("git user name is not known yet", mahir)
         self.assertIn("*No results merged yet.*", mahir)
         index = (self.root / "contributions" / "README.md").read_text(encoding="utf-8")
-        self.assertIn("| **Shafil Ahmed** (M4) | Figures | 2 | 1 | 1 | 1 | [M4_shafil.md](M4_shafil.md) |", index)
+        self.assertIn("| **Shafil Ahmed** (M4) | Figures | 2 | 1 | 1 | 1 | [M4_shafil.md](M4_shafil.md) | "
+                      "[results/M4_shafil/RUNS.md](../results/M4_shafil/RUNS.md) |", index)
+        self.assertIn("[results/M4_shafil/RUNS.md](../results/M4_shafil/RUNS.md)", shafil)
+        runs = (self.root / "results" / "M4_shafil" / "RUNS.md").read_text(encoding="utf-8")
+        self.assertIn("[results/svm/fsc/](../../results/svm/fsc/)", runs)
+        self.assertIn("[Shafil Ahmed](../../contributions/M4_shafil.md)", runs)
+        self.assertIn("SVM on 78 MFCC statistics per clip", runs)
+        self.assertIn("random split 720 / 80 / 200", runs)
+        self.assertIn("| Random split (seen speakers) | 200 | 30.5% | 0.304 | C=10 | 26.5% |", runs)
+        self.assertIn("| Fold 1 | 200 | 20.5% | 0.172 |", runs)
+        self.assertIn("| **All folds (unseen speakers)** | 1000 | **22.3%** |", runs)
+        self.assertIn("*No runs merged yet.*", (self.root / "results" / "M3_mahir" / "RUNS.md").read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

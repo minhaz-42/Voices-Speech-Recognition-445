@@ -19,14 +19,16 @@ From the task board [docs/STATUS.md](../docs/STATUS.md): ✅ done and merged · 
 | T10 | `docs/ANALYSIS_PLAN.md`: the full analysis, consistent with the *Frozen analysis decisions* in PROJECT_PLAN.md (it no longer gates any run) | ⬜ |  |
 | T33 | `support/stats.py`: bootstrap CI, McNemar, Wilcoxon, Mann–Whitney + hand-computed tests | ⬜ |  |
 | T37 | Literature notes: MFCC, classical classifiers, speaker-independent evaluation | ⬜ |  |
-| T13 | **k-NN** with the shared runner → `results/knn/fsc/` | ⬜ |  |
-| T17 | **wav2vec 2.0, 3 epochs** (no noise) → `results/w2v2_3ep/fsc/` | ⬜ |  |
-| T45 | **HuBERT Base, 15 epochs + white noise** (same script, `--model facebook/hubert-base-ls960`) → `results/hubert_15ep_noise/fsc/` | ⬜ |  |
+| T13 | **k-NN** with the shared runner → `results/M3_mahir/knn/fsc/` | ⬜ |  |
+| T17 | **wav2vec 2.0, 3 epochs** (no noise) → `results/M3_mahir/w2v2_3ep/fsc/` | ⬜ |  |
+| T45 | **HuBERT Base, 15 epochs + white noise** (same script, `--model facebook/hubert-base-ls960`) → `results/M3_mahir/hubert_15ep_noise/fsc/` | ⬜ |  |
 | T20 | `support/results_table.py`: every run in `results/` → `results/all_results.csv` + table image; seen vs unseen speakers, per speaker, bootstrap CIs; tested on synthetic and your own runs | ⬜ |  |
 | T34 | `support/error_analysis.py`: most-confused phrase pairs, accuracy per phrase category and speaker, for any run; write-up for your own runs → `results/errors/` | ⬜ |  |
 | T40 | `support/hypotheses.py`: H1–H5 exactly as frozen, from whatever runs exist → `results/hypotheses.csv`; tested on synthetic results (M1 runs it on all results in T24) | ⬜ |  |
 
 ## Results
+
+Each run in detail (model, how it was trained, every split, accuracy per speaker, confusion matrices): [results/M3_mahir/RUNS.md](../results/M3_mahir/RUNS.md)
 
 *No results merged yet.*
 

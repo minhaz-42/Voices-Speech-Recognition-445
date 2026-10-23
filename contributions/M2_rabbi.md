@@ -16,21 +16,23 @@ From the task board [docs/STATUS.md](../docs/STATUS.md): ✅ done and merged · 
 
 | ID | Task | Status | Done by · date |
 |---|---|---|---|
-| T12 | **XGBoost** with the shared runner → `results/xgboost/fsc/` | ✅ | Rabbi · 2026-10-20 |
-| T16 | **wav2vec 2.0, 8 epochs + white noise** → `results/w2v2_8ep_noise/fsc/` | ✅ | Rabbi · 2026-10-20 |
-| T44 | **WavLM Base+, 15 epochs + white noise** (same script, `--model microsoft/wavlm-base-plus`) → `results/wavlm_15ep_noise/fsc/` | ✅ | Rabbi · 2026-10-20 |
+| T12 | **XGBoost** with the shared runner → `results/M2_rabbi/xgboost/fsc/` | ✅ | Rabbi · 2026-10-20 |
+| T16 | **wav2vec 2.0, 8 epochs + white noise** → `results/M2_rabbi/w2v2_8ep_noise/fsc/` | ✅ | Rabbi · 2026-10-20 |
+| T44 | **WavLM Base+, 15 epochs + white noise** (same script, `--model microsoft/wavlm-base-plus`) → `results/M2_rabbi/wavlm_15ep_noise/fsc/` | ✅ | Rabbi · 2026-10-20 |
 | T09 | Datasheet `data/README.md` for TenVoices-FSC (sources, selection, QC, statistics, licences) + dataset statistics figure + 👤 listen-check of the 100 marked clips → `data/listen_check_fsc.csv` | ✅ | Rabbi · 2026-10-20 |
 | T26 | Subset release: subset and phrase lists, selection and QC scripts, datasheet, checksums (no audio) as a GitHub Release draft | ✅ | Rabbi · 2026-10-20 |
 
 ## Results
 
+Each run in detail (model, how it was trained, every split, accuracy per speaker, confusion matrices): [results/M2_rabbi/RUNS.md](../results/M2_rabbi/RUNS.md)
+
 Unseen speakers: speaker-independent 5-fold cross-validation (the headline). Random split: 80 / 20, the test speakers were also heard in training.
 
 | Run | Dataset | Accuracy, unseen speakers | Macro F1, unseen | Accuracy, random split | Macro F1, random | Source |
 |---|---|---:|---:|---:|---:|---|
-| XGBoost | TenVoices-FSC | 16.9% | 0.158 | 22.0% | 0.208 | [summary.json](../results/xgboost/fsc/summary.json) |
-| wav2vec 2.0, 8 epochs + noise | TenVoices-FSC | 21.0% | 0.198 | 40.5% | 0.287 | [summary.json](../results/w2v2_8ep_noise/fsc/summary.json) |
-| WavLM Base+, 15 epochs + noise | TenVoices-FSC | 33.6% | 0.354 | 39.0% | 0.332 | [summary.json](../results/wavlm_15ep_noise/fsc/summary.json) |
+| XGBoost | TenVoices-FSC | 16.9% | 0.158 | 22.0% | 0.208 | [summary.json](../results/M2_rabbi/xgboost/fsc/summary.json) |
+| wav2vec 2.0, 8 epochs + noise | TenVoices-FSC | 21.0% | 0.198 | 40.5% | 0.287 | [summary.json](../results/M2_rabbi/w2v2_8ep_noise/fsc/summary.json) |
+| WavLM Base+, 15 epochs + noise | TenVoices-FSC | 33.6% | 0.354 | 39.0% | 0.332 | [summary.json](../results/M2_rabbi/wavlm_15ep_noise/fsc/summary.json) |
 
 ## Files
 
@@ -38,9 +40,9 @@ Created by Rabbi (files that still exist):
 
 - **Code:** [support/dataset_stats.py](../support/dataset_stats.py) · [support/make_release.py](../support/make_release.py) · [support/phrases.py](../support/phrases.py)
 - **Tests:** [tests/test_dataset_stats.py](../tests/test_dataset_stats.py) · [tests/test_make_release.py](../tests/test_make_release.py) · [tests/test_phrases.py](../tests/test_phrases.py)
-- **Figures:** [images/confusion/w2v2_8ep_noise_fsc_folds.png](../images/confusion/w2v2_8ep_noise_fsc_folds.png) · [images/confusion/w2v2_8ep_noise_fsc_random.png](../images/confusion/w2v2_8ep_noise_fsc_random.png) · [images/confusion/wavlm_15ep_noise_fsc_folds.png](../images/confusion/wavlm_15ep_noise_fsc_folds.png) · [images/confusion/wavlm_15ep_noise_fsc_random.png](../images/confusion/wavlm_15ep_noise_fsc_random.png) · [images/confusion/xgboost_fsc_folds.png](../images/confusion/xgboost_fsc_folds.png) · [images/confusion/xgboost_fsc_random.png](../images/confusion/xgboost_fsc_random.png) · [images/dataset_fsc.png](../images/dataset_fsc.png)
+- **Figures:** [images/dataset_fsc.png](../images/dataset_fsc.png)
 - **Data and settings:** [data/listen_check_fsc.csv](../data/listen_check_fsc.csv) · [data/subsets/stats_fsc.csv](../data/subsets/stats_fsc.csv)
-- **Results:** [results/w2v2_8ep_noise/](../results/w2v2_8ep_noise/) (15 files) · [results/wavlm_15ep_noise/](../results/wavlm_15ep_noise/) (15 files) · [results/xgboost/](../results/xgboost/) (15 files)
+- **Results:** [results/M2_rabbi/figures/confusion/](../results/M2_rabbi/figures/confusion/) (6 files) · [results/M2_rabbi/w2v2_8ep_noise/](../results/M2_rabbi/w2v2_8ep_noise/) (15 files) · [results/M2_rabbi/wavlm_15ep_noise/](../results/M2_rabbi/wavlm_15ep_noise/) (15 files) · [results/M2_rabbi/xgboost/](../results/M2_rabbi/xgboost/) (15 files)
 
 Also changed by Rabbi (created by someone else):
 
