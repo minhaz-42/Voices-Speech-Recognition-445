@@ -4,7 +4,7 @@ How to do your tasks **by hand or with any AI assistant**. The rules are in [AGE
 
 | Slot | Member | Branch | Your page |
 |---|---|---|---|
-| M2 | Rabbi | `dev_rabbi` | `docs/team/M2_rabbi.md` |
+| M2 | Rabbi | `dev_shahriar` | `docs/team/M2_rabbi.md` |
 | M3 | Mahir | `dev_mahir` | `docs/team/M3_mahir.md` |
 | M4 | Shafil | `dev_shafil` | `docs/team/M4_shafil.md` |
 

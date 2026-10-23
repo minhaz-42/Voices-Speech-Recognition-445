@@ -20,6 +20,51 @@ paths:
 result_folders:
   M1_tanvir: [random_forest, w2v2_15ep, w2v2_15ep_noise, whisper_small]
 
+# The team (AGENTS.md). support/contributions.py writes one page per member into contributions/
+# from the git history (git_names), the task board (docs/STATUS.md, section "<slot> · <short>")
+# and the runs' summary.json files.
+team:
+  - slot: M1
+    name: Tanvir Ahmed
+    short: Tanvir
+    role: Lead · data preparation, shared code, Whisper pipeline, noise tests, inference, TenVoices-L2, final aggregation and merging
+    models: Random Forest · wav2vec 2.0 15 epochs with and without noise · Whisper zero-shot
+    git_names: [minhaz, Tanvir Ahmed]
+    github: minhaz-42
+    branch: main
+    page: docs/team/M1_tanvir.md
+    runs: [random_forest, w2v2_15ep_noise, w2v2_15ep, whisper_small]
+  - slot: M2
+    name: Md. Shahriar Rakib Rabbi
+    short: Rabbi
+    role: Datasheet, listen-check, dataset statistics, subset release
+    models: XGBoost · wav2vec 2.0 8 epochs + noise · WavLM Base+ 15 epochs + noise
+    git_names: [Md. Shahriar Rakib Rabbi]
+    github: Shahrcasm
+    branch: dev_shahriar
+    page: docs/team/M2_rabbi.md
+    runs: [xgboost, w2v2_8ep_noise, wavlm_15ep_noise]
+  - slot: M3
+    name: Mahir Ahmed
+    short: Mahir
+    role: Analysis plan, statistics, results table, hypothesis tests, error analysis
+    models: k-NN · wav2vec 2.0 3 epochs · HuBERT Base 15 epochs + noise
+    git_names: []                # add Mahir's git user.name once known
+    github: null
+    branch: dev_mahir
+    page: docs/team/M3_mahir.md
+    runs: [knn, w2v2_3ep, hubert_15ep_noise]
+  - slot: M4
+    name: Shafil Ahmed
+    short: Shafil
+    role: Visualisation, demo app, poster, slides, demo video
+    models: SVM · untrained wav2vec 2.0 baseline · linear probe on frozen wav2vec 2.0
+    git_names: [Shafil Ahmed]
+    github: Shafil10
+    branch: dev_shafil
+    page: docs/team/M4_shafil.md
+    runs: [svm, w2v2_untrained, w2v2_probe]
+
 # The two TenVoices subsets (docs/DATASETS.md). Runs choose one with --dataset fsc|l2arctic.
 datasets:
   fsc:

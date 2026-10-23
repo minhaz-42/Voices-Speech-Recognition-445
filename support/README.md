@@ -43,6 +43,7 @@ data/raw/<dataset>/ ──(support/select_subsets.py, support/qc_report.py)─�
 | [`../main.py`](../main.py) | Command-line inference with a benchmark option | T22 · M1 | [`test_inference.py`](../tests/test_inference.py) |
 | [`noise_test.py`](noise_test.py) | Accuracy of a saved run with identical white noise at 20 / 10 / 5 dB for every model | T21 · M1 | [`test_noise_test.py`](../tests/test_noise_test.py) |
 | [`figures.py`](figures.py) | Figures for a member folder: seen vs unseen speakers, fine-tuning curves, noise robustness, accuracy per speaker, confidence, speed vs accuracy, Whisper errors | T49 · M1 | [`test_figures.py`](../tests/test_figures.py) |
+| [`contributions.py`](contributions.py) | One page per member for the faculty in `contributions/`: tasks, results, files created or changed, every commit | T50 · M1 | [`test_contributions.py`](../tests/test_contributions.py) |
 
 Modules for later tasks appear here as they are merged; [docs/STATUS.md](../docs/STATUS.md) lists every task with its files.
 
@@ -50,7 +51,7 @@ Modules for later tasks appear here as they are merged; [docs/STATUS.md](../docs
 
 ## Code that is not merged yet
 
-Each member works on their own branch (`dev_rabbi`, `dev_mahir`, `dev_shafil`) and pushes it at the end of every session, finished or not, so nothing stays only on a laptop. Until Tanvir merges it, that code is not on `main`. To see it:
+Each member works on their own branch (`dev_shahriar`, `dev_mahir`, `dev_shafil`) and pushes it at the end of every session, finished or not, so nothing stays only on a laptop. Until Tanvir merges it, that code is not on `main`. To see it:
 
 - **On GitHub:** the **Pull requests** tab (every branch with work has one; a *draft* pull request means a task in it is still unfinished), or pick the branch in the branch selector at the top of the file list.
 - **Locally:** `git fetch origin`, then `git diff --stat main...origin/dev_mahir` for the list of changed files and `git diff main...origin/dev_mahir` for the code.

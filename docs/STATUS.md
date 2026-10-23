@@ -88,6 +88,7 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 | T22 | `main.py`, inference, CI ✅; benchmark → `results/M1_tanvir/benchmark_fsc.csv` ✅ (wav2vec 2.0: 38.2 ms per clip on MPS, 74.9 ms on CPU) | T15 | ✅ | Tanvir · 2026-10-17 |
 | T48 | **One results folder for M1:** every run of Tanvir's (`random_forest`, `w2v2_15ep_noise`, `w2v2_15ep`, `whisper_small`), the noise tests, the benchmark and the confusion matrices → `results/M1_tanvir/` (`result_folders` in the config; `support.evaluate.run_dir` / `list_runs` find it) | — | ✅ | Tanvir · 2026-10-17 |
 | T49 | **Figures beyond confusion matrices:** `support/figures.py` draws, from the result files only, seen vs unseen speakers, fine-tuning curves, noise robustness, accuracy per speaker, confidence (right vs wrong, rejecting uncertain answers), speed vs accuracy and Whisper's errors → `results/M1_tanvir/figures/` (gallery: `results/M1_tanvir/README.md`) | T48 | ✅ | Tanvir · 2026-10-17 |
+| T50 | **One page per member for the faculty:** `support/contributions.py` writes `contributions/README.md` and `contributions/<slot>_<name>.md` from the repository: tasks and status (this board), results (`summary.json` of each run), files created or changed and every commit (git history of `main`); team in `team` of the config; rerun after every merge | — | ✅ | Tanvir · 2026-10-23 |
 | T47 | **TenVoices-L2:** data from a free copy of L2-ARCTIC (no form) ✅: 10 speakers × 50 sentences = 500 clips, QC 500 / 500, splits (each fold holds out one first language); Random Forest ✅; Whisper ✅ (WER 0.100 vs 0.039 on FSC); next: the wav2vec 2.0 runs and every merged model on L2; H5 | — | 🟡 data ✅ | Tanvir · 2026-10-17 (data) |
 
 ### At the end (needs everyone's merged work)
@@ -118,6 +119,12 @@ Runs are done when their results for TenVoices-FSC (random split + 5 folds) are 
 | T02, T04–T07, T31, T32 | Recorder, pilot, recording sessions, recording QC | We use published datasets (2026-10-17) |
 
 ## 📝 Handoff Log (newest first)
+
+### 2026-10-23 · Tanvir Ahmed (M1) · T50 (one page per member)
+
+- **Done:** `python -m support.contributions` writes `contributions/` for the faculty: an overview and one page per member with their role and models, their tasks and status from this board, their results with the `summary.json` each number comes from, the files they created or changed, and every commit under their name (from the git history of `main`, merge commits not counted). The team (names, git names, GitHub, branch, runs) is the new `team` section of `configs/config.yaml`. Nothing on the pages is typed by hand; the merge routine in AGENTS.md now reruns the command after every merge.
+- **Also:** README shows Shafil's results (SVM, untrained baseline, linear probe) and work, and links every member's page; the M2 branch is `dev_shahriar` in AGENTS.md, CONTRIBUTING.md, PROJECT_PLAN.md and `support/README.md`; Shafil's git user.name is filled in.
+- **Tests:** `tests/test_contributions.py` (new; a small git repository with two authors, a rename and a merge).
 
 ### 2026-10-23 · Tanvir Ahmed (M1) · Merged dev_shafil: T14, T18, T23, T35, T36, T38, T39, T46 (T27 in part)
 

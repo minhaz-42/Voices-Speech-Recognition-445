@@ -28,15 +28,16 @@ Repository: https://github.com/minhaz-42/Voices-Speech-Recognition-445
 | `docs/RUNS.md` | How to get the audio and run any model, locally or on Colab |
 | `docs/CONTRIBUTING.md` | The same workflow as plain git commands, for working by hand or with a chat assistant |
 | `README.md` | Public overview: results and who did what |
+| `contributions/` | One page per member for the faculty (tasks, results, files, commits), written by `python -m support.contributions`; never edited by hand |
 
 ## Team
 
 | Slot | Member | git user.name | GitHub | Branch | Page | Workstream |
 |---|---|---|---|---|---|---|
 | M1 | Tanvir Ahmed (lead, merges) | minhaz | minhaz-42 | `main` | `docs/team/M1_tanvir.md` | Data preparation, shared code, **Whisper pipeline**, noise tests, inference, TenVoices-L2, final aggregation · Random Forest · wav2vec 2.0 15 epochs (+ noise, and without) |
-| M2 | Md. Shahriar Rakib Rabbi | Md. Shahriar Rakib Rabbi | ShahriarRakibRabbi | `dev_rabbi` | `docs/team/M2_rabbi.md` | Datasheet, listen-check, dataset statistics, subset release · XGBoost · wav2vec 2.0 8 epochs + noise · WavLM Base+ |
+| M2 | Md. Shahriar Rakib Rabbi | Md. Shahriar Rakib Rabbi | ShahriarRakibRabbi (commits: Shahrcasm) | `dev_shahriar` | `docs/team/M2_rabbi.md` | Datasheet, listen-check, dataset statistics, subset release · XGBoost · wav2vec 2.0 8 epochs + noise · WavLM Base+ |
 | M3 | Mahir Ahmed | *(add)* | *(add)* | `dev_mahir` | `docs/team/M3_mahir.md` | Analysis plan, statistics, results table, hypothesis tests, error analysis · k-NN · wav2vec 2.0 3 epochs · HuBERT Base |
-| M4 | Shafil Ahmed | *(add)* | Shafil10 | `dev_shafil` | `docs/team/M4_shafil.md` | Visualisation, demo app, poster, slides, video · SVM · untrained baseline · linear probe |
+| M4 | Shafil Ahmed | Shafil Ahmed | Shafil10 | `dev_shafil` | `docs/team/M4_shafil.md` | Visualisation, demo app, poster, slides, video · SVM · untrained baseline · linear probe |
 
 - With an assistant that can run commands, a member only has to say who they are (*"I'm Mahir, do my part"*); the assistant follows the steps below. Without one, the member follows [CONTRIBUTING.md](docs/CONTRIBUTING.md). The result is the same either way.
 - When a git user.name or GitHub login marked *(add)* becomes known, M1 fills it in here.
@@ -109,8 +110,8 @@ Only merge a branch whose pull request is ready (not a draft) and whose tasks ar
    - the member's page marks the tasks ✅.
 2. `git merge --no-ff --no-commit origin/<branch>`. If a file the member does not own changed, ask M1 before keeping it.
 3. Run the tests on the merged result. If they fail, `git merge --abort` and tell the member what to fix.
-4. Copy the member's finished tasks onto the board in `docs/STATUS.md` (✅, *Done by <name> · date*), update **Next up**, and add a Handoff Log entry *"Merged <branch>: T10, T33"*.
-5. `git add docs/STATUS.md`, `git commit -m "Merge <branch>: T10, T33"`, `git push origin main`. If a pull request is open for the branch, GitHub closes it as merged.
+4. Copy the member's finished tasks onto the board in `docs/STATUS.md` (✅, *Done by <name> · date*), update **Next up**, and add a Handoff Log entry *"Merged <branch>: T10, T33"*. Then regenerate the member pages: `python -m support.contributions`.
+5. `git add docs/STATUS.md contributions/`, `git commit -m "Merge <branch>: T10, T33"`, `git push origin main`. If a pull request is open for the branch, GitHub closes it as merged.
 
 ## Authorship
 
@@ -144,4 +145,5 @@ Small result tables (CSV/JSON under 1 MB) go in `results/` and **are** committed
 - Inference: `python main.py --audio clip.wav --model outputs/models/<run>/<dataset>/<split>[.joblib]` (also `--video`, `--mic 4`, `--asr whisper`, `--benchmark 50`)
 - On macOS, never use PyTorch (wav2vec 2.0, Whisper) and XGBoost in the same Python process: their OpenMP libraries clash (crash or hang). The scripts above keep them apart; tests that need PyTorch run in a child process.
 - Review a member's branch (M1): `git fetch origin && git diff --stat main...origin/dev_mahir`
+- One page per member for the faculty (tasks, results, files, commits) → `contributions/`: `python -m support.contributions`
 - *(Add new commands here when a task creates them.)*

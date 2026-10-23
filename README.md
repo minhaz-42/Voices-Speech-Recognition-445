@@ -35,14 +35,14 @@ Every model is tested on a random 80/20 split (speakers seen in training) and wi
 ---
 
 ## 👥 Team: Who Does What
-Each member owns one traditional model, one or two deep-learning runs, a part of the shared work and a set of files. **Each member's page** lists their files, their tasks with status, their faculty update and the exact task cards.
+Each member owns one traditional model, one or two deep-learning runs, a part of the shared work and a set of files. **Each member's work** (tasks with status, results, the files they wrote and every commit under their name) is on one page per member in [contributions/](contributions/), written from the repository by `python -m support.contributions`. **Each member's working page** has their task cards, weekly faculty update and handoff log.
 
-| Member | Responsible for | Models they run | Done so far | Next | Page |
+| Member | Responsible for | Models they run | Done so far | Next | Work · page |
 | :--- | :--- | :--- | :--- | :--- | :---: |
-| **Tanvir Ahmed** (lead) | Data preparation, shared code (pre-processing, splits, training, evaluation, Whisper, inference), merging everyone's work | Random Forest · wav2vec 2.0 15 epochs with / without noise · Whisper | Plan and repository; audio, config, metrics and Whisper code; TenVoices-FSC selected, checked and split; Random Forest and Whisper results on TenVoices-FSC; training, noise-test and inference code | wav2vec 2.0 15-epoch runs, TenVoices-L2, final results and report | [M1_tanvir](docs/team/M1_tanvir.md) |
-| **Md. Shahriar Rakib Rabbi** | Datasheet, dataset statistics, listen-check, subset release | XGBoost · wav2vec 2.0 8 epochs + noise · WavLM Base+ | Phrase loader `support/phrases.py`; XGBoost (T12); Datasheet, statistics & listen-check (T09); Subset release (T26); wav2vec 2.0 8ep (T16); WavLM Base+ 15ep (T44) | All tasks completed | [M2_rabbi](docs/team/M2_rabbi.md) |
-| **Mahir Ahmed** | Analysis plan, statistics, results table, hypothesis tests, error analysis | k-NN · wav2vec 2.0 3 epochs · HuBERT Base | Not started yet (takes over the metrics module `support/metrics.py`, written by Tanvir) | Analysis plan (T10), statistics (T33), k-NN (T13), literature (T37) | [M3_mahir](docs/team/M3_mahir.md) |
-| **Shafil Ahmed** | Figures, demo app, poster, slides, demo video | SVM · untrained baseline · linear probe | Not started yet | SVM (T14), visualisation (T35), poster v2 (T39), untrained baseline (T18) | [M4_shafil](docs/team/M4_shafil.md) |
+| **Tanvir Ahmed** (lead) | Data preparation, shared code (pre-processing, splits, training, evaluation, Whisper, inference), merging everyone's work | Random Forest · wav2vec 2.0 15 epochs with / without noise · Whisper | Plan and repository; audio, config, metrics and Whisper code; TenVoices-FSC and TenVoices-L2 selected, checked and split; Random Forest and Whisper on both datasets; wav2vec 2.0 15 epochs with and without noise; noise tests, speed benchmark, inference and figures | wav2vec 2.0 on TenVoices-L2, final results and report | [work](contributions/M1_tanvir.md) · [page](docs/team/M1_tanvir.md) |
+| **Md. Shahriar Rakib Rabbi** | Datasheet, dataset statistics, listen-check, subset release | XGBoost · wav2vec 2.0 8 epochs + noise · WavLM Base+ | Phrase loader `support/phrases.py`; XGBoost (T12); Datasheet, statistics & listen-check (T09); Subset release (T26); wav2vec 2.0 8ep (T16); WavLM Base+ 15ep (T44) | All tasks completed | [work](contributions/M2_rabbi.md) · [page](docs/team/M2_rabbi.md) |
+| **Mahir Ahmed** | Analysis plan, statistics, results table, hypothesis tests, error analysis | k-NN · wav2vec 2.0 3 epochs · HuBERT Base | Not started yet (takes over the metrics module `support/metrics.py`, written by Tanvir) | Analysis plan (T10), statistics (T33), k-NN (T13), literature (T37) | [work](contributions/M3_mahir.md) · [page](docs/team/M3_mahir.md) |
+| **Shafil Ahmed** | Figures, demo app, poster, slides, demo video | SVM · untrained baseline · linear probe | SVM (T14); untrained wav2vec 2.0 baseline (T18); linear probe on frozen wav2vec 2.0 (T46); visualisation module and figures (T35); demo app `app.py`, checked on Shafil's own voice (T36, T23); literature notes (T38); planning poster v2 (T39); results poster and slides generated from `results/` (T27) | 1-minute demo video (T27) | [work](contributions/M4_shafil.md) · [page](docs/team/M4_shafil.md) |
 
 Task board with every task, its owner and status: [docs/STATUS.md](docs/STATUS.md).
 
@@ -97,9 +97,9 @@ Measured so far on **TenVoices-FSC** (1,000 clips). Every number comes from the 
 
 | Model | Owner | Accuracy, unseen speakers | Macro F1, unseen | Accuracy, random split | Macro F1, random | Purpose |
 | :--- | :--- | :---: | :---: | :---: | :---: | :--- |
-| **Baseline wav2vec 2.0 (untrained)** | Shafil | TBD | TBD | TBD | TBD | Chance level without training |
+| **Baseline wav2vec 2.0 (untrained)** | Shafil | **2.8%** | 0.006 | **2.5%** | 0.004 | Chance level without training |
 | **k-NN** | Mahir | TBD | TBD | TBD | TBD | Distance-based MFCC baseline |
-| **SVM** | Shafil | TBD | TBD | TBD | TBD | Margin-based MFCC baseline |
+| **SVM** | Shafil | **22.3%** | 0.219 | **30.5%** | 0.304 | Margin-based MFCC baseline |
 | **Random Forest** | Tanvir | **20.9%** | 0.199 | **31.0%** | 0.299 | Tree ensemble on MFCC features |
 | **XGBoost** | Rabbi | **16.9%** | 0.158 | **22.0%** | 0.208 | Gradient boosting on MFCC features |
 | **wav2vec 2.0, 3 epochs** | Mahir | TBD | TBD | TBD | TBD | Short fine-tuning |
@@ -108,11 +108,13 @@ Measured so far on **TenVoices-FSC** (1,000 clips). Every number comes from the 
 | **wav2vec 2.0, 15 epochs, no noise** | Tanvir | **92.8%** | 0.927 | **85.5%** | 0.824 | Effect of noise augmentation (H3) |
 | **WavLM Base+, 15 epochs + noise** | Rabbi | **33.6%** | 0.354 | **39.0%** | 0.332 | Another self-supervised model |
 | **HuBERT Base, 15 epochs + noise** | Mahir | TBD | TBD | TBD | TBD | Another self-supervised model |
-| **Linear probe (frozen wav2vec 2.0)** | Shafil | TBD | TBD | TBD | TBD | Pre-trained features without fine-tuning |
+| **Linear probe (frozen wav2vec 2.0)** | Shafil | **60.5%** | 0.610 | **69.5%** | 0.687 | Pre-trained features without fine-tuning |
 | **Whisper small, zero-shot + phrase matching** | Tanvir | **98.7%** | 0.987 | **99.0%** | 0.990 | General-purpose speech-to-text, no training |
 
 * **Random Forest** drops from 31.0% to 20.9% when the test speakers were never heard in training: MFCC statistics depend heavily on the speaker.
 * **XGBoost** (Rabbi) achieves 22.0% on seen speakers and drops to 16.9% on unseen speakers: like Random Forest, gradient boosting on 78 MFCC statistics experiences severe degradation on unseen vocal tract acoustics.
+* **SVM** (Shafil) drops from 30.5% to 22.3% on unseen speakers, close to Random Forest: the MFCC models all depend on knowing the speaker.
+* **Pre-training vs fine-tuning** (Shafil's baseline and linear probe): with an untrained head, wav2vec 2.0 is at chance (2.8% on unseen speakers; chance is 2%). Training only a logistic regression on its frozen features gives 60.5%; fine-tuning the whole model for 15 epochs with noise gives 88.5%.
 * **Whisper** recognises the commands almost perfectly without any training; its word error rate on the unseen-speaker folds is 3.9%.
 * **Fine-tuned wav2vec 2.0** (15 epochs + noise, trained on 7 speakers per fold) reaches 88.5% on unseen speakers (fold mean 88.5% ± 10.4), 67.6 points above Random Forest.
 * **Fine-tuning duration (8 epochs vs 15 epochs, Rabbi):** wav2vec 2.0 at 8 epochs achieves 40.5% on seen speakers (nearly double XGBoost's 22.0%), but loss curve analysis reveals the model was still actively converging (training loss 3.10 vs 0.20 at 15 epochs), explaining why unseen speaker accuracy was 21.0% vs the 15-epoch benchmark's 88.5%.
@@ -128,7 +130,7 @@ Measured so far on **TenVoices-FSC** (1,000 clips). Every number comes from the 
 
   Training with white noise keeps the model usable in heavy noise (74.5% vs 30.7% at 5 dB) but costs 4.3 points on clean audio. H3 allows at most 2, so its strict criterion would fail; the official verdict comes from the hypothesis tests in T24. The MFCC model falls to chance level as soon as noise is added.
 * **Speed** (`results/M1_tanvir/benchmark_fsc.csv`, one clip incl. pre-processing, MacBook): wav2vec 2.0 38.2 ms on the Apple GPU and 74.9 ms on the CPU (378 MB); Random Forest 13.7 ms (76 MB). Both are fast enough for live use.
-* **Confusion matrices:** Tanvir's runs in [results/M1_tanvir/figures/confusion/](results/M1_tanvir/figures/confusion/); Rabbi's runs in `images/confusion/` (`xgboost_fsc_{random,folds}.png`, `w2v2_8ep_noise_fsc_{random,folds}.png`, `wavlm_15ep_noise_fsc_{random,folds}.png`).
+* **Confusion matrices:** Tanvir's runs in [results/M1_tanvir/figures/confusion/](results/M1_tanvir/figures/confusion/); Rabbi's runs in `images/confusion/` (`xgboost_fsc_{random,folds}.png`, `w2v2_8ep_noise_fsc_{random,folds}.png`, `wavlm_15ep_noise_fsc_{random,folds}.png`); Shafil's runs in `images/confusion/` (`svm_fsc_{random,folds}.png`, `w2v2_untrained_fsc_{random,folds}.png`, `w2v2_probe_fsc_{random,folds}.png`).
 * **Dataset statistics figure:** Distribution of clip durations and phrase categories across the 10 speakers in `images/dataset_fsc.png` (Rabbi, T09).
 * **More figures** (Tanvir's runs, all drawn from the result files by `python -m support.figures --folder M1_tanvir`; gallery with explanations: [results/M1_tanvir/README.md](results/M1_tanvir/README.md)): seen vs unseen speakers, fine-tuning curves, noise robustness, accuracy per speaker, confidence, speed vs accuracy, Whisper's errors.
 
@@ -155,6 +157,7 @@ Voices-Speech-Recognition-445/
 |-- main.py                 inference: audio / video / microphone -> top-5 phrases
 |-- requirements.txt
 |-- AGENTS.md, CLAUDE.md    rules for members and AI assistants
+|-- contributions/          ONE PAGE PER MEMBER FOR THE FACULTY: tasks, results, files, commits (generated)
 |-- configs/config.yaml     every setting (paths, audio, models, training)
 |-- support/                ALL code, one shared module per job (code map: support/README.md)
 |-- tests/                  unit tests for every module
@@ -221,6 +224,7 @@ Run every command from the repository root; scripts in `support/` run as modules
 | `python -m support.noise_test --run w2v2_15ep_noise --dataset fsc` | Accuracy with white noise at 20 / 10 / 5 dB |
 | `python main.py --audio clip.wav --model <saved model>` | Top-5 phrases for an audio file (also `--video`, `--mic`, `--asr whisper`, `--benchmark N`) |
 | `python app.py` | Live microphone demo (Gradio), task T36 |
+| `python -m support.contributions` | One page per member in `contributions/`: tasks, results, files and commits, from the repository (T50) |
 
 ---
 
