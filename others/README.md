@@ -16,7 +16,7 @@ python -m support.presentation                                    # poster_resul
                                                                   # slides.html -> slides.pdf, and the checklist below
 ```
 
-Edit the templates, never `poster_results.html` or `slides.html`. A run that is not merged yet shows `TBD`; rerun both commands after every merge (T28). The 1-minute demo video follows `demo_video_script.md`.
+Edit the templates, never `poster_results.html` or `slides.html`. A run that is not merged yet shows `TBD`; rerun both commands after every merge (T28). The 1-minute demo video (`tenvoices_demo.mp4`, on the GitHub Release, not in git) is recorded from the running app by the scripts in `demo_video/`; `demo_video_script.md` explains how to re-record it, or how to film a narrated version.
 
 Large media (the video, high-resolution exports) are attached to the GitHub Release instead of being committed.
 
