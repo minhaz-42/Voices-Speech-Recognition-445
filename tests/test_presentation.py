@@ -72,5 +72,27 @@ class TestCollectAndChecklist(unittest.TestCase):
         self.assertEqual((others / "README.md").read_text(encoding="utf-8").count(pres.CHECKLIST_START), 1)
 
 
+class TestShrinkPng(unittest.TestCase):
+    def test_large_png_goes_under_the_limit_and_small_one_is_untouched(self):
+        import numpy as np
+        from PIL import Image
+
+        with tempfile.TemporaryDirectory() as tmp:
+            big = Path(tmp) / "big.png"
+            noise = np.random.default_rng(0).integers(0, 256, (600, 800, 3), dtype=np.uint8)
+            Image.fromarray(noise).save(big)
+            self.assertGreater(big.stat().st_size, 1_000_000)
+            size = pres.shrink_png(big)
+            self.assertLessEqual(size, 1_000_000)
+            with Image.open(big) as image:
+                self.assertEqual(image.size, (800, 600))
+
+            small = Path(tmp) / "small.png"
+            Image.new("RGB", (40, 30), "white").save(small)
+            before = small.read_bytes()
+            pres.shrink_png(small)
+            self.assertEqual(small.read_bytes(), before)
+
+
 if __name__ == "__main__":
     unittest.main()

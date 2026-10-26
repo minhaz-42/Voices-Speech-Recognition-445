@@ -1,5 +1,16 @@
 # Demo video: step-by-step guide (T27, about 1 minute)
 
+> **The current demo video** (`tenvoices_demo.mp4`, 62 s, on the draft GitHub Release "Demo video (T27)") was recorded automatically from the running app with the scripts in `demo_video/`: Playwright drives Chrome, uploads two of my own recordings and shows captions instead of narration, and the processing waits are cut. To re-record it after the final merges:
+>
+> ```
+> pip install playwright && python -m playwright install ffmpeg
+> python app.py --whisper --port 7863
+> python others/demo_video/record_demo.py http://127.0.0.1:7863/ outputs/demo_video <folder with lights.wav and music.wav>
+> python others/demo_video/edit_demo.py outputs/demo_video <same folder> tenvoices_demo.mp4
+> ```
+>
+> The guide below is for filming a version with live speech and spoken narration instead.
+
 A screen recording of the demo app with your voice, recorded on Windows 11 with the built-in **Snipping Tool** and trimmed in **Clipchamp**. Plan about 30 minutes, including two practice runs.
 
 ## 1. Prepare (5 minutes)

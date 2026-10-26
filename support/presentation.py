@@ -124,6 +124,8 @@ def find_chrome() -> str | None:
 def render(html: Path, out: Path, width: int, height: int, chrome: str | None = None) -> None:
     """Render a local HTML page with headless Chrome: PNG at 2x scale, or PDF when ``out`` ends in .pdf.
 
+    A PNG is kept under 1 MB with :func:`shrink_png`.
+
     Raises:
         RuntimeError: If no Chrome / Edge is installed.
     """
@@ -141,6 +143,33 @@ def render(html: Path, out: Path, width: int, height: int, chrome: str | None = 
         args = common + ["--force-device-scale-factor=2", f"--window-size={width},{height}",
                          f"--screenshot={out.resolve()}", url]
     subprocess.run(args, check=True, capture_output=True, timeout=120)
+    if out.suffix == ".png":
+        shrink_png(out)
+
+
+MAX_IMAGE_BYTES = 1_000_000  # repository limit for committed files (AGENTS.md)
+
+
+def shrink_png(path: Path, max_bytes: int = MAX_IMAGE_BYTES) -> int:
+    """Keep a rendered PNG under ``max_bytes``: re-save it losslessly, and if it is still too
+    big, as a 256-colour palette image (posters are flat colours, so this is not visible).
+
+    Returns:
+        The final size in bytes.
+    """
+    from PIL import Image
+
+    path = Path(path)
+    if path.stat().st_size <= max_bytes:
+        return path.stat().st_size
+    with Image.open(path) as image:
+        image.load()
+    image.save(path, "PNG", optimize=True)
+    if path.stat().st_size > max_bytes:
+        palette = image.convert("RGB").quantize(colors=256, method=Image.Quantize.FASTOCTREE,
+                                                dither=Image.Dither.FLOYDSTEINBERG)
+        palette.save(path, "PNG", optimize=True)
+    return path.stat().st_size
 
 
 def checklist_markdown(used: dict[str, list[dict[str, Any]]]) -> str:
